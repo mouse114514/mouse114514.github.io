@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>X_studio</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial Black', sans-serif;
+            background: #0a0f1e;
+            height: 100vh;
+            overflow: hidden;
+            perspective: 1200px;
+            transform-style: preserve-3d;
+        }
+        
+        .fixed-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+            transform-style: preserve-3d;
+        }
+        
+        #x {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%) rotateX(0deg) rotateY(0deg);
+            font-size: min(40vw, 500px);
+            font-weight: 900;
+            background: linear-gradient(to bottom, #4da8ff, #b0e0ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            white-space: nowrap;
+            line-height: 1;
+            z-index: 2;
+            transition: transform 0.1s ease-out;
+            transform-style: preserve-3d;
+            text-shadow: 0 0 30px rgba(77,168,255,0.5);
+            pointer-events: none;
+        }
+        
+        #studio {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%) rotateX(0deg) rotateY(0deg);
+            font-size: min(8vw, 80px);
+            color: white;
+            font-weight: 400;
+            letter-spacing: 4px;
+            text-shadow: 0 0 20px rgba(77,168,255,0.3);
+            top: calc(50% + min(20vw, 250px));
+            z-index: 2;
+            white-space: nowrap;
+            pointer-events: none;
+            transition: transform 0.1s ease-out;
+            transform-style: preserve-3d;
+        }
+
+        .menu-bar {
+            position: fixed;
+            left: 30px;
+            top: 50%;
+            transform: translateY(-50%) translateX(-200%);
+            width: 300px;
+            height: 80vh;
+            background: rgba(20, 30, 50, 0.6);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid rgba(77, 168, 255, 0.3);
+            border-radius: 30px;
+            padding: 20px 0;
+            box-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
+            z-index: 100;
+            transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+            display: flex;
+            flex-direction: column;
+            pointer-events: auto;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        .menu-bar.visible {
+            transform: translateY(-50%) translateX(0);
+        }
+        
+        .menu-parent {
+            width: 100%;
+            margin-bottom: 5px;
+            flex-shrink: 0;
+        }
+
+        .parent-btn {
+            width: calc(100% - 30px);
+            margin: 0 auto 5px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(77, 168, 255, 0.3);
+            border-radius: 25px;
+            padding: 0 20px;
+            color: white;
+            font-size: 18px;
+            font-weight: 400;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            backdrop-filter: blur(5px);
+            font-family: 'Arial', sans-serif;
+        }
+
+        .parent-btn:hover {
+            border-color: #4da8ff;
+            background: rgba(77, 168, 255, 0.15);
+            box-shadow: 0 0 20px rgba(77, 168, 255, 0.2);
+        }
+
+        .arrow {
+            transition: transform 0.3s ease;
+            font-size: 14px;
+            color: #4da8ff;
+        }
+
+        .menu-parent.expanded .arrow {
+            transform: rotate(90deg);
+        }
+
+        .submenu {
+            width: 100%;
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+                        opacity 0.3s ease;
+            margin-bottom: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .menu-parent.expanded .submenu {
+            max-height: 400px;
+            opacity: 1;
+            margin-bottom: 10px;
+        }
+
+        .submenu .menu-btn {
+            transform: translateX(-100%);
+            opacity: 0;
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+                        opacity 0.3s ease,
+                        background 0.3s,
+                        border-color 0.3s;
+        }
+
+        .menu-parent.expanded .submenu .menu-btn {
+            transform: translateX(0);
+            opacity: 1;
+        }
+
+        .submenu .menu-btn {
+            width: calc(100% - 50px);
+            margin-left: auto;
+            margin-right: auto;
+            height: 45px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(77, 168, 255, 0.2);
+            border-radius: 22px;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 16px;
+            font-weight: 300;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Arial', sans-serif;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .submenu .menu-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(77, 168, 255, 0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .submenu .menu-btn:hover {
+            border-color: #4da8ff;
+            transform: scale(1.02) translateX(0) !important;
+            background: rgba(77, 168, 255, 0.1);
+            box-shadow: 0 0 20px rgba(77, 168, 255, 0.3);
+        }
+
+        .submenu .menu-btn:hover::before {
+            left: 100%;
+        }
+
+        .submenu .menu-btn.active {
+            background: rgba(77, 168, 255, 0.2);
+            border-color: #4da8ff;
+            box-shadow: 0 0 30px rgba(77, 168, 255, 0.4);
+        }
+
+        .submenu .menu-btn:nth-child(1) { transition-delay: 0s; }
+        .submenu .menu-btn:nth-child(2) { transition-delay: 0.05s; }
+        .submenu .menu-btn:nth-child(3) { transition-delay: 0.1s; }
+        .submenu .menu-btn:nth-child(4) { transition-delay: 0.15s; }
+        .submenu .menu-btn:nth-child(5) { transition-delay: 0.2s; }
+        .submenu .menu-btn:nth-child(6) { transition-delay: 0.25s; }
+        .submenu .menu-btn:nth-child(7) { transition-delay: 0.3s; }
+        .submenu .menu-btn:nth-child(8) { transition-delay: 0.35s; }
+
+        .detail-panel {
+            position: fixed;
+            right: 50px;
+            top: 50%;
+            transform: translateY(-50%) translateX(150%);
+            width: 500px;
+            max-width: calc(100vw - 400px);
+            height: 80vh;
+            background: rgba(20, 30, 50, 0.7);
+            backdrop-filter: blur(25px) saturate(200%);
+            -webkit-backdrop-filter: blur(25px) saturate(200%);
+            border: 1px solid rgba(77, 168, 255, 0.4);
+            border-radius: 40px;
+            padding: 40px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+            z-index: 101;
+            transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s, visibility 0.3s;
+            color: white;
+            pointer-events: auto;
+            opacity: 0;
+            visibility: hidden;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .detail-panel.visible {
+            transform: translateY(-50%) translateX(0);
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .detail-title {
+            font-size: 36px;
+            margin-bottom: 20px;
+            background: linear-gradient(to right, #fff, #b0e0ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-weight: 900;
+            flex-shrink: 0;
+        }
+
+        .detail-content {
+            font-size: 18px;
+            line-height: 1.8;
+            font-family: 'Arial', sans-serif;
+            font-weight: 300;
+            opacity: 0.9;
+            margin-bottom: 30px;
+            flex: 1;
+            white-space: pre-wrap;
+        }
+
+        .detail-meta {
+            display: flex;
+            gap: 20px;
+            font-size: 14px;
+            color: #b0e0ff;
+            border-top: 1px solid rgba(77, 168, 255, 0.3);
+            padding-top: 20px;
+            font-family: 'Arial', sans-serif;
+            flex-shrink: 0;
+        }
+
+        .detail-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 99;
+            display: none;
+            pointer-events: auto;
+        }
+
+        .detail-overlay.active {
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .menu-bar {
+                left: 10px;
+                width: 260px;
+            }
+            .parent-btn {
+                width: calc(100% - 20px);
+                font-size: 16px;
+                height: 45px;
+            }
+            .submenu .menu-btn {
+                width: calc(100% - 40px);
+                font-size: 14px;
+                height: 40px;
+            }
+            .detail-panel {
+                right: 10px;
+                width: 280px;
+                padding: 20px;
+            }
+            .detail-title {
+                font-size: 24px;
+            }
+            .detail-content {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="fixed-bg" id="fixedBg">
+        <div id="x">X</div>
+        <div id="studio">Studio</div>
+    </div>
+
+    <div class="detail-overlay" id="detailOverlay"></div>
+
+    <div class="menu-bar" id="menuBar">
+        <div class="menu-parent" id="parent-projects">
+            <div class="parent-btn" data-parent="projects">
+                <span>🚀 项目</span>
+                <span class="arrow">▶</span>
+            </div>
+            <div class="submenu" id="submenu-projects">
+                <div class="menu-btn" data-target="betrayal">背叛之下</div>
+                <div class="menu-btn" data-target="beanWar">豆子之战</div>
+                <div class="menu-btn" data-target="mouseSlave">老鼠奴隶</div>
+            </div>
+        </div>
+
+        <div class="menu-parent" id="parent-members">
+            <div class="parent-btn" data-parent="members">
+                <span>👥 成员</span>
+                <span class="arrow">▶</span>
+            </div>
+            <div class="submenu" id="submenu-members">
+                <div class="menu-btn" data-target="mouse">鼠标</div>
+                <div class="menu-btn" data-target="krisid">克斯里德</div>
+                <div class="menu-btn" data-target="zhousan">粥伞</div>
+                <div class="menu-btn" data-target="chuc">出c好吃</div>
+                <div class="menu-btn" data-target="qinglong">青龙狱碧</div>
+                <div class="menu-btn" data-target="bingkuai">冰块</div>
+                <div class="menu-btn" data-target="emocez">EmoCez</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="detail-panel" id="detailPanel">
+        <div class="detail-title" id="detailTitle"></div>
+        <div class="detail-content" id="detailContent"></div>
+        <div class="detail-meta">
+            <span id="detailAuthor"></span>
+            <span id="detailYear"></span>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            const xEl = document.getElementById('x');
+            const studioEl = document.getElementById('studio');
+            const menuBar = document.getElementById('menuBar');
+            const detailPanel = document.getElementById('detailPanel');
+            const detailOverlay = document.getElementById('detailOverlay');
+            const menuBtns = document.querySelectorAll('.menu-btn');
+            const parentBtns = document.querySelectorAll('.parent-btn');
+            const detailTitle = document.getElementById('detailTitle');
+            const detailContent = document.getElementById('detailContent');
+            const detailAuthor = document.getElementById('detailAuthor');
+            const detailYear = document.getElementById('detailYear');
+
+            const details = {
+                'betrayal': {
+                    title: '背叛之下',
+                    content: '一款《传说之下》同人游戏，有着独特的世界观。目前正在制作中\n主要讲述了人类与怪物战争的世界，人类打败了怪物，并将怪物封印在了地底一共掉进了8个人类，但第8个人类最后杀死了怪物国王，带着他的灵魂回到了地上，当第9个人类掉进地底世界的时候，这里完全变了样子......当这个人类不断的探索，才逐渐发现这个地方的怪物们似乎比传闻中的更可怕，他还见识到了其他未能被救出来的6个人类灵魂，但被怪物们掌控。这个人类的目的到底是什么?怪物们会如何看待这个人?这个人类会救出六魂吗?这一切都在尘埃之中散去，显现出来的是背叛。',
+                    author: 'X社团',
+                    year: '进行中'
+                },
+                'beanWar': {
+                    title: '豆子之战',
+                    content: '为@青冥山岚系统制作的同人游戏！跑酷为主，战斗为辅，目前正在制作中',
+                    author: '青冥山岚 · X社团',
+                    year: '进行中'
+                },
+                'mouseSlave': {
+                    title: '老鼠奴隶',
+                    content: '一个轻量的AI agent，目前正在小范围测试',
+                    author: '鼠标',
+                    year: 'Alpha'
+                },
+                'mouse': {
+                    title: '鼠标',
+                    content: '这是我！程序员',
+                    author: '核心组',
+                    year: ''
+                },
+                'krisid': {
+                    title: '克斯里德',
+                    content: '世界观设定与美术资源',
+                    author: '美术/设定',
+                    year: ''
+                },
+                'zhousan': {
+                    title: '粥伞',
+                    content: '绘画',
+                    author: '画师',
+                    year: ''
+                },
+                'chuc': {
+                    title: '出c好吃',
+                    content: '作曲',
+                    author: '音乐组',
+                    year: ''
+                },
+                'qinglong': {
+                    title: '青龙狱碧',
+                    content: '美术',
+                    author: '画师',
+                    year: ''
+                },
+                'bingkuai': {
+                    title: '冰块',
+                    content: '美术',
+                    author: '画师',
+                    year: ''
+                },
+                'emocez': {
+                    title: 'EmoCez',
+                    content: '美术加轻度编曲加未来程序员',
+                    author: '多面手',
+                    year: ''
+                }
+            };
+
+            const maxRotateX = 25;
+            const maxRotateY = 35;
+            const maxStudioRotateX = 15;
+            const maxStudioRotateY = 20;
+
+            function getRotation(el, mouseX, mouseY) {
+                const rect = el.getBoundingClientRect();
+                const centerX = rect.left + rect.width / 2;
+                const centerY = rect.top + rect.height / 2;
+                
+                let deltaX = (mouseY - centerY) / (window.innerHeight * 0.5);
+                let deltaY = (mouseX - centerX) / (window.innerWidth * 0.5);
+                
+                deltaX = Math.max(-1, Math.min(1, deltaX));
+                deltaY = Math.max(-1, Math.min(1, deltaY));
+                
+                return { x: deltaX, y: deltaY };
+            }
+
+            document.addEventListener('mousemove', (e) => {
+                const mouseX = e.clientX;
+                const mouseY = e.clientY;
+                
+                const xRot = getRotation(xEl, mouseX, mouseY);
+                const studioRot = getRotation(studioEl, mouseX, mouseY);
+                
+                const xRotateX = -xRot.x * maxRotateX;
+                const xRotateY = xRot.y * maxRotateY;
+                const studioRotateX = -studioRot.x * maxStudioRotateX;
+                const studioRotateY = studioRot.y * maxStudioRotateY;
+                
+                xEl.style.transform = `translate(-50%, -50%) rotateX(${xRotateX}deg) rotateY(${xRotateY}deg)`;
+                studioEl.style.transform = `translateX(-50%) rotateX(${studioRotateX}deg) rotateY(${studioRotateY}deg)`;
+            });
+
+            let lastWheelTime = 0;
+            window.addEventListener('wheel', (e) => {
+                const now = Date.now();
+                if (now - lastWheelTime < 100) return;
+                lastWheelTime = now;
+
+                const delta = e.deltaY;
+                if (delta > 0) {
+                    if (!menuBar.classList.contains('visible')) {
+                        menuBar.classList.add('visible');
+                    }
+                } else if (delta < 0) {
+                    if (menuBar.classList.contains('visible')) {
+                        menuBar.classList.remove('visible');
+                        closeDetail();
+                    }
+                }
+            });
+
+            parentBtns.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const parent = btn.closest('.menu-parent');
+                    if (parent) {
+                        parent.classList.toggle('expanded');
+                    }
+                    e.stopPropagation();
+                });
+            });
+
+            menuBtns.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const target = btn.dataset.target;
+                    const detail = details[target];
+                    
+                    if (detail) {
+                        detailTitle.textContent = detail.title;
+                        detailContent.textContent = detail.content;
+                        detailAuthor.textContent = detail.author ? `👤 ${detail.author}` : '';
+                        detailYear.textContent = detail.year ? `📅 ${detail.year}` : '';
+                        
+                        detailPanel.classList.add('visible');
+                        detailOverlay.classList.add('active');
+                        
+                        menuBtns.forEach(b => b.classList.remove('active'));
+                        btn.classList.add('active');
+                    }
+                    
+                    e.stopPropagation();
+                });
+            });
+
+            detailOverlay.addEventListener('click', closeDetail);
+
+            detailPanel.addEventListener('click', (e) => {
+                e.stopPropagation();
+            });
+
+            function closeDetail() {
+                detailPanel.classList.remove('visible');
+                detailOverlay.classList.remove('active');
+                menuBtns.forEach(b => b.classList.remove('active'));
+            }
+
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    closeDetail();
+                }
+            });
+
+            menuBar.classList.remove('visible');
+            document.querySelectorAll('.menu-parent').forEach(p => {
+                p.classList.remove('expanded');
+            });
+        })();
+    </script>
+</body>
+</html>
