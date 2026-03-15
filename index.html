@@ -68,33 +68,36 @@
             transform-style: preserve-3d;
         }
 
-        /* 汉堡按钮 - 仅移动端显示 */
+        /* 汉堡按钮 - 移动端显示在底部中心，圆形亚克力风格 */
         .hamburger {
             position: fixed;
-            top: 20px;
-            left: 20px;
-            width: 50px;
-            height: 50px;
-            background: rgba(20, 30, 50, 0.8);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(77, 168, 255, 0.5);
-            border-radius: 15px;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 60px;
+            background: rgba(20, 30, 50, 0.6);
+            backdrop-filter: blur(12px) saturate(180%);
+            -webkit-backdrop-filter: blur(12px) saturate(180%);
+            border: 1.5px solid rgba(77, 168, 255, 0.6);
+            border-radius: 50%;
             z-index: 200;
-            display: none;
+            display: none; /* 默认隐藏，JS根据UA决定是否显示 */
             flex-direction: column;
             justify-content: center;
             align-items: center;
             cursor: pointer;
-            transition: all 0.3s;
-            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4), 0 0 15px rgba(77, 168, 255, 0.3);
         }
         .hamburger span {
-            width: 30px;
+            width: 28px;
             height: 3px;
             background: #4da8ff;
             margin: 4px 0;
             border-radius: 3px;
             transition: 0.3s;
+            box-shadow: 0 0 8px rgba(77, 168, 255, 0.5);
         }
         .hamburger.active span:nth-child(1) {
             transform: rotate(45deg) translate(8px, 8px);
@@ -190,7 +193,7 @@
         }
 
         .menu-parent.expanded .submenu {
-            max-height: 400px;
+            max-height: 500px; /* 增加一点高度以容纳新成员 */
             opacity: 1;
             margin-bottom: 10px;
         }
@@ -347,40 +350,39 @@
             display: block;
         }
 
-        @media (max-width: 768px) {
-            .menu-bar {
-                left: 10px;
-                width: 260px;
-            }
-            .parent-btn {
-                width: calc(100% - 20px);
-                font-size: 16px;
-                height: 45px;
-            }
-            .submenu .menu-btn {
-                width: calc(100% - 40px);
-                font-size: 14px;
-                height: 40px;
-            }
-            .detail-panel {
-                right: 10px;
-                width: 280px;
-                padding: 20px;
-            }
-            .detail-title {
-                font-size: 24px;
-            }
-            .detail-content {
-                font-size: 14px;
-            }
+        /* 语言切换按钮 - 固定在菜单左下角，圆形亚克力风格 */
+        .lang-switch {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            width: 45px;
+            height: 45px;
+            background: rgba(20, 30, 50, 0.7);
+            backdrop-filter: blur(12px) saturate(180%);
+            -webkit-backdrop-filter: blur(12px) saturate(180%);
+            border: 1.5px solid rgba(77, 168, 255, 0.6);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #4da8ff;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            z-index: 102;
+            pointer-events: auto;
         }
 
-        /* 移动端显示汉堡按钮 */
-        @media (max-width: 768px) {
-            .hamburger {
-                display: flex;
-            }
+        .lang-switch:hover {
+            border-color: #4da8ff;
+            background: rgba(77, 168, 255, 0.2);
+            box-shadow: 0 0 15px rgba(77, 168, 255, 0.4);
+            transform: scale(1.05);
         }
+
+        /* 移除宽度判断的媒体查询，完全由UA控制 */
     </style>
 </head>
 <body>
@@ -389,7 +391,7 @@
         <div id="studio">Studio</div>
     </div>
 
-    <!-- 汉堡菜单按钮（移动端可见） -->
+    <!-- 汉堡菜单按钮（纯UA判断显示，底部中心，圆形亚克力） -->
     <div class="hamburger" id="hamburger">
         <span></span>
         <span></span>
@@ -399,6 +401,9 @@
     <div class="detail-overlay" id="detailOverlay"></div>
 
     <div class="menu-bar" id="menuBar">
+        <!-- 语言切换按钮放在菜单左下角 -->
+        <div class="lang-switch" id="langSwitch">中</div>
+
         <div class="menu-parent" id="parent-projects">
             <div class="parent-btn" data-parent="projects">
                 <span>🚀 项目</span>
@@ -424,6 +429,8 @@
                 <div class="menu-btn" data-target="qinglong">青龙狱碧</div>
                 <div class="menu-btn" data-target="bingkuai">冰块</div>
                 <div class="menu-btn" data-target="emocez">EmoCez</div>
+                <!-- 新增成员 .() -->
+                <div class="menu-btn" data-target="dotParen">.()</div>
             </div>
         </div>
     </div>
@@ -451,72 +458,180 @@
             const detailAuthor = document.getElementById('detailAuthor');
             const detailYear = document.getElementById('detailYear');
             const hamburger = document.getElementById('hamburger');
+            const langSwitch = document.getElementById('langSwitch');
 
-            // 移动端检测（使用UA）
+            // 纯UA检测设备（不再依赖宽度）
             const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
+            // 根据UA决定是否显示汉堡按钮
+            if (isMobile) {
+                hamburger.style.display = 'flex';  // 移动端显示居中汉堡按钮
+            } else {
+                hamburger.style.display = 'none';  // 桌面端隐藏
+            }
+
+            // 语言切换状态
+            let currentLang = 'zh'; // 'zh' 或 'en'
+
+            // 中英文内容映射
+            const langData = {
+                'projects': { zh: '🚀 项目', en: '🚀 Projects' },
+                'members': { zh: '👥 成员', en: '👥 Members' },
+                'betrayal': { zh: '背叛之下', en: 'Under Betrayal' },
+                'beanWar': { zh: '豆子之战', en: 'Bean War' },
+                'mouseSlave': { zh: '老鼠奴隶', en: 'Mouse Slave' },
+                'mouse': { zh: '鼠标', en: 'Mouse' },
+                'krisid': { zh: '克斯里德', en: 'Krisid' },
+                'zhousan': { zh: '粥伞', en: 'Zhousan' },
+                'chuc': { zh: '出c好吃', en: 'Chuc' },
+                'qinglong': { zh: '青龙狱碧', en: 'Qinglong' },
+                'bingkuai': { zh: '冰块', en: 'Bingkuai' },
+                'emocez': { zh: 'EmoCez', en: 'EmoCez' },
+                'dotParen': { zh: '.()', en: '.()' } // 新成员名称不变
+            };
+
+            // 详情面板内容（中英文）
             const details = {
                 'betrayal': {
-                    title: '背叛之下',
-                    content: '一款《传说之下》同人游戏，有着独特的世界观。目前正在制作中\n主要讲述了人类与怪物战争的世界，人类打败了怪物，并将怪物封印在了地底一共掉进了8个人类，但第8个人类最后杀死了怪物国王，带着他的灵魂回到了地上，当第9个人类掉进地底世界的时候，这里完全变了样子......当这个人类不断的探索，才逐渐发现这个地方的怪物们似乎比传闻中的更可怕，他还见识到了其他未能被救出来的6个人类灵魂，但被怪物们掌控。这个人类的目的到底是什么?怪物们会如何看待这个人?这个人类会救出六魂吗?这一切都在尘埃之中散去，显现出来的是背叛。',
-                    author: 'X社团',
-                    year: '进行中'
+                    title: { zh: '背叛之下', en: 'Under Betrayal' },
+                    content: { 
+                        zh: '一款《传说之下》同人游戏，有着独特的世界观。目前正在制作中\n主要讲述了人类与怪物战争的世界，人类打败了怪物，并将怪物封印在了地底一共掉进了8个人类，但第8个人类最后杀死了怪物国王，带着他的灵魂回到了地上，当第9个人类掉进地底世界的时候，这里完全变了样子......当这个人类不断的探索，才逐渐发现这个地方的怪物们似乎比传闻中的更可怕，他还见识到了其他未能被救出来的6个人类灵魂，但被怪物们掌控。这个人类的目的到底是什么?怪物们会如何看待这个人?这个人类会救出六魂吗?这一切都在尘埃之中散去，显现出来的是背叛。',
+                        en: 'An Undertale fan game with a unique worldview. Currently in development.\nIt tells the story of a world where humans fought monsters. Humans defeated the monsters and sealed them underground. Eight humans fell into the underground, but the eighth human killed the monster king and returned to the surface with his soul. When the ninth human falls into the underground, things have completely changed... As this human explores, they discover that the monsters here are more terrifying than legend says. They also encounter the souls of six other humans who couldn\'t be rescued, now controlled by monsters. What is this human\'s true purpose? How will the monsters treat this human? Will they save the six souls? All of this fades into the dust, revealing betrayal.'
+                    },
+                    author: { zh: 'X社团', en: 'X Studio' },
+                    year: { zh: '进行中', en: 'In Progress' }
                 },
                 'beanWar': {
-                    title: '豆子之战',
-                    content: '为@青冥山岚系统制作的同人游戏！跑酷为主，战斗为辅，目前正在制作中',
-                    author: '青冥山岚 · X社团',
-                    year: '进行中'
+                    title: { zh: '豆子之战', en: 'Bean War' },
+                    content: { 
+                        zh: '为@青冥山岚系统制作的同人游戏！跑酷为主，战斗为辅，目前正在制作中',
+                        en: 'A fan game made for @QingmingShanlan System! Parkour-focused with combat elements. Currently in development.'
+                    },
+                    author: { zh: '青冥山岚 · X社团', en: 'QingmingShanlan · X Studio' },
+                    year: { zh: '进行中', en: 'In Progress' }
                 },
                 'mouseSlave': {
-                    title: '老鼠奴隶',
-                    content: '一个轻量的AI agent，目前正在小范围测试',
-                    author: '鼠标',
-                    year: 'Alpha'
+                    title: { zh: '老鼠奴隶', en: 'Mouse Slave' },
+                    content: { 
+                        zh: '一个轻量的AI agent，目前正在小范围测试',
+                        en: 'A lightweight AI agent. Currently in small-scale testing.'
+                    },
+                    author: { zh: '鼠标', en: 'Mouse' },
+                    year: { zh: 'Alpha', en: 'Alpha' }
                 },
                 'mouse': {
-                    title: '鼠标',
-                    content: '这是我！程序员',
-                    author: '核心组',
-                    year: ''
+                    title: { zh: '鼠标', en: 'Mouse' },
+                    content: { 
+                        zh: '这是我！程序员',
+                        en: 'This is me! Programmer'
+                    },
+                    author: { zh: '核心组', en: 'Core Team' },
+                    year: { zh: '', en: '' }
                 },
                 'krisid': {
-                    title: '克斯里德',
-                    content: '世界观设定与美术资源',
-                    author: '美术/设定',
-                    year: ''
+                    title: { zh: '克斯里德', en: 'Krisid' },
+                    content: { 
+                        zh: '世界观设定与美术资源',
+                        en: 'Worldview setting and art resources'
+                    },
+                    author: { zh: '美术/设定', en: 'Art/Setting' },
+                    year: { zh: '', en: '' }
                 },
                 'zhousan': {
-                    title: '粥伞',
-                    content: '绘画',
-                    author: '画师',
-                    year: ''
+                    title: { zh: '粥伞', en: 'Zhousan' },
+                    content: { 
+                        zh: '绘画',
+                        en: 'Painting'
+                    },
+                    author: { zh: '画师', en: 'Artist' },
+                    year: { zh: '', en: '' }
                 },
                 'chuc': {
-                    title: '出c好吃',
-                    content: '作曲',
-                    author: '音乐组',
-                    year: ''
+                    title: { zh: '出c好吃', en: 'Chuc' },
+                    content: { 
+                        zh: '作曲',
+                        en: 'Composition'
+                    },
+                    author: { zh: '音乐组', en: 'Music Team' },
+                    year: { zh: '', en: '' }
                 },
                 'qinglong': {
-                    title: '青龙狱碧',
-                    content: '美术',
-                    author: '画师',
-                    year: ''
+                    title: { zh: '青龙狱碧', en: 'Qinglong' },
+                    content: { 
+                        zh: '美术',
+                        en: 'Art'
+                    },
+                    author: { zh: '画师', en: 'Artist' },
+                    year: { zh: '', en: '' }
                 },
                 'bingkuai': {
-                    title: '冰块',
-                    content: '美术',
-                    author: '画师',
-                    year: ''
+                    title: { zh: '冰块', en: 'Bingkuai' },
+                    content: { 
+                        zh: '美术',
+                        en: 'Art'
+                    },
+                    author: { zh: '画师', en: 'Artist' },
+                    year: { zh: '', en: '' }
                 },
                 'emocez': {
-                    title: 'EmoCez',
-                    content: '美术加轻度编曲加未来程序员',
-                    author: '多面手',
-                    year: ''
+                    title: { zh: 'EmoCez', en: 'EmoCez' },
+                    content: { 
+                        zh: '美术加轻度编曲加未来程序员',
+                        en: 'Art, light arrangement, future programmer'
+                    },
+                    author: { zh: '多面手', en: 'Versatile' },
+                    year: { zh: '', en: '' }
+                },
+                'dotParen': {
+                    title: { zh: '.()', en: '.()' },
+                    content: { 
+                        zh: '试玩并分享诡异的视频',
+                        en: 'Playtests and shares eerie videos'
+                    },
+                    author: { zh: '未知领域', en: 'Unknown Realm' },
+                    year: { zh: '', en: '' }
                 }
             };
+
+            // 切换语言的函数
+            function switchLanguage(lang) {
+                currentLang = lang;
+                langSwitch.textContent = lang === 'zh' ? '中' : 'EN';
+
+                // 更新所有父按钮文本
+                document.querySelector('.parent-btn[data-parent="projects"] span:first-child').textContent = langData['projects'][lang];
+                document.querySelector('.parent-btn[data-parent="members"] span:first-child').textContent = langData['members'][lang];
+
+                // 更新所有子菜单按钮文本
+                document.querySelectorAll('.menu-btn').forEach(btn => {
+                    const target = btn.dataset.target;
+                    if (langData[target]) {
+                        btn.textContent = langData[target][lang];
+                    }
+                });
+
+                // 如果当前有打开的详情面板，更新其内容
+                const activeBtn = document.querySelector('.menu-btn.active');
+                if (activeBtn) {
+                    const target = activeBtn.dataset.target;
+                    const detail = details[target];
+                    if (detail) {
+                        detailTitle.textContent = detail.title[lang];
+                        detailContent.textContent = detail.content[lang];
+                        detailAuthor.textContent = detail.author[lang] ? `👤 ${detail.author[lang]}` : '';
+                        detailYear.textContent = detail.year[lang] ? `📅 ${detail.year[lang]}` : '';
+                    }
+                }
+            }
+
+            // 语言切换按钮点击事件
+            langSwitch.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const newLang = currentLang === 'zh' ? 'en' : 'zh';
+                switchLanguage(newLang);
+            });
+
+            const detailsData = details; // 用于详情面板的数据
 
             // 非移动端才启用鼠标3D旋转效果
             if (!isMobile) {
@@ -607,13 +722,13 @@
             menuBtns.forEach(btn => {
                 btn.addEventListener('click', (e) => {
                     const target = btn.dataset.target;
-                    const detail = details[target];
+                    const detail = detailsData[target];
                     
                     if (detail) {
-                        detailTitle.textContent = detail.title;
-                        detailContent.textContent = detail.content;
-                        detailAuthor.textContent = detail.author ? `👤 ${detail.author}` : '';
-                        detailYear.textContent = detail.year ? `📅 ${detail.year}` : '';
+                        detailTitle.textContent = detail.title[currentLang];
+                        detailContent.textContent = detail.content[currentLang];
+                        detailAuthor.textContent = detail.author[currentLang] ? `👤 ${detail.author[currentLang]}` : '';
+                        detailYear.textContent = detail.year[currentLang] ? `📅 ${detail.year[currentLang]}` : '';
                         
                         detailPanel.classList.add('visible');
                         detailOverlay.classList.add('active');
@@ -649,6 +764,9 @@
             document.querySelectorAll('.menu-parent').forEach(p => {
                 p.classList.remove('expanded');
             });
+
+            // 初始语言设置为中文
+            switchLanguage('zh');
         })();
     </script>
 </body>
