@@ -68,6 +68,44 @@
             transform-style: preserve-3d;
         }
 
+        /* 汉堡按钮 - 仅移动端显示 */
+        .hamburger {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            width: 50px;
+            height: 50px;
+            background: rgba(20, 30, 50, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(77, 168, 255, 0.5);
+            border-radius: 15px;
+            z-index: 200;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+        }
+        .hamburger span {
+            width: 30px;
+            height: 3px;
+            background: #4da8ff;
+            margin: 4px 0;
+            border-radius: 3px;
+            transition: 0.3s;
+        }
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(8px, 8px);
+        }
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(8px, -8px);
+        }
+
         .menu-bar {
             position: fixed;
             left: 30px;
@@ -336,12 +374,26 @@
                 font-size: 14px;
             }
         }
+
+        /* 移动端显示汉堡按钮 */
+        @media (max-width: 768px) {
+            .hamburger {
+                display: flex;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="fixed-bg" id="fixedBg">
         <div id="x">X</div>
         <div id="studio">Studio</div>
+    </div>
+
+    <!-- 汉堡菜单按钮（移动端可见） -->
+    <div class="hamburger" id="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
     </div>
 
     <div class="detail-overlay" id="detailOverlay"></div>
@@ -398,6 +450,10 @@
             const detailContent = document.getElementById('detailContent');
             const detailAuthor = document.getElementById('detailAuthor');
             const detailYear = document.getElementById('detailYear');
+            const hamburger = document.getElementById('hamburger');
+
+            // 移动端检测（使用UA）
+            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
             const details = {
                 'betrayal': {
@@ -462,43 +518,52 @@
                 }
             };
 
-            const maxRotateX = 25;
-            const maxRotateY = 35;
-            const maxStudioRotateX = 15;
-            const maxStudioRotateY = 20;
+            // 非移动端才启用鼠标3D旋转效果
+            if (!isMobile) {
+                const maxRotateX = 25;
+                const maxRotateY = 35;
+                const maxStudioRotateX = 15;
+                const maxStudioRotateY = 20;
 
-            function getRotation(el, mouseX, mouseY) {
-                const rect = el.getBoundingClientRect();
-                const centerX = rect.left + rect.width / 2;
-                const centerY = rect.top + rect.height / 2;
-                
-                let deltaX = (mouseY - centerY) / (window.innerHeight * 0.5);
-                let deltaY = (mouseX - centerX) / (window.innerWidth * 0.5);
-                
-                deltaX = Math.max(-1, Math.min(1, deltaX));
-                deltaY = Math.max(-1, Math.min(1, deltaY));
-                
-                return { x: deltaX, y: deltaY };
+                function getRotation(el, mouseX, mouseY) {
+                    const rect = el.getBoundingClientRect();
+                    const centerX = rect.left + rect.width / 2;
+                    const centerY = rect.top + rect.height / 2;
+                    
+                    let deltaX = (mouseY - centerY) / (window.innerHeight * 0.5);
+                    let deltaY = (mouseX - centerX) / (window.innerWidth * 0.5);
+                    
+                    deltaX = Math.max(-1, Math.min(1, deltaX));
+                    deltaY = Math.max(-1, Math.min(1, deltaY));
+                    
+                    return { x: deltaX, y: deltaY };
+                }
+
+                document.addEventListener('mousemove', (e) => {
+                    const mouseX = e.clientX;
+                    const mouseY = e.clientY;
+                    
+                    const xRot = getRotation(xEl, mouseX, mouseY);
+                    const studioRot = getRotation(studioEl, mouseX, mouseY);
+                    
+                    const xRotateX = -xRot.x * maxRotateX;
+                    const xRotateY = xRot.y * maxRotateY;
+                    const studioRotateX = -studioRot.x * maxStudioRotateX;
+                    const studioRotateY = studioRot.y * maxStudioRotateY;
+                    
+                    xEl.style.transform = `translate(-50%, -50%) rotateX(${xRotateX}deg) rotateY(${xRotateY}deg)`;
+                    studioEl.style.transform = `translateX(-50%) rotateX(${studioRotateX}deg) rotateY(${studioRotateY}deg)`;
+                });
+            } else {
+                // 移动端：禁用3D效果，确保X和studio无额外旋转
+                xEl.style.transform = 'translate(-50%, -50%) rotateX(0deg) rotateY(0deg)';
+                studioEl.style.transform = 'translateX(-50%) rotateX(0deg) rotateY(0deg)';
             }
 
-            document.addEventListener('mousemove', (e) => {
-                const mouseX = e.clientX;
-                const mouseY = e.clientY;
-                
-                const xRot = getRotation(xEl, mouseX, mouseY);
-                const studioRot = getRotation(studioEl, mouseX, mouseY);
-                
-                const xRotateX = -xRot.x * maxRotateX;
-                const xRotateY = xRot.y * maxRotateY;
-                const studioRotateX = -studioRot.x * maxStudioRotateX;
-                const studioRotateY = studioRot.y * maxStudioRotateY;
-                
-                xEl.style.transform = `translate(-50%, -50%) rotateX(${xRotateX}deg) rotateY(${xRotateY}deg)`;
-                studioEl.style.transform = `translateX(-50%) rotateX(${studioRotateX}deg) rotateY(${studioRotateY}deg)`;
-            });
-
+            // 桌面端滚轮控制菜单显示/隐藏
             let lastWheelTime = 0;
             window.addEventListener('wheel', (e) => {
+                if (isMobile) return; // 移动端不用滚轮控制
                 const now = Date.now();
                 if (now - lastWheelTime < 100) return;
                 lastWheelTime = now;
@@ -515,6 +580,19 @@
                     }
                 }
             });
+
+            // 汉堡按钮点击事件（移动端）
+            if (isMobile) {
+                hamburger.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    menuBar.classList.toggle('visible');
+                    hamburger.classList.toggle('active');
+                    // 如果菜单关闭，同时关闭详情面板（可选）
+                    if (!menuBar.classList.contains('visible')) {
+                        closeDetail();
+                    }
+                });
+            }
 
             parentBtns.forEach(btn => {
                 btn.addEventListener('click', (e) => {
@@ -566,6 +644,7 @@
                 }
             });
 
+            // 初始状态：菜单隐藏
             menuBar.classList.remove('visible');
             document.querySelectorAll('.menu-parent').forEach(p => {
                 p.classList.remove('expanded');
