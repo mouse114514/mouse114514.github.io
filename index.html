@@ -433,6 +433,16 @@
                 <div class="menu-btn" data-target="dotParen">.()</div>
             </div>
         </div>
+
+        <div class="menu-parent">
+            <div class="parent-btn" data-parent="resources">
+                <span>📁 资源</span>
+                <span class="arrow">▶</span>
+            </div>
+            <div class="submenu">
+                <div class="menu-btn link-btn" data-href="MS/gallery.html">🖼 资源库</div>
+            </div>
+        </div>
     </div>
 
     <div class="detail-panel" id="detailPanel">
@@ -721,6 +731,12 @@
 
             menuBtns.forEach(btn => {
                 btn.addEventListener('click', (e) => {
+                    const href = btn.dataset.href;
+                    if (href) {
+                        window.location.href = href;
+                        e.stopPropagation();
+                        return;
+                    }
                     const target = btn.dataset.target;
                     const detail = detailsData[target];
                     
