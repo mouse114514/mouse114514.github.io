@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Flask 用户认证</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',sans-serif;background:#0a0f1e;color:#e0e8f0;height:100vh;overflow:hidden}
+.presentation{width:100%;height:100vh;position:relative}
+.slide{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px;opacity:0;pointer-events:none;transition:opacity .4s ease}
+.slide.active{opacity:1;pointer-events:auto}
+.slide-inner{max-width:840px;width:100%;background:rgba(20,30,50,.6);backdrop-filter:blur(12px);border:1px solid rgba(255,180,50,.2);border-radius:28px;padding:44px 54px;box-shadow:0 0 50px rgba(0,0,0,.4);max-height:82vh;overflow-y:auto}
+.slide-title .slide-inner{text-align:center;background:rgba(20,30,50,.4);border-color:rgba(255,180,50,.15)}
+.slide-title h1{font-size:clamp(32px,5vw,52px);font-weight:800;background:linear-gradient(135deg,#ffb432,#ffd580);-webkit-background-clip:text;background-clip:text;color:transparent;line-height:1.2;margin-bottom:12px}
+.slide-title .sub{font-size:18px;color:rgba(255,255,255,.4)}
+.slide-title .lesson-num{font-size:14px;color:rgba(255,255,255,.25);margin-bottom:18px;letter-spacing:3px}
+.slide h2{font-size:clamp(22px,3vw,32px);font-weight:700;color:#ffb432;margin-bottom:18px;border-bottom:1px solid rgba(255,180,50,.15);padding-bottom:10px}
+.slide p{font-size:17px;line-height:1.8;margin-bottom:12px;color:rgba(255,255,255,.85)}
+.slide ul{margin:8px 0 12px 20px}
+.slide li{font-size:16px;line-height:1.7;margin-bottom:5px;color:rgba(255,255,255,.8)}
+.slide li strong{color:#ffd580}
+.slide .highlight-box{background:rgba(255,180,50,.08);border-left:4px solid #ffb432;padding:16px 20px;border-radius:0 12px 12px 0;margin:14px 0;font-size:15px}
+.slide .tip-box{background:rgba(255,200,0,.06);border-left:4px solid #ffc800;padding:14px 18px;border-radius:0 10px 10px 0;margin:14px 0;font-size:15px}
+.slide code{background:rgba(255,255,255,.1);padding:2px 8px;border-radius:4px;font-size:14px}
+.nav-bar{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:16px;background:rgba(10,15,30,.7);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.06);border-radius:30px;padding:10px 20px;z-index:10}
+.nav-bar button{background:0 0;border:none;color:rgba(255,255,255,.4);font-size:18px;cursor:pointer;padding:6px 12px;border-radius:8px;transition:all .2s}
+.nav-bar button:hover{color:#fff;background:rgba(255,255,255,.06)}
+.nav-bar .counter{font-size:14px;color:rgba(255,255,255,.35);min-width:60px;text-align:center}
+.nav-bar .back-link{color:rgba(255,255,255,.25);text-decoration:none;font-size:13px;padding:6px 12px;border-radius:8px;transition:all .2s}
+.nav-bar .back-link:hover{color:#fff;background:rgba(255,255,255,.06)}
+@media(max-width:640px){.slide{padding:16px}.slide-inner{padding:24px 18px}.nav-bar{padding:8px 12px;gap:8px;bottom:14px}}
+</style></head>
+<body><div class="presentation" id="presentation">
+<div class="slide slide-title active" data-index="0"><div class="slide-inner"><div class="lesson-num">Web 后端 · 进阶第2课</div><h1>Flask 用户认证</h1><div class="sub">注册、登录、Session</div></div></div>
+<div class="slide" data-index="1"><div class="slide-inner"><h2>Flask-Login</h2><p>Flask-Login 帮我们管理用户登录状态：</p><p><code>pip install flask-login</code></p><p>它提供：</p><ul><li>用户登录/登出</li><li>记住登录（Cookie）</li><li>限制未登录用户访问</li></ul></div></div>
+<div class="slide" data-index="2"><div class="slide-inner"><h2>用户模型改造</h2><p>让 User 模型支持登录：</p><p><code>from flask_login import UserMixin</code></p><p><code>class User(UserMixin, db.Model):</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;id = db.Column(db.Integer, primary_key=True)</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;username = db.Column(db.String(80), unique=True)</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;password_hash = db.Column(db.String(200))</code></p><p>继承 UserMixin 获得 is_authenticated 等方法。</p></div></div>
+<div class="slide" data-index="3"><div class="slide-inner"><h2>密码哈希</h2><p>永远不要明文存密码！用 Werkzeug 的哈希：</p><p><code>from werkzeug.security import generate_password_hash, check_password_hash</code></p><p>注册时：<code>user.password_hash = generate_password_hash(password)</code></p><p>登录时：<code>check_password_hash(user.password_hash, password)</code></p></div></div>
+<div class="slide" data-index="4"><div class="slide-inner"><h2>初始化 Flask-Login</h2><p><code>from flask_login import LoginManager</code></p><p><code>login_manager = LoginManager()</code></p><p><code>login_manager.init_app(app)</code></p><p><code>login_manager.login_view = "login"</code> ← 未登录时跳转到登录页</p><p>还需要一个回调：</p><p><code>@login_manager.user_loader</code></p><p><code>def load_user(user_id): return User.query.get(int(user_id))</code></p></div></div>
+<div class="slide" data-index="5"><div class="slide-inner"><h2>登录路由</h2><p><code>@app.route("/login", methods=["GET", "POST"])</code></p><p><code>def login():</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;if request.method == "POST":</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;user = User.query.filter_by(username=request.form["username"]).first()</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if user and check_password_hash(user.password_hash, request.form["password"]):</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;login_user(user)</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return redirect(url_for("dashboard"))</code></p><p>logout：<code>logout_user()</code></p></div></div>
+<div class="slide" data-index="6"><div class="slide-inner"><h2>限制访问 @login_required</h2><p>在需要登录的路由上加装饰器：</p><p><code>from flask_login import login_required</code></p><p><code>@app.route("/dashboard")</code></p><p><code>@login_required</code></p><p><code>def dashboard():</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;return f"你好，{current_user.username}！"</code></p><p>current_user 是当前登录的用户对象，未登录时是 AnonymousUser。</p></div></div>
+<div class="slide" data-index="7"><div class="slide-inner"><h2>总结</h2><ul><li>Flask-Login 管理 Session 登录状态</li><li>generate_password_hash 加密密码</li><li>login_user() / logout_user() 登录登出</li><li>@login_required 限制未登录访问</li><li>current_user 获取当前登录用户</li></ul></div></div>
+</div>
+<div class="nav-bar"><a class="back-link" href="index.html">← 目录</a><button id="prevBtn">◀</button><span class="counter" id="counter">1 / 8</span><button id="nextBtn">▶</button></div>
+<script>
+const slides=document.querySelectorAll('.slide'),total=slides.length;let current=0;
+function goTo(n){slides.forEach(s=>s.classList.remove('active'));current=(n+total)%total;slides[current].classList.add('active');document.getElementById('counter').textContent=(current+1)+' / '+total}
+document.getElementById('prevBtn').addEventListener('click',()=>goTo(current-1));
+document.getElementById('nextBtn').addEventListener('click',()=>goTo(current+1));
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key==='ArrowDown'||e.key===' '){e.preventDefault();goTo(current+1)}if(e.key==='ArrowLeft'||e.key==='ArrowUp'){e.preventDefault();goTo(current-1)}});
+document.getElementById('presentation').addEventListener('click',e=>{if(e.target.closest('.nav-bar')||e.target.closest('.slide-inner'))return;goTo(current+1)});
+</script></body></html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Frida 入门</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',sans-serif;background:#0a0f1e;color:#e0e8f0;height:100vh;overflow:hidden}
+.presentation{width:100%;height:100vh;position:relative}
+.slide{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px;opacity:0;pointer-events:none;transition:opacity .4s ease}
+.slide.active{opacity:1;pointer-events:auto}
+.slide-inner{max-width:840px;width:100%;background:rgba(20,30,50,.6);backdrop-filter:blur(12px);border:1px solid rgba(255,180,50,.2);border-radius:28px;padding:44px 54px;box-shadow:0 0 50px rgba(0,0,0,.4);max-height:82vh;overflow-y:auto}
+.slide-title .slide-inner{text-align:center;background:rgba(20,30,50,.4);border-color:rgba(255,180,50,.15)}
+.slide-title h1{font-size:clamp(32px,5vw,52px);font-weight:800;background:linear-gradient(135deg,#ffb432,#ffd580);-webkit-background-clip:text;background-clip:text;color:transparent;line-height:1.2;margin-bottom:12px}
+.slide-title .sub{font-size:18px;color:rgba(255,255,255,.4)}
+.slide-title .lesson-num{font-size:14px;color:rgba(255,255,255,.25);margin-bottom:18px;letter-spacing:3px}
+.slide h2{font-size:clamp(22px,3vw,32px);font-weight:700;color:#ffb432;margin-bottom:18px;border-bottom:1px solid rgba(255,180,50,.15);padding-bottom:10px}
+.slide p{font-size:17px;line-height:1.8;margin-bottom:12px;color:rgba(255,255,255,.85)}
+.slide ul{margin:8px 0 12px 20px}
+.slide li{font-size:16px;line-height:1.7;margin-bottom:5px;color:rgba(255,255,255,.8)}
+.slide li strong{color:#ffd580}
+.slide .highlight-box{background:rgba(255,180,50,.08);border-left:4px solid #ffb432;padding:16px 20px;border-radius:0 12px 12px 0;margin:14px 0;font-size:15px}
+.slide .tip-box{background:rgba(255,200,0,.06);border-left:4px solid #ffc800;padding:14px 18px;border-radius:0 10px 10px 0;margin:14px 0;font-size:15px}
+.slide code{background:rgba(255,255,255,.1);padding:2px 8px;border-radius:4px;font-size:14px}
+.nav-bar{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:16px;background:rgba(10,15,30,.7);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.06);border-radius:30px;padding:10px 20px;z-index:10}
+.nav-bar button{background:0 0;border:none;color:rgba(255,255,255,.4);font-size:18px;cursor:pointer;padding:6px 12px;border-radius:8px;transition:all .2s}
+.nav-bar button:hover{color:#fff;background:rgba(255,255,255,.06)}
+.nav-bar .counter{font-size:14px;color:rgba(255,255,255,.35);min-width:60px;text-align:center}
+.nav-bar .back-link{color:rgba(255,255,255,.25);text-decoration:none;font-size:13px;padding:6px 12px;border-radius:8px;transition:all .2s}
+.nav-bar .back-link:hover{color:#fff;background:rgba(255,255,255,.06)}
+@media(max-width:640px){.slide{padding:16px}.slide-inner{padding:24px 18px}.nav-bar{padding:8px 12px;gap:8px;bottom:14px}}
+</style></head>
+<body><div class="presentation" id="presentation">
+<div class="slide slide-title active" data-index="0"><div class="slide-inner"><div class="lesson-num">安卓逆向 · 进阶第2课</div><h1>Frida 入门</h1><div class="sub">动态插桩，无需重启</div></div></div>
+<div class="slide" data-index="1"><div class="slide-inner"><h2>Frida 是什么？</h2><p>Frida 是一个<strong>动态插桩框架</strong>——运行中注入 JavaScript 代码到 App 进程。</p><ul><li>不需要重启 App 就能 Hook</li><li>不需要 Root（部分功能需要）</li><li>写 JavaScript 就能 Hook Java 方法</li><li>电脑端控制，手机端运行</li></ul><div class="highlight-box">Frida 是目前安卓逆向最流行的 Hook 工具，没有之一。</div></div></div>
+<div class="slide" data-index="2"><div class="slide-inner"><h2>安装 Frida</h2><p>电脑端（PC）：</p><p><code>pip install frida-tools</code></p><p>手机端（Android）：</p><ol><li>GitHub 下载 frida-server 对应版本/架构</li><li><code>adb push frida-server /data/local/tmp/</code></li><li><code>adb shell chmod 755 /data/local/tmp/frida-server</code></li><li><code>adb shell /data/local/tmp/frida-server &</code></li></ol></div></div>
+<div class="slide" data-index="3"><div class="slide-inner"><h2>基础 Hook 脚本</h2><p>创建 hook.js：</p><p><code>Java.perform(function() {</code></p><p><code>&nbsp;&nbsp;var Main = Java.use("com.example.MainActivity");</code></p><p><code>&nbsp;&nbsp;Main.isPaid.implementation = function() {</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;console.log("isPaid called!");</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;return true;</code></p><p><code>&nbsp;&nbsp;};</code></p><p><code>});</code></p><p>运行：<code>frida -U com.example.app -l hook.js</code></p></div></div>
+<div class="slide" data-index="4"><div class="slide-inner"><h2>Frida 常用命令</h2><ul><li><code>frida-ps -U</code> — 列出 USB 设备上运行的进程</li><li><code>frida -U 进程名 -l script.js</code> — 附加到运行中的进程</li><li><code>frida -U -f com.example.app -l script.js --no-pause</code> — 启动 App 并注入</li><li><code>frida -U 进程名</code> — 进入 REPL 交互模式</li></ul></div></div>
+<div class="slide" data-index="5"><div class="slide-inner"><h2>Hook 带参数的方法</h2><p>钩取带参数的方法：</p><p><code>var Cls = Java.use("com.example.Utils");</code></p><p><code>Cls.encrypt.overload("[B", "java.lang.String").implementation = function(data, key) {</code></p><p><code>&nbsp;&nbsp;console.log("encrypt called!");</code></p><p><code>&nbsp;&nbsp;console.log("data:", bytesToString(data));</code></p><p><code>&nbsp;&nbsp;console.log("key:", key);</code></p><p><code>&nbsp;&nbsp;var ret = this.encrypt(data, key);</code></p><p><code>&nbsp;&nbsp;return ret;</code></p><p><code>}</code></p></div></div>
+<div class="slide" data-index="6"><div class="slide-inner"><h2>修改函数返回值</h2><p>常见场景：修改付费验证返回值</p><p><code>var Pay = Java.use("com.example.PayManager");</code></p><p><code>Pay.isVip.implementation = function() {</code></p><p><code>&nbsp;&nbsp;return true;</code></p><p><code>}</code></p><p><code>Pay.getVipLevel.implementation = function() {</code></p><p><code>&nbsp;&nbsp;return 3;</code></p><p><code>}</code></p></div></div>
+<div class="slide" data-index="7"><div class="slide-inner"><h2>总结</h2><ul><li>Frida = 动态插桩，JS 脚本控制</li><li>frida-server 跑在手机上，frida-tools 跑在 PC 上</li><li>Java.use() 获取类，implementation = 替换方法</li><li>overload() 处理同名不同参数的方法</li><li>常用场景：修改返回值、打印参数和调用栈</li></ul></div></div>
+</div>
+<div class="nav-bar"><a class="back-link" href="index.html">← 目录</a><button id="prevBtn">◀</button><span class="counter" id="counter">1 / 8</span><button id="nextBtn">▶</button></div>
+<script>
+const slides=document.querySelectorAll('.slide'),total=slides.length;let current=0;
+function goTo(n){slides.forEach(s=>s.classList.remove('active'));current=(n+total)%total;slides[current].classList.add('active');document.getElementById('counter').textContent=(current+1)+' / '+total}
+document.getElementById('prevBtn').addEventListener('click',()=>goTo(current-1));
+document.getElementById('nextBtn').addEventListener('click',()=>goTo(current+1));
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key==='ArrowDown'||e.key===' '){e.preventDefault();goTo(current+1)}if(e.key==='ArrowLeft'||e.key==='ArrowUp'){e.preventDefault();goTo(current-1)}});
+document.getElementById('presentation').addEventListener('click',e=>{if(e.target.closest('.nav-bar')||e.target.closest('.slide-inner'))return;goTo(current+1)});
+</script></body></html>

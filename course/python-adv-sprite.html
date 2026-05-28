@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Pygame 精灵组与动画</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',sans-serif;background:#0a0f1e;color:#e0e8f0;height:100vh;overflow:hidden}
+.presentation{width:100%;height:100vh;position:relative}
+.slide{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px;opacity:0;pointer-events:none;transition:opacity .4s ease}
+.slide.active{opacity:1;pointer-events:auto}
+.slide-inner{max-width:840px;width:100%;background:rgba(20,30,50,.6);backdrop-filter:blur(12px);border:1px solid rgba(255,180,50,.2);border-radius:28px;padding:44px 54px;box-shadow:0 0 50px rgba(0,0,0,.4);max-height:82vh;overflow-y:auto}
+.slide-title .slide-inner{text-align:center;background:rgba(20,30,50,.4);border-color:rgba(255,180,50,.15)}
+.slide-title h1{font-size:clamp(32px,5vw,52px);font-weight:800;background:linear-gradient(135deg,#ffb432,#ffd580);-webkit-background-clip:text;background-clip:text;color:transparent;line-height:1.2;margin-bottom:12px}
+.slide-title .sub{font-size:18px;color:rgba(255,255,255,.4)}
+.slide-title .lesson-num{font-size:14px;color:rgba(255,255,255,.25);margin-bottom:18px;letter-spacing:3px}
+.slide h2{font-size:clamp(22px,3vw,32px);font-weight:700;color:#ffb432;margin-bottom:18px;border-bottom:1px solid rgba(255,180,50,.15);padding-bottom:10px}
+.slide p{font-size:17px;line-height:1.8;margin-bottom:12px;color:rgba(255,255,255,.85)}
+.slide ul{margin:8px 0 12px 20px}
+.slide li{font-size:16px;line-height:1.7;margin-bottom:5px;color:rgba(255,255,255,.8)}
+.slide li strong{color:#ffd580}
+.slide .highlight-box{background:rgba(255,180,50,.08);border-left:4px solid #ffb432;padding:16px 20px;border-radius:0 12px 12px 0;margin:14px 0;font-size:15px}
+.slide .tip-box{background:rgba(255,200,0,.06);border-left:4px solid #ffc800;padding:14px 18px;border-radius:0 10px 10px 0;margin:14px 0;font-size:15px}
+.slide code{background:rgba(255,255,255,.1);padding:2px 8px;border-radius:4px;font-size:14px}
+.nav-bar{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:16px;background:rgba(10,15,30,.7);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.06);border-radius:30px;padding:10px 20px;z-index:10}
+.nav-bar button{background:0 0;border:none;color:rgba(255,255,255,.4);font-size:18px;cursor:pointer;padding:6px 12px;border-radius:8px;transition:all .2s}
+.nav-bar button:hover{color:#fff;background:rgba(255,255,255,.06)}
+.nav-bar .counter{font-size:14px;color:rgba(255,255,255,.35);min-width:60px;text-align:center}
+.nav-bar .back-link{color:rgba(255,255,255,.25);text-decoration:none;font-size:13px;padding:6px 12px;border-radius:8px;transition:all .2s}
+.nav-bar .back-link:hover{color:#fff;background:rgba(255,255,255,.06)}
+@media(max-width:640px){.slide{padding:16px}.slide-inner{padding:24px 18px}.nav-bar{padding:8px 12px;gap:8px;bottom:14px}}
+</style></head>
+<body><div class="presentation" id="presentation">
+<div class="slide slide-title active" data-index="0"><div class="slide-inner"><div class="lesson-num">Python · 进阶第1课</div><h1>Pygame 精灵组与动画</h1><div class="sub">用 Sprite 类管理游戏对象</div></div></div>
+<div class="slide" data-index="1"><div class="slide-inner"><h2>为什么要用 Sprite？</h2><p>之前我们直接用 Rect + draw 画方块。当敌人多起来，代码会越来越乱。</p><p>Pygame 的 <strong>pygame.sprite.Sprite</strong> 帮你：</p><ul><li>封装每个游戏对象的属性和行为</li><li>自动管理所有对象的绘制和更新</li><li>内置碰撞检测</li></ul></div></div>
+<div class="slide" data-index="2"><div class="slide-inner"><h2>自定义 Sprite 类</h2><p><code>class Enemy(pygame.sprite.Sprite):</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;def __init__(self, x, y):</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;super().__init__()</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;self.image = pygame.Surface((40,40))</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;self.image.fill((255,0,0))</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;self.rect = self.image.get_rect(x=x, y=y)</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;def update(self):</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;self.rect.y += 1</code> ← 每秒往下掉</p></div></div>
+<div class="slide" data-index="3"><div class="slide-inner"><h2>精灵组 Group</h2><p><code>from pygame.sprite import Group</code></p><p><code>all_sprites = Group()</code></p><p><code>enemies = Group()</code></p><p><code>player = Player()</code></p><p><code>all_sprites.add(player)</code></p><p>在主循环里：</p><p><code>all_sprites.update()</code> ← 更新所有精灵</p><p><code>all_sprites.draw(screen)</code> ← 绘制所有精灵</p></div></div>
+<div class="slide" data-index="4"><div class="slide-inner"><h2>精灵间碰撞检测</h2><p><code>from pygame.sprite import groupcollide, spritecollide</code></p><p><code>hits = spritecollide(player, enemies, True)</code> ← 玩家碰到敌人，敌人消失</p><p><code>hits = groupcollide(bullets, enemies, True, True)</code> ← 子弹组 vs 敌人组，互相销毁</p><p>第三个参数 True = 碰撞后从组里移除（销毁）。</p></div></div>
+<div class="slide" data-index="5"><div class="slide-inner"><h2>加载图片作为精灵</h2><p>把 Surface.fill() 换成图片：</p><p><code>self.image = pygame.image.load("player.png").convert_alpha()</code></p><p><code>self.rect = self.image.get_rect(x=x, y=y)</code></p><p>convert_alpha() 优化性能并保留透明通道。</p></div></div>
+<div class="slide" data-index="6"><div class="slide-inner"><h2>帧动画</h2><p><code>self.frames = [pygame.image.load(f"frame_{i}.png").convert_alpha() for i in range(4)]</code></p><p><code>self.frame_index = 0</code></p><p><code>self.counter = 0</code></p><p><code>def update(self):</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;self.counter += 1</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;if self.counter % 5 == 0:</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;self.frame_index = (self.frame_index + 1) % len(self.frames)</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;self.image = self.frames[self.frame_index]</code></p></div></div>
+<div class="slide" data-index="7"><div class="slide-inner"><h2>总结</h2><ul><li>继承 pygame.sprite.Sprite 封装游戏对象</li><li>Group 统一管理 update() 和 draw()</li><li>spritecollide / groupcollide 碰撞检测</li><li>用图片代替颜色方块：image.load().convert_alpha()</li><li>多帧切换实现逐帧动画</li></ul></div></div>
+</div>
+<div class="nav-bar"><a class="back-link" href="index.html">← 目录</a><button id="prevBtn">◀</button><span class="counter" id="counter">1 / 8</span><button id="nextBtn">▶</button></div>
+<script>
+const slides=document.querySelectorAll('.slide'),total=slides.length;let current=0;
+function goTo(n){slides.forEach(s=>s.classList.remove('active'));current=(n+total)%total;slides[current].classList.add('active');document.getElementById('counter').textContent=(current+1)+' / '+total}
+document.getElementById('prevBtn').addEventListener('click',()=>goTo(current-1));
+document.getElementById('nextBtn').addEventListener('click',()=>goTo(current+1));
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key==='ArrowDown'||e.key===' '){e.preventDefault();goTo(current+1)}if(e.key==='ArrowLeft'||e.key==='ArrowUp'){e.preventDefault();goTo(current-1)}});
+document.getElementById('presentation').addEventListener('click',e=>{if(e.target.closest('.nav-bar')||e.target.closest('.slide-inner'))return;goTo(current+1)});
+</script></body></html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>脱壳基础</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',sans-serif;background:#0a0f1e;color:#e0e8f0;height:100vh;overflow:hidden}
+.presentation{width:100%;height:100vh;position:relative}
+.slide{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px;opacity:0;pointer-events:none;transition:opacity .4s ease}
+.slide.active{opacity:1;pointer-events:auto}
+.slide-inner{max-width:840px;width:100%;background:rgba(20,30,50,.6);backdrop-filter:blur(12px);border:1px solid rgba(255,180,50,.2);border-radius:28px;padding:44px 54px;box-shadow:0 0 50px rgba(0,0,0,.4);max-height:82vh;overflow-y:auto}
+.slide-title .slide-inner{text-align:center;background:rgba(20,30,50,.4);border-color:rgba(255,180,50,.15)}
+.slide-title h1{font-size:clamp(32px,5vw,52px);font-weight:800;background:linear-gradient(135deg,#ffb432,#ffd580);-webkit-background-clip:text;background-clip:text;color:transparent;line-height:1.2;margin-bottom:12px}
+.slide-title .sub{font-size:18px;color:rgba(255,255,255,.4)}
+.slide-title .lesson-num{font-size:14px;color:rgba(255,255,255,.25);margin-bottom:18px;letter-spacing:3px}
+.slide h2{font-size:clamp(22px,3vw,32px);font-weight:700;color:#ffb432;margin-bottom:18px;border-bottom:1px solid rgba(255,180,50,.15);padding-bottom:10px}
+.slide p{font-size:17px;line-height:1.8;margin-bottom:12px;color:rgba(255,255,255,.85)}
+.slide ul{margin:8px 0 12px 20px}
+.slide li{font-size:16px;line-height:1.7;margin-bottom:5px;color:rgba(255,255,255,.8)}
+.slide li strong{color:#ffd580}
+.slide .highlight-box{background:rgba(255,180,50,.08);border-left:4px solid #ffb432;padding:16px 20px;border-radius:0 12px 12px 0;margin:14px 0;font-size:15px}
+.slide .tip-box{background:rgba(255,200,0,.06);border-left:4px solid #ffc800;padding:14px 18px;border-radius:0 10px 10px 0;margin:14px 0;font-size:15px}
+.slide code{background:rgba(255,255,255,.1);padding:2px 8px;border-radius:4px;font-size:14px}
+.nav-bar{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:16px;background:rgba(10,15,30,.7);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.06);border-radius:30px;padding:10px 20px;z-index:10}
+.nav-bar button{background:0 0;border:none;color:rgba(255,255,255,.4);font-size:18px;cursor:pointer;padding:6px 12px;border-radius:8px;transition:all .2s}
+.nav-bar button:hover{color:#fff;background:rgba(255,255,255,.06)}
+.nav-bar .counter{font-size:14px;color:rgba(255,255,255,.35);min-width:60px;text-align:center}
+.nav-bar .back-link{color:rgba(255,255,255,.25);text-decoration:none;font-size:13px;padding:6px 12px;border-radius:8px;transition:all .2s}
+.nav-bar .back-link:hover{color:#fff;background:rgba(255,255,255,.06)}
+@media(max-width:640px){.slide{padding:16px}.slide-inner{padding:24px 18px}.nav-bar{padding:8px 12px;gap:8px;bottom:14px}}
+</style></head>
+<body><div class="presentation" id="presentation">
+<div class="slide slide-title active" data-index="0"><div class="slide-inner"><div class="lesson-num">安卓逆向 · 进阶第3课</div><h1>脱壳基础</h1><div class="sub">撕掉 App 的"保护壳"</div></div></div>
+<div class="slide" data-index="1"><div class="slide-inner"><h2>为什么要加壳？</h2><p>开发者为了防止 App 被反编译，会给 APK 加一层"壳"。</p><ul><li>真正的 DEX 代码被<strong>加密或隐藏</strong></li><li>运行时壳先启动，解密 DEX 再加载</li><li>jadx 打开看到的只有壳的代码，不是真正的逻辑</li></ul><div class="highlight-box">"脱壳"就是在 App 运行时，把壳解密后的 DEX 从内存里 dump 出来。</div></div></div>
+<div class="slide" data-index="2"><div class="slide-inner"><h2>常见的壳</h2><ul><li><strong>360 加固</strong> — 国内最流行的壳之一</li><li><strong>腾讯加固</strong> — 应用宝上的 App 常用</li><li><strong>梆梆加固</strong> — 银行/金融类 App</li><li><strong>娜迦加固</strong> — 游戏类 App</li><li><strong>DexGuard</strong> — 国外流行的商业壳</li></ul></div></div>
+<div class="slide" data-index="3"><div class="slide-inner"><h2>脱壳原理</h2><p>无论壳怎么加密，最终必须把原始 DEX 加载到内存才能执行。</p><p>脱壳的时机：</p><ol><li>App 启动，壳加载并解密 DEX</li><li>壳调用 <strong>DexClassLoader</strong> 或反射加载 DEX</li><li>原始 DEX 出现在内存中</li><li>在内存中找到 DEX → dump 到文件</li></ol></div></div>
+<div class="slide" data-index="4"><div class="slide-inner"><h2>Frida 脱壳脚本</h2><p>用 Frida 的 DumpDex 脚本：</p><p><code>function dump_dex() {</code></p><p><code>&nbsp;&nbsp;Java.perform(function() {</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;var cl = Java.use("java.lang.ClassLoader");</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;cl.getLoadedClasses.overload().implementation = function() {</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var arr = this.getLoadedClasses();</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// 遍历类名，寻找脱壳后的 DEX</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return arr;</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;}</code></p><p><code>&nbsp;&nbsp;});</code></p><p><code>}</code></p></div></div>
+<div class="slide" data-index="5"><div class="slide-inner"><h2>成品脱壳工具</h2><p>不需要手写脚本，有现成的工具：</p><ul><li><strong>Frida-DexDump</strong> — 一键脱壳（GitHub 开源）</li></ul><p><code>frida-dexdump -U -f com.example.app</code></p><ul><li><strong>BlackDex</strong> — 手机端脱壳工具，无需电脑</li><li><strong>dumpDex</strong> — Xposed 模块版本</li></ul></div></div>
+<div class="slide" data-index="6"><div class="slide-inner"><h2>脱壳后的步骤</h2><ol><li>用 jadx 打开 dump 出来的 DEX 文件</li><li>如果多个 DEX，一个个看（classes.dex, classes2.dex…）</li><li>找到真正的代码（不再是壳的代码）</li><li>重新打包 APK（把原始 DEX 替换回去）</li><li>如果 App 有签名校验，需要绕过</li></ol></div></div>
+<div class="slide" data-index="7"><div class="slide-inner"><h2>总结</h2><ul><li>加壳 = 加密 DEX 防止反编译</li><li>脱壳 = 运行时从内存 dump 原始 DEX</li><li>常见壳：360、腾讯、梆梆</li><li>Frida-DexDump 一键脱壳</li><li>脱壳后 jadx 重新分析真正的代码</li></ul></div></div>
+</div>
+<div class="nav-bar"><a class="back-link" href="index.html">← 目录</a><button id="prevBtn">◀</button><span class="counter" id="counter">1 / 8</span><button id="nextBtn">▶</button></div>
+<script>
+const slides=document.querySelectorAll('.slide'),total=slides.length;let current=0;
+function goTo(n){slides.forEach(s=>s.classList.remove('active'));current=(n+total)%total;slides[current].classList.add('active');document.getElementById('counter').textContent=(current+1)+' / '+total}
+document.getElementById('prevBtn').addEventListener('click',()=>goTo(current-1));
+document.getElementById('nextBtn').addEventListener('click',()=>goTo(current+1));
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key==='ArrowDown'||e.key===' '){e.preventDefault();goTo(current+1)}if(e.key==='ArrowLeft'||e.key==='ArrowUp'){e.preventDefault();goTo(current-1)}});
+document.getElementById('presentation').addEventListener('click',e=>{if(e.target.closest('.nav-bar')||e.target.closest('.slide-inner'))return;goTo(current+1)});
+</script></body></html>

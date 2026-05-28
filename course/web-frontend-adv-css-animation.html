@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>CSS 动画与过渡</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',sans-serif;background:#0a0f1e;color:#e0e8f0;height:100vh;overflow:hidden}
+.presentation{width:100%;height:100vh;position:relative}
+.slide{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px;opacity:0;pointer-events:none;transition:opacity .4s ease}
+.slide.active{opacity:1;pointer-events:auto}
+.slide-inner{max-width:840px;width:100%;background:rgba(20,30,50,.6);backdrop-filter:blur(12px);border:1px solid rgba(255,180,50,.2);border-radius:28px;padding:44px 54px;box-shadow:0 0 50px rgba(0,0,0,.4);max-height:82vh;overflow-y:auto}
+.slide-title .slide-inner{text-align:center;background:rgba(20,30,50,.4);border-color:rgba(255,180,50,.15)}
+.slide-title h1{font-size:clamp(32px,5vw,52px);font-weight:800;background:linear-gradient(135deg,#ffb432,#ffd580);-webkit-background-clip:text;background-clip:text;color:transparent;line-height:1.2;margin-bottom:12px}
+.slide-title .sub{font-size:18px;color:rgba(255,255,255,.4)}
+.slide-title .lesson-num{font-size:14px;color:rgba(255,255,255,.25);margin-bottom:18px;letter-spacing:3px}
+.slide h2{font-size:clamp(22px,3vw,32px);font-weight:700;color:#ffb432;margin-bottom:18px;border-bottom:1px solid rgba(255,180,50,.15);padding-bottom:10px}
+.slide p{font-size:17px;line-height:1.8;margin-bottom:12px;color:rgba(255,255,255,.85)}
+.slide ul{margin:8px 0 12px 20px}
+.slide li{font-size:16px;line-height:1.7;margin-bottom:5px;color:rgba(255,255,255,.8)}
+.slide li strong{color:#ffd580}
+.slide .highlight-box{background:rgba(255,180,50,.08);border-left:4px solid #ffb432;padding:16px 20px;border-radius:0 12px 12px 0;margin:14px 0;font-size:15px}
+.slide .tip-box{background:rgba(255,200,0,.06);border-left:4px solid #ffc800;padding:14px 18px;border-radius:0 10px 10px 0;margin:14px 0;font-size:15px}
+.slide code{background:rgba(255,255,255,.1);padding:2px 8px;border-radius:4px;font-size:14px}
+.nav-bar{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:16px;background:rgba(10,15,30,.7);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.06);border-radius:30px;padding:10px 20px;z-index:10}
+.nav-bar button{background:0 0;border:none;color:rgba(255,255,255,.4);font-size:18px;cursor:pointer;padding:6px 12px;border-radius:8px;transition:all .2s}
+.nav-bar button:hover{color:#fff;background:rgba(255,255,255,.06)}
+.nav-bar .counter{font-size:14px;color:rgba(255,255,255,.35);min-width:60px;text-align:center}
+.nav-bar .back-link{color:rgba(255,255,255,.25);text-decoration:none;font-size:13px;padding:6px 12px;border-radius:8px;transition:all .2s}
+.nav-bar .back-link:hover{color:#fff;background:rgba(255,255,255,.06)}
+@media(max-width:640px){.slide{padding:16px}.slide-inner{padding:24px 18px}.nav-bar{padding:8px 12px;gap:8px;bottom:14px}}
+</style></head>
+<body><div class="presentation" id="presentation">
+<div class="slide slide-title active" data-index="0"><div class="slide-inner"><div class="lesson-num">Web 前端 · 进阶第1课</div><h1>CSS 动画与过渡</h1><div class="sub">让页面动起来</div></div></div>
+<div class="slide" data-index="1"><div class="slide-inner"><h2>transition 过渡</h2><p>过渡让属性变化时有<strong>平滑动画</strong>：</p><p><code>.box {</code></p><p><code>&nbsp;&nbsp;transition: all 0.3s ease;</code></p><p><code>}</code></p><p><code>.box:hover {</code></p><p><code>&nbsp;&nbsp;transform: scale(1.1);</code></p><p><code>}</code></p><p>鼠标悬停时，盒子在 0.3 秒内平滑放大到 1.1 倍。</p></div></div>
+<div class="slide" data-index="2"><div class="slide-inner"><h2>transition 属性详解</h2><p><code>transition: 属性名 时长 缓动函数 延迟;</code></p><ul><li><strong>属性名</strong> — 哪些属性参与过渡（all = 全部）</li><li><strong>时长</strong> — 0.3s 或 300ms</li><li><strong>缓动函数</strong> — ease（默认）/ linear / ease-in / ease-out / cubic-bezier</li><li><strong>延迟</strong> — 延迟多久开始</li></ul></div></div>
+<div class="slide" data-index="3"><div class="slide-inner"><h2>@keyframes 关键帧动画</h2><p>比 transition 更强大，多阶段控制：</p><p><code>@keyframes bounce {</code></p><p><code>&nbsp;&nbsp;0% { transform: translateY(0); }</code></p><p><code>&nbsp;&nbsp;50% { transform: translateY(-30px); }</code></p><p><code>&nbsp;&nbsp;100% { transform: translateY(0); }</code></p><p><code>}</code></p><p><code>.ball { animation: bounce 1s infinite; }</code></p><p>让球反复弹跳。</p></div></div>
+<div class="slide" data-index="4"><div class="slide-inner"><h2>animation 属性详解</h2><p><code>animation: 名称 时长 缓动 延迟 次数 方向 填充模式 播放状态;</code></p><ul><li><strong>infinite</strong> — 无限循环</li><li><strong>alternate</strong> — 往返动画</li><li><strong>forwards</strong> — 动画结束后停在最后一帧</li><li><strong>paused</strong> — 暂停动画</li></ul></div></div>
+<div class="slide" data-index="5"><div class="slide-inner"><h2>transform 变换</h2><p>transform 做形状变化（不影响周围元素布局）：</p><ul><li><strong>translate(x, y)</strong> — 移动</li><li><strong>scale(n)</strong> — 缩放</li><li><strong>rotate(deg)</strong> — 旋转</li><li><strong>skew(deg)</strong> — 倾斜</li><li><strong>transform-origin</strong> — 变换原点</li></ul></div></div>
+<div class="slide" data-index="6"><div class="slide-inner"><h2>性能建议</h2><p>动画卡顿怎么优化？</p><ul><li>尽量只动画 <strong>transform</strong> 和 <strong>opacity</strong>——GPU 加速</li><li>避免动画 width/height/top/left——触发重排</li><li>用 <strong>will-change</strong> 提示浏览器优化</li></ul><p><code>.card { will-change: transform, opacity; }</code></p></div></div>
+<div class="slide" data-index="7"><div class="slide-inner"><h2>总结</h2><ul><li>transition = 简单过渡（hover 等触发）</li><li>@keyframes + animation = 复杂多阶段动画</li><li>transform 平移/旋转/缩放不触发重排</li><li>优先使用 transform 和 opacity 保证流畅</li><li>will-change 提前告知浏览器优化</li></ul></div></div>
+</div>
+<div class="nav-bar"><a class="back-link" href="index.html">← 目录</a><button id="prevBtn">◀</button><span class="counter" id="counter">1 / 8</span><button id="nextBtn">▶</button></div>
+<script>
+const slides=document.querySelectorAll('.slide'),total=slides.length;let current=0;
+function goTo(n){slides.forEach(s=>s.classList.remove('active'));current=(n+total)%total;slides[current].classList.add('active');document.getElementById('counter').textContent=(current+1)+' / '+total}
+document.getElementById('prevBtn').addEventListener('click',()=>goTo(current-1));
+document.getElementById('nextBtn').addEventListener('click',()=>goTo(current+1));
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key==='ArrowDown'||e.key===' '){e.preventDefault();goTo(current+1)}if(e.key==='ArrowLeft'||e.key==='ArrowUp'){e.preventDefault();goTo(current-1)}});
+document.getElementById('presentation').addEventListener('click',e=>{if(e.target.closest('.nav-bar')||e.target.closest('.slide-inner'))return;goTo(current+1)});
+</script></body></html>

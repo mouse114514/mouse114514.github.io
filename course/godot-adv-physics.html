@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Godot 物理引擎与碰撞检测</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',sans-serif;background:#0a0f1e;color:#e0e8f0;height:100vh;overflow:hidden}
+.presentation{width:100%;height:100vh;position:relative}
+.slide{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px;opacity:0;pointer-events:none;transition:opacity .4s ease}
+.slide.active{opacity:1;pointer-events:auto}
+.slide-inner{max-width:840px;width:100%;background:rgba(20,30,50,.6);backdrop-filter:blur(12px);border:1px solid rgba(77,168,255,.2);border-radius:28px;padding:44px 54px;box-shadow:0 0 50px rgba(0,0,0,.4);max-height:82vh;overflow-y:auto}
+.slide-title .slide-inner{text-align:center;background:rgba(20,30,50,.4);border-color:rgba(77,168,255,.15)}
+.slide-title h1{font-size:clamp(32px,5vw,52px);font-weight:800;background:linear-gradient(135deg,#ffb432,#ffd580);-webkit-background-clip:text;background-clip:text;color:transparent;line-height:1.2;margin-bottom:12px}
+.slide-title .sub{font-size:18px;color:rgba(255,255,255,.4)}
+.slide-title .lesson-num{font-size:14px;color:rgba(255,255,255,.25);margin-bottom:18px;letter-spacing:3px}
+.slide h2{font-size:clamp(22px,3vw,32px);font-weight:700;color:#ffb432;margin-bottom:18px;border-bottom:1px solid rgba(255,180,50,.15);padding-bottom:10px}
+.slide p{font-size:17px;line-height:1.8;margin-bottom:12px;color:rgba(255,255,255,.85)}
+.slide ul{margin:8px 0 12px 20px}
+.slide li{font-size:16px;line-height:1.7;margin-bottom:5px;color:rgba(255,255,255,.8)}
+.slide li strong{color:#ffd580}
+.slide .highlight-box{background:rgba(255,180,50,.08);border-left:4px solid #ffb432;padding:16px 20px;border-radius:0 12px 12px 0;margin:14px 0;font-size:15px}
+.slide .tip-box{background:rgba(255,200,0,.06);border-left:4px solid #ffc800;padding:14px 18px;border-radius:0 10px 10px 0;margin:14px 0;font-size:15px}
+.slide code{background:rgba(255,255,255,.1);padding:2px 8px;border-radius:4px;font-size:14px}
+.nav-bar{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:16px;background:rgba(10,15,30,.7);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.06);border-radius:30px;padding:10px 20px;z-index:10}
+.nav-bar button{background:0 0;border:none;color:rgba(255,255,255,.4);font-size:18px;cursor:pointer;padding:6px 12px;border-radius:8px;transition:all .2s}
+.nav-bar button:hover{color:#fff;background:rgba(255,255,255,.06)}
+.nav-bar .counter{font-size:14px;color:rgba(255,255,255,.35);min-width:60px;text-align:center}
+.nav-bar .back-link{color:rgba(255,255,255,.25);text-decoration:none;font-size:13px;padding:6px 12px;border-radius:8px;transition:all .2s}
+.nav-bar .back-link:hover{color:#fff;background:rgba(255,255,255,.06)}
+@media(max-width:640px){.slide{padding:16px}.slide-inner{padding:24px 18px}.nav-bar{padding:8px 12px;gap:8px;bottom:14px}}
+</style></head>
+<body><div class="presentation" id="presentation">
+<div class="slide slide-title active" data-index="0"><div class="slide-inner"><div class="lesson-num">Godot · 进阶第1课</div><h1>物理引擎与碰撞检测</h1><div class="sub">真实的物理模拟</div></div></div>
+<div class="slide" data-index="1"><div class="slide-inner"><h2>物理节点体系</h2><p>Godot 的 2D 物理节点分三类：</p><ul><li><strong>StaticBody2D</strong> — 不动的障碍物（墙壁、地面、平台）</li><li><strong>RigidBody2D</strong> — 受物理影响的物体（重力、碰撞反弹）</li><li><strong>CharacterBody2D</strong> — 玩家控制的角色（手动设置速度）</li><li><strong>Area2D</strong> — 检测区域（进入/离开触发事件）</li></ul></div></div>
+<div class="slide" data-index="2"><div class="slide-inner"><h2>碰撞层与掩码</h2><p>控制哪些物体之间能碰撞：</p><ul><li><strong>Collision Layer</strong> — 这个物体在第几层</li><li><strong>Collision Mask</strong> — 这个物体检测哪些层</li></ul><p>例如：玩家设 Layer=1, Mask=2 → 玩家只和 Layer=2 的物体碰撞。<br>墙壁设 Layer=2 → 玩家撞墙壁，但敌人不撞玩家。</p><div class="highlight-box">层和掩码是位运算。用 1/2/4/8/16/32 为 6 个可用层。合理分层避免不必要的碰撞检测。</div></div></div>
+<div class="slide" data-index="3"><div class="slide-inner"><h2>RigidBody2D 物理属性</h2><ul><li><strong>Mass</strong> — 质量（越重推越难）</li><li><strong>Gravity Scale</strong> — 重力影响倍数（0=漂浮）</li><li><strong>Linear Damp</strong> — 线性阻力（空气阻力）</li><li><strong>Angular Damp</strong> — 旋转阻力</li><li><strong>Bounce</strong> — 弹性系数（0-1）</li><li><strong>Friction</strong> — 摩擦力</li></ul></div></div>
+<div class="slide" data-index="4"><div class="slide-inner"><h2>Area2D 检测信号</h2><p>Area2D 发出信号：</p><ul><li><strong>body_entered</strong> — 有物理体进入区域</li><li><strong>body_exited</strong> — 有物理体离开区域</li><li><strong>area_entered</strong> — 有其他 Area 进入</li></ul><p>应用：捡拾道具、进入危险区扣血、触发剧情。</p></div></div>
+<div class="slide" data-index="5"><div class="slide-inner"><h2>碰撞检测代码</h2><p>在 Area2D 的脚本里：</p><p><code>func _on_area_body_entered(body):</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;if body.is_in_group("player"):</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print("玩家进入区域！")</code></p><p>&nbsp;</p><p>用 <strong>add_to_group("player")</strong> 给节点分组，然后用 <strong>is_in_group()</strong> 判断类型。</p></div></div>
+<div class="slide" data-index="6"><div class="slide-inner"><h2>子弹碰撞示例</h2><p>子弹用 Area2D，开启 <strong>Top Level</strong> 脱离父级独立存在：</p><p><code>var bullet = BulletScene.instantiate()</code></p><p><code>bullet.global_position = $Muzzle.global_position</code></p><p><code>add_child(bullet)</code></p><p>子弹自己往前飞，碰到敌人时 body_entered → 敌人扣血 → 子弹 queue_free() 销毁。</p></div></div>
+<div class="slide" data-index="7"><div class="slide-inner"><h2>总结</h2><ul><li>StaticBody2D = 静止障碍，RigidBody2D = 物理模拟</li><li>Layer/Mask 控制碰撞层级</li><li>Area2D 的信号 (body_entered/exited) 触发事件</li><li>add_to_group / is_in_group 管理对象分类</li><li>instantiate() 动态生成子弹等物体</li></ul></div></div>
+</div>
+<div class="nav-bar"><a class="back-link" href="index.html">← 目录</a><button id="prevBtn">◀</button><span class="counter" id="counter">1 / 8</span><button id="nextBtn">▶</button></div>
+<script>
+const slides=document.querySelectorAll('.slide'),total=slides.length;let current=0;
+function goTo(n){slides.forEach(s=>s.classList.remove('active'));current=(n+total)%total;slides[current].classList.add('active');document.getElementById('counter').textContent=(current+1)+' / '+total}
+document.getElementById('prevBtn').addEventListener('click',()=>goTo(current-1));
+document.getElementById('nextBtn').addEventListener('click',()=>goTo(current+1));
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key==='ArrowDown'||e.key===' '){e.preventDefault();goTo(current+1)}if(e.key==='ArrowLeft'||e.key==='ArrowUp'){e.preventDefault();goTo(current-1)}});
+document.getElementById('presentation').addEventListener('click',e=>{if(e.target.closest('.nav-bar')||e.target.closest('.slide-inner'))return;goTo(current+1)});
+</script></body></html>

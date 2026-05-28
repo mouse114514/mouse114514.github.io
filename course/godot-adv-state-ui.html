@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Godot 游戏状态管理与 UI</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',sans-serif;background:#0a0f1e;color:#e0e8f0;height:100vh;overflow:hidden}
+.presentation{width:100%;height:100vh;position:relative}
+.slide{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px;opacity:0;pointer-events:none;transition:opacity .4s ease}
+.slide.active{opacity:1;pointer-events:auto}
+.slide-inner{max-width:840px;width:100%;background:rgba(20,30,50,.6);backdrop-filter:blur(12px);border:1px solid rgba(255,180,50,.2);border-radius:28px;padding:44px 54px;box-shadow:0 0 50px rgba(0,0,0,.4);max-height:82vh;overflow-y:auto}
+.slide-title .slide-inner{text-align:center;background:rgba(20,30,50,.4);border-color:rgba(255,180,50,.15)}
+.slide-title h1{font-size:clamp(32px,5vw,52px);font-weight:800;background:linear-gradient(135deg,#ffb432,#ffd580);-webkit-background-clip:text;background-clip:text;color:transparent;line-height:1.2;margin-bottom:12px}
+.slide-title .sub{font-size:18px;color:rgba(255,255,255,.4)}
+.slide-title .lesson-num{font-size:14px;color:rgba(255,255,255,.25);margin-bottom:18px;letter-spacing:3px}
+.slide h2{font-size:clamp(22px,3vw,32px);font-weight:700;color:#ffb432;margin-bottom:18px;border-bottom:1px solid rgba(255,180,50,.15);padding-bottom:10px}
+.slide p{font-size:17px;line-height:1.8;margin-bottom:12px;color:rgba(255,255,255,.85)}
+.slide ul{margin:8px 0 12px 20px}
+.slide li{font-size:16px;line-height:1.7;margin-bottom:5px;color:rgba(255,255,255,.8)}
+.slide li strong{color:#ffd580}
+.slide .highlight-box{background:rgba(255,180,50,.08);border-left:4px solid #ffb432;padding:16px 20px;border-radius:0 12px 12px 0;margin:14px 0;font-size:15px}
+.slide .tip-box{background:rgba(255,200,0,.06);border-left:4px solid #ffc800;padding:14px 18px;border-radius:0 10px 10px 0;margin:14px 0;font-size:15px}
+.slide code{background:rgba(255,255,255,.1);padding:2px 8px;border-radius:4px;font-size:14px}
+.nav-bar{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:16px;background:rgba(10,15,30,.7);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.06);border-radius:30px;padding:10px 20px;z-index:10}
+.nav-bar button{background:0 0;border:none;color:rgba(255,255,255,.4);font-size:18px;cursor:pointer;padding:6px 12px;border-radius:8px;transition:all .2s}
+.nav-bar button:hover{color:#fff;background:rgba(255,255,255,.06)}
+.nav-bar .counter{font-size:14px;color:rgba(255,255,255,.35);min-width:60px;text-align:center}
+.nav-bar .back-link{color:rgba(255,255,255,.25);text-decoration:none;font-size:13px;padding:6px 12px;border-radius:8px;transition:all .2s}
+.nav-bar .back-link:hover{color:#fff;background:rgba(255,255,255,.06)}
+@media(max-width:640px){.slide{padding:16px}.slide-inner{padding:24px 18px}.nav-bar{padding:8px 12px;gap:8px;bottom:14px}}
+</style></head>
+<body><div class="presentation" id="presentation">
+<div class="slide slide-title active" data-index="0"><div class="slide-inner"><div class="lesson-num">Godot · 进阶第2课</div><h1>游戏状态管理与 UI</h1><div class="sub">生命周期与用户界面</div></div></div>
+<div class="slide" data-index="1"><div class="slide-inner"><h2>游戏状态机</h2><p>游戏有不同"状态"，状态之间切换：</p><ul><li><strong>menu</strong> — 主菜单</li><li><strong>playing</strong> — 游戏中</li><li><strong>paused</strong> — 暂停</li><li><strong>game_over</strong> — 游戏结束</li></ul><p>不同状态下显示不同界面、暂停/恢复游戏逻辑。</p></div></div>
+<div class="slide" data-index="2"><div class="slide-inner"><h2>用枚举管理状态</h2><p><code>enum GameState { MENU, PLAYING, PAUSED, GAME_OVER }</code></p><p><code>var current_state = GameState.MENU</code></p><p>切换状态时检查合法性：</p><p><code>func set_state(new_state):</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;if new_state == current_state: return</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;current_state = new_state</code></p><p>&nbsp;&nbsp;&nbsp;&nbsp;根据新状态显示/隐藏对应 UI 节点</p></div></div>
+<div class="slide" data-index="3"><div class="slide-inner"><h2>UI 节点 (Control)</h2><p>Godot 的 UI 系统基于 <strong>Control</strong> 节点：</p><ul><li><strong>Label</strong> — 显示文字（得分、生命值）</li><li><strong>Button</strong> — 按钮</li><li><strong>TextureProgressBar</strong> — 血条/进度条</li><li><strong>Panel</strong> — 面板容器</li><li><strong>VBoxContainer / HBoxContainer</strong> — 自动排版</li></ul><div class="tip-box">UI 场景最好单独做一个 CanvasLayer 节点，和游戏世界分离，不受摄像机影响。</div></div></div>
+<div class="slide" data-index="4"><div class="slide-inner"><h2>更新 UI 值</h2><p>在脚本里通过路径更新 UI：</p><p><code>$UI/ScoreLabel.text = "得分: " + str(score)</code></p><p><code>$UI/HealthBar.value = hp</code></p><p>str() 把整数转字符串。<br>TextureProgressBar 的 min_value / max_value / value 控制血条范围。</p></div></div>
+<div class="slide" data-index="5"><div class="slide-inner"><h2>暂停游戏</h2><p>按 ESC 键暂停：</p><p><code>func _input(event):</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;if event.is_action_pressed("ui_cancel"):</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;get_tree().paused = !get_tree().paused</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$PauseMenu.visible = get_tree().paused</code></p><p>get_tree().paused = true 会暂停所有节点的 _process()，但 UI 节点可以加 <strong>process_mode = ALWAYS</strong> 不受影响。</p></div></div>
+<div class="slide" data-index="6"><div class="slide-inner"><h2>场景切换</h2><p>关卡之间切换：</p><p><code>get_tree().change_scene_to_file("res://scenes/Level2.tscn")</code></p><p>或者：</p><p><code>get_tree().reload_current_scene()</code> ← 重玩当前关卡</p><div class="highlight-box">切换场景后所有节点都会被销毁。如果想跨场景传数据（如玩家生命值），用 Autoload（全局脚本）。</div></div></div>
+<div class="slide" data-index="7"><div class="slide-inner"><h2>总结</h2><ul><li>用枚举 + set_state() 管理游戏状态</li><li>Control 系节点做 UI：Label、Button、ProgressBar</li><li>CanvasLayer 让 UI 独立于摄像机</li><li>get_tree().paused 暂停/恢复游戏</li><li>change_scene_to_file() 切换场景</li><li>Autoload 脚本跨场景保留数据</li></ul></div></div>
+</div>
+<div class="nav-bar"><a class="back-link" href="index.html">← 目录</a><button id="prevBtn">◀</button><span class="counter" id="counter">1 / 8</span><button id="nextBtn">▶</button></div>
+<script>
+const slides=document.querySelectorAll('.slide'),total=slides.length;let current=0;
+function goTo(n){slides.forEach(s=>s.classList.remove('active'));current=(n+total)%total;slides[current].classList.add('active');document.getElementById('counter').textContent=(current+1)+' / '+total}
+document.getElementById('prevBtn').addEventListener('click',()=>goTo(current-1));
+document.getElementById('nextBtn').addEventListener('click',()=>goTo(current+1));
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key==='ArrowDown'||e.key===' '){e.preventDefault();goTo(current+1)}if(e.key==='ArrowLeft'||e.key==='ArrowUp'){e.preventDefault();goTo(current-1)}});
+document.getElementById('presentation').addEventListener('click',e=>{if(e.target.closest('.nav-bar')||e.target.closest('.slide-inner'))return;goTo(current+1)});
+</script></body></html>

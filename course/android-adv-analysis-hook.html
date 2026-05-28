@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>静态分析与 Hook 框架</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',sans-serif;background:#0a0f1e;color:#e0e8f0;height:100vh;overflow:hidden}
+.presentation{width:100%;height:100vh;position:relative}
+.slide{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px;opacity:0;pointer-events:none;transition:opacity .4s ease}
+.slide.active{opacity:1;pointer-events:auto}
+.slide-inner{max-width:840px;width:100%;background:rgba(20,30,50,.6);backdrop-filter:blur(12px);border:1px solid rgba(255,180,50,.2);border-radius:28px;padding:44px 54px;box-shadow:0 0 50px rgba(0,0,0,.4);max-height:82vh;overflow-y:auto}
+.slide-title .slide-inner{text-align:center;background:rgba(20,30,50,.4);border-color:rgba(255,180,50,.15)}
+.slide-title h1{font-size:clamp(32px,5vw,52px);font-weight:800;background:linear-gradient(135deg,#ffb432,#ffd580);-webkit-background-clip:text;background-clip:text;color:transparent;line-height:1.2;margin-bottom:12px}
+.slide-title .sub{font-size:18px;color:rgba(255,255,255,.4)}
+.slide-title .lesson-num{font-size:14px;color:rgba(255,255,255,.25);margin-bottom:18px;letter-spacing:3px}
+.slide h2{font-size:clamp(22px,3vw,32px);font-weight:700;color:#ffb432;margin-bottom:18px;border-bottom:1px solid rgba(255,180,50,.15);padding-bottom:10px}
+.slide p{font-size:17px;line-height:1.8;margin-bottom:12px;color:rgba(255,255,255,.85)}
+.slide ul{margin:8px 0 12px 20px}
+.slide li{font-size:16px;line-height:1.7;margin-bottom:5px;color:rgba(255,255,255,.8)}
+.slide li strong{color:#ffd580}
+.slide .highlight-box{background:rgba(255,180,50,.08);border-left:4px solid #ffb432;padding:16px 20px;border-radius:0 12px 12px 0;margin:14px 0;font-size:15px}
+.slide .tip-box{background:rgba(255,200,0,.06);border-left:4px solid #ffc800;padding:14px 18px;border-radius:0 10px 10px 0;margin:14px 0;font-size:15px}
+.slide code{background:rgba(255,255,255,.1);padding:2px 8px;border-radius:4px;font-size:14px}
+.nav-bar{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:16px;background:rgba(10,15,30,.7);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.06);border-radius:30px;padding:10px 20px;z-index:10}
+.nav-bar button{background:0 0;border:none;color:rgba(255,255,255,.4);font-size:18px;cursor:pointer;padding:6px 12px;border-radius:8px;transition:all .2s}
+.nav-bar button:hover{color:#fff;background:rgba(255,255,255,.06)}
+.nav-bar .counter{font-size:14px;color:rgba(255,255,255,.35);min-width:60px;text-align:center}
+.nav-bar .back-link{color:rgba(255,255,255,.25);text-decoration:none;font-size:13px;padding:6px 12px;border-radius:8px;transition:all .2s}
+.nav-bar .back-link:hover{color:#fff;background:rgba(255,255,255,.06)}
+@media(max-width:640px){.slide{padding:16px}.slide-inner{padding:24px 18px}.nav-bar{padding:8px 12px;gap:8px;bottom:14px}}
+</style></head>
+<body><div class="presentation" id="presentation">
+<div class="slide slide-title active" data-index="0"><div class="slide-inner"><div class="lesson-num">安卓逆向 · 进阶第1课</div><h1>静态分析与 Hook 框架</h1><div class="sub">不运行代码分析，和运行时拦截</div></div></div>
+<div class="slide" data-index="1"><div class="slide-inner"><h2>静态分析 vs 动态分析</h2><ul><li><strong>静态分析</strong> — 不运行 App，直接看反编译代码、配置文件、资源</li><li><strong>动态分析</strong> — 运行 App 时监控其行为（网络请求、内存、函数调用）</li></ul><p>先做静态分析了解大致逻辑，再用动态分析深入关键函数。</p></div></div>
+<div class="slide" data-index="2"><div class="slide-inner"><h2>静态分析流程</h2><ol><li>jadx-gui 打开 APK，浏览反编译代码</li><li>搜索关键词找关键代码（"http"、"password"、"AES"、"pay"）</li><li>查看 AndroidManifest.xml 了解权限和入口</li><li>分析 res/values/strings.xml 找硬编码字符串</li><li>搜索 "native" 找到 Native 层方法</li></ol></div></div>
+<div class="slide" data-index="3"><div class="slide-inner"><h2>常见的代码混淆</h2><p>很多 App 会混淆代码增加逆向难度：</p><ul><li><strong>ProGuard</strong> — 把类名/方法名变成 a、b、c</li><li><strong>字符串加密</strong> — 关键字符串运行时才解密</li><li><strong>反射调用</strong> — 通过字符串动态调用方法（不直接出现在代码里）</li></ul></div></div>
+<div class="slide" data-index="4"><div class="slide-inner"><h2>Hook 框架是什么？</h2><p>Hook 就是"拦截函数调用"——在函数执行前后插入自己的代码。</p><ul><li>截获函数参数和返回值</li><li>修改返回值（如 isPaid → true）</li><li>在函数执行前后执行自定义逻辑</li></ul><p>常见 Hook 框架：<strong>Xposed</strong>、<strong>Frida</strong>、<strong>LSPosed</strong></p></div></div>
+<div class="slide" data-index="5"><div class="slide-inner"><h2>Xposed 框架</h2><ul><li>需要 Root 手机</li><li>安装 Xposed Installer</li><li>写模块（Module）Hook 特定方法</li><li>优点：稳定成熟，覆盖面广</li><li>缺点：需要刷框架，不支持 Android 8+（LSPosed 替代）</li></ul></div></div>
+<div class="slide" data-index="6"><div class="slide-inner"><h2>LSPosed (Xposed 替代)</h2><p>基于 <strong>Magisk</strong> 的新一代 Xposed 框架：</p><ul><li>支持 Android 8.0 ~ 14</li><li>每个模块可以仅作用到指定的 App</li><li>不修改系统分区</li><li>更稳定、效率更高</li></ul><div class="tip-box">安装：Magisk → 刷入 LSPosed 模块 → 重启 → LSPosed 管理器里启用模块。</div></div></div>
+<div class="slide" data-index="7"><div class="slide-inner"><h2>总结</h2><ul><li>静态分析读代码，动态分析看运行时行为</li><li>先静态找关键函数，再动态深入分析</li><li>代码混淆增加难度（ProGuard、字符串加密）</li><li>Hook 框架在函数执行时拦截/修改</li><li>Xposed（旧）→ LSPosed（新），需 Root + Magisk</li></ul></div></div>
+</div>
+<div class="nav-bar"><a class="back-link" href="index.html">← 目录</a><button id="prevBtn">◀</button><span class="counter" id="counter">1 / 8</span><button id="nextBtn">▶</button></div>
+<script>
+const slides=document.querySelectorAll('.slide'),total=slides.length;let current=0;
+function goTo(n){slides.forEach(s=>s.classList.remove('active'));current=(n+total)%total;slides[current].classList.add('active');document.getElementById('counter').textContent=(current+1)+' / '+total}
+document.getElementById('prevBtn').addEventListener('click',()=>goTo(current-1));
+document.getElementById('nextBtn').addEventListener('click',()=>goTo(current+1));
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key==='ArrowDown'||e.key===' '){e.preventDefault();goTo(current+1)}if(e.key==='ArrowLeft'||e.key==='ArrowUp'){e.preventDefault();goTo(current-1)}});
+document.getElementById('presentation').addEventListener('click',e=>{if(e.target.closest('.nav-bar')||e.target.closest('.slide-inner'))return;goTo(current+1)});
+</script></body></html>
