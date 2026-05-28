@@ -17,6 +17,20 @@
             transform-style: preserve-3d;
         }
 
+        /* Background particles */
+        #bgCanvas {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+        .overlay { z-index: 50; }
+        .modal { z-index: 51; }
+        .detail-overlay { z-index: 100; }
+        .detail-panel { z-index: 101; }
+
         /* Hero */
         .hero {
             position: absolute;
@@ -52,19 +66,70 @@
         }
         .hero-studio.desktop { transition: transform 0.08s ease-out; }
 
+        /* Click hint */
+        .click-hint {
+            margin-top: 24px;
+            font-size: 13px;
+            color: rgba(255,255,255,0.25);
+            letter-spacing: 4px;
+            animation: hintPulse 2.5s ease-in-out infinite;
+            user-select: none;
+        }
+        @keyframes hintPulse {
+            0%, 100% { opacity: 0.25; transform: translateY(0); }
+            50% { opacity: 0.6; transform: translateY(4px); }
+        }
+
+        /* News ticker */
+        .news-ticker {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 36px;
+            background: rgba(10, 15, 30, 0.75);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border-top: 1px solid rgba(77, 168, 255, 0.08);
+            overflow: hidden;
+            z-index: 10;
+        }
+        .news-track {
+            display: flex;
+            gap: 0;
+            white-space: nowrap;
+            animation: scrollNews 28s linear infinite;
+            height: 36px;
+            align-items: center;
+        }
+        .news-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 0 30px;
+            font-size: 13px;
+            color: rgba(255,255,255,0.35);
+            flex-shrink: 0;
+        }
+        .news-item .dot {
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background: #4da8ff;
+            flex-shrink: 0;
+        }
+        @keyframes scrollNews {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
         @keyframes xRotate {
-            0% { transform: rotateX(0deg) rotateY(0deg); }
-            25% { transform: rotateX(-12deg) rotateY(18deg); }
-            50% { transform: rotateX(0deg) rotateY(0deg); }
-            75% { transform: rotateX(12deg) rotateY(-18deg); }
-            100% { transform: rotateX(0deg) rotateY(0deg); }
+            0% { transform: rotateY(0deg); }
+            100% { transform: rotateY(360deg); }
         }
         @keyframes studioRotate {
-            0% { transform: rotateX(0deg) rotateY(0deg); }
-            25% { transform: rotateX(-7deg) rotateY(11deg); }
-            50% { transform: rotateX(0deg) rotateY(0deg); }
-            75% { transform: rotateX(7deg) rotateY(-11deg); }
-            100% { transform: rotateX(0deg) rotateY(0deg); }
+            0% { transform: rotateY(0deg); }
+            100% { transform: rotateY(360deg); }
         }
 
         /* Overlay */
@@ -254,10 +319,14 @@
     </style>
 </head>
 <body>
+    <!-- Background particles -->
+    <canvas id="bgCanvas"></canvas>
+
     <!-- Hero -->
     <div class="hero" id="hero">
         <div class="hero-x" id="heroX">X</div>
         <div class="hero-studio" id="heroStudio">Studio</div>
+        <div class="click-hint" id="clickHint">— 点击屏幕进入 —</div>
     </div>
 
     <!-- Overlay + Modal -->
@@ -292,6 +361,11 @@
                 </div>
             </div>
         </div>
+    </div>
+
+    <!-- News ticker -->
+    <div class="news-ticker" id="newsTicker">
+        <div class="news-track" id="newsTrack"></div>
     </div>
 
     <!-- Detail -->
@@ -336,10 +410,83 @@
             dotParen: { zh: '试玩并分享诡异的视频', author: '未知领域', year: '' }
         };
 
-        // 3D effects
+        // Background particles
+        const canvas = document.getElementById('bgCanvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        function initParticles() {
+            const count = Math.min(80, Math.floor(window.innerWidth * window.innerHeight / 12000));
+            particles = [];
+            for (let i = 0; i < count; i++) {
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    r: Math.random() * 1.8 + 0.6,
+                    dx: (Math.random() - 0.5) * 0.3,
+                    dy: -(Math.random() * 0.25 + 0.05),
+                    alpha: Math.random() * 0.5 + 0.2
+                });
+            }
+        }
+        function drawParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (const p of particles) {
+                p.x += p.dx;
+                p.y += p.dy;
+                if (p.y < -5) { p.y = canvas.height + 5; p.x = Math.random() * canvas.width; }
+                if (p.x < -5) p.x = canvas.width + 5;
+                if (p.x > canvas.width + 5) p.x = -5;
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(77, 168, 255, ${p.alpha})`;
+                ctx.fill();
+            }
+            requestAnimationFrame(drawParticles);
+        }
+        resizeCanvas();
+        initParticles();
+        drawParticles();
+        window.addEventListener('resize', () => { resizeCanvas(); initParticles(); });
+
+        // 3D effects + idle auto-rotate
         const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
         const heroX = document.getElementById('heroX');
         const heroStudio = document.getElementById('heroStudio');
+        let idleTimer = null;
+        let angle = 0;
+        let rafId = null;
+
+        function startAutoRotate() {
+            heroX.classList.remove('desktop');
+            heroStudio.classList.remove('desktop');
+            const t = heroX.style.transform;
+            const xm = t.match(/rotateX\(([-\d.]+)deg\)/);
+            const ym = t.match(/rotateY\(([-\d.]+)deg\)/);
+            const fixedX = xm ? parseFloat(xm[1]) : 0;
+            angle = ym ? parseFloat(ym[1]) : 0;
+            cancelAnimationFrame(rafId);
+            function step() {
+                angle = (angle + 1.2);
+                heroX.style.transform = `rotateX(${fixedX}deg) rotateY(${angle}deg)`;
+                heroStudio.style.transform = `rotateY(${angle * 0.6}deg)`;
+                rafId = requestAnimationFrame(step);
+            }
+            rafId = requestAnimationFrame(step);
+        }
+        function stopAutoRotate() {
+            if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
+            heroX.classList.add('desktop');
+        }
+        function resetIdleTimer() {
+            if (isMobile) return;
+            if (idleTimer) { clearTimeout(idleTimer); idleTimer = null; }
+            stopAutoRotate();
+            idleTimer = setTimeout(startAutoRotate, 3000);
+        }
         if (isMobile) {
             heroX.style.animation = 'xRotate 6s ease-in-out infinite';
             heroStudio.style.animation = 'studioRotate 6s ease-in-out infinite';
@@ -347,18 +494,22 @@
             heroX.classList.add('desktop');
             heroStudio.classList.add('desktop');
             document.addEventListener('mousemove', (e) => {
+                resetIdleTimer();
+                if (rafId) return;
                 const rx = (window.innerHeight / 2 - e.clientY) / (window.innerHeight / 2) * -25;
                 const ry = (e.clientX - window.innerWidth / 2) / (window.innerWidth / 2) * 35;
                 heroX.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg)`;
                 heroStudio.style.transform = `rotateX(${rx * 0.6}deg) rotateY(${ry * 0.6}deg)`;
             });
+            resetIdleTimer();
         }
 
         // Modal toggle
         const modal = document.getElementById('modal');
         const overlay = document.getElementById('overlay');
-        function openModal() { modal.classList.add('active'); overlay.classList.add('active'); }
-        function closeModal() { modal.classList.remove('active'); overlay.classList.remove('active'); }
+        const clickHint = document.getElementById('clickHint');
+        function openModal() { modal.classList.add('active'); overlay.classList.add('active'); clickHint.style.opacity = '0'; }
+        function closeModal() { modal.classList.remove('active'); overlay.classList.remove('active'); clickHint.style.opacity = ''; }
 
         document.addEventListener('click', (e) => {
             if (e.target.closest('.modal') || e.target.closest('.detail-panel') || e.target.closest('.detail-overlay')) return;
@@ -403,6 +554,27 @@
             document.getElementById('detailPanel').classList.remove('active');
             document.getElementById('detailOverlay').classList.remove('active');
         }
+
+        // News ticker
+        const news = [
+            'X 社团 2026 招新进行中',
+            '背叛之下 制作进度更新',
+            '课程平台已上线六大板块',
+            '鼠标 正在开发 AI agent',
+            '豆子之战 美术资源制作中',
+            '新成员 EmoCez 加入社团',
+            'Godot 游戏开发课程已开放',
+            '安卓逆向工程课程更新',
+        ];
+        const track = document.getElementById('newsTrack');
+        function buildNews() {
+            const items = news.map(t => `<span class="news-item"><span class="dot"></span>${t}</span>`).join('');
+            track.innerHTML = items + items;
+        }
+        buildNews();
+        // Pause on hover
+        track.addEventListener('mouseenter', () => track.style.animationPlayState = 'paused');
+        track.addEventListener('mouseleave', () => track.style.animationPlayState = 'running');
 
         renderCards('projectsGrid', projects);
         renderCards('membersGrid', members);
