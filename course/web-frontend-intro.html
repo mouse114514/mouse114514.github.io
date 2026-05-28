@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>网页是怎么工作的</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif; background: #0a0f1e; color: #e0e8f0; height: 100vh; overflow: hidden; }
+        .presentation { width: 100%; height: 100vh; position: relative; }
+        .slide { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 60px; opacity: 0; pointer-events: none; transition: opacity 0.4s ease; }
+        .slide.active { opacity: 1; pointer-events: auto; }
+        .slide-inner { max-width: 840px; width: 100%; background: rgba(20, 30, 50, 0.6); backdrop-filter: blur(12px); border: 1px solid rgba(77, 168, 255, 0.2); border-radius: 28px; padding: 44px 54px; box-shadow: 0 0 50px rgba(0,0,0,0.4); max-height: 82vh; overflow-y: auto; }
+        .slide-title .slide-inner { text-align: center; background: rgba(20, 30, 50, 0.4); border-color: rgba(77, 168, 255, 0.15); }
+        .slide-title h1 { font-size: clamp(32px, 5vw, 52px); font-weight: 800; background: linear-gradient(135deg, #4da8ff, #b0e0ff); -webkit-background-clip: text; background-clip: text; color: transparent; line-height: 1.2; margin-bottom: 12px; }
+        .slide-title .sub { font-size: 18px; color: rgba(255,255,255,0.4); }
+        .slide-title .lesson-num { font-size: 14px; color: rgba(255,255,255,0.25); margin-bottom: 18px; letter-spacing: 3px; }
+        .slide h2 { font-size: clamp(22px, 3vw, 32px); font-weight: 700; color: #4da8ff; margin-bottom: 18px; border-bottom: 1px solid rgba(77, 168, 255, 0.15); padding-bottom: 10px; }
+        .slide p { font-size: 17px; line-height: 1.8; margin-bottom: 12px; color: rgba(255,255,255,0.85); }
+        .slide ul { margin: 8px 0 12px 20px; }
+        .slide li { font-size: 16px; line-height: 1.7; margin-bottom: 5px; color: rgba(255,255,255,0.8); }
+        .slide li strong { color: #b0e0ff; }
+        .slide .highlight-box { background: rgba(77, 168, 255, 0.08); border-left: 4px solid #4da8ff; padding: 16px 20px; border-radius: 0 12px 12px 0; margin: 14px 0; font-size: 15px; }
+        .nav-bar { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 16px; background: rgba(10, 15, 30, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.06); border-radius: 30px; padding: 10px 20px; z-index: 10; }
+        .nav-bar button { background: none; border: none; color: rgba(255,255,255,0.4); font-size: 18px; cursor: pointer; padding: 6px 12px; border-radius: 8px; transition: all 0.2s; }
+        .nav-bar button:hover { color: #fff; background: rgba(255,255,255,0.06); }
+        .nav-bar .counter { font-size: 14px; color: rgba(255,255,255,0.35); min-width: 60px; text-align: center; }
+        .nav-bar .back-link { color: rgba(255,255,255,0.25); text-decoration: none; font-size: 13px; padding: 6px 12px; border-radius: 8px; transition: all 0.2s; }
+        .nav-bar .back-link:hover { color: #fff; background: rgba(255,255,255,0.06); }
+        @media (max-width: 640px) { .slide { padding: 16px; } .slide-inner { padding: 24px 18px; } .nav-bar { padding: 8px 12px; gap: 8px; bottom: 14px; } }
+    </style>
+</head>
+<body>
+    <div class="presentation" id="presentation">
+        <div class="slide slide-title active" data-index="0">
+            <div class="slide-inner">
+                <div class="lesson-num">Web 前端 · 第1课</div>
+                <h1>网页是怎么工作的</h1>
+                <div class="sub">HTML、CSS、JavaScript 是什么</div>
+            </div>
+        </div>
+        <div class="slide" data-index="1">
+            <div class="slide-inner">
+                <h2>你每次打开网页发生了什么？</h2>
+                <ul>
+                    <li>你在浏览器地址栏输入一个网址（如 baidu.com）</li>
+                    <li>浏览器向服务器"请求"这个网页</li>
+                    <li>服务器返回一堆代码（HTML + CSS + JS）</li>
+                    <li>浏览器把这些代码"渲染"成你看到的页面</li>
+                </ul>
+                <div class="highlight-box">这段代码就是"前端"要做的事情——你看到的页面效果，都是前端代码决定的。</div>
+            </div>
+        </div>
+        <div class="slide" data-index="2">
+            <div class="slide-inner">
+                <h2>HTML：骨架</h2>
+                <p>HTML（超文本标记语言）是网页的<strong>结构</strong>，就像房子的框架：</p>
+                <ul>
+                    <li><code>&lt;h1&gt;</code> — 标题</li>
+                    <li><code>&lt;p&gt;</code> — 段落</li>
+                    <li><code>&lt;img&gt;</code> — 图片</li>
+                    <li><code>&lt;a&gt;</code> — 链接</li>
+                    <li><code>&lt;button&gt;</code> — 按钮</li>
+                </ul>
+                <p>HTML 只是决定了"有什么"，不决定"长什么样"。</p>
+            </div>
+        </div>
+        <div class="slide" data-index="3">
+            <div class="slide-inner">
+                <h2>CSS：衣服和化妆品</h2>
+                <p>CSS（层叠样式表）控制网页的<strong>外观</strong>：</p>
+                <ul>
+                    <li>颜色 — <code>color: red;</code></li>
+                    <li>大小 — <code>font-size: 24px;</code></li>
+                    <li>位置 — <code>margin: 10px;</code></li>
+                    <li>背景 — <code>background: black;</code></li>
+                    <li>动画 — <code>transition: 0.3s;</code></li>
+                </ul>
+                <div class="highlight-box">同一个 HTML，用不同的 CSS 就能长得完全不一样。</div>
+            </div>
+        </div>
+        <div class="slide" data-index="4">
+            <div class="slide-inner">
+                <h2>JavaScript：大脑和行为</h2>
+                <p>JavaScript 让网页<strong>动起来</strong>，能干各种事：</p>
+                <ul>
+                    <li>点击按钮弹出提示框</li>
+                    <li>输入框实时搜索</li>
+                    <li>页面滚动加载更多内容</li>
+                    <li>发请求获取数据（不用刷新页面）</li>
+                    <li>做游戏、处理图片、操作音视频</li>
+                </ul>
+            </div>
+        </div>
+        <div class="slide" data-index="5">
+            <div class="slide-inner">
+                <h2>三者的关系</h2>
+                <p>用盖房子来理解：</p>
+                <ul>
+                    <li><strong>HTML</strong> = 房子的结构（墙、门、窗户在哪）</li>
+                    <li><strong>CSS</strong> = 装修（墙壁颜色、窗帘样式、地板材质）</li>
+                    <li><strong>JavaScript</strong> = 家电设施（开灯、关门、按门铃有反应）</li>
+                </ul>
+                <p>这三个合在一起，才是一个完整的网页。</p>
+            </div>
+        </div>
+        <div class="slide" data-index="6">
+            <div class="slide-inner">
+                <h2>前端开发工具</h2>
+                <ul>
+                    <li><strong>浏览器</strong> — Chrome / Edge（按 F12 打开开发者工具）</li>
+                    <li><strong>编辑器</strong> — VS Code（最热门，免费）</li>
+                    <li><strong>写 HTML 就够了</strong> — 新建一个 .html 文件，用记事本就能写</li>
+                </ul>
+                <div class="highlight-box">你可以现在就用记事本写一个网页：写几行 HTML，保存为 .html，双击用浏览器打开。</div>
+            </div>
+        </div>
+        <div class="slide" data-index="7">
+            <div class="slide-inner">
+                <h2>总结</h2>
+                <ul>
+                    <li>网页由 HTML（结构）+ CSS（样式）+ JS（行为）组成</li>
+                    <li>HTML 决定有什么，CSS 决定长什么样，JS 决定能干什么</li>
+                    <li>按 F12 可以看任何网页的 HTML 和 CSS</li>
+                    <li>用记事本就能写第一个网页，保存为 .html 即可</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="nav-bar">
+        <a class="back-link" href="index.html">← 目录</a>
+        <button id="prevBtn">◀</button>
+        <span class="counter" id="counter">1 / 8</span>
+        <button id="nextBtn">▶</button>
+    </div>
+    <script>
+        const slides = document.querySelectorAll('.slide'); const total = slides.length; let current = 0;
+        function goTo(n) { slides.forEach(s => s.classList.remove('active')); current = (n + total) % total; slides[current].classList.add('active'); document.getElementById('counter').textContent = (current + 1) + ' / ' + total; }
+        document.getElementById('prevBtn').addEventListener('click', () => goTo(current - 1));
+        document.getElementById('nextBtn').addEventListener('click', () => goTo(current + 1));
+        document.addEventListener('keydown', (e) => { if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); goTo(current + 1); } if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); goTo(current - 1); } });
+        document.getElementById('presentation').addEventListener('click', (e) => { if (e.target.closest('.nav-bar') || e.target.closest('.slide-inner')) return; goTo(current + 1); });
+    </script>
+</body>
+</html>

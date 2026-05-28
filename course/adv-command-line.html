@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>进阶：命令行入门</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif; background: #0a0f1e; color: #e0e8f0; height: 100vh; overflow: hidden; }
+        .presentation { width: 100%; height: 100vh; position: relative; }
+        .slide { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 60px; opacity: 0; pointer-events: none; transition: opacity 0.4s ease; }
+        .slide.active { opacity: 1; pointer-events: auto; }
+        .slide-inner { max-width: 840px; width: 100%; background: rgba(20, 30, 50, 0.6); backdrop-filter: blur(12px); border: 1px solid rgba(77, 168, 255, 0.2); border-radius: 28px; padding: 44px 54px; box-shadow: 0 0 50px rgba(0,0,0,0.4); max-height: 82vh; overflow-y: auto; }
+        .slide-title .slide-inner { text-align: center; background: rgba(20, 30, 50, 0.4); border-color: rgba(77, 168, 255, 0.15); }
+        .slide-title h1 { font-size: clamp(32px, 5vw, 52px); font-weight: 800; background: linear-gradient(135deg, #4da8ff, #b0e0ff); -webkit-background-clip: text; background-clip: text; color: transparent; line-height: 1.2; margin-bottom: 12px; }
+        .slide-title .sub { font-size: 18px; color: rgba(255,255,255,0.4); }
+        .slide-title .lesson-num { font-size: 14px; color: rgba(255,255,255,0.25); margin-bottom: 18px; letter-spacing: 3px; }
+        .slide h2 { font-size: clamp(22px, 3vw, 32px); font-weight: 700; color: #4da8ff; margin-bottom: 18px; padding-bottom: 10px; border-bottom: 1px solid rgba(77, 168, 255, 0.15); }
+        .slide p { font-size: 17px; line-height: 1.8; margin-bottom: 12px; color: rgba(255,255,255,0.85); }
+        .slide ul { margin: 8px 0 12px 20px; }
+        .slide li { font-size: 16px; line-height: 1.7; margin-bottom: 5px; color: rgba(255,255,255,0.8); }
+        .slide li strong { color: #b0e0ff; }
+        .slide .highlight-box { background: rgba(77, 168, 255, 0.08); border-left: 4px solid #4da8ff; padding: 16px 20px; border-radius: 0 12px 12px 0; margin: 14px 0; font-size: 15px; }
+        .slide .tip-box { background: rgba(255, 200, 0, 0.06); border-left: 4px solid #ffc800; padding: 14px 18px; border-radius: 0 10px 10px 0; margin: 14px 0; font-size: 15px; }
+        .slide code { background: rgba(255,255,255,0.1); padding: 2px 8px; border-radius: 4px; font-size: 14px; }
+        .nav-bar { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 16px; background: rgba(10, 15, 30, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.06); border-radius: 30px; padding: 10px 20px; z-index: 10; }
+        .nav-bar button { background: none; border: none; color: rgba(255,255,255,0.4); font-size: 18px; cursor: pointer; padding: 6px 12px; border-radius: 8px; transition: all 0.2s; }
+        .nav-bar button:hover { color: #fff; background: rgba(255,255,255,0.06); }
+        .nav-bar .counter { font-size: 14px; color: rgba(255,255,255,0.35); min-width: 60px; text-align: center; }
+        .nav-bar .back-link { color: rgba(255,255,255,0.25); text-decoration: none; font-size: 13px; padding: 6px 12px; border-radius: 8px; transition: all 0.2s; }
+        .nav-bar .back-link:hover { color: #fff; background: rgba(255,255,255,0.06); }
+        .key { display: inline-block; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12); border-radius: 5px; padding: 2px 10px; font-size: 14px; color: #b0e0ff; font-family: monospace; margin: 2px 0; }
+        @media (max-width: 640px) { .slide { padding: 16px; } .slide-inner { padding: 24px 18px; } .nav-bar { padding: 8px 12px; gap: 8px; bottom: 14px; } }
+    </style>
+</head>
+<body>
+    <div class="presentation" id="presentation">
+        <div class="slide slide-title active" data-index="0">
+            <div class="slide-inner">
+                <img src="images/terminal.png" alt="终端" style="width:180px;margin-bottom:16px;opacity:0.8">
+                <div class="lesson-num">进阶 · 第五课</div>
+                <h1>命令行入门</h1>
+                <div class="sub">不用鼠标也能操控电脑</div>
+            </div>
+        </div>
+        <div class="slide" data-index="1">
+            <div class="slide-inner">
+                <h2>命令行是什么？</h2>
+                <p>命令行（CMD）是 Windows 自带的文字交互工具。你看不到按钮和图标，只能输入命令，系统执行。</p>
+                <p>打开方式：<span class="key">Win</span> + <span class="key">R</span> → 输入 <code>cmd</code> → 回车</p>
+                <p>或者：在文件夹的地址栏输入 <code>cmd</code> → 直接在该路径打开命令行</p>
+                <div class="highlight-box">为什么学命令行？有些操作没有图形界面，只能命令行。而且一个命令可以批量处理成百上千个文件。</div>
+            </div>
+        </div>
+        <div class="slide" data-index="2">
+            <div class="slide-inner">
+                <h2>最常用的命令</h2>
+                <ul>
+                    <li><code>dir</code> — 列出当前目录下的文件和文件夹</li>
+                    <li><code>cd 文件夹名</code> — 进入文件夹</li>
+                    <li><code>cd ..</code> — 返回上级目录</li>
+                    <li><code>mkdir 文件夹名</code> — 新建文件夹</li>
+                    <li><code>type 文件名</code> — 显示文件内容（文本文件）</li>
+                    <li><code>cls</code> — 清屏</li>
+                    <li><code>exit</code> — 关闭命令行</li>
+                </ul>
+            </div>
+        </div>
+        <div class="slide" data-index="3">
+            <div class="slide-inner">
+                <h2>文件和目录操作</h2>
+                <ul>
+                    <li><code>copy 源文件 目标位置</code> — 复制文件</li>
+                    <li><code>move 源文件 目标位置</code> — 移动文件</li>
+                    <li><code>del 文件名</code> — 删除文件</li>
+                    <li><code>ren 旧名 新名</code> — 重命名</li>
+                    <li><code>tree</code> — 以树形显示目录结构</li>
+                </ul>
+                <div class="tip-box">在命令行的路径里，<code>.</code> 表示当前目录，<code>..</code> 表示上一级目录。</div>
+            </div>
+        </div>
+        <div class="slide" data-index="4">
+            <div class="slide-inner">
+                <h2>网络命令</h2>
+                <ul>
+                    <li><code>ipconfig</code> — 查看本机 IP 配置</li>
+                    <li><code>ping baidu.com</code> — 测试网络连通性</li>
+                    <li><code>nslookup baidu.com</code> — 查看域名的 IP 地址</li>
+                    <li><code>netstat -ano</code> — 查看所有网络连接和端口</li>
+                    <li><code>tracert baidu.com</code> — 追踪数据包经过的路由</li>
+                </ul>
+                <div class="highlight-box">网络出问题时，先用 <code>ping</code> 检查能不能通，再用 <code>ipconfig</code> 检查配置。</div>
+            </div>
+        </div>
+        <div class="slide" data-index="5">
+            <div class="slide-inner">
+                <h2>系统信息命令</h2>
+                <ul>
+                    <li><code>systeminfo</code> — 详细系统信息（OS 版本、内存、网卡）</li>
+                    <li><code>tasklist</code> — 列出所有运行中的进程（PID）</li>
+                    <li><code>taskkill /PID 1234</code> — 根据 PID 结束进程</li>
+                    <li><code>sfc /scannow</code> — 扫描和修复系统文件</li>
+                    <li><code>shutdown /r /t 0</code> — 立即重启</li>
+                </ul>
+            </div>
+        </div>
+        <div class="slide" data-index="6">
+            <div class="slide-inner">
+                <h2>管道和重定向</h2>
+                <p>命令行的强大在于组合：</p>
+                <ul>
+                    <li><code>dir > list.txt</code> — 把目录列表输出到文件</li>
+                    <li><code>tasklist | find "chrome"</code> — 只显示包含 chrome 的进程</li>
+                    <li><code>ipconfig | find "IPv4"</code> — 只显示 IPv4 地址</li>
+                    <li><code>ping baidu.com >> log.txt</code> — 追加输出到文件</li>
+                </ul>
+                <div class="highlight-box"><code>></code> 是输出到文件（覆盖），<code>>></code> 是追加，<code>|</code> 是管道（把前一个命令的结果传给后一个）。</div>
+            </div>
+        </div>
+        <div class="slide" data-index="7">
+            <div class="slide-inner">
+                <h2>总结</h2>
+                <ul>
+                    <li><span class="key">Win</span> + <span class="key">R</span> → <code>cmd</code> 打开命令行</li>
+                    <li><code>dir</code>、<code>cd</code>、<code>copy</code>、<code>del</code> 管理文件</li>
+                    <li><code>ipconfig</code>、<code>ping</code>、<code>netstat</code> 排查网络</li>
+                    <li><code>tasklist</code>、<code>taskkill</code> 管理进程</li>
+                    <li><code>></code> 输出到文件，<code>|</code> 管道传递</li>
+                    <li>一个命令可以配合通配符批量操作，比如 <code>del *.tmp</code> 删所有临时文件</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="nav-bar">
+        <a class="back-link" href="index.html">← 目录</a>
+        <button id="prevBtn">◀</button>
+        <span class="counter" id="counter">1 / 8</span>
+        <button id="nextBtn">▶</button>
+    </div>
+    <script>
+        const slides = document.querySelectorAll('.slide'); const total = slides.length; let current = 0;
+        function goTo(n) { slides.forEach(s => s.classList.remove('active')); current = (n + total) % total; slides[current].classList.add('active'); document.getElementById('counter').textContent = (current + 1) + ' / ' + total; }
+        document.getElementById('prevBtn').addEventListener('click', () => goTo(current - 1));
+        document.getElementById('nextBtn').addEventListener('click', () => goTo(current + 1));
+        document.addEventListener('keydown', (e) => { if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); goTo(current + 1); } if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); goTo(current - 1); } });
+        document.getElementById('presentation').addEventListener('click', (e) => { if (e.target.closest('.nav-bar') || e.target.closest('.slide-inner')) return; goTo(current + 1); });
+    </script>
+</body>
+</html>

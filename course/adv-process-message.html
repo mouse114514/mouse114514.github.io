@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>进阶：进程、窗口与消息机制</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif; background: #0a0f1e; color: #e0e8f0; height: 100vh; overflow: hidden; }
+        .presentation { width: 100%; height: 100vh; position: relative; }
+        .slide { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 60px; opacity: 0; pointer-events: none; transition: opacity 0.4s ease; }
+        .slide.active { opacity: 1; pointer-events: auto; }
+        .slide-inner { max-width: 840px; width: 100%; background: rgba(20, 30, 50, 0.6); backdrop-filter: blur(12px); border: 1px solid rgba(77, 168, 255, 0.2); border-radius: 28px; padding: 44px 54px; box-shadow: 0 0 50px rgba(0,0,0,0.4); max-height: 82vh; overflow-y: auto; }
+        .slide-title .slide-inner { text-align: center; background: rgba(20, 30, 50, 0.4); border-color: rgba(77, 168, 255, 0.15); }
+        .slide-title h1 { font-size: clamp(32px, 5vw, 52px); font-weight: 800; background: linear-gradient(135deg, #4da8ff, #b0e0ff); -webkit-background-clip: text; background-clip: text; color: transparent; line-height: 1.2; margin-bottom: 12px; }
+        .slide-title .sub { font-size: 18px; color: rgba(255,255,255,0.4); }
+        .slide-title .lesson-num { font-size: 14px; color: rgba(255,255,255,0.25); margin-bottom: 18px; letter-spacing: 3px; }
+        .slide h2 { font-size: clamp(22px, 3vw, 32px); font-weight: 700; color: #4da8ff; margin-bottom: 18px; padding-bottom: 10px; border-bottom: 1px solid rgba(77, 168, 255, 0.15); }
+        .slide p { font-size: 17px; line-height: 1.8; margin-bottom: 12px; color: rgba(255,255,255,0.85); }
+        .slide ul { margin: 8px 0 12px 20px; }
+        .slide li { font-size: 16px; line-height: 1.7; margin-bottom: 5px; color: rgba(255,255,255,0.8); }
+        .slide li strong { color: #b0e0ff; }
+        .slide .highlight-box { background: rgba(77, 168, 255, 0.08); border-left: 4px solid #4da8ff; padding: 16px 20px; border-radius: 0 12px 12px 0; margin: 14px 0; font-size: 15px; }
+        .slide .tip-box { background: rgba(255, 200, 0, 0.06); border-left: 4px solid #ffc800; padding: 14px 18px; border-radius: 0 10px 10px 0; margin: 14px 0; font-size: 15px; }
+        .nav-bar { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 16px; background: rgba(10, 15, 30, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.06); border-radius: 30px; padding: 10px 20px; z-index: 10; }
+        .nav-bar button { background: none; border: none; color: rgba(255,255,255,0.4); font-size: 18px; cursor: pointer; padding: 6px 12px; border-radius: 8px; transition: all 0.2s; }
+        .nav-bar button:hover { color: #fff; background: rgba(255,255,255,0.06); }
+        .nav-bar .counter { font-size: 14px; color: rgba(255,255,255,0.35); min-width: 60px; text-align: center; }
+        .nav-bar .back-link { color: rgba(255,255,255,0.25); text-decoration: none; font-size: 13px; padding: 6px 12px; border-radius: 8px; transition: all 0.2s; }
+        .nav-bar .back-link:hover { color: #fff; background: rgba(255,255,255,0.06); }
+        @media (max-width: 640px) { .slide { padding: 16px; } .slide-inner { padding: 24px 18px; } .nav-bar { padding: 8px 12px; gap: 8px; bottom: 14px; } }
+    </style>
+</head>
+<body>
+    <div class="presentation" id="presentation">
+        <div class="slide slide-title active" data-index="0">
+            <div class="slide-inner">
+                <div class="lesson-num">进阶 · 第一课</div>
+                <h1>进程、窗口与消息机制</h1>
+                <div class="sub">操作系统底层是怎么运行的？</div>
+            </div>
+        </div>
+        <div class="slide" data-index="1">
+            <div class="slide-inner">
+                <h2>程序 ≠ 进程</h2>
+                <p><strong>程序</strong>是硬盘上的文件 (.exe)，静态的，不会动。</p>
+                <p><strong>进程</strong>是程序被加载到内存后"活起来"的实例。</p>
+                <p>同一个程序打开三次 → 三个独立的进程，各有各的内存空间，互不干扰。</p>
+                <div class="highlight-box">每个进程有一个唯一的 PID（进程 ID），在任务管理器里能看到。</div>
+            </div>
+        </div>
+        <div class="slide" data-index="2">
+            <div class="slide-inner">
+                <h2>窗口的本质</h2>
+                <p>在 Windows 系统里，窗口不是"画出来的图片"，而是一个<strong>数据结构</strong>。</p>
+                <ul>
+                    <li>每个窗口有一个 <strong>HWND</strong>（窗口句柄）— 窗口的身份证号</li>
+                    <li>系统用一个表管理所有窗口，记录谁是谁的父窗口</li>
+                    <li>窗口属于进程——一个进程可以有多个窗口</li>
+                    <li>窗口关闭 → 系统销毁对应的数据结构</li>
+                </ul>
+            </div>
+        </div>
+        <div class="slide" data-index="3">
+            <div class="slide-inner">
+                <h2>消息队列</h2>
+                <p>Windows 是<strong>消息驱动</strong>系统。一切输入都变成"消息"：</p>
+                <ul>
+                    <li>按一下键盘 → 生成一条 WM_KEYDOWN 消息</li>
+                    <li>点一下鼠标 → 生成一条 WM_LBUTTONDOWN 消息</li>
+                    <li>窗口需要重绘 → 生成一条 WM_PAINT 消息</li>
+                </ul>
+                <p>每个线程（有窗口的）有自己的消息队列。系统把消息投进队列，线程不断取出来处理——这叫<strong>消息循环</strong>。</p>
+            </div>
+        </div>
+        <div class="slide" data-index="4">
+            <div class="slide-inner">
+                <h2>卡死的根本原因</h2>
+                <p>为什么程序会"无响应"？</p>
+                <ul>
+                    <li>程序正在做一件耗时的操作（读大文件、死循环、网络超时）</li>
+                    <li>它没空回到消息循环取消息</li>
+                    <li>消息队列越积越多，系统检测到超时不处理</li>
+                    <li>标题栏出现"无响应"——系统提示你它"死了"</li>
+                </ul>
+                <div class="tip-box">任务管理器结束进程，就是强制杀掉它的消息循环。</div>
+            </div>
+        </div>
+        <div class="slide" data-index="5">
+            <div class="slide-inner">
+                <h2>Z 序（Z-Order）</h2>
+                <p>窗口不仅有 X、Y 位置，还有 Z 轴——前后顺序：</p>
+                <ul>
+                    <li><strong>顶层窗口</strong>（Foreground）— Z 序最上面，用户正在操作</li>
+                    <li><strong>底层窗口</strong> — 被盖在下面，可能完全看不见</li>
+                    <li><strong>TopMost 窗口</strong> — 强制始终在最前（如任务管理器"总在最前"）</li>
+                </ul>
+                <p>Z 序 + 焦点 = 决定你按键盘时输入去哪。</p>
+            </div>
+        </div>
+        <div class="slide" data-index="6">
+            <div class="slide-inner">
+                <h2>句柄（Handle）</h2>
+                <p>句柄是 Windows 里非常重要的概念——它是一个<strong>编号</strong>，代表系统内部某个对象：</p>
+                <ul>
+                    <li><strong>HWND</strong> — 窗口句柄</li>
+                    <li><strong>HINSTANCE</strong> — 模块句柄（.exe 或 .dll）</li>
+                    <li><strong>HFILE</strong> — 文件句柄（打开的文件）</li>
+                    <li><strong>HKEY</strong> — 注册表键句柄</li>
+                </ul>
+                <div class="highlight-box">句柄的本质是一个索引，指向系统内部维护的对象表。你不能直接操作对象，只能通过句柄"间接"操作。</div>
+            </div>
+        </div>
+        <div class="slide" data-index="7">
+            <div class="slide-inner">
+                <h2>总结</h2>
+                <ul>
+                    <li>程序是文件，进程是运行实例，有 PID</li>
+                    <li>窗口是数据结构，由 HWND 标识</li>
+                    <li>所有输入通过消息队列传递，系统消息驱动</li>
+                    <li>卡死 = 消息循环被阻塞</li>
+                    <li>Z 序决定窗口层次，句柄是操作对象的钥匙</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="nav-bar">
+        <a class="back-link" href="index.html">← 目录</a>
+        <button id="prevBtn">◀</button>
+        <span class="counter" id="counter">1 / 8</span>
+        <button id="nextBtn">▶</button>
+    </div>
+    <script>
+        const slides = document.querySelectorAll('.slide'); const total = slides.length; let current = 0;
+        function goTo(n) { slides.forEach(s => s.classList.remove('active')); current = (n + total) % total; slides[current].classList.add('active'); document.getElementById('counter').textContent = (current + 1) + ' / ' + total; }
+        document.getElementById('prevBtn').addEventListener('click', () => goTo(current - 1));
+        document.getElementById('nextBtn').addEventListener('click', () => goTo(current + 1));
+        document.addEventListener('keydown', (e) => { if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); goTo(current + 1); } if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); goTo(current - 1); } });
+        document.getElementById('presentation').addEventListener('click', (e) => { if (e.target.closest('.nav-bar') || e.target.closest('.slide-inner')) return; goTo(current + 1); });
+    </script>
+</body>
+</html>

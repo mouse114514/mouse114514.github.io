@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>什么是逆向工程</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif; background: #0a0f1e; color: #e0e8f0; height: 100vh; overflow: hidden; }
+        .presentation { width: 100%; height: 100vh; position: relative; }
+        .slide { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 60px; opacity: 0; pointer-events: none; transition: opacity 0.4s ease; }
+        .slide.active { opacity: 1; pointer-events: auto; }
+        .slide-inner { max-width: 840px; width: 100%; background: rgba(20, 30, 50, 0.6); backdrop-filter: blur(12px); border: 1px solid rgba(77, 168, 255, 0.2); border-radius: 28px; padding: 44px 54px; box-shadow: 0 0 50px rgba(0,0,0,0.4); max-height: 82vh; overflow-y: auto; }
+        .slide-title .slide-inner { text-align: center; background: rgba(20, 30, 50, 0.4); border-color: rgba(77, 168, 255, 0.15); }
+        .slide-title h1 { font-size: clamp(32px, 5vw, 52px); font-weight: 800; background: linear-gradient(135deg, #4da8ff, #b0e0ff); -webkit-background-clip: text; background-clip: text; color: transparent; line-height: 1.2; margin-bottom: 12px; }
+        .slide-title .sub { font-size: 18px; color: rgba(255,255,255,0.4); }
+        .slide-title .lesson-num { font-size: 14px; color: rgba(255,255,255,0.25); margin-bottom: 18px; letter-spacing: 3px; }
+        .slide h2 { font-size: clamp(22px, 3vw, 32px); font-weight: 700; color: #4da8ff; margin-bottom: 18px; border-bottom: 1px solid rgba(77, 168, 255, 0.15); padding-bottom: 10px; }
+        .slide p { font-size: 17px; line-height: 1.8; margin-bottom: 12px; color: rgba(255,255,255,0.85); }
+        .slide ul { margin: 8px 0 12px 20px; }
+        .slide li { font-size: 16px; line-height: 1.7; margin-bottom: 5px; color: rgba(255,255,255,0.8); }
+        .slide li strong { color: #b0e0ff; }
+        .slide .highlight-box { background: rgba(77, 168, 255, 0.08); border-left: 4px solid #4da8ff; padding: 16px 20px; border-radius: 0 12px 12px 0; margin: 14px 0; font-size: 15px; }
+        .slide .warn-box { background: rgba(255, 80, 80, 0.08); border-left: 4px solid #ff5050; padding: 14px 18px; border-radius: 0 10px 10px 0; margin: 14px 0; font-size: 15px; }
+        .nav-bar { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 16px; background: rgba(10, 15, 30, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.06); border-radius: 30px; padding: 10px 20px; z-index: 10; }
+        .nav-bar button { background: none; border: none; color: rgba(255,255,255,0.4); font-size: 18px; cursor: pointer; padding: 6px 12px; border-radius: 8px; transition: all 0.2s; }
+        .nav-bar button:hover { color: #fff; background: rgba(255,255,255,0.06); }
+        .nav-bar .counter { font-size: 14px; color: rgba(255,255,255,0.35); min-width: 60px; text-align: center; }
+        .nav-bar .back-link { color: rgba(255,255,255,0.25); text-decoration: none; font-size: 13px; padding: 6px 12px; border-radius: 8px; transition: all 0.2s; }
+        .nav-bar .back-link:hover { color: #fff; background: rgba(255,255,255,0.06); }
+        @media (max-width: 640px) { .slide { padding: 16px; } .slide-inner { padding: 24px 18px; } .nav-bar { padding: 8px 12px; gap: 8px; bottom: 14px; } }
+    </style>
+</head>
+<body>
+    <div class="presentation" id="presentation">
+        <div class="slide slide-title active" data-index="0">
+            <div class="slide-inner">
+                <div class="lesson-num">安卓逆向 · 第1课</div>
+                <h1>什么是逆向工程</h1>
+                <div class="sub">看到 App 的"内部"</div>
+            </div>
+        </div>
+        <div class="slide" data-index="1">
+            <div class="slide-inner">
+                <h2>正向 vs 逆向</h2>
+                <p><strong>正向开发</strong>：你写代码 → 编译成 App → 装到手机上运行</p>
+                <p><strong>逆向工程</strong>：拿一个别人的 App → 反编译 → 看它的源码和资源</p>
+                <p>就像乐高：正向是照着图纸搭，逆向是把搭好的拆了看它怎么拼的。</p>
+            </div>
+        </div>
+        <div class="slide" data-index="2">
+            <div class="slide-inner">
+                <h2>逆向能做什么？</h2>
+                <ul>
+                    <li><strong>学习优秀 App 的实现</strong> — 看大神怎么写的</li>
+                    <li><strong>分析恶意软件</strong> — 看病毒在做什么</li>
+                    <li><strong>修改 App 功能</strong> — 如汉化、去广告、修改游戏数值</li>
+                    <li><strong>安全研究</strong> — 找漏洞、做渗透测试</li>
+                    <li><strong>恢复丢失的源码</strong> — 用工具反编译 APK 看逻辑</li>
+                </ul>
+            </div>
+        </div>
+        <div class="slide" data-index="3">
+            <div class="slide-inner">
+                <h2>安卓 App 的打包格式</h2>
+                <p>安卓 App 的文件是 <strong>.apk</strong>（Android Package Kit）。</p>
+                <p>它其实就是一个<strong>压缩包</strong>（ZIP 格式），里面包含：</p>
+                <ul>
+                    <li><code>classes.dex</code> — 编译后的代码（Dalvik 字节码）</li>
+                    <li><code>AndroidManifest.xml</code> — 配置信息</li>
+                    <li><code>res/</code> — 资源（图片、布局文件）</li>
+                    <li><code>lib/</code> — 原生库（C++ 写的代码）</li>
+                    <li><code>META-INF/</code> — 签名信息</li>
+                </ul>
+            </div>
+        </div>
+        <div class="slide" data-index="4">
+            <div class="slide-inner">
+                <h2>反编译是什么？</h2>
+                <p>App 编译后变成了 <strong>.dex 字节码</strong>——人看不懂的二进制代码。</p>
+                <p><strong>反编译</strong>就是把字节码转回人能读懂的代码：</p>
+                <ul>
+                    <li>把 .dex → 转成 .jar → 转成 Java 代码（近似源码）</li>
+                    <li>或者转成 Smali 汇编（一种比 Java 底层的人读代码）</li>
+                </ul>
+                <div class="highlight-box">常用工具：<strong>jadx</strong>（把 APK 转成 Java 代码，图形界面）、<strong>apktool</strong>（解包+反编译资源）</div>
+            </div>
+        </div>
+        <div class="slide" data-index="5">
+            <div class="slide-inner">
+                <h2>逆向需要什么基础？</h2>
+                <ul>
+                    <li>至少会 <strong>Java 或 Kotlin</strong>（安卓开发语言）</li>
+                    <li>了解 <strong>Smali 汇编</strong>（做修改时用得到）</li>
+                    <li>会用 <strong>jadx</strong>、<strong>apktool</strong>、<strong>Android Studio</strong></li>
+                    <li>懂一点<strong>网络协议</strong>（抓包分析 API 调用）</li>
+                </ul>
+                <div class="highlight-box">如果你完全没编程基础，建议先学 Python 或 Java 基础再入门逆向。</div>
+            </div>
+        </div>
+        <div class="slide" data-index="6">
+            <div class="slide-inner">
+                <h2>法律与道德</h2>
+                <div class="warn-box">⚠️ 逆向他人 App 可能违反用户协议和法律法规！</div>
+                <ul>
+                    <li>逆向学习、安全研究 → 一般来说合法</li>
+                    <li>破解收费软件、去除版权保护 → 违法</li>
+                    <li>修改游戏修改数值外挂 → 违反游戏条款</li>
+                    <li>窃取商业机密 → 严重违法</li>
+                </ul>
+                <div class="highlight-box">建议：只逆向学习用的 App、自己的 App、或开源 App。</div>
+            </div>
+        </div>
+        <div class="slide" data-index="7">
+            <div class="slide-inner">
+                <h2>总结</h2>
+                <ul>
+                    <li>逆向工程 = 拆开 App 看它里面怎么做的</li>
+                    <li>.apk 本质是 ZIP 包，包含 dex 代码和资源</li>
+                    <li>用 jadx / apktool 反编译查看源码</li>
+                    <li>需要 Java 基础 + 逆向工具使用</li>
+                    <li>注意法律边界，不要用于破解或侵权</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="nav-bar">
+        <a class="back-link" href="index.html">← 目录</a>
+        <button id="prevBtn">◀</button>
+        <span class="counter" id="counter">1 / 8</span>
+        <button id="nextBtn">▶</button>
+    </div>
+    <script>
+        const slides = document.querySelectorAll('.slide'); const total = slides.length; let current = 0;
+        function goTo(n) { slides.forEach(s => s.classList.remove('active')); current = (n + total) % total; slides[current].classList.add('active'); document.getElementById('counter').textContent = (current + 1) + ' / ' + total; }
+        document.getElementById('prevBtn').addEventListener('click', () => goTo(current - 1));
+        document.getElementById('nextBtn').addEventListener('click', () => goTo(current + 1));
+        document.addEventListener('keydown', (e) => { if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); goTo(current + 1); } if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); goTo(current - 1); } });
+        document.getElementById('presentation').addEventListener('click', (e) => { if (e.target.closest('.nav-bar') || e.target.closest('.slide-inner')) return; goTo(current + 1); });
+    </script>
+</body>
+</html>

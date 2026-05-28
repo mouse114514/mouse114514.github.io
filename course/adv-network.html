@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>进阶：网络通信原理</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif; background: #0a0f1e; color: #e0e8f0; height: 100vh; overflow: hidden; }
+        .presentation { width: 100%; height: 100vh; position: relative; }
+        .slide { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 60px; opacity: 0; pointer-events: none; transition: opacity 0.4s ease; }
+        .slide.active { opacity: 1; pointer-events: auto; }
+        .slide-inner { max-width: 840px; width: 100%; background: rgba(20, 30, 50, 0.6); backdrop-filter: blur(12px); border: 1px solid rgba(77, 168, 255, 0.2); border-radius: 28px; padding: 44px 54px; box-shadow: 0 0 50px rgba(0,0,0,0.4); max-height: 82vh; overflow-y: auto; }
+        .slide-title .slide-inner { text-align: center; background: rgba(20, 30, 50, 0.4); border-color: rgba(77, 168, 255, 0.15); }
+        .slide-title h1 { font-size: clamp(32px, 5vw, 52px); font-weight: 800; background: linear-gradient(135deg, #4da8ff, #b0e0ff); -webkit-background-clip: text; background-clip: text; color: transparent; line-height: 1.2; margin-bottom: 12px; }
+        .slide-title .sub { font-size: 18px; color: rgba(255,255,255,0.4); }
+        .slide-title .lesson-num { font-size: 14px; color: rgba(255,255,255,0.25); margin-bottom: 18px; letter-spacing: 3px; }
+        .slide h2 { font-size: clamp(22px, 3vw, 32px); font-weight: 700; color: #4da8ff; margin-bottom: 18px; padding-bottom: 10px; border-bottom: 1px solid rgba(77, 168, 255, 0.15); }
+        .slide p { font-size: 17px; line-height: 1.8; margin-bottom: 12px; color: rgba(255,255,255,0.85); }
+        .slide ul { margin: 8px 0 12px 20px; }
+        .slide li { font-size: 16px; line-height: 1.7; margin-bottom: 5px; color: rgba(255,255,255,0.8); }
+        .slide li strong { color: #b0e0ff; }
+        .slide .highlight-box { background: rgba(77, 168, 255, 0.08); border-left: 4px solid #4da8ff; padding: 16px 20px; border-radius: 0 12px 12px 0; margin: 14px 0; font-size: 15px; }
+        .slide .tip-box { background: rgba(255, 200, 0, 0.06); border-left: 4px solid #ffc800; padding: 14px 18px; border-radius: 0 10px 10px 0; margin: 14px 0; font-size: 15px; }
+        .slide code { background: rgba(255,255,255,0.1); padding: 2px 8px; border-radius: 4px; font-size: 14px; }
+        .nav-bar { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 16px; background: rgba(10, 15, 30, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.06); border-radius: 30px; padding: 10px 20px; z-index: 10; }
+        .nav-bar button { background: none; border: none; color: rgba(255,255,255,0.4); font-size: 18px; cursor: pointer; padding: 6px 12px; border-radius: 8px; transition: all 0.2s; }
+        .nav-bar button:hover { color: #fff; background: rgba(255,255,255,0.06); }
+        .nav-bar .counter { font-size: 14px; color: rgba(255,255,255,0.35); min-width: 60px; text-align: center; }
+        .nav-bar .back-link { color: rgba(255,255,255,0.25); text-decoration: none; font-size: 13px; padding: 6px 12px; border-radius: 8px; transition: all 0.2s; }
+        .nav-bar .back-link:hover { color: #fff; background: rgba(255,255,255,0.06); }
+        @media (max-width: 640px) { .slide { padding: 16px; } .slide-inner { padding: 24px 18px; } .nav-bar { padding: 8px 12px; gap: 8px; bottom: 14px; } }
+    </style>
+</head>
+<body>
+    <div class="presentation" id="presentation">
+        <div class="slide slide-title active" data-index="0">
+            <div class="slide-inner">
+                <img src="images/internet-icon.png" alt="网络" style="width:100px;margin-bottom:16px;opacity:0.8">
+                <div class="lesson-num">进阶 · 第四课</div>
+                <h1>网络通信原理</h1>
+                <div class="sub">打开一个网页背后发生了什么？</div>
+            </div>
+        </div>
+        <div class="slide" data-index="1">
+            <div class="slide-inner">
+                <h2>网络的四层模型</h2>
+                <p>网络通信是分层处理的，每一层只关心自己的事：</p>
+                <ul>
+                    <li><strong>应用层</strong> — 你用的软件（HTTP / DNS / SMTP）</li>
+                    <li><strong>传输层</strong> — 确保数据可靠到达（TCP / UDP）</li>
+                    <li><strong>网络层</strong> — 路由和寻址（IP）</li>
+                    <li><strong>链路层</strong> — 物理传输（以太网 / Wi-Fi）</li>
+                </ul>
+                <p>上层的数据被封装进下层的"包裹"里，一层套一层，像俄罗斯套娃。</p>
+            </div>
+        </div>
+        <div class="slide" data-index="2">
+            <div class="slide-inner">
+                <h2>IP 地址</h2>
+                <p>每台联网设备有一个 <strong>IP 地址</strong>，像网络门牌号。</p>
+                <ul>
+                    <li><strong>IPv4</strong> — 32 位，如 <code>192.168.1.1</code>，约 43 亿个</li>
+                    <li><strong>IPv6</strong> — 128 位，解决 IPv4 不够用的问题</li>
+                    <li><strong>公网 IP</strong> — 全球唯一，可直接从互联网访问</li>
+                    <li><strong>内网 IP</strong> — 如 192.168.x.x，只在局域网内有效</li>
+                </ul>
+                <div class="tip-box">命令提示符输入 <code>ipconfig</code> 查看本机 IP。</div>
+            </div>
+        </div>
+        <div class="slide" data-index="3">
+            <div class="slide-inner">
+                <h2>DNS：电话簿</h2>
+                <p>你记不住 IP 地址，所以用域名（<code>baidu.com</code>）。DNS 就是"电话簿"：</p>
+                <ul>
+                    <li>你输入 <code>www.baidu.com</code></li>
+                    <li>系统找 DNS 服务器查这个域名对应哪个 IP</li>
+                    <li>DNS 返回 IP（如 183.232.231.172）</li>
+                    <li>浏览器再用这个 IP 去连接服务器</li>
+                </ul>
+                <div class="highlight-box">查询顺序：浏览器缓存 → 系统缓存 → 路由器缓存 → ISP 的 DNS → 根 DNS → 顶级域 → 权威 DNS</div>
+                <p>试试 <code>nslookup baidu.com</code></p>
+            </div>
+        </div>
+        <div class="slide" data-index="4">
+            <div class="slide-inner">
+                <h2>TCP 三次握手</h2>
+                <p>TCP 是面向连接的协议，传数据前要先<strong>建立连接</strong>：</p>
+                <ul>
+                    <li><strong>SYN</strong> — 客户端 → 服务器："我要连你"</li>
+                    <li><strong>SYN-ACK</strong> — 服务器 → 客户端："好的，我准备好了"</li>
+                    <li><strong>ACK</strong> — 客户端 → 服务器："收到，开始传数据"</li>
+                </ul>
+                <p>这就是"三次握手"。目的是确认双方的发送和接收能力都正常。</p>
+            </div>
+        </div>
+        <div class="slide" data-index="5">
+            <div class="slide-inner">
+                <h2>端口（Port）</h2>
+                <p>IP 地址找到设备，<strong>端口</strong>找到设备上的具体程序：</p>
+                <ul>
+                    <li>一个连接由五元组唯一标识：(源IP, 源端口, 目标IP, 目标端口, 协议)</li>
+                    <li>Web 服务默认用 80（HTTP）或 443（HTTPS）</li>
+                    <li>DNS 用 53，SSH 用 22，远程桌面用 3389</li>
+                </ul>
+                <div class="highlight-box">用 <code>netstat -ano</code> 查看当前系统所有的网络连接和监听端口。</div>
+            </div>
+        </div>
+        <div class="slide" data-index="6">
+            <div class="slide-inner">
+                <h2>打开网页的全过程</h2>
+                <p>你在地址栏输入 <code>www.baidu.com</code>：</p>
+                <ul>
+                    <li>浏览器查缓存（有就直接用）</li>
+                    <li>DNS 解析 → 拿到 IP 地址</li>
+                    <li>TCP 三次握手建立连接</li>
+                    <li>发送 HTTP GET 请求</li>
+                    <li>服务器返回 HTML 页面</li>
+                    <li>浏览器发现页面里还有 CSS、JS、图片</li>
+                    <li>重复以上步骤下载所有资源</li>
+                    <li>渲染引擎把这些拼成一个完整页面</li>
+                </ul>
+            </div>
+        </div>
+        <div class="slide" data-index="7">
+            <div class="slide-inner">
+                <h2>总结</h2>
+                <ul>
+                    <li>网络分层处理，每层关注自己的事</li>
+                    <li>IP 是设备地址，DNS 把域名翻译成 IP</li>
+                    <li>TCP 三次握手建立可靠连接</li>
+                    <li>端口号区分同一设备上的不同程序</li>
+                    <li>打开网页 = DNS + TCP + HTTP + 渲染</li>
+                </ul>
+                <div class="tip-box">按 <span class="key">F12</span> 打开浏览器开发者工具 → 网络标签，能看到每个请求的全过程。</div>
+            </div>
+        </div>
+    </div>
+    <div class="nav-bar">
+        <a class="back-link" href="index.html">← 目录</a>
+        <button id="prevBtn">◀</button>
+        <span class="counter" id="counter">1 / 8</span>
+        <button id="nextBtn">▶</button>
+    </div>
+    <script>
+        const slides = document.querySelectorAll('.slide'); const total = slides.length; let current = 0;
+        function goTo(n) { slides.forEach(s => s.classList.remove('active')); current = (n + total) % total; slides[current].classList.add('active'); document.getElementById('counter').textContent = (current + 1) + ' / ' + total; }
+        document.getElementById('prevBtn').addEventListener('click', () => goTo(current - 1));
+        document.getElementById('nextBtn').addEventListener('click', () => goTo(current + 1));
+        document.addEventListener('keydown', (e) => { if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); goTo(current + 1); } if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); goTo(current - 1); } });
+        document.getElementById('presentation').addEventListener('click', (e) => { if (e.target.closest('.nav-bar') || e.target.closest('.slide-inner')) return; goTo(current + 1); });
+    </script>
+</body>
+</html>

@@ -6,58 +6,314 @@
     <title>课程目录 - X_studio</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Arial', 'Microsoft YaHei', sans-serif; background: #0a0f1e; color: #e0e8f0; line-height: 1.8; padding: 40px 20px; }
-        .container { max-width: 800px; margin: 0 auto; }
-        h1 { font-size: 36px; background: linear-gradient(to right, #4da8ff, #b0e0ff); -webkit-background-clip: text; background-clip: text; color: transparent; margin-bottom: 8px; }
-        .desc { color: rgba(255,255,255,0.5); margin-bottom: 40px; border-bottom: 1px solid rgba(77, 168, 255, 0.2); padding-bottom: 15px; }
-        .lesson-list { display: flex; flex-direction: column; gap: 15px; }
-        .lesson { background: rgba(20, 30, 50, 0.6); backdrop-filter: blur(12px); border: 1px solid rgba(77, 168, 255, 0.25); border-radius: 20px; padding: 20px 25px; transition: all 0.3s; cursor: pointer; text-decoration: none; color: inherit; display: block; }
-        .lesson:hover { border-color: #4da8ff; background: rgba(77, 168, 255, 0.1); box-shadow: 0 0 25px rgba(77, 168, 255, 0.15); transform: translateX(5px); }
-        .lesson .num { font-size: 14px; color: #4da8ff; font-weight: bold; }
-        .lesson .title { font-size: 20px; font-weight: bold; margin: 4px 0; }
-        .lesson .brief { font-size: 15px; color: rgba(255,255,255,0.6); }
-        .back { display: inline-block; margin-top: 30px; color: rgba(255,255,255,0.5); text-decoration: none; padding: 10px 20px; border: 1px solid rgba(255,255,255,0.2); border-radius: 20px; transition: all 0.3s; }
-        .back:hover { color: white; border-color: rgba(255,255,255,0.4); }
-        @media (max-width: 600px) { h1 { font-size: 26px; } .lesson { padding: 15px 18px; } }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif; background: #0a0f1e; color: #e0e8f0; line-height: 1.8; padding: 40px 20px; }
+        .container { max-width: 860px; margin: 0 auto; }
+        h1 { font-size: 36px; background: linear-gradient(135deg, #4da8ff, #b0e0ff); -webkit-background-clip: text; background-clip: text; color: transparent; margin-bottom: 6px; }
+        .desc { color: rgba(255,255,255,0.4); margin-bottom: 30px; border-bottom: 1px solid rgba(77, 168, 255, 0.12); padding-bottom: 14px; font-size: 15px; }
+
+        /* Tabs */
+        .tabs { display: flex; gap: 0; margin-bottom: 30px; background: rgba(20, 30, 50, 0.4); border-radius: 14px; padding: 4px; max-width: 280px; }
+        .tab { flex: 1; text-align: center; padding: 10px 0; cursor: pointer; border-radius: 10px; transition: all 0.25s; font-size: 15px; font-weight: 500; user-select: none; }
+        .tab.active { background: #4da8ff; color: #fff; box-shadow: 0 0 20px rgba(77, 168, 255, 0.3); }
+        .tab:not(.active) { color: rgba(255,255,255,0.4); }
+        .tab:not(.active):hover { color: rgba(255,255,255,0.7); }
+        .tab .count { font-size: 12px; opacity: 0.6; margin-left: 4px; }
+
+        /* Tree */
+        .tree { position: relative; padding-left: 10px; }
+        .tree::before { content: ''; position: absolute; left: 24px; top: 0; bottom: 0; width: 1px; background: rgba(77, 168, 255, 0.1); }
+
+        .branch { margin-bottom: 4px; }
+        .branch-header { display: flex; align-items: center; gap: 10px; padding: 14px 18px; cursor: pointer; border-radius: 14px; transition: all 0.25s; user-select: none; border: 1px solid transparent; }
+        .branch-header:hover { background: rgba(77, 168, 255, 0.06); border-color: rgba(77, 168, 255, 0.12); }
+        .branch-header .arrow { font-size: 12px; color: rgba(255,255,255,0.3); transition: transform 0.25s; width: 16px; text-align: center; flex-shrink: 0; }
+        .branch.open .branch-header .arrow { transform: rotate(90deg); }
+        .branch-header .icon { font-size: 20px; width: 28px; text-align: center; flex-shrink: 0; }
+        .branch-header .label { font-size: 17px; font-weight: 600; }
+        .branch-header .tags { display: flex; gap: 6px; margin-left: auto; }
+        .branch-header .tag { font-size: 11px; padding: 1px 10px; border-radius: 20px; background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.3); }
+        .branch-header .tag.basic { background: rgba(77, 168, 255, 0.12); color: #4da8ff; }
+        .branch-header .tag.advanced { background: rgba(255, 180, 50, 0.12); color: #ffb432; }
+
+        .branch-body { overflow: hidden; max-height: 0; transition: max-height 0.4s ease, opacity 0.3s ease; opacity: 0; padding-left: 36px; }
+        .branch.open .branch-body { max-height: 1200px; opacity: 1; }
+
+        .lesson-item { display: none; align-items: center; gap: 10px; padding: 11px 14px; margin: 3px 0; border-radius: 10px; text-decoration: none; color: inherit; transition: all 0.2s; position: relative; }
+        .lesson-item::before { content: ''; position: absolute; left: -18px; top: 50%; width: 14px; height: 1px; background: rgba(77, 168, 255, 0.10); }
+        .lesson-item:hover { background: rgba(77, 168, 255, 0.08); transform: translateX(4px); }
+        .lesson-item.visible { display: flex; }
+        .lesson-item .num { font-size: 12px; color: #4da8ff; font-weight: 700; min-width: 48px; flex-shrink: 0; }
+        .lesson-item .title { font-size: 15px; font-weight: 500; }
+        .lesson-item .brief { font-size: 13px; color: rgba(255,255,255,0.3); margin-left: auto; white-space: nowrap; }
+        .lesson-item .diff { font-size: 10px; padding: 1px 8px; border-radius: 10px; flex-shrink: 0; }
+        .lesson-item .diff.basic { background: rgba(77, 168, 255, 0.15); color: #4da8ff; }
+        .lesson-item .diff.adv { background: rgba(255, 180, 50, 0.15); color: #ffb432; }
+
+        .back { display: inline-block; margin-top: 40px; color: rgba(255,255,255,0.3); text-decoration: none; padding: 10px 20px; border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; transition: all 0.3s; font-size: 14px; }
+        .back:hover { color: white; border-color: rgba(255,255,255,0.3); }
+
+        .empty-msg { display: none; padding: 20px 14px; color: rgba(255,255,255,0.2); font-size: 14px; font-style: italic; }
+        .empty-msg.visible { display: block; }
+
+        @media (max-width: 600px) {
+            h1 { font-size: 26px; }
+            .branch-header { padding: 12px 14px; }
+            .lesson-item .brief { display: none; }
+            .tabs { max-width: 100%; }
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>课程目录</h1>
-        <div class="desc">零基础学电脑——从会用到懂一点</div>
-        <div class="lesson-list">
-            <a class="lesson" href="01-windows.html">
-                <div class="num">第1课</div>
-                <div class="title">认识 Windows 系统</div>
-                <div class="brief">系统是什么、各版本的区别、桌面各部分的功能</div>
-            </a>
-            <a class="lesson" href="02-keyboard-focus.html">
-                <div class="num">第2课</div>
-                <div class="title">键盘快捷键与窗口焦点</div>
-                <div class="brief">打字跑错地方怎么办、最实用的快捷键、窗口切换</div>
-            </a>
-            <a class="lesson" href="03-task-manager.html">
-                <div class="num">第3课</div>
-                <div class="title">任务管理器与电脑卡顿</div>
-                <div class="brief">电脑变慢是谁在偷跑、结束卡死程序、关掉开机自启</div>
-            </a>
-            <a class="lesson" href="04-files-basics.html">
-                <div class="num">第4课</div>
-                <div class="title">文件与文件夹的那些事儿</div>
-                <div class="brief">扩展名、复制粘贴删除、回收站的秘密、搜索文件</div>
-            </a>
-            <a class="lesson" href="05-software-basics.html">
-                <div class="num">第5课</div>
-                <div class="title">软件安装与避坑</div>
-                <div class="brief">从哪下载才安全、安装时注意什么、如何正确卸载</div>
-            </a>
-            <a class="lesson" href="06-internet-safety.html">
-                <div class="num">第6课</div>
-                <div class="title">上网安全与隐私</div>
-                <div class="brief">锁头标志、钓鱼网站、密码设置、公共Wi-Fi风险</div>
-            </a>
+        <h1>📚 课程目录</h1>
+        <div class="desc">按板块学习，切换难度查看对应课程</div>
+
+        <div class="tabs" id="tabs">
+            <div class="tab active" data-level="basic" onclick="switchLevel('basic')">🌱 基础 <span class="count" id="basicCount"></span></div>
+            <div class="tab" data-level="advanced" onclick="switchLevel('advanced')">🚀 进阶 <span class="count" id="advCount"></span></div>
         </div>
+
+        <div class="tree" id="tree">
+
+            <!-- Windows 系统 -->
+            <div class="branch open" data-branch="windows">
+                <div class="branch-header" onclick="toggleBranch(this)">
+                    <span class="arrow">▶</span>
+                    <span class="icon">🪟</span>
+                    <span class="label">Windows 系统相关</span>
+                    <div class="tags">
+                        <span class="tag basic" id="tag-windows-basic">基础</span>
+                        <span class="tag advanced" id="tag-windows-adv">进阶</span>
+                    </div>
+                </div>
+                <div class="branch-body">
+                    <a class="lesson-item visible" data-level="basic" href="01-windows.html">
+                        <span class="num">第1课</span>
+                        <span class="title">认识 Windows 系统</span>
+                        <span class="diff basic">基础</span>
+                        <span class="brief">系统概念、版本演变</span>
+                    </a>
+                    <a class="lesson-item visible" data-level="basic" href="02-keyboard-focus.html">
+                        <span class="num">第2课</span>
+                        <span class="title">键盘快捷键与窗口焦点</span>
+                        <span class="diff basic">基础</span>
+                        <span class="brief">焦点机制、快捷键</span>
+                    </a>
+                    <a class="lesson-item visible" data-level="basic" href="03-task-manager.html">
+                        <span class="num">第3课</span>
+                        <span class="title">任务管理器与电脑卡顿</span>
+                        <span class="diff basic">基础</span>
+                        <span class="brief">卡顿排查、结束任务</span>
+                    </a>
+                    <a class="lesson-item visible" data-level="basic" href="04-files-basics.html">
+                        <span class="num">第4课</span>
+                        <span class="title">文件与文件夹的那些事儿</span>
+                        <span class="diff basic">基础</span>
+                        <span class="brief">扩展名、回收站</span>
+                    </a>
+                    <a class="lesson-item visible" data-level="basic" href="05-software-basics.html">
+                        <span class="num">第5课</span>
+                        <span class="title">软件安装与避坑</span>
+                        <span class="diff basic">基础</span>
+                        <span class="brief">下载安装注意事项</span>
+                    </a>
+                    <a class="lesson-item visible" data-level="basic" href="06-internet-safety.html">
+                        <span class="num">第6课</span>
+                        <span class="title">上网安全与隐私</span>
+                        <span class="diff basic">基础</span>
+                        <span class="brief">钓鱼网站、密码保护</span>
+                    </a>
+                    <a class="lesson-item visible" data-level="basic" href="prac-backup.html">
+                        <span class="num">第7课</span>
+                        <span class="title">系统备份与还原</span>
+                        <span class="diff basic">基础</span>
+                        <span class="brief">还原点、重装系统</span>
+                    </a>
+                    <a class="lesson-item visible" data-level="basic" href="prac-hardware.html">
+                        <span class="num">第8课</span>
+                        <span class="title">认识电脑硬件</span>
+                        <span class="diff basic">基础</span>
+                        <span class="brief">CPU/内存/硬盘/显卡</span>
+                    </a>
+                    <a class="lesson-item visible" data-level="basic" href="prac-troubleshoot.html">
+                        <span class="num">第9课</span>
+                        <span class="title">常见故障排查</span>
+                        <span class="diff basic">基础</span>
+                        <span class="brief">重启、蓝屏、断网</span>
+                    </a>
+
+                    <a class="lesson-item" data-level="advanced" href="adv-process-message.html">
+                        <span class="num">第1课</span>
+                        <span class="title">进程、窗口与消息机制</span>
+                        <span class="diff adv">进阶</span>
+                        <span class="brief">消息队列、卡死原理</span>
+                    </a>
+                    <a class="lesson-item" data-level="advanced" href="adv-filesystem.html">
+                        <span class="num">第2课</span>
+                        <span class="title">文件系统原理</span>
+                        <span class="diff adv">进阶</span>
+                        <span class="brief">NTFS、MFT、ACL</span>
+                    </a>
+                    <a class="lesson-item" data-level="advanced" href="adv-registry.html">
+                        <span class="num">第3课</span>
+                        <span class="title">软件安装与注册表</span>
+                        <span class="diff adv">进阶</span>
+                        <span class="brief">注册表结构、服务</span>
+                    </a>
+                    <a class="lesson-item" data-level="advanced" href="adv-network.html">
+                        <span class="num">第4课</span>
+                        <span class="title">网络通信原理</span>
+                        <span class="diff adv">进阶</span>
+                        <span class="brief">TCP/IP、DNS、端口</span>
+                    </a>
+                    <a class="lesson-item" data-level="advanced" href="adv-command-line.html">
+                        <span class="num">第5课</span>
+                        <span class="title">命令行入门</span>
+                        <span class="diff adv">进阶</span>
+                        <span class="brief">CMD 常用命令</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Godot 游戏开发 -->
+            <div class="branch" data-branch="godot">
+                <div class="branch-header" onclick="toggleBranch(this)">
+                    <span class="arrow">▶</span>
+                    <span class="icon">🎮</span>
+                    <span class="label">Godot 游戏开发</span>
+                    <div class="tags">
+                        <span class="tag basic" id="tag-godot-basic">基础</span>
+                    </div>
+                </div>
+                <div class="branch-body">
+                    <a class="lesson-item" data-level="basic" href="godot-intro.html">
+                        <span class="num">第1课</span>
+                        <span class="title">Godot 引擎简介与安装</span>
+                        <span class="diff basic">基础</span>
+                        <span class="brief">什么是 Godot，下载安装</span>
+                    </a>
+                    <div class="empty-msg" data-level="advanced">⏳ 进阶课程筹备中</div>
+                </div>
+            </div>
+
+            <!-- Python 游戏开发 -->
+            <div class="branch" data-branch="python">
+                <div class="branch-header" onclick="toggleBranch(this)">
+                    <span class="arrow">▶</span>
+                    <span class="icon">🐍</span>
+                    <span class="label">Python 游戏开发</span>
+                    <div class="tags">
+                        <span class="tag basic" id="tag-python-basic">基础</span>
+                    </div>
+                </div>
+                <div class="branch-body">
+                    <a class="lesson-item" data-level="basic" href="python-intro.html">
+                        <span class="num">第1课</span>
+                        <span class="title">Python 简介与安装</span>
+                        <span class="diff basic">基础</span>
+                        <span class="brief">Python 是什么，搭建环境</span>
+                    </a>
+                    <div class="empty-msg" data-level="advanced">⏳ 进阶课程筹备中</div>
+                </div>
+            </div>
+
+            <!-- 安卓逆向工程 -->
+            <div class="branch" data-branch="android">
+                <div class="branch-header" onclick="toggleBranch(this)">
+                    <span class="arrow">▶</span>
+                    <span class="icon">📱</span>
+                    <span class="label">安卓逆向工程</span>
+                    <div class="tags">
+                        <span class="tag basic" id="tag-android-basic">基础</span>
+                    </div>
+                </div>
+                <div class="branch-body">
+                    <a class="lesson-item" data-level="basic" href="android-intro.html">
+                        <span class="num">第1课</span>
+                        <span class="title">什么是逆向工程</span>
+                        <span class="diff basic">基础</span>
+                        <span class="brief">概念、应用场景与工具</span>
+                    </a>
+                    <div class="empty-msg" data-level="advanced">⏳ 进阶课程筹备中</div>
+                </div>
+            </div>
+
+            <!-- Web 前端 -->
+            <div class="branch" data-branch="web-frontend">
+                <div class="branch-header" onclick="toggleBranch(this)">
+                    <span class="arrow">▶</span>
+                    <span class="icon">🌐</span>
+                    <span class="label">Web 前端</span>
+                    <div class="tags">
+                        <span class="tag basic" id="tag-web-frontend-basic">基础</span>
+                    </div>
+                </div>
+                <div class="branch-body">
+                    <a class="lesson-item" data-level="basic" href="web-frontend-intro.html">
+                        <span class="num">第1课</span>
+                        <span class="title">网页是怎么工作的</span>
+                        <span class="diff basic">基础</span>
+                        <span class="brief">HTML/CSS/JS 入门</span>
+                    </a>
+                    <div class="empty-msg" data-level="advanced">⏳ 进阶课程筹备中</div>
+                </div>
+            </div>
+
+            <!-- Web 后端 -->
+            <div class="branch" data-branch="web-backend">
+                <div class="branch-header" onclick="toggleBranch(this)">
+                    <span class="arrow">▶</span>
+                    <span class="icon">⚙️</span>
+                    <span class="label">Web 后端</span>
+                    <div class="tags">
+                        <span class="tag basic" id="tag-web-backend-basic">基础</span>
+                    </div>
+                </div>
+                <div class="branch-body">
+                    <a class="lesson-item" data-level="basic" href="web-backend-intro.html">
+                        <span class="num">第1课</span>
+                        <span class="title">什么是后端</span>
+                        <span class="diff basic">基础</span>
+                        <span class="brief">服务器、API、数据库</span>
+                    </a>
+                    <div class="empty-msg" data-level="advanced">⏳ 进阶课程筹备中</div>
+                </div>
+            </div>
+
+        </div>
+
         <a class="back" href="../index.html">← 返回首页</a>
     </div>
+
+    <script>
+        let currentLevel = 'basic';
+
+        function switchLevel(level) {
+            currentLevel = level;
+            document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.level === level));
+            document.querySelectorAll('.lesson-item').forEach(item => {
+                item.classList.toggle('visible', item.dataset.level === level);
+            });
+            document.querySelectorAll('.empty-msg').forEach(msg => {
+                msg.classList.toggle('visible', msg.dataset.level === level);
+            });
+            updateCounts();
+        }
+
+        function toggleBranch(header) {
+            header.parentElement.classList.toggle('open');
+        }
+
+        function updateCounts() {
+            const basic = document.querySelectorAll('.lesson-item[data-level="basic"]').length;
+            const adv = document.querySelectorAll('.lesson-item[data-level="advanced"]').length;
+            document.getElementById('basicCount').textContent = basic;
+            document.getElementById('advCount').textContent = adv;
+        }
+
+        updateCounts();
+        // Auto-open Windows branch
+        document.querySelector('.branch').classList.add('open');
+    </script>
 </body>
 </html>
