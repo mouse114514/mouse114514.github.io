@@ -2,6 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
+    <link rel="icon" type="image/png" href="/favicon.png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>什么是逆向工程</title>
     <style>
@@ -35,80 +36,80 @@
     <div class="presentation" id="presentation">
         <div class="slide slide-title active" data-index="0">
             <div class="slide-inner">
-                <div class="lesson-num">安卓逆向 · 第1课</div>
+                <div class="lesson-num">安卓逆向 · �?�?/div>
                 <h1>什么是逆向工程</h1>
-                <div class="sub">看到 App 的"内部"</div>
+                <div class="sub">看到 App �?内部"</div>
             </div>
         </div>
         <div class="slide" data-index="1">
             <div class="slide-inner">
                 <h2>正向 vs 逆向</h2>
-                <p><strong>正向开发</strong>：你写代码 → 编译成 App → 装到手机上运行</p>
-                <p><strong>逆向工程</strong>：拿一个别人的 App → 反编译 → 看它的源码和资源</p>
-                <p>就像乐高：正向是照着图纸搭，逆向是把搭好的拆了看它怎么拼的。</p>
+                <p><strong>正向开�?/strong>：你写代�?�?编译�?App �?装到手机上运�?/p>
+                <p><strong>逆向工程</strong>：拿一个别人的 App �?反编�?�?看它的源码和资源</p>
+                <p>就像乐高：正向是照着图纸搭，逆向是把搭好的拆了看它怎么拼的�?/p>
             </div>
         </div>
         <div class="slide" data-index="2">
             <div class="slide-inner">
                 <h2>逆向能做什么？</h2>
                 <ul>
-                    <li><strong>学习优秀 App 的实现</strong> — 看大神怎么写的</li>
-                    <li><strong>分析恶意软件</strong> — 看病毒在做什么</li>
-                    <li><strong>修改 App 功能</strong> — 如汉化、去广告、修改游戏数值</li>
-                    <li><strong>安全研究</strong> — 找漏洞、做渗透测试</li>
-                    <li><strong>恢复丢失的源码</strong> — 用工具反编译 APK 看逻辑</li>
+                    <li><strong>学习优秀 App 的实�?/strong> �?看大神怎么写的</li>
+                    <li><strong>分析恶意软件</strong> �?看病毒在做什�?/li>
+                    <li><strong>修改 App 功能</strong> �?如汉化、去广告、修改游戏数�?/li>
+                    <li><strong>安全研究</strong> �?找漏洞、做渗透测�?/li>
+                    <li><strong>恢复丢失的源�?/strong> �?用工具反编译 APK 看逻辑</li>
                 </ul>
             </div>
         </div>
         <div class="slide" data-index="3">
             <div class="slide-inner">
-                <h2>安卓 App 的打包格式</h2>
-                <p>安卓 App 的文件是 <strong>.apk</strong>（Android Package Kit）。</p>
-                <p>它其实就是一个<strong>压缩包</strong>（ZIP 格式），里面包含：</p>
+                <h2>安卓 App 的打包格�?/h2>
+                <p>安卓 App 的文件是 <strong>.apk</strong>（Android Package Kit）�?/p>
+                <p>它其实就是一�?strong>压缩�?/strong>（ZIP 格式），里面包含�?/p>
                 <ul>
-                    <li><code>classes.dex</code> — 编译后的代码（Dalvik 字节码）</li>
-                    <li><code>AndroidManifest.xml</code> — 配置信息</li>
-                    <li><code>res/</code> — 资源（图片、布局文件）</li>
-                    <li><code>lib/</code> — 原生库（C++ 写的代码）</li>
-                    <li><code>META-INF/</code> — 签名信息</li>
+                    <li><code>classes.dex</code> �?编译后的代码（Dalvik 字节码）</li>
+                    <li><code>AndroidManifest.xml</code> �?配置信息</li>
+                    <li><code>res/</code> �?资源（图片、布局文件�?/li>
+                    <li><code>lib/</code> �?原生库（C++ 写的代码�?/li>
+                    <li><code>META-INF/</code> �?签名信息</li>
                 </ul>
             </div>
         </div>
         <div class="slide" data-index="4">
             <div class="slide-inner">
                 <h2>反编译是什么？</h2>
-                <p>App 编译后变成了 <strong>.dex 字节码</strong>——人看不懂的二进制代码。</p>
-                <p><strong>反编译</strong>就是把字节码转回人能读懂的代码：</p>
+                <p>App 编译后变成了 <strong>.dex 字节�?/strong>——人看不懂的二进制代码�?/p>
+                <p><strong>反编�?/strong>就是把字节码转回人能读懂的代码：</p>
                 <ul>
-                    <li>把 .dex → 转成 .jar → 转成 Java 代码（近似源码）</li>
-                    <li>或者转成 Smali 汇编（一种比 Java 底层的人读代码）</li>
+                    <li>�?.dex �?转成 .jar �?转成 Java 代码（近似源码）</li>
+                    <li>或者转�?Smali 汇编（一种比 Java 底层的人读代码）</li>
                 </ul>
-                <div class="highlight-box">常用工具：<strong>jadx</strong>（把 APK 转成 Java 代码，图形界面）、<strong>apktool</strong>（解包+反编译资源）</div>
+                <div class="highlight-box">常用工具�?strong>jadx</strong>（把 APK 转成 Java 代码，图形界面）�?strong>apktool</strong>（解�?反编译资源）</div>
             </div>
         </div>
         <div class="slide" data-index="5">
             <div class="slide-inner">
-                <h2>逆向需要什么基础？</h2>
+                <h2>逆向需要什么基础�?/h2>
                 <ul>
-                    <li>至少会 <strong>Java 或 Kotlin</strong>（安卓开发语言）</li>
-                    <li>了解 <strong>Smali 汇编</strong>（做修改时用得到）</li>
-                    <li>会用 <strong>jadx</strong>、<strong>apktool</strong>、<strong>Android Studio</strong></li>
-                    <li>懂一点<strong>网络协议</strong>（抓包分析 API 调用）</li>
+                    <li>至少�?<strong>Java �?Kotlin</strong>（安卓开发语言�?/li>
+                    <li>了解 <strong>Smali 汇编</strong>（做修改时用得到�?/li>
+                    <li>会用 <strong>jadx</strong>�?strong>apktool</strong>�?strong>Android Studio</strong></li>
+                    <li>懂一�?strong>网络协议</strong>（抓包分�?API 调用�?/li>
                 </ul>
-                <div class="highlight-box">如果你完全没编程基础，建议先学 Python 或 Java 基础再入门逆向。</div>
+                <div class="highlight-box">如果你完全没编程基础，建议先�?Python �?Java 基础再入门逆向�?/div>
             </div>
         </div>
         <div class="slide" data-index="6">
             <div class="slide-inner">
-                <h2>法律与道德</h2>
+                <h2>法律与道�?/h2>
                 <div class="warn-box">⚠️ 逆向他人 App 可能违反用户协议和法律法规！</div>
                 <ul>
-                    <li>逆向学习、安全研究 → 一般来说合法</li>
-                    <li>破解收费软件、去除版权保护 → 违法</li>
-                    <li>修改游戏修改数值外挂 → 违反游戏条款</li>
-                    <li>窃取商业机密 → 严重违法</li>
+                    <li>逆向学习、安全研�?�?一般来说合�?/li>
+                    <li>破解收费软件、去除版权保�?�?违法</li>
+                    <li>修改游戏修改数值外�?�?违反游戏条款</li>
+                    <li>窃取商业机密 �?严重违法</li>
                 </ul>
-                <div class="highlight-box">建议：只逆向学习用的 App、自己的 App、或开源 App。</div>
+                <div class="highlight-box">建议：只逆向学习用的 App、自己的 App、或开�?App�?/div>
             </div>
         </div>
         <div class="slide" data-index="7">
@@ -116,19 +117,19 @@
                 <h2>总结</h2>
                 <ul>
                     <li>逆向工程 = 拆开 App 看它里面怎么做的</li>
-                    <li>.apk 本质是 ZIP 包，包含 dex 代码和资源</li>
-                    <li>用 jadx / apktool 反编译查看源码</li>
-                    <li>需要 Java 基础 + 逆向工具使用</li>
+                    <li>.apk 本质�?ZIP 包，包含 dex 代码和资�?/li>
+                    <li>�?jadx / apktool 反编译查看源�?/li>
+                    <li>需�?Java 基础 + 逆向工具使用</li>
                     <li>注意法律边界，不要用于破解或侵权</li>
                 </ul>
             </div>
         </div>
     </div>
     <div class="nav-bar">
-        <a class="back-link" href="index.html">← 目录</a>
+        <a class="back-link" href="index.html">�?目录</a>
         <button id="prevBtn">◀</button>
         <span class="counter" id="counter">1 / 8</span>
-        <button id="nextBtn">▶</button>
+        <button id="nextBtn">�?/button>
     </div>
     <script>
         const slides = document.querySelectorAll('.slide'); const total = slides.length; let current = 0;

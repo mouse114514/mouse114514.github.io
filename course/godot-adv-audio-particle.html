@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Godot 音效与特效</title><style>
+<html><head><meta charset="UTF-8">
+    <link rel="icon" type="image/png" href="/favicon.png"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Godot 音效与特�?/title><style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',sans-serif;background:#0a0f1e;color:#e0e8f0;height:100vh;overflow:hidden}
 .presentation{width:100%;height:100vh;position:relative}
@@ -27,16 +28,16 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',s
 @media(max-width:640px){.slide{padding:16px}.slide-inner{padding:24px 18px}.nav-bar{padding:8px 12px;gap:8px;bottom:14px}}
 </style></head>
 <body><div class="presentation" id="presentation">
-<div class="slide slide-title active" data-index="0"><div class="slide-inner"><div class="lesson-num">Godot · 进阶第3课</div><h1>音效与特效</h1><div class="sub">让游戏更好听更好看</div></div></div>
-<div class="slide" data-index="1"><div class="slide-inner"><h2>AudioStreamPlayer</h2><p>播放音效的最基本节点。<br>拖入一个 .mp3 或 .ogg 文件到 Stream 属性。</p><p>代码控制：</p><p><code>$AudioStreamPlayer.play()</code> ← 播放</p><p><code>$AudioStreamPlayer.stop()</code> ← 停止</p><p><code>$AudioStreamPlayer.pitch_scale = 1.5</code> ← 变速变调</p><p><code>$AudioStreamPlayer.volume_db = -10</code> ← 音量（分贝）</p></div></div>
-<div class="slide" data-index="2"><div class="slide-inner"><h2>音频文件格式</h2><ul><li><strong>.mp3</strong> — 压缩率高，适合音乐</li><li><strong>.ogg</strong> — 开源格式，Godot 原生支持</li><li><strong>.wav</strong> — 无损，适合短音效</li></ul><div class="tip-box">短音效（开枪、跳跃）用 .wav，长背景音乐用 .ogg。</div></div></div>
-<div class="slide" data-index="3"><div class="slide-inner"><h2>AudioStreamPlayer2D</h2><p>2D 空间音效——声源在游戏世界里，有立体感：</p><ul><li><strong>距离越远声音越小</strong></li><li><strong>在左边播放 → 左声道响</strong></li><li>设置 <strong>Max Distance</strong> 控制可听范围</li></ul><p>适合脚步声、枪声、环境音效。</p></div></div>
-<div class="slide" data-index="4"><div class="slide-inner"><h2>粒子系统 GPUParticles2D</h2><p>粒子效果：火焰、烟雾、爆炸、星光。</p><ul><li>创建 <strong>GPUParticles2D</strong> 节点</li><li><strong>Amount</strong> — 粒子数量</li><li><strong>Lifetime</strong> — 每个粒子存在秒数</li><li><strong>速度 / 方向 / 旋转</strong> — 粒子运动参数</li><li><strong>Material → ParticleProcessMaterial</strong> — 颜色渐变</li></ul></div></div>
-<div class="slide" data-index="5"><div class="slide-inner"><h2>粒子发射控制</h2><p><code>$GPUParticles2D.emitting = true</code> ← 开始发射</p><p><code>$GPUParticles2D.emitting = false</code> ← 停止发射</p><p><code>$GPUParticles2D.one_shot = true</code> ← 只喷一次（爆炸效果）</p><p>爆炸效果：one_shot = true → 调用 emitting = true → 等粒子全部消失后自动停止。</p></div></div>
-<div class="slide" data-index="6"><div class="slide-inner"><h2>Tween 过渡动画</h2><p>Tween 让属性平滑变化：</p><p><code>var tween = create_tween()</code></p><p><code>tween.tween_property($Sprite, "modulate:a", 0, 0.5)</code> ← 渐隐</p><p><code>tween.tween_property($Sprite, "scale", Vector2(2,2), 1.0)</code> ← 放大</p><p><code>tween.tween_property($Node2D, "position", Vector2(100,0), 0.3)</code> ← 滑动</p></div></div>
-<div class="slide" data-index="7"><div class="slide-inner"><h2>总结</h2><ul><li>AudioStreamPlayer 播放音效，play()/stop()/pitch_scale</li><li>AudioStreamPlayer2D 实现空间音效（左/右/远/近）</li><li>GPUParticles2D 做火焰/爆炸等粒子效果</li><li>Tween 创建平滑过渡动画（移动/缩放/渐隐）</li></ul></div></div>
+<div class="slide slide-title active" data-index="0"><div class="slide-inner"><div class="lesson-num">Godot · 进阶�?�?/div><h1>音效与特�?/h1><div class="sub">让游戏更好听更好�?/div></div></div>
+<div class="slide" data-index="1"><div class="slide-inner"><h2>AudioStreamPlayer</h2><p>播放音效的最基本节点�?br>拖入一�?.mp3 �?.ogg 文件�?Stream 属性�?/p><p>代码控制�?/p><p><code>$AudioStreamPlayer.play()</code> �?播放</p><p><code>$AudioStreamPlayer.stop()</code> �?停止</p><p><code>$AudioStreamPlayer.pitch_scale = 1.5</code> �?变速变�?/p><p><code>$AudioStreamPlayer.volume_db = -10</code> �?音量（分贝）</p></div></div>
+<div class="slide" data-index="2"><div class="slide-inner"><h2>音频文件格式</h2><ul><li><strong>.mp3</strong> �?压缩率高，适合音乐</li><li><strong>.ogg</strong> �?开源格式，Godot 原生支持</li><li><strong>.wav</strong> �?无损，适合短音�?/li></ul><div class="tip-box">短音效（开枪、跳跃）�?.wav，长背景音乐�?.ogg�?/div></div></div>
+<div class="slide" data-index="3"><div class="slide-inner"><h2>AudioStreamPlayer2D</h2><p>2D 空间音效——声源在游戏世界里，有立体感�?/p><ul><li><strong>距离越远声音越小</strong></li><li><strong>在左边播�?�?左声道响</strong></li><li>设置 <strong>Max Distance</strong> 控制可听范围</li></ul><p>适合脚步声、枪声、环境音效�?/p></div></div>
+<div class="slide" data-index="4"><div class="slide-inner"><h2>粒子系统 GPUParticles2D</h2><p>粒子效果：火焰、烟雾、爆炸、星光�?/p><ul><li>创建 <strong>GPUParticles2D</strong> 节点</li><li><strong>Amount</strong> �?粒子数量</li><li><strong>Lifetime</strong> �?每个粒子存在秒数</li><li><strong>速度 / 方向 / 旋转</strong> �?粒子运动参数</li><li><strong>Material �?ParticleProcessMaterial</strong> �?颜色渐变</li></ul></div></div>
+<div class="slide" data-index="5"><div class="slide-inner"><h2>粒子发射控制</h2><p><code>$GPUParticles2D.emitting = true</code> �?开始发�?/p><p><code>$GPUParticles2D.emitting = false</code> �?停止发射</p><p><code>$GPUParticles2D.one_shot = true</code> �?只喷一次（爆炸效果�?/p><p>爆炸效果：one_shot = true �?调用 emitting = true �?等粒子全部消失后自动停止�?/p></div></div>
+<div class="slide" data-index="6"><div class="slide-inner"><h2>Tween 过渡动画</h2><p>Tween 让属性平滑变化：</p><p><code>var tween = create_tween()</code></p><p><code>tween.tween_property($Sprite, "modulate:a", 0, 0.5)</code> �?渐隐</p><p><code>tween.tween_property($Sprite, "scale", Vector2(2,2), 1.0)</code> �?放大</p><p><code>tween.tween_property($Node2D, "position", Vector2(100,0), 0.3)</code> �?滑动</p></div></div>
+<div class="slide" data-index="7"><div class="slide-inner"><h2>总结</h2><ul><li>AudioStreamPlayer 播放音效，play()/stop()/pitch_scale</li><li>AudioStreamPlayer2D 实现空间音效（左/�?�?近）</li><li>GPUParticles2D 做火�?爆炸等粒子效�?/li><li>Tween 创建平滑过渡动画（移�?缩放/渐隐�?/li></ul></div></div>
 </div>
-<div class="nav-bar"><a class="back-link" href="index.html">← 目录</a><button id="prevBtn">◀</button><span class="counter" id="counter">1 / 8</span><button id="nextBtn">▶</button></div>
+<div class="nav-bar"><a class="back-link" href="index.html">�?目录</a><button id="prevBtn">◀</button><span class="counter" id="counter">1 / 8</span><button id="nextBtn">�?/button></div>
 <script>
 const slides=document.querySelectorAll('.slide'),total=slides.length;let current=0;
 function goTo(n){slides.forEach(s=>s.classList.remove('active'));current=(n+total)%total;slides[current].classList.add('active');document.getElementById('counter').textContent=(current+1)+' / '+total}

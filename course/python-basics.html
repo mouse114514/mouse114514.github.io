@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Python 基础语法</title><style>
+<html><head><meta charset="UTF-8">
+    <link rel="icon" type="image/png" href="/favicon.png"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Python 基础语法</title><style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',sans-serif;background:#0a0f1e;color:#e0e8f0;height:100vh;overflow:hidden}
 .presentation{width:100%;height:100vh;position:relative}
@@ -27,16 +28,16 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',s
 @media(max-width:640px){.slide{padding:16px}.slide-inner{padding:24px 18px}.nav-bar{padding:8px 12px;gap:8px;bottom:14px}}
 </style></head>
 <body><div class="presentation" id="presentation">
-<div class="slide slide-title active" data-index="0"><div class="slide-inner"><div class="lesson-num">Python · 第2课</div><h1>Python 基础语法</h1><div class="sub">编程的第一行代码</div></div></div>
-<div class="slide" data-index="1"><div class="slide-inner"><h2>Hello World</h2><p>打开上一课装好的 Thonny 或 IDLE，输入：</p><p><code>print("Hello World")</code></p><p>按回车 → 屏幕上显示 Hello World</p><div class="highlight-box">print() 是 Python 的"说话"函数，括号里写什么，屏幕上就显示什么。</div></div></div>
-<div class="slide" data-index="2"><div class="slide-inner"><h2>变量</h2><p>变量用来存数据：</p><p><code>name = "小明"</code> ← 字符串</p><p><code>age = 12</code> ← 整数</p><p><code>score = 95.5</code> ← 小数（浮点数）</p><p><code>is_alive = True</code> ← 布尔值</p><p>然后用 print 打印：<code>print(name)</code> → 显示"小明"</p></div></div>
-<div class="slide" data-index="3"><div class="slide-inner"><h2>输入</h2><p>让用户输入文字：</p><p><code>name = input("你叫什么名字？")</code></p><p><code>print("你好，" + name)</code></p><p>input() 会让程序停下来等用户输入，输完按回车才继续。</p><div class="tip-box">input() 返回的永远是字符串。如果输入了数字要用 int() 转换：<code>age = int(input("年龄？"))</code></div></div></div>
-<div class="slide" data-index="4"><div class="slide-inner"><h2>if 判断</h2><p>根据条件做不同的事：</p><p><code>score = 85</code></p><p><code>if score >= 60:</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;print("及格了")</code></p><p><code>else:</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;print("不及格")</code></p><div class="highlight-box">冒号（:）后面用 4 个空格缩进表示"属于这个条件"的代码。缩进是 Python 的语法规则！</div></div></div>
-<div class="slide" data-index="5"><div class="slide-inner"><h2>for 循环</h2><p>重复做事用循环：</p><p><code>for i in range(5):</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;print("第", i, "次")</code></p><p>输出：第 0 次 第 1 次…第 4 次</p><p>range(5) 生成 0 到 4 一共 5 个数字。</p><div class="tip-box">Python 从 0 开始计数，不是 1。记住了很多奇怪的问题就不会出现。</div></div></div>
-<div class="slide" data-index="6"><div class="slide-inner"><h2>列表（List）</h2><p>列表存一堆东西：</p><p><code>enemies = ["slime", "goblin", "dragon"]</code></p><p><code>print(enemies[0])</code> → slime</p><p><code>enemies.append("boss")</code> ← 添加元素</p><p><code>print(len(enemies))</code> → 4 个</p><p>用 for 循环遍历列表：<code>for e in enemies: print(e)</code></p></div></div>
-<div class="slide" data-index="7"><div class="slide-inner"><h2>总结</h2><ul><li>print() 输出，input() 输入</li><li>变量不用声明类型，直接赋值</li><li>if/else 做条件判断，注意冒号和缩进</li><li>for 循环 + range() 做重复操作</li><li>列表 [] 存多个元素，从 0 开始索引</li></ul></div></div>
+<div class="slide slide-title active" data-index="0"><div class="slide-inner"><div class="lesson-num">Python · �?�?/div><h1>Python 基础语法</h1><div class="sub">编程的第一行代�?/div></div></div>
+<div class="slide" data-index="1"><div class="slide-inner"><h2>Hello World</h2><p>打开上一课装好的 Thonny �?IDLE，输入：</p><p><code>print("Hello World")</code></p><p>按回�?�?屏幕上显�?Hello World</p><div class="highlight-box">print() �?Python �?说话"函数，括号里写什么，屏幕上就显示什么�?/div></div></div>
+<div class="slide" data-index="2"><div class="slide-inner"><h2>变量</h2><p>变量用来存数据：</p><p><code>name = "小明"</code> �?字符�?/p><p><code>age = 12</code> �?整数</p><p><code>score = 95.5</code> �?小数（浮点数�?/p><p><code>is_alive = True</code> �?布尔�?/p><p>然后�?print 打印�?code>print(name)</code> �?显示"小明"</p></div></div>
+<div class="slide" data-index="3"><div class="slide-inner"><h2>输入</h2><p>让用户输入文字：</p><p><code>name = input("你叫什么名字？")</code></p><p><code>print("你好�? + name)</code></p><p>input() 会让程序停下来等用户输入，输完按回车才继续�?/p><div class="tip-box">input() 返回的永远是字符串。如果输入了数字要用 int() 转换�?code>age = int(input("年龄�?))</code></div></div></div>
+<div class="slide" data-index="4"><div class="slide-inner"><h2>if 判断</h2><p>根据条件做不同的事：</p><p><code>score = 85</code></p><p><code>if score >= 60:</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;print("及格�?)</code></p><p><code>else:</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;print("不及�?)</code></p><div class="highlight-box">冒号�?）后面用 4 个空格缩进表�?属于这个条件"的代码。缩进是 Python 的语法规则！</div></div></div>
+<div class="slide" data-index="5"><div class="slide-inner"><h2>for 循环</h2><p>重复做事用循环：</p><p><code>for i in range(5):</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;print("�?, i, "�?)</code></p><p>输出：第 0 �?�?1 次…第 4 �?/p><p>range(5) 生成 0 �?4 一�?5 个数字�?/p><div class="tip-box">Python �?0 开始计数，不是 1。记住了很多奇怪的问题就不会出现�?/div></div></div>
+<div class="slide" data-index="6"><div class="slide-inner"><h2>列表（List�?/h2><p>列表存一堆东西：</p><p><code>enemies = ["slime", "goblin", "dragon"]</code></p><p><code>print(enemies[0])</code> �?slime</p><p><code>enemies.append("boss")</code> �?添加元素</p><p><code>print(len(enemies))</code> �?4 �?/p><p>�?for 循环遍历列表�?code>for e in enemies: print(e)</code></p></div></div>
+<div class="slide" data-index="7"><div class="slide-inner"><h2>总结</h2><ul><li>print() 输出，input() 输入</li><li>变量不用声明类型，直接赋�?/li><li>if/else 做条件判断，注意冒号和缩�?/li><li>for 循环 + range() 做重复操�?/li><li>列表 [] 存多个元素，�?0 开始索�?/li></ul></div></div>
 </div>
-<div class="nav-bar"><a class="back-link" href="index.html">← 目录</a><button id="prevBtn">◀</button><span class="counter" id="counter">1 / 8</span><button id="nextBtn">▶</button></div>
+<div class="nav-bar"><a class="back-link" href="index.html">�?目录</a><button id="prevBtn">◀</button><span class="counter" id="counter">1 / 8</span><button id="nextBtn">�?/button></div>
 <script>
 const slides=document.querySelectorAll('.slide'),total=slides.length;let current=0;
 function goTo(n){slides.forEach(s=>s.classList.remove('active'));current=(n+total)%total;slides[current].classList.add('active');document.getElementById('counter').textContent=(current+1)+' / '+total}
