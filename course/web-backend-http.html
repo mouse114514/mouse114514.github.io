@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>HTTP 协议基础</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',sans-serif;background:#0a0f1e;color:#e0e8f0;height:100vh;overflow:hidden}
+.presentation{width:100%;height:100vh;position:relative}
+.slide{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px;opacity:0;pointer-events:none;transition:opacity .4s ease}
+.slide.active{opacity:1;pointer-events:auto}
+.slide-inner{max-width:840px;width:100%;background:rgba(20,30,50,.6);backdrop-filter:blur(12px);border:1px solid rgba(77,168,255,.2);border-radius:28px;padding:44px 54px;box-shadow:0 0 50px rgba(0,0,0,.4);max-height:82vh;overflow-y:auto}
+.slide-title .slide-inner{text-align:center;background:rgba(20,30,50,.4);border-color:rgba(77,168,255,.15)}
+.slide-title h1{font-size:clamp(32px,5vw,52px);font-weight:800;background:linear-gradient(135deg,#4da8ff,#b0e0ff);-webkit-background-clip:text;background-clip:text;color:transparent;line-height:1.2;margin-bottom:12px}
+.slide-title .sub{font-size:18px;color:rgba(255,255,255,.4)}
+.slide-title .lesson-num{font-size:14px;color:rgba(255,255,255,.25);margin-bottom:18px;letter-spacing:3px}
+.slide h2{font-size:clamp(22px,3vw,32px);font-weight:700;color:#4da8ff;margin-bottom:18px;border-bottom:1px solid rgba(77,168,255,.15);padding-bottom:10px}
+.slide p{font-size:17px;line-height:1.8;margin-bottom:12px;color:rgba(255,255,255,.85)}
+.slide ul{margin:8px 0 12px 20px}
+.slide li{font-size:16px;line-height:1.7;margin-bottom:5px;color:rgba(255,255,255,.8)}
+.slide li strong{color:#b0e0ff}
+.slide .highlight-box{background:rgba(77,168,255,.08);border-left:4px solid #4da8ff;padding:16px 20px;border-radius:0 12px 12px 0;margin:14px 0;font-size:15px}
+.slide .tip-box{background:rgba(255,200,0,.06);border-left:4px solid #ffc800;padding:14px 18px;border-radius:0 10px 10px 0;margin:14px 0;font-size:15px}
+.slide code{background:rgba(255,255,255,.1);padding:2px 8px;border-radius:4px;font-size:14px}
+.nav-bar{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:16px;background:rgba(10,15,30,.7);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.06);border-radius:30px;padding:10px 20px;z-index:10}
+.nav-bar button{background:0 0;border:none;color:rgba(255,255,255,.4);font-size:18px;cursor:pointer;padding:6px 12px;border-radius:8px;transition:all .2s}
+.nav-bar button:hover{color:#fff;background:rgba(255,255,255,.06)}
+.nav-bar .counter{font-size:14px;color:rgba(255,255,255,.35);min-width:60px;text-align:center}
+.nav-bar .back-link{color:rgba(255,255,255,.25);text-decoration:none;font-size:13px;padding:6px 12px;border-radius:8px;transition:all .2s}
+.nav-bar .back-link:hover{color:#fff;background:rgba(255,255,255,.06)}
+@media(max-width:640px){.slide{padding:16px}.slide-inner{padding:24px 18px}.nav-bar{padding:8px 12px;gap:8px;bottom:14px}}
+</style></head>
+<body><div class="presentation" id="presentation">
+<div class="slide slide-title active" data-index="0"><div class="slide-inner"><div class="lesson-num">Web 后端 · 第2课</div><h1>HTTP 协议基础</h1><div class="sub">浏览器和服务器是怎么聊天的</div></div></div>
+<div class="slide" data-index="1"><div class="slide-inner"><h2>HTTP 是什么？</h2><p>HTTP（超文本传输协议）是浏览器和服务器之间<strong>沟通的语言</strong>。</p><ul><li>你打开网页 → 浏览器用 HTTP 向服务器"要"数据</li><li>服务器收到请求 → 用 HTTP 返回网页内容</li><li>每次访问网页，都是一次 HTTP 请求-响应</li></ul></div></div>
+<div class="slide" data-index="2"><div class="slide-inner"><h2>请求方法</h2><p>最常用的两个：</p><p><strong>GET</strong> — 从服务器获取数据</p><p>&nbsp;&nbsp;&nbsp;访问网页、看图片、搜索 → 都是 GET</p><p><strong>POST</strong> — 向服务器发送数据</p><p>&nbsp;&nbsp;&nbsp;登录、注册、提交表单 → 都是 POST</p><p>其他还有：PUT（更新）、DELETE（删除）、PATCH（修改部分）</p></div></div>
+<div class="slide" data-index="3"><div class="slide-inner"><h2>URL 的结构</h2><p><code>https://www.example.com:443/path/page?id=1#section</code></p><ul><li><strong>https://</strong> — 协议</li><li><strong>www.example.com</strong> — 域名</li><li><strong>:443</strong> — 端口号（https 默认 443，http 默认 80）</li><li><strong>/path/page</strong> — 路径</li><li><strong>?id=1</strong> — 查询参数</li><li><strong>#section</strong> — 锚点（页面内位置）</li></ul></div></div>
+<div class="slide" data-index="4"><div class="slide-inner"><h2>状态码</h2><p>服务器用状态码告诉浏览器结果：</p><ul><li><strong>200 OK</strong> — 成功，网页正常返回</li><li><strong>301/302</strong> — 重定向（跳转到另一个地址）</li><li><strong>404 Not Found</strong> — 找不到页面</li><li><strong>500 Internal Server Error</strong> — 服务器内部错误</li></ul><div class="tip-box">按 F12 → Network 标签 → 刷新页面，能看到每个请求的状态码。</div></div></div>
+<div class="slide" data-index="5"><div class="slide-inner"><h2>请求和响应头</h2><p>HTTP 消息除了"正文"，还有"头信息"（Headers）：</p><p><strong>请求头（Request Headers）</strong>：</p><ul><li>User-Agent — 浏览器信息</li><li>Cookie — 登录状态</li></ul><p><strong>响应头（Response Headers）</strong>：</p><ul><li>Content-Type — 返回内容的类型（text/html, application/json）</li><li>Set-Cookie — 让浏览器保存 Cookie</li></ul></div></div>
+<div class="slide" data-index="6"><div class="slide-inner"><h2>HTTP 是无状态的</h2><p>HTTP 每次请求都是独立的，服务器"不记得"你之前做过什么。</p><ul><li>第一次请求：你是谁？</li><li>第二次请求：又是谁？</li></ul><div class="highlight-box">所以需要 <strong>Cookie</strong> 和 <strong>Session</strong> 来解决"记住登录状态"的问题。服务器给浏览器发一个"身份证"（Cookie），下次请求时浏览器带上它。</div></div></div>
+<div class="slide" data-index="7"><div class="slide-inner"><h2>总结</h2><ul><li>HTTP = 浏览器和服务器通信的协议</li><li>GET 请求数据，POST 提交数据</li><li>URL = 协议 + 域名 + 路径 + 参数</li><li>状态码：200 成功、404 找不到、500 服务器错误</li><li>Headers 传递附加信息（Cookie、Content-Type）</li><li>HTTP 无状态，用 Cookie/Session 记忆身份</li></ul></div></div>
+</div>
+<div class="nav-bar"><a class="back-link" href="index.html">← 目录</a><button id="prevBtn">◀</button><span class="counter" id="counter">1 / 8</span><button id="nextBtn">▶</button></div>
+<script>
+const slides=document.querySelectorAll('.slide'),total=slides.length;let current=0;
+function goTo(n){slides.forEach(s=>s.classList.remove('active'));current=(n+total)%total;slides[current].classList.add('active');document.getElementById('counter').textContent=(current+1)+' / '+total}
+document.getElementById('prevBtn').addEventListener('click',()=>goTo(current-1));
+document.getElementById('nextBtn').addEventListener('click',()=>goTo(current+1));
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key==='ArrowDown'||e.key===' '){e.preventDefault();goTo(current+1)}if(e.key==='ArrowLeft'||e.key==='ArrowUp'){e.preventDefault();goTo(current-1)}});
+document.getElementById('presentation').addEventListener('click',e=>{if(e.target.closest('.nav-bar')||e.target.closest('.slide-inner'))return;goTo(current+1)});
+</script></body></html>

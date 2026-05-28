@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>HTML 基础标签</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',sans-serif;background:#0a0f1e;color:#e0e8f0;height:100vh;overflow:hidden}
+.presentation{width:100%;height:100vh;position:relative}
+.slide{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px;opacity:0;pointer-events:none;transition:opacity .4s ease}
+.slide.active{opacity:1;pointer-events:auto}
+.slide-inner{max-width:840px;width:100%;background:rgba(20,30,50,.6);backdrop-filter:blur(12px);border:1px solid rgba(77,168,255,.2);border-radius:28px;padding:44px 54px;box-shadow:0 0 50px rgba(0,0,0,.4);max-height:82vh;overflow-y:auto}
+.slide-title .slide-inner{text-align:center;background:rgba(20,30,50,.4);border-color:rgba(77,168,255,.15)}
+.slide-title h1{font-size:clamp(32px,5vw,52px);font-weight:800;background:linear-gradient(135deg,#4da8ff,#b0e0ff);-webkit-background-clip:text;background-clip:text;color:transparent;line-height:1.2;margin-bottom:12px}
+.slide-title .sub{font-size:18px;color:rgba(255,255,255,.4)}
+.slide-title .lesson-num{font-size:14px;color:rgba(255,255,255,.25);margin-bottom:18px;letter-spacing:3px}
+.slide h2{font-size:clamp(22px,3vw,32px);font-weight:700;color:#4da8ff;margin-bottom:18px;border-bottom:1px solid rgba(77,168,255,.15);padding-bottom:10px}
+.slide p{font-size:17px;line-height:1.8;margin-bottom:12px;color:rgba(255,255,255,.85)}
+.slide ul{margin:8px 0 12px 20px}
+.slide li{font-size:16px;line-height:1.7;margin-bottom:5px;color:rgba(255,255,255,.8)}
+.slide li strong{color:#b0e0ff}
+.slide .highlight-box{background:rgba(77,168,255,.08);border-left:4px solid #4da8ff;padding:16px 20px;border-radius:0 12px 12px 0;margin:14px 0;font-size:15px}
+.slide .tip-box{background:rgba(255,200,0,.06);border-left:4px solid #ffc800;padding:14px 18px;border-radius:0 10px 10px 0;margin:14px 0;font-size:15px}
+.slide code{background:rgba(255,255,255,.1);padding:2px 8px;border-radius:4px;font-size:14px}
+.nav-bar{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:16px;background:rgba(10,15,30,.7);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.06);border-radius:30px;padding:10px 20px;z-index:10}
+.nav-bar button{background:0 0;border:none;color:rgba(255,255,255,.4);font-size:18px;cursor:pointer;padding:6px 12px;border-radius:8px;transition:all .2s}
+.nav-bar button:hover{color:#fff;background:rgba(255,255,255,.06)}
+.nav-bar .counter{font-size:14px;color:rgba(255,255,255,.35);min-width:60px;text-align:center}
+.nav-bar .back-link{color:rgba(255,255,255,.25);text-decoration:none;font-size:13px;padding:6px 12px;border-radius:8px;transition:all .2s}
+.nav-bar .back-link:hover{color:#fff;background:rgba(255,255,255,.06)}
+@media(max-width:640px){.slide{padding:16px}.slide-inner{padding:24px 18px}.nav-bar{padding:8px 12px;gap:8px;bottom:14px}}
+</style></head>
+<body><div class="presentation" id="presentation">
+<div class="slide slide-title active" data-index="0"><div class="slide-inner"><div class="lesson-num">Web 前端 · 第2课</div><h1>HTML 基础标签</h1><div class="sub">网页的骨架</div></div></div>
+<div class="slide" data-index="1"><div class="slide-inner"><h2>HTML 文档结构</h2><p><code>&lt;!DOCTYPE html&gt;</code> ← 声明类型</p><p><code>&lt;html&gt;</code> ← 根标签</p><p><code>&lt;head&gt;</code> ← 头部（不可见配置）</p><p><code>&lt;body&gt;</code> ← 身体（页面显示的内容）</p><p>所有网页都是这个基本结构。就像一栋房子的地基和框架。</p></div></div>
+<div class="slide" data-index="2"><div class="slide-inner"><h2>标题标签 h1~h6</h2><p><code>&lt;h1&gt;一级标题&lt;/h1&gt;</code> 最大</p><p><code>&lt;h2&gt;二级标题&lt;/h2&gt;</code></p><p>…</p><p><code>&lt;h6&gt;六级标题&lt;/h6&gt;</code> 最小</p><div class="highlight-box">一个页面一般只有一个 h1（搜索引擎用它理解页面主题），h2-h6 用来分层。</div></div></div>
+<div class="slide" data-index="3"><div class="slide-inner"><h2>段落和文本</h2><p><code>&lt;p&gt;这是一个段落。&lt;/p&gt;</code></p><p><code>&lt;strong&gt;加粗&lt;/strong&gt;</code> — 强调</p><p><code>&lt;em&gt;斜体&lt;/em&gt;</code> — 着重</p><p><code>&lt;br&gt;</code> — 换行（单标签）</p><p><code>&lt;hr&gt;</code> — 水平分割线</p></div></div>
+<div class="slide" data-index="4"><div class="slide-inner"><h2>链接 a 标签</h2><p>超链接是互联网的基础：</p><p><code>&lt;a href="https://example.com"&gt;点我访问&lt;/a&gt;</code></p><p>属性：</p><ul><li><strong>href</strong> — 链接地址</li><li><strong>target="_blank"</strong> — 在新标签页打开</li><li>可以链接到外部网站、内部页面、甚至是页面内的某个位置</li></ul></div></div>
+<div class="slide" data-index="5"><div class="slide-inner"><h2>图片 img 标签</h2><p><code>&lt;img src="图片地址" alt="描述文字"&gt;</code></p><ul><li><strong>src</strong> — 图片文件路径（支持相对/绝对/URL）</li><li><strong>alt</strong> — 图片加载失败时显示的文字（也用于辅助阅读）</li><li><strong>width / height</strong> — 可控制尺寸</li></ul></div></div>
+<div class="slide" data-index="6"><div class="slide-inner"><h2>列表 ul / ol</h2><p>无序列表（圆点）：</p><p><code>&lt;ul&gt;</code></p><p><code>&nbsp;&nbsp;&lt;li&gt;苹果&lt;/li&gt;</code></p><p><code>&nbsp;&nbsp;&lt;li&gt;香蕉&lt;/li&gt;</code></p><p><code>&lt;/ul&gt;</code></p><p>有序列表（数字）用 <code>&lt;ol&gt;</code>。</p></div></div>
+<div class="slide" data-index="7"><div class="slide-inner"><h2>总结</h2><ul><li>HTML 由标签组成，成对出现</li><li>h1~h6 标题，p 段落，a 超链接，img 图片</li><li>ul/ol + li 做列表</li><li>标签可以有属性（href、src、class 等）</li></ul></div></div>
+</div>
+<div class="nav-bar"><a class="back-link" href="index.html">← 目录</a><button id="prevBtn">◀</button><span class="counter" id="counter">1 / 8</span><button id="nextBtn">▶</button></div>
+<script>
+const slides=document.querySelectorAll('.slide'),total=slides.length;let current=0;
+function goTo(n){slides.forEach(s=>s.classList.remove('active'));current=(n+total)%total;slides[current].classList.add('active');document.getElementById('counter').textContent=(current+1)+' / '+total}
+document.getElementById('prevBtn').addEventListener('click',()=>goTo(current-1));
+document.getElementById('nextBtn').addEventListener('click',()=>goTo(current+1));
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key==='ArrowDown'||e.key===' '){e.preventDefault();goTo(current+1)}if(e.key==='ArrowLeft'||e.key==='ArrowUp'){e.preventDefault();goTo(current-1)}});
+document.getElementById('presentation').addEventListener('click',e=>{if(e.target.closest('.nav-bar')||e.target.closest('.slide-inner'))return;goTo(current+1)});
+</script></body></html>

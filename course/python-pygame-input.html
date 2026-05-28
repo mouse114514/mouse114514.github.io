@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Pygame 输入与碰撞</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',sans-serif;background:#0a0f1e;color:#e0e8f0;height:100vh;overflow:hidden}
+.presentation{width:100%;height:100vh;position:relative}
+.slide{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px;opacity:0;pointer-events:none;transition:opacity .4s ease}
+.slide.active{opacity:1;pointer-events:auto}
+.slide-inner{max-width:840px;width:100%;background:rgba(20,30,50,.6);backdrop-filter:blur(12px);border:1px solid rgba(77,168,255,.2);border-radius:28px;padding:44px 54px;box-shadow:0 0 50px rgba(0,0,0,.4);max-height:82vh;overflow-y:auto}
+.slide-title .slide-inner{text-align:center;background:rgba(20,30,50,.4);border-color:rgba(77,168,255,.15)}
+.slide-title h1{font-size:clamp(32px,5vw,52px);font-weight:800;background:linear-gradient(135deg,#4da8ff,#b0e0ff);-webkit-background-clip:text;background-clip:text;color:transparent;line-height:1.2;margin-bottom:12px}
+.slide-title .sub{font-size:18px;color:rgba(255,255,255,.4)}
+.slide-title .lesson-num{font-size:14px;color:rgba(255,255,255,.25);margin-bottom:18px;letter-spacing:3px}
+.slide h2{font-size:clamp(22px,3vw,32px);font-weight:700;color:#4da8ff;margin-bottom:18px;border-bottom:1px solid rgba(77,168,255,.15);padding-bottom:10px}
+.slide p{font-size:17px;line-height:1.8;margin-bottom:12px;color:rgba(255,255,255,.85)}
+.slide ul{margin:8px 0 12px 20px}
+.slide li{font-size:16px;line-height:1.7;margin-bottom:5px;color:rgba(255,255,255,.8)}
+.slide li strong{color:#b0e0ff}
+.slide .highlight-box{background:rgba(77,168,255,.08);border-left:4px solid #4da8ff;padding:16px 20px;border-radius:0 12px 12px 0;margin:14px 0;font-size:15px}
+.slide .tip-box{background:rgba(255,200,0,.06);border-left:4px solid #ffc800;padding:14px 18px;border-radius:0 10px 10px 0;margin:14px 0;font-size:15px}
+.slide code{background:rgba(255,255,255,.1);padding:2px 8px;border-radius:4px;font-size:14px}
+.nav-bar{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:16px;background:rgba(10,15,30,.7);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.06);border-radius:30px;padding:10px 20px;z-index:10}
+.nav-bar button{background:0 0;border:none;color:rgba(255,255,255,.4);font-size:18px;cursor:pointer;padding:6px 12px;border-radius:8px;transition:all .2s}
+.nav-bar button:hover{color:#fff;background:rgba(255,255,255,.06)}
+.nav-bar .counter{font-size:14px;color:rgba(255,255,255,.35);min-width:60px;text-align:center}
+.nav-bar .back-link{color:rgba(255,255,255,.25);text-decoration:none;font-size:13px;padding:6px 12px;border-radius:8px;transition:all .2s}
+.nav-bar .back-link:hover{color:#fff;background:rgba(255,255,255,.06)}
+@media(max-width:640px){.slide{padding:16px}.slide-inner{padding:24px 18px}.nav-bar{padding:8px 12px;gap:8px;bottom:14px}}
+</style></head>
+<body><div class="presentation" id="presentation">
+<div class="slide slide-title active" data-index="0"><div class="slide-inner"><div class="lesson-num">Python · 第4课</div><h1>输入与碰撞</h1><div class="sub">键盘控制角色 + 碰撞检测</div></div></div>
+<div class="slide" data-index="1"><div class="slide-inner"><h2>检测键盘按键</h2><p>Pygame 用 <strong>pygame.key.get_pressed()</strong> 检测键盘状态：</p><p><code>keys = pygame.key.get_pressed()</code></p><p><code>if keys[pygame.K_LEFT]:</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;x -= speed</code></p><p>常用按键常量：K_LEFT、K_RIGHT、K_UP、K_DOWN、K_SPACE、K_ESCAPE</p></div></div>
+<div class="slide" data-index="2"><div class="slide-inner"><h2>移动的方块</h2><p>完整的矩形移动代码：</p><p><code>player_x = 400; player_y = 500</code></p><p><code>speed = 5</code></p><p><code>keys = pygame.key.get_pressed()</code></p><p><code>if keys[pygame.K_LEFT]: player_x -= speed</code></p><p><code>if keys[pygame.K_RIGHT]: player_x += speed</code></p><p><code>if keys[pygame.K_UP]: player_y -= speed</code></p><p><code>if keys[pygame.K_DOWN]: player_y += speed</code></p><p><code>pygame.draw.rect(screen, (0,200,255), (player_x, player_y, 40, 40))</code></p></div></div>
+<div class="slide" data-index="3"><div class="slide-inner"><h2>Rect 对象</h2><p>Pygame 的 <strong>Rect</strong> 让碰撞检测更方便：</p><p><code>player = pygame.Rect(400, 500, 40, 40)</code></p><ul><li><strong>player.x</strong> / <strong>player.y</strong> — 左上角坐标</li><li><strong>player.center</strong> — 中心坐标</li><li><strong>player.left / right / top / bottom</strong> — 各边位置</li><li><strong>player.width / height</strong> — 宽高</li></ul><p>画的时候：<code>pygame.draw.rect(screen, 颜色, player)</code></p></div></div>
+<div class="slide" data-index="4"><div class="slide-inner"><h2>碰撞检测 colliderect</h2><p>两个 Rect 之间有没有碰撞？</p><p><code>player = pygame.Rect(x, y, 40, 40)</code></p><p><code>enemy = pygame.Rect(300, 200, 50, 50)</code></p><p><code>if player.colliderect(enemy):</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;print("碰到了！")</code></p><p>colliderect 返回 True/False，是游戏中最常用的碰撞判断。</p></div></div>
+<div class="slide" data-index="5"><div class="slide-inner"><h2>接物品小游戏</h2><p>核心逻辑：</p><ul><li>玩家方块在底部左右移动</li><li>物品从顶部随机掉落</li><li>用 Rect 检测玩家和物品是否碰撞</li><li>碰到的分数 +1，物品回到顶部</li></ul></div></div>
+<div class="slide" data-index="6"><div class="slide-inner"><h2>边界限制</h2><p>防止玩家移出屏幕：</p><p><code>if player.left < 0: player.left = 0</code></p><p><code>if player.right > 800: player.right = 800</code></p><p>这样方块就不会跑到窗口外面去了。</p><div class="highlight-box">同理可以限制上下边界：player.top < 0 或 player.bottom > 600。</div></div></div>
+<div class="slide" data-index="7"><div class="slide-inner"><h2>总结</h2><ul><li>pygame.key.get_pressed() 检测按键</li><li>Rect 对象存方块位置，方便操作</li><li>colliderect() 检测两个 Rect 是否碰撞</li><li>限制 left/right 防止出界</li><li>结合循环 + 随机掉落 = 接物品游戏</li></ul></div></div>
+</div>
+<div class="nav-bar"><a class="back-link" href="index.html">← 目录</a><button id="prevBtn">◀</button><span class="counter" id="counter">1 / 8</span><button id="nextBtn">▶</button></div>
+<script>
+const slides=document.querySelectorAll('.slide'),total=slides.length;let current=0;
+function goTo(n){slides.forEach(s=>s.classList.remove('active'));current=(n+total)%total;slides[current].classList.add('active');document.getElementById('counter').textContent=(current+1)+' / '+total}
+document.getElementById('prevBtn').addEventListener('click',()=>goTo(current-1));
+document.getElementById('nextBtn').addEventListener('click',()=>goTo(current+1));
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key==='ArrowDown'||e.key===' '){e.preventDefault();goTo(current+1)}if(e.key==='ArrowLeft'||e.key==='ArrowUp'){e.preventDefault();goTo(current-1)}});
+document.getElementById('presentation').addEventListener('click',e=>{if(e.target.closest('.nav-bar')||e.target.closest('.slide-inner'))return;goTo(current+1)});
+</script></body></html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>APK 解包与文件结构</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',sans-serif;background:#0a0f1e;color:#e0e8f0;height:100vh;overflow:hidden}
+.presentation{width:100%;height:100vh;position:relative}
+.slide{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px;opacity:0;pointer-events:none;transition:opacity .4s ease}
+.slide.active{opacity:1;pointer-events:auto}
+.slide-inner{max-width:840px;width:100%;background:rgba(20,30,50,.6);backdrop-filter:blur(12px);border:1px solid rgba(77,168,255,.2);border-radius:28px;padding:44px 54px;box-shadow:0 0 50px rgba(0,0,0,.4);max-height:82vh;overflow-y:auto}
+.slide-title .slide-inner{text-align:center;background:rgba(20,30,50,.4);border-color:rgba(77,168,255,.15)}
+.slide-title h1{font-size:clamp(32px,5vw,52px);font-weight:800;background:linear-gradient(135deg,#4da8ff,#b0e0ff);-webkit-background-clip:text;background-clip:text;color:transparent;line-height:1.2;margin-bottom:12px}
+.slide-title .sub{font-size:18px;color:rgba(255,255,255,.4)}
+.slide-title .lesson-num{font-size:14px;color:rgba(255,255,255,.25);margin-bottom:18px;letter-spacing:3px}
+.slide h2{font-size:clamp(22px,3vw,32px);font-weight:700;color:#4da8ff;margin-bottom:18px;border-bottom:1px solid rgba(77,168,255,.15);padding-bottom:10px}
+.slide p{font-size:17px;line-height:1.8;margin-bottom:12px;color:rgba(255,255,255,.85)}
+.slide ul{margin:8px 0 12px 20px}
+.slide li{font-size:16px;line-height:1.7;margin-bottom:5px;color:rgba(255,255,255,.8)}
+.slide li strong{color:#b0e0ff}
+.slide .highlight-box{background:rgba(77,168,255,.08);border-left:4px solid #4da8ff;padding:16px 20px;border-radius:0 12px 12px 0;margin:14px 0;font-size:15px}
+.slide .tip-box{background:rgba(255,200,0,.06);border-left:4px solid #ffc800;padding:14px 18px;border-radius:0 10px 10px 0;margin:14px 0;font-size:15px}
+.slide code{background:rgba(255,255,255,.1);padding:2px 8px;border-radius:4px;font-size:14px}
+.nav-bar{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:16px;background:rgba(10,15,30,.7);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.06);border-radius:30px;padding:10px 20px;z-index:10}
+.nav-bar button{background:0 0;border:none;color:rgba(255,255,255,.4);font-size:18px;cursor:pointer;padding:6px 12px;border-radius:8px;transition:all .2s}
+.nav-bar button:hover{color:#fff;background:rgba(255,255,255,.06)}
+.nav-bar .counter{font-size:14px;color:rgba(255,255,255,.35);min-width:60px;text-align:center}
+.nav-bar .back-link{color:rgba(255,255,255,.25);text-decoration:none;font-size:13px;padding:6px 12px;border-radius:8px;transition:all .2s}
+.nav-bar .back-link:hover{color:#fff;background:rgba(255,255,255,.06)}
+@media(max-width:640px){.slide{padding:16px}.slide-inner{padding:24px 18px}.nav-bar{padding:8px 12px;gap:8px;bottom:14px}}
+</style></head>
+<body><div class="presentation" id="presentation">
+<div class="slide slide-title active" data-index="0"><div class="slide-inner"><div class="lesson-num">安卓逆向 · 第2课</div><h1>APK 解包与文件结构</h1><div class="sub">拆开看看 APK 里面有什么</div></div></div>
+<div class="slide" data-index="1"><div class="slide-inner"><h2>APK 是什么？</h2><p>APK（Android Package）就是安卓应用的安装包，本质上是一个 <strong>ZIP 压缩包</strong>。</p><ul><li>扩展名改成 .zip 就能用解压软件打开</li><li>包含代码、资源、签名等</li><li>安装时系统解包并解析里面的内容</li></ul><div class="highlight-box">把 app.apk 改成 app.zip → 右键解压 → 就能看到 APK 的内部文件了。</div></div></div>
+<div class="slide" data-index="2"><div class="slide-inner"><h2>APK 内部目录结构</h2><ul><li><strong>classes.dex</strong> — Dalvik 可执行文件（代码编译后的产物）</li><li><strong>AndroidManifest.xml</strong> — 权限 / 活动 / 服务声明</li><li><strong>res/</strong> — 资源文件（图片、布局、字符串等）</li><li><strong>lib/</strong> — Native 动态库（.so 文件）</li><li><strong>META-INF/</strong> — 签名信息</li><li><strong>assets/</strong> — 附加资源（游戏素材等）</li></ul></div></div>
+<div class="slide" data-index="3"><div class="slide-inner"><h2>AndroidManifest.xml</h2><p>这个文件是 APK 的"身份证"，包含：</p><ul><li>包名（com.example.app）</li><li>应用权限（INTERNET、CAMERA 等）</li><li>入口 Activity（启动哪个界面）</li><li>版本号</li></ul><p>解压后的 AndroidManifest.xml 是二进制格式，用 <strong>AXMLPrinter</strong> 或 <strong>apktool</strong> 才能转成可读的 XML。</p></div></div>
+<div class="slide" data-index="4"><div class="slide-inner"><h2>res/ 资源目录</h2><ul><li><strong>res/layout/</strong> — 界面布局文件（.xml）</li><li><strong>res/drawable/</strong> — 图片资源</li><li><strong>res/values/</strong> — 字符串 / 颜色 / 样式</li><li><strong>res/mipmap/</strong> — 应用图标</li></ul><p>直接解压能看到图片文件，但布局 XML 也是二进制格式，需要转换。</p></div></div>
+<div class="slide" data-index="5"><div class="slide-inner"><h2>classes.dex</h2><p>这是 APK 里最核心的文件——Java/Kotlin 代码编译成 DEX 格式。</p><ul><li>一个 APK 可能有多个 classes.dex（classes2.dex, classes3.dex…）</li><li>DEX 不能直接看，需要反编译工具</li><li>这就是下节课要讲的 jadx 做的事</li></ul></div></div>
+<div class="slide" data-index="6"><div class="slide-inner"><h2>apktool 解包</h2><p>最强大的 APK 解包工具——能把二进制 XML 也还原：</p><p><strong>apktool d app.apk -o output/</strong></p><ul><li>d = decode</li><li>-o = 输出目录</li><li>解包后 XML 文件都是可读文本</li><li>Smali 代码也会生成</li></ul></div></div>
+<div class="slide" data-index="7"><div class="slide-inner"><h2>总结</h2><ul><li>APK = ZIP 压缩包，改后缀就能解压</li><li>核心文件：classes.dex（代码）+ AndroidManifest.xml（配置）</li><li>res/ 目录存资源和布局</li><li>解压直接看不了 XML / DEX，需要专门工具</li><li>apktool 是最常用的解包工具，能把二进制 XML 还原</li></ul></div></div>
+</div>
+<div class="nav-bar"><a class="back-link" href="index.html">← 目录</a><button id="prevBtn">◀</button><span class="counter" id="counter">1 / 8</span><button id="nextBtn">▶</button></div>
+<script>
+const slides=document.querySelectorAll('.slide'),total=slides.length;let current=0;
+function goTo(n){slides.forEach(s=>s.classList.remove('active'));current=(n+total)%total;slides[current].classList.add('active');document.getElementById('counter').textContent=(current+1)+' / '+total}
+document.getElementById('prevBtn').addEventListener('click',()=>goTo(current-1));
+document.getElementById('nextBtn').addEventListener('click',()=>goTo(current+1));
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key==='ArrowDown'||e.key===' '){e.preventDefault();goTo(current+1)}if(e.key==='ArrowLeft'||e.key==='ArrowUp'){e.preventDefault();goTo(current-1)}});
+document.getElementById('presentation').addEventListener('click',e=>{if(e.target.closest('.nav-bar')||e.target.closest('.slide-inner'))return;goTo(current+1)});
+</script></body></html>

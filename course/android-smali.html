@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Smali 基础</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',sans-serif;background:#0a0f1e;color:#e0e8f0;height:100vh;overflow:hidden}
+.presentation{width:100%;height:100vh;position:relative}
+.slide{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px;opacity:0;pointer-events:none;transition:opacity .4s ease}
+.slide.active{opacity:1;pointer-events:auto}
+.slide-inner{max-width:840px;width:100%;background:rgba(20,30,50,.6);backdrop-filter:blur(12px);border:1px solid rgba(77,168,255,.2);border-radius:28px;padding:44px 54px;box-shadow:0 0 50px rgba(0,0,0,.4);max-height:82vh;overflow-y:auto}
+.slide-title .slide-inner{text-align:center;background:rgba(20,30,50,.4);border-color:rgba(77,168,255,.15)}
+.slide-title h1{font-size:clamp(32px,5vw,52px);font-weight:800;background:linear-gradient(135deg,#4da8ff,#b0e0ff);-webkit-background-clip:text;background-clip:text;color:transparent;line-height:1.2;margin-bottom:12px}
+.slide-title .sub{font-size:18px;color:rgba(255,255,255,.4)}
+.slide-title .lesson-num{font-size:14px;color:rgba(255,255,255,.25);margin-bottom:18px;letter-spacing:3px}
+.slide h2{font-size:clamp(22px,3vw,32px);font-weight:700;color:#4da8ff;margin-bottom:18px;border-bottom:1px solid rgba(77,168,255,.15);padding-bottom:10px}
+.slide p{font-size:17px;line-height:1.8;margin-bottom:12px;color:rgba(255,255,255,.85)}
+.slide ul{margin:8px 0 12px 20px}
+.slide li{font-size:16px;line-height:1.7;margin-bottom:5px;color:rgba(255,255,255,.8)}
+.slide li strong{color:#b0e0ff}
+.slide .highlight-box{background:rgba(77,168,255,.08);border-left:4px solid #4da8ff;padding:16px 20px;border-radius:0 12px 12px 0;margin:14px 0;font-size:15px}
+.slide .tip-box{background:rgba(255,200,0,.06);border-left:4px solid #ffc800;padding:14px 18px;border-radius:0 10px 10px 0;margin:14px 0;font-size:15px}
+.slide code{background:rgba(255,255,255,.1);padding:2px 8px;border-radius:4px;font-size:14px}
+.nav-bar{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:16px;background:rgba(10,15,30,.7);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.06);border-radius:30px;padding:10px 20px;z-index:10}
+.nav-bar button{background:0 0;border:none;color:rgba(255,255,255,.4);font-size:18px;cursor:pointer;padding:6px 12px;border-radius:8px;transition:all .2s}
+.nav-bar button:hover{color:#fff;background:rgba(255,255,255,.06)}
+.nav-bar .counter{font-size:14px;color:rgba(255,255,255,.35);min-width:60px;text-align:center}
+.nav-bar .back-link{color:rgba(255,255,255,.25);text-decoration:none;font-size:13px;padding:6px 12px;border-radius:8px;transition:all .2s}
+.nav-bar .back-link:hover{color:#fff;background:rgba(255,255,255,.06)}
+@media(max-width:640px){.slide{padding:16px}.slide-inner{padding:24px 18px}.nav-bar{padding:8px 12px;gap:8px;bottom:14px}}
+</style></head>
+<body><div class="presentation" id="presentation">
+<div class="slide slide-title active" data-index="0"><div class="slide-inner"><div class="lesson-num">安卓逆向 · 第4课</div><h1>Smali 基础</h1><div class="sub">安卓的"汇编语言"</div></div></div>
+<div class="slide" data-index="1"><div class="slide-inner"><h2>什么是 Smali？</h2><p>Smali 是 DEX 字节码的<strong>可读文本表示</strong>，类似汇编语言。</p><ul><li>Java 代码 → DEX 字节码 → <strong>Smali</strong></li><li>Smali 和 DEX 一一对应，能编译回去</li><li>修改 Smali → 重新打包 → 实现破解/汉化</li></ul><div class="tip-box">用 apktool 解包 APK 后，就会生成 Smali 文件。修改 smali 再重打包是逆向的常用手法。</div></div></div>
+<div class="slide" data-index="2"><div class="slide-inner"><h2>Smali 文件结构</h2><p>一个 .smali 文件对应一个 Java 类：</p><p><code>.class public Lcom/example/app/MainActivity;</code></p><p><code>.super Landroid/app/Activity;</code></p><p><code>.source "MainActivity.java"</code></p><p>.class 定义类名，.super 定义父类，.source 注明原始文件名。</p></div></div>
+<div class="slide" data-index="3"><div class="slide-inner"><h2>字段和寄存器</h2><p>成员变量（字段）：</p><p><code>.field private name:Ljava/lang/String;</code></p><p>寄存器（存放数据的地方）：</p><ul><li><code>v0, v1, v2...</code> 本地寄存器</li><li><code>p0, p1, p2...</code> 方法参数（p0 是 this）</li></ul><div class="highlight-box">一个方法里有 <code>.registers 5</code> 表示用了 5 个寄存器（v0-v4）。</div></div></div>
+<div class="slide" data-index="4"><div class="slide-inner"><h2>常见 Smali 指令</h2><ul><li><code>const/4 v0, 1</code> — 把常数 1 存入 v0</li><li><code>const-string v1, "hello"</code> — 把字符串存入 v1</li><li><code>invoke-virtual</code> — 调用虚方法</li><li><code>invoke-static</code> — 调用静态方法</li><li><code>move-result v0</code> — 取返回值</li><li><code>if-eqz v0, :label</code> — 如果 v0 == 0 则跳转</li><li><code>return-void</code> — 无返回值返回</li></ul></div></div>
+<div class="slide" data-index="5"><div class="slide-inner"><h2>Smali 示例对比</h2><p>Java 代码：</p><p><code>if (score >= 60) { showPass(); }</code></p><p>对应 Smali：</p><p><code>const/4 v0, 60</code></p><p><code>if-lt p1, v0, :fail</code>  ← 如果 p1 < 60 跳到 fail</p><p><code>invoke-direct {p0}, L...;->showPass()V</code></p><p><code>:fail</code></p></div></div>
+<div class="slide" data-index="6"><div class="slide-inner"><h2>修改 Smali 简单示例</h2><p>想跳过付费验证：</p><p>找到类似这样的代码：</p><p><code>invoke-virtual {...} L...;->isPaid()Z</code></p><p><code>move-result v0</code></p><p>把 <code>if-eqz v0, :not_paid</code> 改成 <code>if-nez v0, :not_paid</code> 或直接改成 <code>const/4 v0, 1</code></p><div class="tip-box">改 Smali → apktool b 重新打包 → jarsigner 签名 → 安装测试。</div></div></div>
+<div class="slide" data-index="7"><div class="slide-inner"><h2>总结</h2><ul><li>Smali = DEX 的文本形式，apktool 解包后生成</li><li>每个 .smali 文件对应一个 Java 类</li><li>寄存器 v0-vn 存数据，p0-pn 存参数</li><li>修改 Smali → 重打包 → 实现逆向修改</li><li>if-eqz / if-nez 是常用的判断跳转指令</li></ul></div></div>
+</div>
+<div class="nav-bar"><a class="back-link" href="index.html">← 目录</a><button id="prevBtn">◀</button><span class="counter" id="counter">1 / 8</span><button id="nextBtn">▶</button></div>
+<script>
+const slides=document.querySelectorAll('.slide'),total=slides.length;let current=0;
+function goTo(n){slides.forEach(s=>s.classList.remove('active'));current=(n+total)%total;slides[current].classList.add('active');document.getElementById('counter').textContent=(current+1)+' / '+total}
+document.getElementById('prevBtn').addEventListener('click',()=>goTo(current-1));
+document.getElementById('nextBtn').addEventListener('click',()=>goTo(current+1));
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key==='ArrowDown'||e.key===' '){e.preventDefault();goTo(current+1)}if(e.key==='ArrowLeft'||e.key==='ArrowUp'){e.preventDefault();goTo(current-1)}});
+document.getElementById('presentation').addEventListener('click',e=>{if(e.target.closest('.nav-bar')||e.target.closest('.slide-inner'))return;goTo(current+1)});
+</script></body></html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>jadx 反编译入门</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',sans-serif;background:#0a0f1e;color:#e0e8f0;height:100vh;overflow:hidden}
+.presentation{width:100%;height:100vh;position:relative}
+.slide{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px;opacity:0;pointer-events:none;transition:opacity .4s ease}
+.slide.active{opacity:1;pointer-events:auto}
+.slide-inner{max-width:840px;width:100%;background:rgba(20,30,50,.6);backdrop-filter:blur(12px);border:1px solid rgba(77,168,255,.2);border-radius:28px;padding:44px 54px;box-shadow:0 0 50px rgba(0,0,0,.4);max-height:82vh;overflow-y:auto}
+.slide-title .slide-inner{text-align:center;background:rgba(20,30,50,.4);border-color:rgba(77,168,255,.15)}
+.slide-title h1{font-size:clamp(32px,5vw,52px);font-weight:800;background:linear-gradient(135deg,#4da8ff,#b0e0ff);-webkit-background-clip:text;background-clip:text;color:transparent;line-height:1.2;margin-bottom:12px}
+.slide-title .sub{font-size:18px;color:rgba(255,255,255,.4)}
+.slide-title .lesson-num{font-size:14px;color:rgba(255,255,255,.25);margin-bottom:18px;letter-spacing:3px}
+.slide h2{font-size:clamp(22px,3vw,32px);font-weight:700;color:#4da8ff;margin-bottom:18px;border-bottom:1px solid rgba(77,168,255,.15);padding-bottom:10px}
+.slide p{font-size:17px;line-height:1.8;margin-bottom:12px;color:rgba(255,255,255,.85)}
+.slide ul{margin:8px 0 12px 20px}
+.slide li{font-size:16px;line-height:1.7;margin-bottom:5px;color:rgba(255,255,255,.8)}
+.slide li strong{color:#b0e0ff}
+.slide .highlight-box{background:rgba(77,168,255,.08);border-left:4px solid #4da8ff;padding:16px 20px;border-radius:0 12px 12px 0;margin:14px 0;font-size:15px}
+.slide .tip-box{background:rgba(255,200,0,.06);border-left:4px solid #ffc800;padding:14px 18px;border-radius:0 10px 10px 0;margin:14px 0;font-size:15px}
+.slide code{background:rgba(255,255,255,.1);padding:2px 8px;border-radius:4px;font-size:14px}
+.nav-bar{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:16px;background:rgba(10,15,30,.7);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.06);border-radius:30px;padding:10px 20px;z-index:10}
+.nav-bar button{background:0 0;border:none;color:rgba(255,255,255,.4);font-size:18px;cursor:pointer;padding:6px 12px;border-radius:8px;transition:all .2s}
+.nav-bar button:hover{color:#fff;background:rgba(255,255,255,.06)}
+.nav-bar .counter{font-size:14px;color:rgba(255,255,255,.35);min-width:60px;text-align:center}
+.nav-bar .back-link{color:rgba(255,255,255,.25);text-decoration:none;font-size:13px;padding:6px 12px;border-radius:8px;transition:all .2s}
+.nav-bar .back-link:hover{color:#fff;background:rgba(255,255,255,.06)}
+@media(max-width:640px){.slide{padding:16px}.slide-inner{padding:24px 18px}.nav-bar{padding:8px 12px;gap:8px;bottom:14px}}
+</style></head>
+<body><div class="presentation" id="presentation">
+<div class="slide slide-title active" data-index="0"><div class="slide-inner"><div class="lesson-num">安卓逆向 · 第3课</div><h1>jadx 反编译入门</h1><div class="sub">把 DEX 变回可读代码</div></div></div>
+<div class="slide" data-index="1"><div class="slide-inner"><h2>什么是反编译？</h2><p>反编译就是把 <strong>DEX 字节码</strong> 还原成 <strong>Java 源代码</strong>。</p><ul><li>编译：Java 代码 → .class → .dex（人看不懂）</li><li>反编译：.dex → 近似 Java 的源码（人能看懂）</li></ul><div class="tip-box">反编译出的代码和原始源码不完全一样——变量名可能变成 a、b、c，注释全部丢失。</div></div></div>
+<div class="slide" data-index="2"><div class="slide-inner"><h2>jadx 工具介绍</h2><p><strong>jadx</strong> 是目前最好用的安卓反编译工具：</p><ul><li>免费开源</li><li>支持命令行和 GUI 两种模式</li><li>直接把 APK 或 DEX 拖进去就反编译</li><li>输出可读的 Java 代码 → 不需要看懂 Smali</li></ul></div></div>
+<div class="slide" data-index="3"><div class="slide-inner"><h2>下载和安装</h2><ul><li>GitHub 搜索 jadx → Releases → 下载 jadx-gui-版本号.zip</li><li>解压到任意目录</li><li>双击运行 <strong>jadx-gui.bat</strong>（Windows）</li><li>打开 APK 文件开始浏览</li></ul><div class="highlight-box">也支持命令行：java -jar jadx-cli.jar app.apk -d output/ 导出所有 Java 源码。</div></div></div>
+<div class="slide" data-index="4"><div class="slide-inner"><h2>jadx-gui 界面</h2><ul><li>左侧：包名/类文件树（像 IDE 的项目结构）</li><li>右侧：反编译后的 Java 代码</li><li>底部：搜索栏（搜索类名、方法名、字符串）</li><li>菜单栏：File → Save all 导出全部源码</li></ul><div class="tip-box">按 Ctrl+F 在搜索栏里搜关键词（如"password"、"http"、"secret"），快速定位敏感信息。</div></div></div>
+<div class="slide" data-index="5"><div class="slide-inner"><h2>常见分析目标</h2><ul><li><strong>找网络请求</strong> → 搜索 "http" / "url" / "connection"</li><li><strong>找加密逻辑</strong> → 搜索 "AES" / "RSA" / "MD5"</li><li><strong>找广告 SDK</strong> → 搜索 "ad" / "advertising"</li><li><strong>找付费验证</strong> → 搜索 "pay" / "premium" / "vip"</li><li><strong>找字符串</strong> → 搜索界面上出现的文字</li></ul></div></div>
+<div class="slide" data-index="6"><div class="slide-inner"><h2>保存源码项目</h2><ul><li>jadx 查看源码后，可以导出为完整的 Gradle 项目</li><li>File → Save as Gradle project</li><li>导出的项目可用 Android Studio 打开</li><li>能直接在里面搜索、跳转、重构</li></ul><div class="highlight-box">但导出的项目<strong>不能直接编译</strong>——里面可能有混淆代码和缺失的库。</div></div></div>
+<div class="slide" data-index="7"><div class="slide-inner"><h2>总结</h2><ul><li>反编译 = DEX → 近似 Java 代码</li><li>jadx-gui 是最好用的安卓反编译 GUI 工具</li><li>搜索结果字符串、类名、方法名来定位关键代码</li><li>可导出为 Gradle 项目在 Android Studio 里查看</li><li>反编译代码没有注释，变量名可能被混淆</li></ul></div></div>
+</div>
+<div class="nav-bar"><a class="back-link" href="index.html">← 目录</a><button id="prevBtn">◀</button><span class="counter" id="counter">1 / 8</span><button id="nextBtn">▶</button></div>
+<script>
+const slides=document.querySelectorAll('.slide'),total=slides.length;let current=0;
+function goTo(n){slides.forEach(s=>s.classList.remove('active'));current=(n+total)%total;slides[current].classList.add('active');document.getElementById('counter').textContent=(current+1)+' / '+total}
+document.getElementById('prevBtn').addEventListener('click',()=>goTo(current-1));
+document.getElementById('nextBtn').addEventListener('click',()=>goTo(current+1));
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key==='ArrowDown'||e.key===' '){e.preventDefault();goTo(current+1)}if(e.key==='ArrowLeft'||e.key==='ArrowUp'){e.preventDefault();goTo(current-1)}});
+document.getElementById('presentation').addEventListener('click',e=>{if(e.target.closest('.nav-bar')||e.target.closest('.slide-inner'))return;goTo(current+1)});
+</script></body></html>

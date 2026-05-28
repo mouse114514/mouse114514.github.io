@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>数据库基础</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',sans-serif;background:#0a0f1e;color:#e0e8f0;height:100vh;overflow:hidden}
+.presentation{width:100%;height:100vh;position:relative}
+.slide{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px;opacity:0;pointer-events:none;transition:opacity .4s ease}
+.slide.active{opacity:1;pointer-events:auto}
+.slide-inner{max-width:840px;width:100%;background:rgba(20,30,50,.6);backdrop-filter:blur(12px);border:1px solid rgba(77,168,255,.2);border-radius:28px;padding:44px 54px;box-shadow:0 0 50px rgba(0,0,0,.4);max-height:82vh;overflow-y:auto}
+.slide-title .slide-inner{text-align:center;background:rgba(20,30,50,.4);border-color:rgba(77,168,255,.15)}
+.slide-title h1{font-size:clamp(32px,5vw,52px);font-weight:800;background:linear-gradient(135deg,#4da8ff,#b0e0ff);-webkit-background-clip:text;background-clip:text;color:transparent;line-height:1.2;margin-bottom:12px}
+.slide-title .sub{font-size:18px;color:rgba(255,255,255,.4)}
+.slide-title .lesson-num{font-size:14px;color:rgba(255,255,255,.25);margin-bottom:18px;letter-spacing:3px}
+.slide h2{font-size:clamp(22px,3vw,32px);font-weight:700;color:#4da8ff;margin-bottom:18px;border-bottom:1px solid rgba(77,168,255,.15);padding-bottom:10px}
+.slide p{font-size:17px;line-height:1.8;margin-bottom:12px;color:rgba(255,255,255,.85)}
+.slide ul{margin:8px 0 12px 20px}
+.slide li{font-size:16px;line-height:1.7;margin-bottom:5px;color:rgba(255,255,255,.8)}
+.slide li strong{color:#b0e0ff}
+.slide .highlight-box{background:rgba(77,168,255,.08);border-left:4px solid #4da8ff;padding:16px 20px;border-radius:0 12px 12px 0;margin:14px 0;font-size:15px}
+.slide .tip-box{background:rgba(255,200,0,.06);border-left:4px solid #ffc800;padding:14px 18px;border-radius:0 10px 10px 0;margin:14px 0;font-size:15px}
+.slide code{background:rgba(255,255,255,.1);padding:2px 8px;border-radius:4px;font-size:14px}
+.nav-bar{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:16px;background:rgba(10,15,30,.7);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.06);border-radius:30px;padding:10px 20px;z-index:10}
+.nav-bar button{background:0 0;border:none;color:rgba(255,255,255,.4);font-size:18px;cursor:pointer;padding:6px 12px;border-radius:8px;transition:all .2s}
+.nav-bar button:hover{color:#fff;background:rgba(255,255,255,.06)}
+.nav-bar .counter{font-size:14px;color:rgba(255,255,255,.35);min-width:60px;text-align:center}
+.nav-bar .back-link{color:rgba(255,255,255,.25);text-decoration:none;font-size:13px;padding:6px 12px;border-radius:8px;transition:all .2s}
+.nav-bar .back-link:hover{color:#fff;background:rgba(255,255,255,.06)}
+@media(max-width:640px){.slide{padding:16px}.slide-inner{padding:24px 18px}.nav-bar{padding:8px 12px;gap:8px;bottom:14px}}
+</style></head>
+<body><div class="presentation" id="presentation">
+<div class="slide slide-title active" data-index="0"><div class="slide-inner"><div class="lesson-num">Web 后端 · 第4课</div><h1>数据库基础</h1><div class="sub">存储数据的"仓库"</div></div></div>
+<div class="slide" data-index="1"><div class="slide-inner"><h2>为什么需要数据库？</h2><p>网站需要<strong>持久化存储</strong>数据：</p><ul><li>用户注册信息（用户名、密码）</li><li>文章、评论、帖子</li><li>商品信息、订单</li></ul><p>文件也能存，但数据库更快、更安全、更方便查询。</p><div class="highlight-box">如果把后端比作餐厅，数据库就是厨房后面的仓库——存着所有原材料。</div></div></div>
+<div class="slide" data-index="2"><div class="slide-inner"><h2>关系型数据库</h2><p>最常见的是<strong>关系型数据库</strong>（像 Excel 表格）：</p><ul><li>数据存成"表"（Table）</li><li>表里有"行"（Row）和"列"（Column）</li><li>表之间可以关联（用户表 → 订单表）</li></ul><p>常见的关系型数据库：<strong>SQLite</strong>（轻量）、<strong>MySQL</strong>（流行）、<strong>PostgreSQL</strong>（高级）</p></div></div>
+<div class="slide" data-index="3"><div class="slide-inner"><h2>SQL 基本语句</h2><p>SQL（Structured Query Language）是操作数据库的语言：</p><p><strong>查询</strong>：<code>SELECT * FROM users WHERE age > 18</code></p><p><strong>插入</strong>：<code>INSERT INTO users (name, age) VALUES ('张三', 20)</code></p><p><strong>更新</strong>：<code>UPDATE users SET age = 21 WHERE name = '张三'</code></p><p><strong>删除</strong>：<code>DELETE FROM users WHERE name = '张三'</code></p></div></div>
+<div class="slide" data-index="4"><div class="slide-inner"><h2>SQLite + Flask</h2><p>SQLite 不需要安装服务器，文件即数据库：</p><p><code>import sqlite3</code></p><p><code>conn = sqlite3.connect("data.db")</code></p><p><code>cursor = conn.cursor()</code></p><p><code>cursor.execute("CREATE TABLE IF NOT EXISTS users (id INTEGER, name TEXT)")</code></p><p>在 Flask 里用 SQLite 就能做一个完整的带后端的网站。</p></div></div>
+<div class="slide" data-index="5"><div class="slide-inner"><h2>数据库设计示例</h2><p>一个简单的博客数据库：</p><p><code>users</code> 表：id、username、password</p><p><code>posts</code> 表：id、title、content、user_id、created_at</p><p><code>comments</code> 表：id、content、post_id、user_id、created_at</p><p>user_id 把帖子和用户关联起来——这叫<strong>外键</strong>。</p></div></div>
+<div class="slide" data-index="6"><div class="slide-inner"><h2>ORM 概念</h2><p>ORM（对象关系映射）让你用 Python 对象操作数据库，不用写 SQL：</p><p>用 SQLAlchemy（Flask 常用）：</p><p><code>class User(db.Model):</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;id = db.Column(db.Integer, primary_key=True)</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;name = db.Column(db.String(100))</code></p><p><code>db.session.add(User(name="张三"))</code></p><p><code>db.session.commit()</code></p></div></div>
+<div class="slide" data-index="7"><div class="slide-inner"><h2>总结</h2><ul><li>数据库持久化存储数据，比文件更快更安全</li><li>关系型数据库 = 表（行+列）</li><li>SQL 语句：SELECT / INSERT / UPDATE / DELETE</li><li>SQLite 轻量易用，适合学习和个人项目</li><li>ORM 让你用 Python 类操作数据库，不用手写 SQL</li></ul></div></div>
+</div>
+<div class="nav-bar"><a class="back-link" href="index.html">← 目录</a><button id="prevBtn">◀</button><span class="counter" id="counter">1 / 8</span><button id="nextBtn">▶</button></div>
+<script>
+const slides=document.querySelectorAll('.slide'),total=slides.length;let current=0;
+function goTo(n){slides.forEach(s=>s.classList.remove('active'));current=(n+total)%total;slides[current].classList.add('active');document.getElementById('counter').textContent=(current+1)+' / '+total}
+document.getElementById('prevBtn').addEventListener('click',()=>goTo(current-1));
+document.getElementById('nextBtn').addEventListener('click',()=>goTo(current+1));
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key==='ArrowDown'||e.key===' '){e.preventDefault();goTo(current+1)}if(e.key==='ArrowLeft'||e.key==='ArrowUp'){e.preventDefault();goTo(current-1)}});
+document.getElementById('presentation').addEventListener('click',e=>{if(e.target.closest('.nav-bar')||e.target.closest('.slide-inner'))return;goTo(current+1)});
+</script></body></html>

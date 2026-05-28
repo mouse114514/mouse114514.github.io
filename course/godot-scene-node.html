@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Godot 场景与节点</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',sans-serif;background:#0a0f1e;color:#e0e8f0;height:100vh;overflow:hidden}
+.presentation{width:100%;height:100vh;position:relative}
+.slide{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px;opacity:0;pointer-events:none;transition:opacity .4s ease}
+.slide.active{opacity:1;pointer-events:auto}
+.slide-inner{max-width:840px;width:100%;background:rgba(20,30,50,.6);backdrop-filter:blur(12px);border:1px solid rgba(77,168,255,.2);border-radius:28px;padding:44px 54px;box-shadow:0 0 50px rgba(0,0,0,.4);max-height:82vh;overflow-y:auto}
+.slide-title .slide-inner{text-align:center;background:rgba(20,30,50,.4);border-color:rgba(77,168,255,.15)}
+.slide-title h1{font-size:clamp(32px,5vw,52px);font-weight:800;background:linear-gradient(135deg,#4da8ff,#b0e0ff);-webkit-background-clip:text;background-clip:text;color:transparent;line-height:1.2;margin-bottom:12px}
+.slide-title .sub{font-size:18px;color:rgba(255,255,255,.4)}
+.slide-title .lesson-num{font-size:14px;color:rgba(255,255,255,.25);margin-bottom:18px;letter-spacing:3px}
+.slide h2{font-size:clamp(22px,3vw,32px);font-weight:700;color:#4da8ff;margin-bottom:18px;border-bottom:1px solid rgba(77,168,255,.15);padding-bottom:10px}
+.slide p{font-size:17px;line-height:1.8;margin-bottom:12px;color:rgba(255,255,255,.85)}
+.slide ul{margin:8px 0 12px 20px}
+.slide li{font-size:16px;line-height:1.7;margin-bottom:5px;color:rgba(255,255,255,.8)}
+.slide li strong{color:#b0e0ff}
+.slide .highlight-box{background:rgba(77,168,255,.08);border-left:4px solid #4da8ff;padding:16px 20px;border-radius:0 12px 12px 0;margin:14px 0;font-size:15px}
+.slide .tip-box{background:rgba(255,200,0,.06);border-left:4px solid #ffc800;padding:14px 18px;border-radius:0 10px 10px 0;margin:14px 0;font-size:15px}
+.nav-bar{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:16px;background:rgba(10,15,30,.7);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.06);border-radius:30px;padding:10px 20px;z-index:10}
+.nav-bar button{background:0 0;border:none;color:rgba(255,255,255,.4);font-size:18px;cursor:pointer;padding:6px 12px;border-radius:8px;transition:all .2s}
+.nav-bar button:hover{color:#fff;background:rgba(255,255,255,.06)}
+.nav-bar .counter{font-size:14px;color:rgba(255,255,255,.35);min-width:60px;text-align:center}
+.nav-bar .back-link{color:rgba(255,255,255,.25);text-decoration:none;font-size:13px;padding:6px 12px;border-radius:8px;transition:all .2s}
+.nav-bar .back-link:hover{color:#fff;background:rgba(255,255,255,.06)}
+@media(max-width:640px){.slide{padding:16px}.slide-inner{padding:24px 18px}.nav-bar{padding:8px 12px;gap:8px;bottom:14px}}
+</style></head>
+<body><div class="presentation" id="presentation">
+<div class="slide slide-title active" data-index="0"><div class="slide-inner"><div class="lesson-num">Godot · 第2课</div><h1>场景与节点</h1><div class="sub">理解 Godot 最核心的概念</div></div></div>
+<div class="slide" data-index="1"><div class="slide-inner"><h2>节点（Node）</h2><p>在 Godot 里，<strong>一切皆节点</strong>。一个节点就是游戏里的一个"零件"。</p><ul><li>一个<strong>Sprite2D 节点</strong> = 显示一张图片</li><li>一个<strong>AudioStreamPlayer 节点</strong> = 播放音效</li><li>一个<strong>CollisionShape2D 节点</strong> = 碰撞检测</li><li>一个<strong>Label 节点</strong> = 显示文字</li></ul><div class="highlight-box">最小的游戏可能只需要几个节点。复杂的游戏需要几百个。节点可以嵌套——一个节点里放另一个节点。</div></div></div>
+<div class="slide" data-index="2"><div class="slide-inner"><h2>场景（Scene）</h2><p><strong>场景</strong>是一组节点的集合，可以独立保存和加载。</p><ul><li>一个"关卡"可以是一个场景</li><li>一个"玩家角色"也可以是一个场景</li><li>一个"按钮"也可以是一个场景</li></ul><p>场景可以嵌套——把"玩家"场景放进"关卡"场景里。</p><div class="highlight-box">Godot 做游戏 = 搭积木。先把小积木（场景）做好，再拼成大积木（关卡场景）。</div></div></div>
+<div class="slide" data-index="3"><div class="slide-inner"><h2>场景树（Scene Tree）</h2><p>你编辑器的左边面板就是<strong>场景树</strong>——显示当前场景里所有节点的层级关系。</p><ul><li><strong>根节点</strong> — 场景最顶层的节点</li><li><strong>子节点</strong> — 挂在其他节点下面的节点</li><li><strong>父节点</strong> — 移动父节点，子节点跟着动</li></ul><p>比如：根节点是 Node2D → 子节点 Sprite2D + CollisionShape2D</p></div></div>
+<div class="slide" data-index="4"><div class="slide-inner"><h2>常用节点类型</h2><ul><li><strong>Node</strong> — 最基础的节点，没有位置</li><li><strong>Node2D</strong> — 2D 游戏的基础，有 x/y 坐标</li><li><strong>Sprite2D</strong> — 显示图片精灵</li><li><strong>Area2D</strong> — 检测其他物体进入/离开区域</li><li><strong>RigidBody2D</strong> — 物理模拟（重力、碰撞）</li><li><strong>StaticBody2D</strong> — 静态障碍物（墙壁、地板）</li><li><strong>CharacterBody2D</strong> — 角色控制器（玩家移动）</li><li><strong>Camera2D</strong> — 摄像机（跟随玩家）</li></ul></div></div>
+<div class="slide" data-index="5"><div class="slide-inner"><h2>添加节点</h2><ul><li>在场景树面板点右键 → Add Child Node</li><li>或者点左上角的"+"按钮</li><li>搜索节点类型（如 Sprite2D）</li><li>选中后点"Create"</li></ul><div class="tip-box">创建节点后，右边属性面板会显示该节点的所有属性，可以直接修改数值。</div></div></div>
+<div class="slide" data-index="6"><div class="slide-inner"><h2>保存和运行场景</h2><ul><li>按 <strong>Ctrl + S</strong> 保存场景（.tscn 格式）</li><li>按 <strong>F5</strong> 运行当前场景</li><li>按 <strong>F6</strong> 运行整个项目</li><li>主场景在项目设置里指定（Project → Project Settings → Main Scene）</li></ul><div class="highlight-box">.tscn 文件其实是一个文本文件，用记事本也能打开看。但你一般不需要手动编辑它。</div></div></div>
+<div class="slide" data-index="7"><div class="slide-inner"><h2>总结</h2><ul><li>节点 = 游戏里的"零件"，每个节点有不同功能</li><li>场景 = 一组节点的集合，可保存可嵌套</li><li>场景树 = 节点的层级结构，父子关系</li><li>右键场景面板添加新节点，属性面板改参数</li><li>Ctrl+S 保存，F5 运行</li></ul></div></div>
+</div>
+<div class="nav-bar"><a class="back-link" href="index.html">← 目录</a><button id="prevBtn">◀</button><span class="counter" id="counter">1 / 8</span><button id="nextBtn">▶</button></div>
+<script>
+const slides=document.querySelectorAll('.slide'),total=slides.length;let current=0;
+function goTo(n){slides.forEach(s=>s.classList.remove('active'));current=(n+total)%total;slides[current].classList.add('active');document.getElementById('counter').textContent=(current+1)+' / '+total}
+document.getElementById('prevBtn').addEventListener('click',()=>goTo(current-1));
+document.getElementById('nextBtn').addEventListener('click',()=>goTo(current+1));
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key==='ArrowDown'||e.key===' '){e.preventDefault();goTo(current+1)}if(e.key==='ArrowLeft'||e.key==='ArrowUp'){e.preventDefault();goTo(current-1)}});
+document.getElementById('presentation').addEventListener('click',e=>{if(e.target.closest('.nav-bar')||e.target.closest('.slide-inner'))return;goTo(current+1)});
+</script></body></html>
