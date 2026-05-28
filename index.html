@@ -5,785 +5,410 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>X_studio</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: 'Arial Black', sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
             background: #0a0f1e;
+            color: #e0e8f0;
             height: 100vh;
             overflow: hidden;
             perspective: 1200px;
             transform-style: preserve-3d;
         }
-        
-        .fixed-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1;
-            pointer-events: none;
-            transform-style: preserve-3d;
-        }
-        
-        #x {
+
+        /* Hero */
+        .hero {
             position: absolute;
             left: 50%;
             top: 50%;
-            transform: translate(-50%, -50%) rotateX(0deg) rotateY(0deg);
-            font-size: min(40vw, 500px);
+            transform: translate(-50%, -50%);
+            text-align: center;
+            pointer-events: none;
+            transform-style: preserve-3d;
+        }
+        .hero-x {
+            font-size: clamp(100px, 25vw, 400px);
             font-weight: 900;
             background: linear-gradient(to bottom, #4da8ff, #b0e0ff);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-            white-space: nowrap;
             line-height: 1;
-            z-index: 2;
-            transition: transform 0.1s ease-out;
+            text-shadow: 0 0 40px rgba(77,168,255,0.3);
             transform-style: preserve-3d;
-            text-shadow: 0 0 30px rgba(77,168,255,0.5);
-            pointer-events: none;
+            user-select: none;
         }
-        
-        #studio {
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%) rotateX(0deg) rotateY(0deg);
-            font-size: min(8vw, 80px);
+        .hero-x.desktop { transition: transform 0.08s ease-out; }
+        .hero-studio {
+            font-size: clamp(28px, 4vw, 70px);
             color: white;
             font-weight: 400;
             letter-spacing: 4px;
-            text-shadow: 0 0 20px rgba(77,168,255,0.3);
-            top: calc(50% + min(20vw, 250px));
-            z-index: 2;
-            white-space: nowrap;
-            pointer-events: none;
-            transition: transform 0.1s ease-out;
+            text-shadow: 0 0 20px rgba(77,168,255,0.2);
+            margin-top: -10px;
             transform-style: preserve-3d;
+            user-select: none;
+        }
+        .hero-studio.desktop { transition: transform 0.08s ease-out; }
+
+        @keyframes xRotate {
+            0% { transform: rotateX(0deg) rotateY(0deg); }
+            25% { transform: rotateX(-12deg) rotateY(18deg); }
+            50% { transform: rotateX(0deg) rotateY(0deg); }
+            75% { transform: rotateX(12deg) rotateY(-18deg); }
+            100% { transform: rotateX(0deg) rotateY(0deg); }
+        }
+        @keyframes studioRotate {
+            0% { transform: rotateX(0deg) rotateY(0deg); }
+            25% { transform: rotateX(-7deg) rotateY(11deg); }
+            50% { transform: rotateX(0deg) rotateY(0deg); }
+            75% { transform: rotateX(7deg) rotateY(-11deg); }
+            100% { transform: rotateX(0deg) rotateY(0deg); }
         }
 
-        /* 汉堡按钮 - 移动端显示在底部中心，圆形亚克力风格 */
-        .hamburger {
+        /* Overlay */
+        .overlay {
             position: fixed;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 60px;
-            height: 60px;
-            background: rgba(20, 30, 50, 0.6);
-            backdrop-filter: blur(12px) saturate(180%);
-            -webkit-backdrop-filter: blur(12px) saturate(180%);
-            border: 1.5px solid rgba(77, 168, 255, 0.6);
-            border-radius: 50%;
-            z-index: 200;
-            display: none; /* 默认隐藏，JS根据UA决定是否显示 */
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4), 0 0 15px rgba(77, 168, 255, 0.3);
-        }
-        .hamburger span {
-            width: 28px;
-            height: 3px;
-            background: #4da8ff;
-            margin: 4px 0;
-            border-radius: 3px;
-            transition: 0.3s;
-            box-shadow: 0 0 8px rgba(77, 168, 255, 0.5);
-        }
-        .hamburger.active span:nth-child(1) {
-            transform: rotate(45deg) translate(8px, 8px);
-        }
-        .hamburger.active span:nth-child(2) {
+            inset: 0;
+            background: rgba(0,0,0,0.55);
+            z-index: 50;
             opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
         }
-        .hamburger.active span:nth-child(3) {
-            transform: rotate(-45deg) translate(8px, -8px);
-        }
+        .overlay.active { opacity: 1; pointer-events: auto; }
 
-        .menu-bar {
+        /* Modal window */
+        .modal {
             position: fixed;
-            left: 30px;
             top: 50%;
-            transform: translateY(-50%) translateX(-200%);
-            width: 300px;
-            height: 80vh;
-            background: rgba(20, 30, 50, 0.6);
-            backdrop-filter: blur(20px) saturate(180%);
-            -webkit-backdrop-filter: blur(20px) saturate(180%);
-            border: 1px solid rgba(77, 168, 255, 0.3);
-            border-radius: 30px;
-            padding: 20px 0;
-            box-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
-            z-index: 100;
-            transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.92);
+            width: 90%;
+            max-width: 680px;
+            max-height: 80vh;
+            background: rgba(16, 24, 44, 0.88);
+            backdrop-filter: blur(32px) saturate(180%);
+            -webkit-backdrop-filter: blur(32px) saturate(180%);
+            border: 1px solid rgba(77, 168, 255, 0.15);
+            border-radius: 24px;
+            z-index: 51;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 24px 80px rgba(0,0,0,0.7);
             display: flex;
             flex-direction: column;
+        }
+        .modal.active {
+            opacity: 1;
             pointer-events: auto;
-            overflow-y: auto;
-            overflow-x: hidden;
+            transform: translate(-50%, -50%) scale(1);
         }
 
-        .menu-bar.visible {
-            transform: translateY(-50%) translateX(0);
-        }
-        
-        .menu-parent {
-            width: 100%;
-            margin-bottom: 5px;
+        /* Traditional nav bar inside modal */
+        .modal-nav {
+            display: flex;
+            justify-content: flex-end;
+            gap: 4px;
+            padding: 20px 24px 0;
             flex-shrink: 0;
         }
-
-        .parent-btn {
-            width: calc(100% - 30px);
-            margin: 0 auto 5px;
-            height: 50px;
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(77, 168, 255, 0.3);
-            border-radius: 25px;
-            padding: 0 20px;
-            color: white;
-            font-size: 18px;
-            font-weight: 400;
-            letter-spacing: 1px;
+        .modal-nav a {
+            color: rgba(255,255,255,0.5);
+            text-decoration: none;
+            padding: 8px 18px;
+            border-radius: 8px;
+            font-size: 15px;
             cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            backdrop-filter: blur(5px);
-            font-family: 'Arial', sans-serif;
+            transition: all 0.2s;
         }
-
-        .parent-btn:hover {
-            border-color: #4da8ff;
-            background: rgba(77, 168, 255, 0.15);
-            box-shadow: 0 0 20px rgba(77, 168, 255, 0.2);
+        .modal-nav a:hover {
+            color: #fff;
+            background: rgba(255,255,255,0.06);
         }
-
-        .arrow {
-            transition: transform 0.3s ease;
-            font-size: 14px;
+        .modal-nav a.active {
             color: #4da8ff;
-        }
-
-        .menu-parent.expanded .arrow {
-            transform: rotate(90deg);
-        }
-
-        .submenu {
-            width: 100%;
-            max-height: 0;
-            opacity: 0;
-            overflow: hidden;
-            transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1),
-                        opacity 0.3s ease;
-            margin-bottom: 0;
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-        }
-
-        .menu-parent.expanded .submenu {
-            max-height: 500px; /* 增加一点高度以容纳新成员 */
-            opacity: 1;
-            margin-bottom: 10px;
-        }
-
-        .submenu .menu-btn {
-            transform: translateX(-100%);
-            opacity: 0;
-            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
-                        opacity 0.3s ease,
-                        background 0.3s,
-                        border-color 0.3s;
-        }
-
-        .menu-parent.expanded .submenu .menu-btn {
-            transform: translateX(0);
-            opacity: 1;
-        }
-
-        .submenu .menu-btn {
-            width: calc(100% - 50px);
-            margin-left: auto;
-            margin-right: auto;
-            height: 45px;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(77, 168, 255, 0.2);
-            border-radius: 22px;
-            color: rgba(255, 255, 255, 0.9);
-            font-size: 16px;
-            font-weight: 300;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-family: 'Arial', sans-serif;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .submenu .menu-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(77, 168, 255, 0.3), transparent);
-            transition: left 0.5s;
-        }
-
-        .submenu .menu-btn:hover {
-            border-color: #4da8ff;
-            transform: scale(1.02) translateX(0) !important;
             background: rgba(77, 168, 255, 0.1);
-            box-shadow: 0 0 20px rgba(77, 168, 255, 0.3);
         }
 
-        .submenu .menu-btn:hover::before {
-            left: 100%;
+        /* Content area inside modal */
+        .modal-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 24px 24px 20px;
+        }
+        .modal-content .page {
+            display: none;
+        }
+        .modal-content .page.active {
+            display: block;
+        }
+        .modal-content .page h2 {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 18px;
+            color: #fff;
+        }
+        .modal-content .page p {
+            font-size: 15px;
+            color: rgba(255,255,255,0.6);
+            margin-bottom: 20px;
         }
 
-        .submenu .menu-btn.active {
-            background: rgba(77, 168, 255, 0.2);
-            border-color: #4da8ff;
-            box-shadow: 0 0 30px rgba(77, 168, 255, 0.4);
+        /* Card grid inside modal */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 12px;
         }
+        .card {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 12px;
+            padding: 18px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .card:hover {
+            border-color: rgba(77, 168, 255, 0.3);
+            background: rgba(77, 168, 255, 0.06);
+        }
+        .card .icon { font-size: 24px; margin-bottom: 8px; }
+        .card h3 { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
+        .card p { font-size: 13px; color: rgba(255,255,255,0.4); margin-bottom: 0; }
 
-        .submenu .menu-btn:nth-child(1) { transition-delay: 0s; }
-        .submenu .menu-btn:nth-child(2) { transition-delay: 0.05s; }
-        .submenu .menu-btn:nth-child(3) { transition-delay: 0.1s; }
-        .submenu .menu-btn:nth-child(4) { transition-delay: 0.15s; }
-        .submenu .menu-btn:nth-child(5) { transition-delay: 0.2s; }
-        .submenu .menu-btn:nth-child(6) { transition-delay: 0.25s; }
-        .submenu .menu-btn:nth-child(7) { transition-delay: 0.3s; }
-        .submenu .menu-btn:nth-child(8) { transition-delay: 0.35s; }
-
+        /* Detail panel (over the modal) */
+        .detail-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 100;
+        }
+        .detail-overlay.active { display: block; }
         .detail-panel {
             position: fixed;
-            right: 50px;
             top: 50%;
-            transform: translateY(-50%) translateX(150%);
-            width: 500px;
-            max-width: calc(100vw - 400px);
-            height: 80vh;
-            background: rgba(20, 30, 50, 0.7);
-            backdrop-filter: blur(25px) saturate(200%);
-            -webkit-backdrop-filter: blur(25px) saturate(200%);
-            border: 1px solid rgba(77, 168, 255, 0.4);
-            border-radius: 40px;
-            padding: 40px;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90%;
+            max-width: 480px;
+            max-height: 70vh;
+            background: #141e32;
+            border: 1px solid rgba(77, 168, 255, 0.3);
+            border-radius: 20px;
+            padding: 28px;
             z-index: 101;
-            transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s, visibility 0.3s;
-            color: white;
-            pointer-events: auto;
-            opacity: 0;
-            visibility: hidden;
+            display: none;
             overflow-y: auto;
-            display: flex;
-            flex-direction: column;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.6);
         }
-
-        .detail-panel.visible {
-            transform: translateY(-50%) translateX(0);
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .detail-title {
-            font-size: 36px;
-            margin-bottom: 20px;
-            background: linear-gradient(to right, #fff, #b0e0ff);
+        .detail-panel.active { display: block; }
+        .detail-panel h3 {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, #fff, #b0e0ff);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-            font-weight: 900;
-            flex-shrink: 0;
         }
-
-        .detail-content {
-            font-size: 18px;
+        .detail-panel .content {
+            font-size: 15px;
             line-height: 1.8;
-            font-family: 'Arial', sans-serif;
-            font-weight: 300;
-            opacity: 0.9;
-            margin-bottom: 30px;
-            flex: 1;
+            color: rgba(255,255,255,0.8);
             white-space: pre-wrap;
+            margin-bottom: 16px;
         }
-
-        .detail-meta {
+        .detail-panel .meta {
             display: flex;
-            gap: 20px;
-            font-size: 14px;
-            color: #b0e0ff;
-            border-top: 1px solid rgba(77, 168, 255, 0.3);
-            padding-top: 20px;
-            font-family: 'Arial', sans-serif;
-            flex-shrink: 0;
+            gap: 14px;
+            font-size: 13px;
+            color: rgba(255,255,255,0.4);
+            border-top: 1px solid rgba(255,255,255,0.06);
+            padding-top: 12px;
         }
-
-        .detail-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 99;
-            display: none;
-            pointer-events: auto;
-        }
-
-        .detail-overlay.active {
-            display: block;
-        }
-
-        /* 语言切换按钮 - 固定在菜单左下角，圆形亚克力风格 */
-        .lang-switch {
+        .detail-panel .close {
             position: absolute;
-            bottom: 20px;
-            left: 20px;
-            width: 45px;
-            height: 45px;
-            background: rgba(20, 30, 50, 0.7);
-            backdrop-filter: blur(12px) saturate(180%);
-            -webkit-backdrop-filter: blur(12px) saturate(180%);
-            border: 1.5px solid rgba(77, 168, 255, 0.6);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #4da8ff;
+            top: 12px;
+            right: 16px;
             font-size: 20px;
-            font-weight: bold;
+            color: rgba(255,255,255,0.3);
             cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-            z-index: 102;
-            pointer-events: auto;
+            background: none;
+            border: none;
+            transition: 0.2s;
         }
+        .detail-panel .close:hover { color: #fff; }
 
-        .lang-switch:hover {
-            border-color: #4da8ff;
-            background: rgba(77, 168, 255, 0.2);
-            box-shadow: 0 0 15px rgba(77, 168, 255, 0.4);
-            transform: scale(1.05);
+        @media (max-width: 640px) {
+            .modal-nav { padding: 16px 16px 0; gap: 2px; }
+            .modal-nav a { padding: 6px 12px; font-size: 13px; }
+            .modal-content { padding: 16px; }
+            .modal-content .page h2 { font-size: 19px; }
+            .card-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+            .detail-panel { padding: 20px; }
         }
-
-        /* 移除宽度判断的媒体查询，完全由UA控制 */
     </style>
 </head>
 <body>
-    <div class="fixed-bg" id="fixedBg">
-        <div id="x">X</div>
-        <div id="studio">Studio</div>
+    <!-- Hero -->
+    <div class="hero" id="hero">
+        <div class="hero-x" id="heroX">X</div>
+        <div class="hero-studio" id="heroStudio">Studio</div>
     </div>
 
-    <!-- 汉堡菜单按钮（纯UA判断显示，底部中心，圆形亚克力） -->
-    <div class="hamburger" id="hamburger">
-        <span></span>
-        <span></span>
-        <span></span>
+    <!-- Overlay + Modal -->
+    <div class="overlay" id="overlay"></div>
+    <div class="modal" id="modal">
+        <div class="modal-nav">
+            <a class="active" data-page="projects">项目</a>
+            <a data-page="members">成员</a>
+            <a data-page="resources">资源</a>
+            <a href="course/" style="color:rgba(255,255,255,0.35)">课程</a>
+        </div>
+        <div class="modal-content" id="modalContent">
+            <div class="page active" id="page-projects">
+                <h2>项目</h2>
+                <p>我们正在做的东西</p>
+                <div class="card-grid" id="projectsGrid"></div>
+            </div>
+            <div class="page" id="page-members">
+                <h2>成员</h2>
+                <p>社团的小伙伴们</p>
+                <div class="card-grid" id="membersGrid"></div>
+            </div>
+            <div class="page" id="page-resources">
+                <h2>资源</h2>
+                <p>美术资源与素材</p>
+                <div class="card-grid">
+                    <a class="card" href="MS/" style="text-decoration:none;color:inherit;display:block">
+                        <div class="icon">🖼</div>
+                        <h3>资源库</h3>
+                        <p>前往浏览</p>
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
 
+    <!-- Detail -->
     <div class="detail-overlay" id="detailOverlay"></div>
-
-    <div class="menu-bar" id="menuBar">
-        <!-- 语言切换按钮放在菜单左下角 -->
-        <div class="lang-switch" id="langSwitch">中</div>
-
-        <div class="menu-parent" id="parent-projects">
-            <div class="parent-btn" data-parent="projects">
-                <span>🚀 项目</span>
-                <span class="arrow">▶</span>
-            </div>
-            <div class="submenu" id="submenu-projects">
-                <div class="menu-btn" data-target="betrayal">背叛之下</div>
-                <div class="menu-btn" data-target="beanWar">豆子之战</div>
-                <div class="menu-btn" data-target="mouseSlave">老鼠奴隶</div>
-            </div>
-        </div>
-
-        <div class="menu-parent" id="parent-members">
-            <div class="parent-btn" data-parent="members">
-                <span>👥 成员</span>
-                <span class="arrow">▶</span>
-            </div>
-            <div class="submenu" id="submenu-members">
-                <div class="menu-btn" data-target="mouse">鼠标</div>
-                <div class="menu-btn" data-target="krisid">克斯里德</div>
-                <div class="menu-btn" data-target="zhousan">粥伞</div>
-                <div class="menu-btn" data-target="chuc">出c好吃</div>
-                <div class="menu-btn" data-target="qinglong">青龙狱碧</div>
-                <div class="menu-btn" data-target="bingkuai">冰块</div>
-                <div class="menu-btn" data-target="emocez">EmoCez</div>
-                <!-- 新增成员 .() -->
-                <div class="menu-btn" data-target="dotParen">.()</div>
-            </div>
-        </div>
-
-        <div class="menu-parent">
-            <div class="parent-btn" data-parent="resources">
-                <span>📁 资源</span>
-                <span class="arrow">▶</span>
-            </div>
-            <div class="submenu">
-                <div class="menu-btn link-btn" data-href="MS/">🖼 资源库</div>
-            </div>
-        </div>
-    </div>
-
     <div class="detail-panel" id="detailPanel">
-        <div class="detail-title" id="detailTitle"></div>
-        <div class="detail-content" id="detailContent"></div>
-        <div class="detail-meta">
+        <button class="close" id="closeBtn">&times;</button>
+        <h3 id="detailTitle"></h3>
+        <div class="content" id="detailContent"></div>
+        <div class="meta">
             <span id="detailAuthor"></span>
             <span id="detailYear"></span>
         </div>
     </div>
 
     <script>
-        (function() {
-            const xEl = document.getElementById('x');
-            const studioEl = document.getElementById('studio');
-            const menuBar = document.getElementById('menuBar');
-            const detailPanel = document.getElementById('detailPanel');
-            const detailOverlay = document.getElementById('detailOverlay');
-            const menuBtns = document.querySelectorAll('.menu-btn');
-            const parentBtns = document.querySelectorAll('.parent-btn');
-            const detailTitle = document.getElementById('detailTitle');
-            const detailContent = document.getElementById('detailContent');
-            const detailAuthor = document.getElementById('detailAuthor');
-            const detailYear = document.getElementById('detailYear');
-            const hamburger = document.getElementById('hamburger');
-            const langSwitch = document.getElementById('langSwitch');
+        const projects = [
+            { id: 'betrayal', icon: '🎮', name: '背叛之下', desc: '一款《传说之下》同人游戏' },
+            { id: 'beanWar', icon: '🌱', name: '豆子之战', desc: '跑酷为主，战斗为辅' },
+            { id: 'mouseSlave', icon: '🤖', name: '老鼠奴隶', desc: '轻量 AI agent' }
+        ];
+        const members = [
+            { id: 'mouse', icon: '🐭', name: '鼠标', desc: '程序员' },
+            { id: 'krisid', icon: '🎨', name: '克斯里德', desc: '世界观设定与美术资源' },
+            { id: 'zhousan', icon: '🖌', name: '粥伞', desc: '绘画' },
+            { id: 'chuc', icon: '🎵', name: '出c好吃', desc: '作曲' },
+            { id: 'qinglong', icon: '🎨', name: '青龙狱碧', desc: '美术' },
+            { id: 'bingkuai', icon: '🎨', name: '冰块', desc: '美术' },
+            { id: 'emocez', icon: '🎭', name: 'EmoCez', desc: '美术 · 编曲 · 程序员' },
+            { id: 'dotParen', icon: '👻', name: '.()', desc: '试玩并分享视频' }
+        ];
+        const details = {
+            betrayal: { zh: '一款《传说之下》同人游戏，有着独特的世界观。目前正在制作中\n\n主要讲述了人类与怪物战争的世界，人类打败了怪物，并将怪物封印在了地底。一共掉进了8个人类，但第8个人类最后杀死了怪物国王，带着他的灵魂回到了地上。当第9个人类掉进地底世界的时候，这里完全变了样子......\n\n当这个人类不断的探索，才逐渐发现这个地方的怪物们似乎比传闻中的更可怕，他还见识到了其他未能被救出来的6个人类灵魂，但被怪物们掌控。这个人类的目的到底是什么？怪物们会如何看待这个人？这个人类会救出六魂吗？这一切都在尘埃之中散去，显现出来的是背叛。', author: 'X社团', year: '进行中' },
+            beanWar: { zh: '为 @青冥山岚系统 制作的同人游戏！跑酷为主，战斗为辅，目前正在制作中', author: '青冥山岚 · X社团', year: '进行中' },
+            mouseSlave: { zh: '一个轻量的 AI agent，目前正在小范围测试', author: '鼠标', year: 'Alpha' },
+            mouse: { zh: '这是我！程序员', author: '核心组', year: '' },
+            krisid: { zh: '世界观设定与美术资源', author: '美术/设定', year: '' },
+            zhousan: { zh: '绘画', author: '画师', year: '' },
+            chuc: { zh: '作曲', author: '音乐组', year: '' },
+            qinglong: { zh: '美术', author: '画师', year: '' },
+            bingkuai: { zh: '美术', author: '画师', year: '' },
+            emocez: { zh: '美术加轻度编曲加未来程序员', author: '多面手', year: '' },
+            dotParen: { zh: '试玩并分享诡异的视频', author: '未知领域', year: '' }
+        };
 
-            // 纯UA检测设备（不再依赖宽度）
-            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-
-            // 根据UA决定是否显示汉堡按钮
-            if (isMobile) {
-                hamburger.style.display = 'flex';  // 移动端显示居中汉堡按钮
-            } else {
-                hamburger.style.display = 'none';  // 桌面端隐藏
-            }
-
-            // 语言切换状态
-            let currentLang = 'zh'; // 'zh' 或 'en'
-
-            // 中英文内容映射
-            const langData = {
-                'projects': { zh: '🚀 项目', en: '🚀 Projects' },
-                'members': { zh: '👥 成员', en: '👥 Members' },
-                'betrayal': { zh: '背叛之下', en: 'Under Betrayal' },
-                'beanWar': { zh: '豆子之战', en: 'Bean War' },
-                'mouseSlave': { zh: '老鼠奴隶', en: 'Mouse Slave' },
-                'mouse': { zh: '鼠标', en: 'Mouse' },
-                'krisid': { zh: '克斯里德', en: 'Krisid' },
-                'zhousan': { zh: '粥伞', en: 'Zhousan' },
-                'chuc': { zh: '出c好吃', en: 'Chuc' },
-                'qinglong': { zh: '青龙狱碧', en: 'Qinglong' },
-                'bingkuai': { zh: '冰块', en: 'Bingkuai' },
-                'emocez': { zh: 'EmoCez', en: 'EmoCez' },
-                'dotParen': { zh: '.()', en: '.()' } // 新成员名称不变
-            };
-
-            // 详情面板内容（中英文）
-            const details = {
-                'betrayal': {
-                    title: { zh: '背叛之下', en: 'Under Betrayal' },
-                    content: { 
-                        zh: '一款《传说之下》同人游戏，有着独特的世界观。目前正在制作中\n主要讲述了人类与怪物战争的世界，人类打败了怪物，并将怪物封印在了地底一共掉进了8个人类，但第8个人类最后杀死了怪物国王，带着他的灵魂回到了地上，当第9个人类掉进地底世界的时候，这里完全变了样子......当这个人类不断的探索，才逐渐发现这个地方的怪物们似乎比传闻中的更可怕，他还见识到了其他未能被救出来的6个人类灵魂，但被怪物们掌控。这个人类的目的到底是什么?怪物们会如何看待这个人?这个人类会救出六魂吗?这一切都在尘埃之中散去，显现出来的是背叛。',
-                        en: 'An Undertale fan game with a unique worldview. Currently in development.\nIt tells the story of a world where humans fought monsters. Humans defeated the monsters and sealed them underground. Eight humans fell into the underground, but the eighth human killed the monster king and returned to the surface with his soul. When the ninth human falls into the underground, things have completely changed... As this human explores, they discover that the monsters here are more terrifying than legend says. They also encounter the souls of six other humans who couldn\'t be rescued, now controlled by monsters. What is this human\'s true purpose? How will the monsters treat this human? Will they save the six souls? All of this fades into the dust, revealing betrayal.'
-                    },
-                    author: { zh: 'X社团', en: 'X Studio' },
-                    year: { zh: '进行中', en: 'In Progress' }
-                },
-                'beanWar': {
-                    title: { zh: '豆子之战', en: 'Bean War' },
-                    content: { 
-                        zh: '为@青冥山岚系统制作的同人游戏！跑酷为主，战斗为辅，目前正在制作中',
-                        en: 'A fan game made for @QingmingShanlan System! Parkour-focused with combat elements. Currently in development.'
-                    },
-                    author: { zh: '青冥山岚 · X社团', en: 'QingmingShanlan · X Studio' },
-                    year: { zh: '进行中', en: 'In Progress' }
-                },
-                'mouseSlave': {
-                    title: { zh: '老鼠奴隶', en: 'Mouse Slave' },
-                    content: { 
-                        zh: '一个轻量的AI agent，目前正在小范围测试',
-                        en: 'A lightweight AI agent. Currently in small-scale testing.'
-                    },
-                    author: { zh: '鼠标', en: 'Mouse' },
-                    year: { zh: 'Alpha', en: 'Alpha' }
-                },
-                'mouse': {
-                    title: { zh: '鼠标', en: 'Mouse' },
-                    content: { 
-                        zh: '这是我！程序员',
-                        en: 'This is me! Programmer'
-                    },
-                    author: { zh: '核心组', en: 'Core Team' },
-                    year: { zh: '', en: '' }
-                },
-                'krisid': {
-                    title: { zh: '克斯里德', en: 'Krisid' },
-                    content: { 
-                        zh: '世界观设定与美术资源',
-                        en: 'Worldview setting and art resources'
-                    },
-                    author: { zh: '美术/设定', en: 'Art/Setting' },
-                    year: { zh: '', en: '' }
-                },
-                'zhousan': {
-                    title: { zh: '粥伞', en: 'Zhousan' },
-                    content: { 
-                        zh: '绘画',
-                        en: 'Painting'
-                    },
-                    author: { zh: '画师', en: 'Artist' },
-                    year: { zh: '', en: '' }
-                },
-                'chuc': {
-                    title: { zh: '出c好吃', en: 'Chuc' },
-                    content: { 
-                        zh: '作曲',
-                        en: 'Composition'
-                    },
-                    author: { zh: '音乐组', en: 'Music Team' },
-                    year: { zh: '', en: '' }
-                },
-                'qinglong': {
-                    title: { zh: '青龙狱碧', en: 'Qinglong' },
-                    content: { 
-                        zh: '美术',
-                        en: 'Art'
-                    },
-                    author: { zh: '画师', en: 'Artist' },
-                    year: { zh: '', en: '' }
-                },
-                'bingkuai': {
-                    title: { zh: '冰块', en: 'Bingkuai' },
-                    content: { 
-                        zh: '美术',
-                        en: 'Art'
-                    },
-                    author: { zh: '画师', en: 'Artist' },
-                    year: { zh: '', en: '' }
-                },
-                'emocez': {
-                    title: { zh: 'EmoCez', en: 'EmoCez' },
-                    content: { 
-                        zh: '美术加轻度编曲加未来程序员',
-                        en: 'Art, light arrangement, future programmer'
-                    },
-                    author: { zh: '多面手', en: 'Versatile' },
-                    year: { zh: '', en: '' }
-                },
-                'dotParen': {
-                    title: { zh: '.()', en: '.()' },
-                    content: { 
-                        zh: '试玩并分享诡异的视频',
-                        en: 'Playtests and shares eerie videos'
-                    },
-                    author: { zh: '未知领域', en: 'Unknown Realm' },
-                    year: { zh: '', en: '' }
-                }
-            };
-
-            // 切换语言的函数
-            function switchLanguage(lang) {
-                currentLang = lang;
-                langSwitch.textContent = lang === 'zh' ? '中' : 'EN';
-
-                // 更新所有父按钮文本
-                document.querySelector('.parent-btn[data-parent="projects"] span:first-child').textContent = langData['projects'][lang];
-                document.querySelector('.parent-btn[data-parent="members"] span:first-child').textContent = langData['members'][lang];
-
-                // 更新所有子菜单按钮文本
-                document.querySelectorAll('.menu-btn').forEach(btn => {
-                    const target = btn.dataset.target;
-                    if (langData[target]) {
-                        btn.textContent = langData[target][lang];
-                    }
-                });
-
-                // 如果当前有打开的详情面板，更新其内容
-                const activeBtn = document.querySelector('.menu-btn.active');
-                if (activeBtn) {
-                    const target = activeBtn.dataset.target;
-                    const detail = details[target];
-                    if (detail) {
-                        detailTitle.textContent = detail.title[lang];
-                        detailContent.textContent = detail.content[lang];
-                        detailAuthor.textContent = detail.author[lang] ? `👤 ${detail.author[lang]}` : '';
-                        detailYear.textContent = detail.year[lang] ? `📅 ${detail.year[lang]}` : '';
-                    }
-                }
-            }
-
-            // 语言切换按钮点击事件
-            langSwitch.addEventListener('click', (e) => {
-                e.stopPropagation();
-                const newLang = currentLang === 'zh' ? 'en' : 'zh';
-                switchLanguage(newLang);
+        // 3D effects
+        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        const heroX = document.getElementById('heroX');
+        const heroStudio = document.getElementById('heroStudio');
+        if (isMobile) {
+            heroX.style.animation = 'xRotate 6s ease-in-out infinite';
+            heroStudio.style.animation = 'studioRotate 6s ease-in-out infinite';
+        } else {
+            heroX.classList.add('desktop');
+            heroStudio.classList.add('desktop');
+            document.addEventListener('mousemove', (e) => {
+                const rx = (window.innerHeight / 2 - e.clientY) / (window.innerHeight / 2) * -25;
+                const ry = (e.clientX - window.innerWidth / 2) / (window.innerWidth / 2) * 35;
+                heroX.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg)`;
+                heroStudio.style.transform = `rotateX(${rx * 0.6}deg) rotateY(${ry * 0.6}deg)`;
             });
+        }
 
-            const detailsData = details; // 用于详情面板的数据
+        // Modal toggle
+        const modal = document.getElementById('modal');
+        const overlay = document.getElementById('overlay');
+        function openModal() { modal.classList.add('active'); overlay.classList.add('active'); }
+        function closeModal() { modal.classList.remove('active'); overlay.classList.remove('active'); }
 
-            // 非移动端才启用鼠标3D旋转效果
-            if (!isMobile) {
-                const maxRotateX = 25;
-                const maxRotateY = 35;
-                const maxStudioRotateX = 15;
-                const maxStudioRotateY = 20;
+        document.addEventListener('click', (e) => {
+            if (e.target.closest('.modal') || e.target.closest('.detail-panel') || e.target.closest('.detail-overlay')) return;
+            if (modal.classList.contains('active')) closeModal();
+            else openModal();
+        });
+        overlay.addEventListener('click', (e) => { e.stopPropagation(); closeModal(); });
 
-                function getRotation(el, mouseX, mouseY) {
-                    const rect = el.getBoundingClientRect();
-                    const centerX = rect.left + rect.width / 2;
-                    const centerY = rect.top + rect.height / 2;
-                    
-                    let deltaX = (mouseY - centerY) / (window.innerHeight * 0.5);
-                    let deltaY = (mouseX - centerX) / (window.innerWidth * 0.5);
-                    
-                    deltaX = Math.max(-1, Math.min(1, deltaX));
-                    deltaY = Math.max(-1, Math.min(1, deltaY));
-                    
-                    return { x: deltaX, y: deltaY };
-                }
-
-                document.addEventListener('mousemove', (e) => {
-                    const mouseX = e.clientX;
-                    const mouseY = e.clientY;
-                    
-                    const xRot = getRotation(xEl, mouseX, mouseY);
-                    const studioRot = getRotation(studioEl, mouseX, mouseY);
-                    
-                    const xRotateX = -xRot.x * maxRotateX;
-                    const xRotateY = xRot.y * maxRotateY;
-                    const studioRotateX = -studioRot.x * maxStudioRotateX;
-                    const studioRotateY = studioRot.y * maxStudioRotateY;
-                    
-                    xEl.style.transform = `translate(-50%, -50%) rotateX(${xRotateX}deg) rotateY(${xRotateY}deg)`;
-                    studioEl.style.transform = `translateX(-50%) rotateX(${studioRotateX}deg) rotateY(${studioRotateY}deg)`;
-                });
-            } else {
-                // 移动端：禁用3D效果，确保X和studio无额外旋转
-                xEl.style.transform = 'translate(-50%, -50%) rotateX(0deg) rotateY(0deg)';
-                studioEl.style.transform = 'translateX(-50%) rotateX(0deg) rotateY(0deg)';
-            }
-
-            // 桌面端滚轮控制菜单显示/隐藏
-            let lastWheelTime = 0;
-            window.addEventListener('wheel', (e) => {
-                if (isMobile) return; // 移动端不用滚轮控制
-                const now = Date.now();
-                if (now - lastWheelTime < 100) return;
-                lastWheelTime = now;
-
-                const delta = e.deltaY;
-                if (delta > 0) {
-                    if (!menuBar.classList.contains('visible')) {
-                        menuBar.classList.add('visible');
-                    }
-                } else if (delta < 0) {
-                    if (menuBar.classList.contains('visible')) {
-                        menuBar.classList.remove('visible');
-                        closeDetail();
-                    }
-                }
+        // Nav tabs inside modal
+        document.querySelectorAll('.modal-nav a[data-page]').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.modal-nav a').forEach(a => a.classList.remove('active'));
+                tab.classList.add('active');
+                document.querySelectorAll('.modal-content .page').forEach(p => p.classList.remove('active'));
+                document.getElementById('page-' + tab.dataset.page).classList.add('active');
             });
+        });
 
-            // 汉堡按钮点击事件（移动端）
-            if (isMobile) {
-                hamburger.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    menuBar.classList.toggle('visible');
-                    hamburger.classList.toggle('active');
-                    // 如果菜单关闭，同时关闭详情面板（可选）
-                    if (!menuBar.classList.contains('visible')) {
-                        closeDetail();
-                    }
-                });
-            }
-
-            parentBtns.forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    const parent = btn.closest('.menu-parent');
-                    if (parent) {
-                        parent.classList.toggle('expanded');
-                    }
-                    e.stopPropagation();
-                });
+        // Render cards
+        function renderCards(containerId, items) {
+            const grid = document.getElementById(containerId);
+            items.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.innerHTML = `<div class="icon">${item.icon}</div><h3>${item.name}</h3><p>${item.desc}</p>`;
+                card.addEventListener('click', () => showDetail(item.id));
+                grid.appendChild(card);
             });
+        }
 
-            menuBtns.forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    const href = btn.dataset.href;
-                    if (href) {
-                        window.location.href = href;
-                        e.stopPropagation();
-                        return;
-                    }
-                    const target = btn.dataset.target;
-                    const detail = detailsData[target];
-                    
-                    if (detail) {
-                        detailTitle.textContent = detail.title[currentLang];
-                        detailContent.textContent = detail.content[currentLang];
-                        detailAuthor.textContent = detail.author[currentLang] ? `👤 ${detail.author[currentLang]}` : '';
-                        detailYear.textContent = detail.year[currentLang] ? `📅 ${detail.year[currentLang]}` : '';
-                        
-                        detailPanel.classList.add('visible');
-                        detailOverlay.classList.add('active');
-                        
-                        menuBtns.forEach(b => b.classList.remove('active'));
-                        btn.classList.add('active');
-                    }
-                    
-                    e.stopPropagation();
-                });
-            });
+        function showDetail(id) {
+            const d = details[id];
+            if (!d) return;
+            document.getElementById('detailTitle').textContent = d.zh.split('\n')[0] || id;
+            document.getElementById('detailContent').textContent = d.zh;
+            document.getElementById('detailAuthor').textContent = d.author ? `👤 ${d.author}` : '';
+            document.getElementById('detailYear').textContent = d.year ? `📅 ${d.year}` : '';
+            document.getElementById('detailPanel').classList.add('active');
+            document.getElementById('detailOverlay').classList.add('active');
+        }
+        function closeDetail() {
+            document.getElementById('detailPanel').classList.remove('active');
+            document.getElementById('detailOverlay').classList.remove('active');
+        }
 
-            detailOverlay.addEventListener('click', closeDetail);
+        renderCards('projectsGrid', projects);
+        renderCards('membersGrid', members);
 
-            detailPanel.addEventListener('click', (e) => {
-                e.stopPropagation();
-            });
-
-            function closeDetail() {
-                detailPanel.classList.remove('visible');
-                detailOverlay.classList.remove('active');
-                menuBtns.forEach(b => b.classList.remove('active'));
-            }
-
-            document.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape') {
-                    closeDetail();
-                }
-            });
-
-            // 初始状态：菜单隐藏
-            menuBar.classList.remove('visible');
-            document.querySelectorAll('.menu-parent').forEach(p => {
-                p.classList.remove('expanded');
-            });
-
-            // 初始语言设置为中文
-            switchLanguage('zh');
-        })();
+        document.getElementById('detailOverlay').addEventListener('click', closeDetail);
+        document.getElementById('closeBtn').addEventListener('click', closeDetail);
+        document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeDetail(); closeModal(); } });
     </script>
 </body>
 </html>

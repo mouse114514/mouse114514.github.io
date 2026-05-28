@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>课程目录 - X_studio</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Arial', 'Microsoft YaHei', sans-serif;
+            background: #0a0f1e;
+            color: #e0e8f0;
+            line-height: 1.8;
+            padding: 40px 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        h1 {
+            font-size: 36px;
+            background: linear-gradient(to right, #4da8ff, #b0e0ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 8px;
+        }
+        .desc {
+            color: rgba(255,255,255,0.5);
+            margin-bottom: 40px;
+            border-bottom: 1px solid rgba(77, 168, 255, 0.2);
+            padding-bottom: 15px;
+        }
+        .lesson-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .lesson {
+            background: rgba(20, 30, 50, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(77, 168, 255, 0.25);
+            border-radius: 20px;
+            padding: 20px 25px;
+            transition: all 0.3s;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+        .lesson:hover {
+            border-color: #4da8ff;
+            background: rgba(77, 168, 255, 0.1);
+            box-shadow: 0 0 25px rgba(77, 168, 255, 0.15);
+            transform: translateX(5px);
+        }
+        .lesson .num {
+            font-size: 14px;
+            color: #4da8ff;
+            font-weight: bold;
+        }
+        .lesson .title {
+            font-size: 20px;
+            font-weight: bold;
+            margin: 4px 0;
+        }
+        .lesson .brief {
+            font-size: 15px;
+            color: rgba(255,255,255,0.6);
+        }
+        .back {
+            display: inline-block;
+            margin-top: 30px;
+            color: rgba(255,255,255,0.5);
+            text-decoration: none;
+            padding: 10px 20px;
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 20px;
+            transition: all 0.3s;
+        }
+        .back:hover {
+            color: white;
+            border-color: rgba(255,255,255,0.4);
+        }
+        @media (max-width: 600px) {
+            h1 { font-size: 26px; }
+            .lesson { padding: 15px 18px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>课程目录</h1>
+        <div class="desc">计算机基础知识系列课程</div>
+        <div class="lesson-list">
+            <a class="lesson" href="01-windows.html">
+                <div class="num">第1课</div>
+                <div class="title">认识 Windows 系统</div>
+                <div class="brief">了解 Windows 操作系统的发展、桌面组成和基本操作</div>
+            </a>
+            <a class="lesson" href="02-windows-versions.html">
+                <div class="num">第2课</div>
+                <div class="title">分辨 Windows 系统版本</div>
+                <div class="brief">通过开始菜单的样式，一眼识别不同版本的 Windows</div>
+            </a>
+        </div>
+        <a class="back" href="../index.html">← 返回首页</a>
+    </div>
+</body>
+</html>

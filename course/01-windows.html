@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>第1课：认识 Windows 系统</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            background: #0a0f1e;
+            color: #e0e8f0;
+            height: 100vh;
+            overflow: hidden;
+        }
+        .presentation {
+            width: 100%;
+            height: 100vh;
+            position: relative;
+        }
+        .slide {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 60px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+        }
+        .slide.active { opacity: 1; pointer-events: auto; }
+        .slide-inner {
+            max-width: 800px;
+            width: 100%;
+            background: rgba(20, 30, 50, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(77, 168, 255, 0.2);
+            border-radius: 28px;
+            padding: 50px 60px;
+            box-shadow: 0 0 50px rgba(0,0,0,0.4);
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .flex-row {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+        .flex-row .text { flex: 1; }
+        .flex-row .img-wrap { flex-shrink: 0; }
+        .flex-row img {
+            max-width: 200px;
+            border-radius: 12px;
+        }
+
+        .img-wide {
+            display: block;
+            max-width: 100%;
+            border-radius: 12px;
+            margin: 16px 0;
+        }
+
+        .slide-title .slide-inner {
+            text-align: center;
+            background: rgba(20, 30, 50, 0.4);
+            border-color: rgba(77, 168, 255, 0.15);
+        }
+        .slide-title h1 {
+            font-size: clamp(36px, 5vw, 56px);
+            font-weight: 800;
+            background: linear-gradient(135deg, #4da8ff, #b0e0ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            line-height: 1.2;
+            margin-bottom: 12px;
+        }
+        .slide-title .sub { font-size: 18px; color: rgba(255,255,255,0.4); }
+        .slide-title .lesson-num {
+            font-size: 14px;
+            color: rgba(255,255,255,0.25);
+            margin-bottom: 20px;
+            letter-spacing: 3px;
+        }
+
+        .slide h2 {
+            font-size: clamp(24px, 3vw, 34px);
+            font-weight: 700;
+            color: #4da8ff;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid rgba(77, 168, 255, 0.15);
+        }
+        .slide p { font-size: 17px; line-height: 1.8; margin-bottom: 14px; color: rgba(255,255,255,0.85); }
+        .slide ul { margin: 8px 0 14px 20px; }
+        .slide li { font-size: 16px; line-height: 1.7; margin-bottom: 6px; color: rgba(255,255,255,0.8); }
+        .slide li strong { color: #b0e0ff; }
+        .slide .note {
+            background: rgba(77, 168, 255, 0.08);
+            border-left: 3px solid #4da8ff;
+            padding: 14px 18px;
+            border-radius: 0 10px 10px 0;
+            margin: 14px 0;
+            font-size: 15px;
+        }
+        .slide .tip {
+            background: rgba(255, 200, 0, 0.06);
+            border-left: 3px solid #ffc800;
+            padding: 14px 18px;
+            border-radius: 0 10px 10px 0;
+            margin: 14px 0;
+            font-size: 15px;
+        }
+        .slide code {
+            background: rgba(255,255,255,0.1);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .nav-bar {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            background: rgba(10, 15, 30, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 30px;
+            padding: 10px 20px;
+            z-index: 10;
+        }
+        .nav-bar button {
+            background: none; border: none;
+            color: rgba(255,255,255,0.4); font-size: 18px;
+            cursor: pointer; padding: 6px 12px; border-radius: 8px; transition: all 0.2s;
+        }
+        .nav-bar button:hover { color: #fff; background: rgba(255,255,255,0.06); }
+        .nav-bar .counter {
+            font-size: 14px; color: rgba(255,255,255,0.35);
+            min-width: 60px; text-align: center;
+        }
+        .nav-bar .back-link {
+            color: rgba(255,255,255,0.25); text-decoration: none;
+            font-size: 13px; padding: 6px 12px; border-radius: 8px; transition: all 0.2s;
+        }
+        .nav-bar .back-link:hover { color: #fff; background: rgba(255,255,255,0.06); }
+
+        @media (max-width: 640px) {
+            .slide { padding: 20px; }
+            .slide-inner { padding: 28px 24px; }
+            .nav-bar { padding: 8px 14px; gap: 10px; bottom: 16px; }
+            .flex-row { flex-direction: column; }
+            .flex-row img { max-width: 140px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation" id="presentation">
+        <!-- Slide 1: Title -->
+        <div class="slide slide-title active" data-index="0">
+            <div class="slide-inner">
+                <img src="images/windows-logo.png" alt="Windows" style="width:120px;margin-bottom:20px;opacity:0.8">
+                <div class="lesson-num">第一课</div>
+                <h1>认识 Windows 系统</h1>
+                <div class="sub">操作系统基础</div>
+            </div>
+        </div>
+
+        <!-- Slide 2 -->
+        <div class="slide" data-index="1">
+            <div class="slide-inner">
+                <h2>什么是 Windows？</h2>
+                <div class="flex-row">
+                    <div class="text">
+                        <p>Windows 是由美国微软公司（Microsoft）开发的一款<strong>操作系统</strong>。操作系统是电脑最基础的软件，它负责管理电脑的硬件和软件资源，就像是一个"大管家"。</p>
+                        <p>目前最新的 Windows 版本是 <strong>Windows 11</strong>，于 2021 年发布。</p>
+                    </div>
+                    <div class="img-wrap">
+                        <img src="images/windows-logo.png" alt="Windows Logo">
+                    </div>
+                </div>
+                <div class="note">
+                    💡 Windows 的第一个版本 Windows 1.0 早在 1985 年就发布了！那时候还没有鼠标，操作全靠键盘。
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3 -->
+        <div class="slide" data-index="2">
+            <div class="slide-inner">
+                <h2>Windows 的主要版本</h2>
+                <img class="img-wide" src="images/version-timeline.png" alt="Windows 版本时间线">
+                <ul>
+                    <li><strong>Windows 1.0</strong>（1985）—— 第一个版本，图形界面雏形</li>
+                    <li><strong>Windows 95</strong>（1995）—— 革命性版本，引入"开始"菜单和任务栏</li>
+                    <li><strong>Windows XP</strong>（2001）—— 经典版本，界面友好，广受欢迎</li>
+                    <li><strong>Windows 7</strong>（2009）—— 稳定性极佳，至今仍有人使用</li>
+                    <li><strong>Windows 10</strong>（2015）—— 统一多平台，使用率最高</li>
+                    <li><strong>Windows 11</strong>（2021）—— 最新版本，界面更现代化</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Slide 4 -->
+        <div class="slide" data-index="3">
+            <div class="slide-inner">
+                <h2>桌面基本组成</h2>
+                <div class="flex-row">
+                    <div class="text">
+                        <p>当你打开电脑进入 Windows 后，首先看到的就是<strong>桌面</strong>。桌面主要包括：</p>
+                        <ul>
+                            <li><strong>桌面图标</strong> —— 文件和程序的快捷方式</li>
+                            <li><strong>任务栏</strong> —— 底部显示运行程序和"开始"按钮</li>
+                            <li><strong>开始菜单</strong> —— 点击 Windows 图标打开</li>
+                            <li><strong>系统托盘</strong> —— 右侧显示时间、音量、网络</li>
+                            <li><strong>桌面背景</strong> —— 壁纸，可自由更换</li>
+                        </ul>
+                    </div>
+                    <div class="img-wrap">
+                        <img src="images/desktop-layout.png" alt="桌面布局">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5 -->
+        <div class="slide" data-index="4">
+            <div class="slide-inner">
+                <h2>文件管理</h2>
+                <p>Windows 使用<strong>文件资源管理器</strong>来管理文件和文件夹。</p>
+                <ul>
+                    <li><strong>文件</strong> —— 存储数据的单元，如文档、图片、音乐等</li>
+                    <li><strong>文件夹</strong> —— 用于存放文件的"容器"，可以嵌套</li>
+                    <li><strong>盘符</strong> —— 如 C:、D:，表示不同的磁盘分区</li>
+                    <li><strong>路径</strong> —— 文件在电脑中的位置，如 <code>C:\Users\用户名\Documents</code></li>
+                </ul>
+                <div class="tip">
+                    💡 按快捷键 <code>Win + E</code> 可以快速打开文件资源管理器。
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 6 -->
+        <div class="slide" data-index="5">
+            <div class="slide-inner">
+                <h2>常用的快捷键</h2>
+                <img class="img-wide" src="images/keyboard.png" alt="键盘" style="max-width:400px;margin:0 auto 16px">
+                <ul>
+                    <li><code>Ctrl + C</code> —— 复制</li>
+                    <li><code>Ctrl + V</code> —— 粘贴</li>
+                    <li><code>Ctrl + X</code> —— 剪切</li>
+                    <li><code>Ctrl + Z</code> —— 撤销</li>
+                    <li><code>Alt + Tab</code> —— 切换窗口</li>
+                    <li><code>Win + D</code> —— 显示桌面</li>
+                    <li><code>Win + L</code> —— 锁定电脑</li>
+                    <li><code>Win + S</code> —— 搜索</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Slide 7 -->
+        <div class="slide" data-index="6">
+            <div class="slide-inner">
+                <h2>任务管理器</h2>
+                <div class="flex-row">
+                    <div class="text">
+                        <p>当程序卡死或电脑运行缓慢时，可以打开任务管理器查看和管理正在运行的程序。</p>
+                        <p>按 <code>Ctrl + Shift + Esc</code> 即可打开。</p>
+                    </div>
+                    <div class="img-wrap">
+                        <img src="images/task-manager.png" alt="任务管理器">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 8 -->
+        <div class="slide" data-index="7">
+            <div class="slide-inner">
+                <h2>总结</h2>
+                <p>Windows 是一个功能强大的操作系统，它让普通用户也能轻松使用电脑。</p>
+                <p>通过本课的学习，我们了解了：</p>
+                <ul>
+                    <li>Windows 的发展历史</li>
+                    <li>桌面基本组成</li>
+                    <li>文件管理</li>
+                    <li>常用快捷键</li>
+                    <li>任务管理器的使用</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="nav-bar">
+        <a class="back-link" href="index.html">← 目录</a>
+        <button id="prevBtn">◀</button>
+        <span class="counter" id="counter">1 / 8</span>
+        <button id="nextBtn">▶</button>
+    </div>
+
+    <script>
+        const slides = document.querySelectorAll('.slide');
+        const total = slides.length;
+        let current = 0;
+
+        function goTo(n) {
+            slides.forEach(s => s.classList.remove('active'));
+            current = (n + total) % total;
+            slides[current].classList.add('active');
+            document.getElementById('counter').textContent = (current + 1) + ' / ' + total;
+        }
+
+        document.getElementById('prevBtn').addEventListener('click', () => goTo(current - 1));
+        document.getElementById('nextBtn').addEventListener('click', () => goTo(current + 1));
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); goTo(current + 1); }
+            if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); goTo(current - 1); }
+        });
+
+        document.getElementById('presentation').addEventListener('click', (e) => {
+            if (e.target.closest('.nav-bar') || e.target.closest('.slide-inner')) return;
+            goTo(current + 1);
+        });
+    </script>
+</body>
+</html>
