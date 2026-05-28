@@ -26,18 +26,34 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',s
 .nav-bar .back-link{color:rgba(255,255,255,.25);text-decoration:none;font-size:13px;padding:6px 12px;border-radius:8px;transition:all .2s}
 .nav-bar .back-link:hover{color:#fff;background:rgba(255,255,255,.06)}
 @media(max-width:640px){.slide{padding:16px}.slide-inner{padding:24px 18px}.nav-bar{padding:8px 12px;gap:8px;bottom:14px}}
-</style></head>
+
+        @media (max-width: 640px) {
+            .slide { padding: 10px; }
+            .slide-inner { padding: 24px 16px; max-height: 90vh; }
+            .slide p { font-size: 15px; }
+            .slide li { font-size: 14px; }
+            .slide h2 { font-size: 20px; }
+            .slide-title h1 { font-size: 28px; }
+            .slide-title .sub { font-size: 14px; }
+            .flex-row { flex-direction: column; gap: 12px; }
+            .flex-row img { max-width: 120px; }
+            .nav-controls { padding: 6px 10px; gap: 4px; flex-wrap: wrap; justify-content: center; }
+            .nav-controls button { font-size: 20px; padding: 6px 14px; min-width: 44px; min-height: 44px; }
+            .nav-controls .page-indicator { font-size: 12px; min-width: 60px; }
+            .slide-inner::-webkit-scrollbar { width: 3px; }
+        }
+    </style></head>
 <body><div class="presentation" id="presentation">
-<div class="slide slide-title active" data-index="0"><div class="slide-inner"><div class="lesson-num">Godot · �?�?/div><h1>GDScript 入门</h1><div class="sub">让节点动起来</div></div></div>
-<div class="slide" data-index="1"><div class="slide-inner"><h2>GDScript 是什么？</h2><p>GDScript �?Godot 自带的脚本语言，语法像 Python，专门为游戏开发设计�?/p><ul><li>给节点添加脚�?�?控制这个节点的行�?/li><li>语法简洁，没有复杂的类型声�?/li><li>�?Godot 引擎深度集成，可以直接操作节�?/li></ul><div class="highlight-box">在场景树里选中节点 �?右键 �?Attach Script �?就能给这个节点写代码�?/div></div></div>
-<div class="slide" data-index="2"><div class="slide-inner"><h2>第一个脚�?/h2><p>给根节点挂一个脚本，Godot 自动生成基本结构�?/p><p><code>extends Node2D</code> �?继承自什么节点类�?/p><p><code>func _ready():</code> �?场景加载时自动执�?/p><p><code>func _process(delta):</code> �?每帧循环执行</p><div class="highlight-box">试一试：�?_ready() 里写 <code>print("Hello Godot")</code>，运行后看底�?Output 面板�?/div></div></div>
-<div class="slide" data-index="3"><div class="slide-inner"><h2>变量</h2><p>变量用来存数据：</p><p><code>var speed = 200</code> �?定义变量 speed，初始�?200</p><p><code>var player_name = "Alice"</code> �?字符串用双引�?/p><p><code>var hp = 100</code> �?整数</p><p>变量可以在脚本顶部定义，也可以在函数里定义�?/p><div class="tip-box">GDScript 不用写变量类型，自动推断。写惯了 Java/C++ 会觉得特别爽�?/div></div></div>
-<div class="slide" data-index="4"><div class="slide-inner"><h2>让节点移�?/h2><p>实现 WASD 控制角色移动�?/p><p><code>extends CharacterBody2D</code></p><p><code>var speed = 300</code></p><p><code>func _physics_process(delta):</code></p><p><code>&nbsp;&nbsp;&nbsp;var dir = Vector2.ZERO</code></p><p><code>&nbsp;&nbsp;&nbsp;if Input.is_action_pressed("ui_right"): dir.x += 1</code></p><p><code>&nbsp;&nbsp;&nbsp;if Input.is_action_pressed("ui_left"): dir.x -= 1</code></p><p><code>&nbsp;&nbsp;&nbsp;velocity = dir * speed</code></p><p><code>&nbsp;&nbsp;&nbsp;move_and_slide()</code></p></div></div>
-<div class="slide" data-index="5"><div class="slide-inner"><h2>信号（Signal�?/h2><p>信号�?Godot �?事件广播"机制——一个节点发出信号，其他节点收到通知�?/p><ul><li>一个按钮被点击 �?发出 pressed 信号</li><li>两个物体碰撞 �?发出 body_entered 信号</li><li>计时器倒计时结�?�?发出 timeout 信号</li></ul><div class="highlight-box">选中节点 �?右侧 Node 标签 �?信号列表 �?双击连接信号 �?选择接收方法�?/div></div></div>
-<div class="slide" data-index="6"><div class="slide-inner"><h2>获取其他节点</h2><p>脚本里怎么操控其他节点�?/p><p><code>$NodeName</code> �?获取子节点（相对路径�?/p><p><code>$Path/To/Node</code> �?多层级路�?/p><p><code>get_node("../Sibling")</code> �?获取兄弟节点</p><p>示例�?code>$Label.text = "得分: 100"</code> �?修改 Label 的显示文�?/p></div></div>
-<div class="slide" data-index="7"><div class="slide-inner"><h2>总结</h2><ul><li>GDScript = Godot 的脚本语言，语法像 Python</li><li>_ready() 初始化，_process(delta) 每帧更新</li><li>var 定义变量，Vector2 表示 2D 坐标/方向</li><li>信号 = 事件广播机制，节点之间通信</li><li>$节点�?获取子节点引�?/li></ul></div></div>
+<div class="slide slide-title active" data-index="0"><div class="slide-inner"><div class="lesson-num">Godot · 第试/div><h1>GDScript 入门</h1><div class="sub">让节点动起来</div></div></div>
+<div class="slide" data-index="1"><div class="slide-inner"><h2>GDScript 是什么？</h2><p>GDScript 是Godot 自带的脚本语言，语法像 Python，专门为游戏开发设计、/p><ul><li>给节点添加脚有ↀ控制这个节点的行一/li><li>语法简洁，没有复杂的类型声是/li><li>和Godot 引擎深度集成，可以直接操作节点/li></ul><div class="highlight-box">在场景树里选中节点 ↀ右键 ↀAttach Script ↀ就能给这个节点写代码、/div></div></div>
+<div class="slide" data-index="2"><div class="slide-inner"><h2>第一个脚有/h2><p>给根节点挂一个脚本，Godot 自动生成基本结构！/p><p><code>extends Node2D</code> ↀ继承自什么节点类垀/p><p><code>func _ready():</code> ↀ场景加载时自动执行/p><p><code>func _process(delta):</code> ↀ每帧循环执行</p><div class="highlight-box">试一试：在_ready() 里写 <code>print("Hello Godot")</code>，运行后看底都Output 面板、/div></div></div>
+<div class="slide" data-index="3"><div class="slide-inner"><h2>变量</h2><p>变量用来存数据：</p><p><code>var speed = 200</code> ↀ定义变量 speed，初始倀200</p><p><code>var player_name = "Alice"</code> ↀ字符串用双引参/p><p><code>var hp = 100</code> ↀ整数</p><p>变量可以在脚本顶部定义，也可以在函数里定义、/p><div class="tip-box">GDScript 不用写变量类型，自动推断。写惯了 Java/C++ 会觉得特别爽、/div></div></div>
+<div class="slide" data-index="4"><div class="slide-inner"><h2>让节点移力/h2><p>实现 WASD 控制角色移动！/p><p><code>extends CharacterBody2D</code></p><p><code>var speed = 300</code></p><p><code>func _physics_process(delta):</code></p><p><code>&nbsp;&nbsp;&nbsp;var dir = Vector2.ZERO</code></p><p><code>&nbsp;&nbsp;&nbsp;if Input.is_action_pressed("ui_right"): dir.x += 1</code></p><p><code>&nbsp;&nbsp;&nbsp;if Input.is_action_pressed("ui_left"): dir.x -= 1</code></p><p><code>&nbsp;&nbsp;&nbsp;velocity = dir * speed</code></p><p><code>&nbsp;&nbsp;&nbsp;move_and_slide()</code></p></div></div>
+<div class="slide" data-index="5"><div class="slide-inner"><h2>信号（Signal！/h2><p>信号是Godot 的事件广播"机制——一个节点发出信号，其他节点收到通知、/p><ul><li>一个按钮被点击 ↀ发出 pressed 信号</li><li>两个物体碰撞 ↀ发出 body_entered 信号</li><li>计时器倒计时结来ↀ发出 timeout 信号</li></ul><div class="highlight-box">选中节点 ↀ右侧 Node 标签 ↀ信号列表 ↀ双击连接信号 ↀ选择接收方法、/div></div></div>
+<div class="slide" data-index="6"><div class="slide-inner"><h2>获取其他节点</h2><p>脚本里怎么操控其他节点！/p><p><code>$NodeName</code> ↀ获取子节点（相对路径！/p><p><code>$Path/To/Node</code> ↀ多层级路得/p><p><code>get_node("../Sibling")</code> ↀ获取兄弟节点</p><p>示例！code>$Label.text = "得分: 100"</code> ↀ修改 Label 的显示文字/p></div></div>
+<div class="slide" data-index="7"><div class="slide-inner"><h2>总结</h2><ul><li>GDScript = Godot 的脚本语言，语法像 Python</li><li>_ready() 初始化，_process(delta) 每帧更新</li><li>var 定义变量，Vector2 表示 2D 坐标/方向</li><li>信号 = 事件广播机制，节点之间通信</li><li>$节点名获取子节点引用/li></ul></div></div>
 </div>
-<div class="nav-bar"><a class="back-link" href="index.html">�?目录</a><button id="prevBtn">◀</button><span class="counter" id="counter">1 / 8</span><button id="nextBtn">�?/button></div>
+<div class="nav-bar"><a class="back-link" href="index.html">ↀ目录</a><button id="prevBtn">◀</button><span class="counter" id="counter">1 / 8</span><button id="nextBtn">▀/button></div>
 <script>
 const slides=document.querySelectorAll('.slide'),total=slides.length;let current=0;
 function goTo(n){slides.forEach(s=>s.classList.remove('active'));current=(n+total)%total;slides[current].classList.add('active');document.getElementById('counter').textContent=(current+1)+' / '+total}

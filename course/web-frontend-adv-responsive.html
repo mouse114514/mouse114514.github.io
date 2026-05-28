@@ -26,18 +26,34 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',s
 .nav-bar .back-link{color:rgba(255,255,255,.25);text-decoration:none;font-size:13px;padding:6px 12px;border-radius:8px;transition:all .2s}
 .nav-bar .back-link:hover{color:#fff;background:rgba(255,255,255,.06)}
 @media(max-width:640px){.slide{padding:16px}.slide-inner{padding:24px 18px}.nav-bar{padding:8px 12px;gap:8px;bottom:14px}}
-</style></head>
+
+        @media (max-width: 640px) {
+            .slide { padding: 10px; }
+            .slide-inner { padding: 24px 16px; max-height: 90vh; }
+            .slide p { font-size: 15px; }
+            .slide li { font-size: 14px; }
+            .slide h2 { font-size: 20px; }
+            .slide-title h1 { font-size: 28px; }
+            .slide-title .sub { font-size: 14px; }
+            .flex-row { flex-direction: column; gap: 12px; }
+            .flex-row img { max-width: 120px; }
+            .nav-controls { padding: 6px 10px; gap: 4px; flex-wrap: wrap; justify-content: center; }
+            .nav-controls button { font-size: 20px; padding: 6px 14px; min-width: 44px; min-height: 44px; }
+            .nav-controls .page-indicator { font-size: 12px; min-width: 60px; }
+            .slide-inner::-webkit-scrollbar { width: 3px; }
+        }
+    </style></head>
 <body><div class="presentation" id="presentation">
-<div class="slide slide-title active" data-index="0"><div class="slide-inner"><div class="lesson-num">Web 前端 · 进阶�?�?/div><h1>响应式设计与媒体查询</h1><div class="sub">一个页面适配所有屏�?/div></div></div>
-<div class="slide" data-index="1"><div class="slide-inner"><h2>什么是响应式？</h2><p>同一个网页在手机、平板、电脑上都能正常显示，自动适配屏幕大小�?/p><ul><li>电脑�?3 列布局 �?手机上变 1 �?/li><li>大屏字体 18px �?小屏字体 14px</li><li>导航栏菜�?�?手机折叠为汉堡菜�?/li></ul></div></div>
-<div class="slide" data-index="2"><div class="slide-inner"><h2>viewport 设置</h2><p>响应式的第一步：HTML 头部�?viewport meta 标签�?/p><p><code>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</code></p><p>告诉浏览器按设备真实宽度渲染，不缩放页面�?/p></div></div>
-<div class="slide" data-index="3"><div class="slide-inner"><h2>媒体查询 @media</h2><p>针对不同屏幕宽度写不�?CSS�?/p><p><code>.container { display: grid; grid-template-columns: 1fr 1fr 1fr; }</code></p><p><code>@media (max-width: 768px) {</code></p><p><code>&nbsp;&nbsp;.container { grid-template-columns: 1fr; }</code></p><p><code>}</code></p><p>屏幕宽度 �?768px 时变成单列�?/p></div></div>
-<div class="slide" data-index="4"><div class="slide-inner"><h2>常见断点（Breakpoints�?/h2><ul><li><strong>�?480px</strong> �?小屏手机</li><li><strong>481px ~ 768px</strong> �?平板竖屏</li><li><strong>769px ~ 1024px</strong> �?平板横屏/小笔记本</li><li><strong>�?1025px</strong> �?桌面</li></ul><p>可以�?min-width �?max-width，通常�?<strong>min-width</strong> 往上做�?/p></div></div>
-<div class="slide" data-index="5"><div class="slide-inner"><h2>相对单位</h2><p>响应式不�?px 固定尺寸，用相对单位�?/p><ul><li><strong>%</strong> �?百分比相对于父元�?/li><li><strong>vw / vh</strong> �?视口�?高的百分�?/li><li><strong>em</strong> �?相对于父元素字体大小</li><li><strong>rem</strong> �?相对于根元素 (&lt;html&gt;) 字体大小</li><li><strong>clamp()</strong> �?范围值：<code>font-size: clamp(14px, 3vw, 24px)</code></li></ul></div></div>
-<div class="slide" data-index="6"><div class="slide-inner"><h2>Flex/Grid 响应�?/h2><p>Flexbox 自动换行�?/p><p><code>.flex-container {</code></p><p><code>&nbsp;&nbsp;display: flex;</code></p><p><code>&nbsp;&nbsp;flex-wrap: wrap;</code></p><p><code>}</code></p><p><code>.flex-container &gt; * { flex: 1 1 200px; }</code></p><p>每个子元素至�?200px，空间够就多列，不够就换行�?/p></div></div>
-<div class="slide" data-index="7"><div class="slide-inner"><h2>总结</h2><ul><li>移动端优先设计（先写小屏样式，再 @media 放大�?/li><li>@media (min-width: 768px) 常见断点</li><li>�?%、vw、rem 代替 px 固定�?/li><li>flex-wrap 实现自动换行布局</li><li>clamp() 让字体跟随视口自适应</li></ul></div></div>
+<div class="slide slide-title active" data-index="0"><div class="slide-inner"><div class="lesson-num">Web 前端 · 进阶第试/div><h1>响应式设计与媒体查询</h1><div class="sub">一个页面适配所有屏幀/div></div></div>
+<div class="slide" data-index="1"><div class="slide-inner"><h2>什么是响应式？</h2><p>同一个网页在手机、平板、电脑上都能正常显示，自动适配屏幕大小、/p><ul><li>电脑一3 列布局 ↀ手机上变 1 分/li><li>大屏字体 18px ↀ小屏字体 14px</li><li>导航栏菜单ↀ手机折叠为汉堡菜单/li></ul></div></div>
+<div class="slide" data-index="2"><div class="slide-inner"><h2>viewport 设置</h2><p>响应式的第一步：HTML 头部力viewport meta 标签、/p><p><code>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</code></p><p>告诉浏览器按设备真实宽度渲染，不缩放页面、/p></div></div>
+<div class="slide" data-index="3"><div class="slide-inner"><h2>媒体查询 @media</h2><p>针对不同屏幕宽度写不名CSS！/p><p><code>.container { display: grid; grid-template-columns: 1fr 1fr 1fr; }</code></p><p><code>@media (max-width: 768px) {</code></p><p><code>&nbsp;&nbsp;.container { grid-template-columns: 1fr; }</code></p><p><code>}</code></p><p>屏幕宽度 ≀768px 时变成单列、/p></div></div>
+<div class="slide" data-index="4"><div class="slide-inner"><h2>常见断点（Breakpoints！/h2><ul><li><strong>≀480px</strong> —小屏手机</li><li><strong>481px ~ 768px</strong> —平板竖屏</li><li><strong>769px ~ 1024px</strong> —平板横屏/小笔记本</li><li><strong>≀1025px</strong> —桌面</li></ul><p>可以用min-width 戏max-width，通常用<strong>min-width</strong> 往上做、/p></div></div>
+<div class="slide" data-index="5"><div class="slide-inner"><h2>相对单位</h2><p>响应式不用px 固定尺寸，用相对单位！/p><ul><li><strong>%</strong> —百分比相对于父元紀/li><li><strong>vw / vh</strong> —视口安高的百分毀/li><li><strong>em</strong> —相对于父元素字体大小</li><li><strong>rem</strong> —相对于根元素 (&lt;html&gt;) 字体大小</li><li><strong>clamp()</strong> —范围值：<code>font-size: clamp(14px, 3vw, 24px)</code></li></ul></div></div>
+<div class="slide" data-index="6"><div class="slide-inner"><h2>Flex/Grid 响应开/h2><p>Flexbox 自动换行！/p><p><code>.flex-container {</code></p><p><code>&nbsp;&nbsp;display: flex;</code></p><p><code>&nbsp;&nbsp;flex-wrap: wrap;</code></p><p><code>}</code></p><p><code>.flex-container &gt; * { flex: 1 1 200px; }</code></p><p>每个子元素至就200px，空间够就多列，不够就换行、/p></div></div>
+<div class="slide" data-index="7"><div class="slide-inner"><h2>总结</h2><ul><li>移动端优先设计（先写小屏样式，再 @media 放大！/li><li>@media (min-width: 768px) 常见断点</li><li>用%、vw、rem 代替 px 固定倀/li><li>flex-wrap 实现自动换行布局</li><li>clamp() 让字体跟随视口自适应</li></ul></div></div>
 </div>
-<div class="nav-bar"><a class="back-link" href="index.html">�?目录</a><button id="prevBtn">◀</button><span class="counter" id="counter">1 / 8</span><button id="nextBtn">�?/button></div>
+<div class="nav-bar"><a class="back-link" href="index.html">ↀ目录</a><button id="prevBtn">◀</button><span class="counter" id="counter">1 / 8</span><button id="nextBtn">▀/button></div>
 <script>
 const slides=document.querySelectorAll('.slide'),total=slides.length;let current=0;
 function goTo(n){slides.forEach(s=>s.classList.remove('active'));current=(n+total)%total;slides[current].classList.add('active');document.getElementById('counter').textContent=(current+1)+' / '+total}

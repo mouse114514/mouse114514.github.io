@@ -26,18 +26,34 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',s
 .nav-bar .back-link{color:rgba(255,255,255,.25);text-decoration:none;font-size:13px;padding:6px 12px;border-radius:8px;transition:all .2s}
 .nav-bar .back-link:hover{color:#fff;background:rgba(255,255,255,.06)}
 @media(max-width:640px){.slide{padding:16px}.slide-inner{padding:24px 18px}.nav-bar{padding:8px 12px;gap:8px;bottom:14px}}
-</style></head>
+
+        @media (max-width: 640px) {
+            .slide { padding: 10px; }
+            .slide-inner { padding: 24px 16px; max-height: 90vh; }
+            .slide p { font-size: 15px; }
+            .slide li { font-size: 14px; }
+            .slide h2 { font-size: 20px; }
+            .slide-title h1 { font-size: 28px; }
+            .slide-title .sub { font-size: 14px; }
+            .flex-row { flex-direction: column; gap: 12px; }
+            .flex-row img { max-width: 120px; }
+            .nav-controls { padding: 6px 10px; gap: 4px; flex-wrap: wrap; justify-content: center; }
+            .nav-controls button { font-size: 20px; padding: 6px 14px; min-width: 44px; min-height: 44px; }
+            .nav-controls .page-indicator { font-size: 12px; min-width: 60px; }
+            .slide-inner::-webkit-scrollbar { width: 3px; }
+        }
+    </style></head>
 <body><div class="presentation" id="presentation">
-<div class="slide slide-title active" data-index="0"><div class="slide-inner"><div class="lesson-num">Python · 进阶�?�?/div><h1>Pygame 精灵组与动画</h1><div class="sub">�?Sprite 类管理游戏对�?/div></div></div>
-<div class="slide" data-index="1"><div class="slide-inner"><h2>为什么要�?Sprite�?/h2><p>之前我们直接�?Rect + draw 画方块。当敌人多起来，代码会越来越乱�?/p><p>Pygame �?<strong>pygame.sprite.Sprite</strong> 帮你�?/p><ul><li>封装每个游戏对象的属性和行为</li><li>自动管理所有对象的绘制和更�?/li><li>内置碰撞检�?/li></ul></div></div>
-<div class="slide" data-index="2"><div class="slide-inner"><h2>自定�?Sprite �?/h2><p><code>class Enemy(pygame.sprite.Sprite):</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;def __init__(self, x, y):</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;super().__init__()</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;self.image = pygame.Surface((40,40))</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;self.image.fill((255,0,0))</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;self.rect = self.image.get_rect(x=x, y=y)</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;def update(self):</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;self.rect.y += 1</code> �?每秒往下掉</p></div></div>
-<div class="slide" data-index="3"><div class="slide-inner"><h2>精灵�?Group</h2><p><code>from pygame.sprite import Group</code></p><p><code>all_sprites = Group()</code></p><p><code>enemies = Group()</code></p><p><code>player = Player()</code></p><p><code>all_sprites.add(player)</code></p><p>在主循环里：</p><p><code>all_sprites.update()</code> �?更新所有精�?/p><p><code>all_sprites.draw(screen)</code> �?绘制所有精�?/p></div></div>
-<div class="slide" data-index="4"><div class="slide-inner"><h2>精灵间碰撞检�?/h2><p><code>from pygame.sprite import groupcollide, spritecollide</code></p><p><code>hits = spritecollide(player, enemies, True)</code> �?玩家碰到敌人，敌人消�?/p><p><code>hits = groupcollide(bullets, enemies, True, True)</code> �?子弹�?vs 敌人组，互相销�?/p><p>第三个参�?True = 碰撞后从组里移除（销毁）�?/p></div></div>
-<div class="slide" data-index="5"><div class="slide-inner"><h2>加载图片作为精灵</h2><p>�?Surface.fill() 换成图片�?/p><p><code>self.image = pygame.image.load("player.png").convert_alpha()</code></p><p><code>self.rect = self.image.get_rect(x=x, y=y)</code></p><p>convert_alpha() 优化性能并保留透明通道�?/p></div></div>
-<div class="slide" data-index="6"><div class="slide-inner"><h2>帧动�?/h2><p><code>self.frames = [pygame.image.load(f"frame_{i}.png").convert_alpha() for i in range(4)]</code></p><p><code>self.frame_index = 0</code></p><p><code>self.counter = 0</code></p><p><code>def update(self):</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;self.counter += 1</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;if self.counter % 5 == 0:</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;self.frame_index = (self.frame_index + 1) % len(self.frames)</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;self.image = self.frames[self.frame_index]</code></p></div></div>
-<div class="slide" data-index="7"><div class="slide-inner"><h2>总结</h2><ul><li>继承 pygame.sprite.Sprite 封装游戏对象</li><li>Group 统一管理 update() �?draw()</li><li>spritecollide / groupcollide 碰撞检�?/li><li>用图片代替颜色方块：image.load().convert_alpha()</li><li>多帧切换实现逐帧动画</li></ul></div></div>
+<div class="slide slide-title active" data-index="0"><div class="slide-inner"><div class="lesson-num">Python · 进阶第试/div><h1>Pygame 精灵组与动画</h1><div class="sub">用Sprite 类管理游戏对象/div></div></div>
+<div class="slide" data-index="1"><div class="slide-inner"><h2>为什么要用Sprite！/h2><p>之前我们直接用Rect + draw 画方块。当敌人多起来，代码会越来越乱、/p><p>Pygame 的<strong>pygame.sprite.Sprite</strong> 帮你！/p><ul><li>封装每个游戏对象的属性和行为</li><li>自动管理所有对象的绘制和更文/li><li>内置碰撞检测/li></ul></div></div>
+<div class="slide" data-index="2"><div class="slide-inner"><h2>自定之Sprite 类/h2><p><code>class Enemy(pygame.sprite.Sprite):</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;def __init__(self, x, y):</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;super().__init__()</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;self.image = pygame.Surface((40,40))</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;self.image.fill((255,0,0))</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;self.rect = self.image.get_rect(x=x, y=y)</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;def update(self):</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;self.rect.y += 1</code> ↀ每秒往下掉</p></div></div>
+<div class="slide" data-index="3"><div class="slide-inner"><h2>精灵统Group</h2><p><code>from pygame.sprite import Group</code></p><p><code>all_sprites = Group()</code></p><p><code>enemies = Group()</code></p><p><code>player = Player()</code></p><p><code>all_sprites.add(player)</code></p><p>在主循环里：</p><p><code>all_sprites.update()</code> ↀ更新所有精灀/p><p><code>all_sprites.draw(screen)</code> ↀ绘制所有精灀/p></div></div>
+<div class="slide" data-index="4"><div class="slide-inner"><h2>精灵间碰撞检测/h2><p><code>from pygame.sprite import groupcollide, spritecollide</code></p><p><code>hits = spritecollide(player, enemies, True)</code> ↀ玩家碰到敌人，敌人消备/p><p><code>hits = groupcollide(bullets, enemies, True, True)</code> ↀ子弹统vs 敌人组，互相销毀/p><p>第三个参数True = 碰撞后从组里移除（销毁）、/p></div></div>
+<div class="slide" data-index="5"><div class="slide-inner"><h2>加载图片作为精灵</h2><p>把Surface.fill() 换成图片！/p><p><code>self.image = pygame.image.load("player.png").convert_alpha()</code></p><p><code>self.rect = self.image.get_rect(x=x, y=y)</code></p><p>convert_alpha() 优化性能并保留透明通道、/p></div></div>
+<div class="slide" data-index="6"><div class="slide-inner"><h2>帧动用/h2><p><code>self.frames = [pygame.image.load(f"frame_{i}.png").convert_alpha() for i in range(4)]</code></p><p><code>self.frame_index = 0</code></p><p><code>self.counter = 0</code></p><p><code>def update(self):</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;self.counter += 1</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;if self.counter % 5 == 0:</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;self.frame_index = (self.frame_index + 1) % len(self.frames)</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;self.image = self.frames[self.frame_index]</code></p></div></div>
+<div class="slide" data-index="7"><div class="slide-inner"><h2>总结</h2><ul><li>继承 pygame.sprite.Sprite 封装游戏对象</li><li>Group 统一管理 update() 和draw()</li><li>spritecollide / groupcollide 碰撞检测/li><li>用图片代替颜色方块：image.load().convert_alpha()</li><li>多帧切换实现逐帧动画</li></ul></div></div>
 </div>
-<div class="nav-bar"><a class="back-link" href="index.html">�?目录</a><button id="prevBtn">◀</button><span class="counter" id="counter">1 / 8</span><button id="nextBtn">�?/button></div>
+<div class="nav-bar"><a class="back-link" href="index.html">ↀ目录</a><button id="prevBtn">◀</button><span class="counter" id="counter">1 / 8</span><button id="nextBtn">▀/button></div>
 <script>
 const slides=document.querySelectorAll('.slide'),total=slides.length;let current=0;
 function goTo(n){slides.forEach(s=>s.classList.remove('active'));current=(n+total)%total;slides[current].classList.add('active');document.getElementById('counter').textContent=(current+1)+' / '+total}

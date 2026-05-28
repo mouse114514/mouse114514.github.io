@@ -26,18 +26,34 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',s
 .nav-bar .back-link{color:rgba(255,255,255,.25);text-decoration:none;font-size:13px;padding:6px 12px;border-radius:8px;transition:all .2s}
 .nav-bar .back-link:hover{color:#fff;background:rgba(255,255,255,.06)}
 @media(max-width:640px){.slide{padding:16px}.slide-inner{padding:24px 18px}.nav-bar{padding:8px 12px;gap:8px;bottom:14px}}
-</style></head>
+
+        @media (max-width: 640px) {
+            .slide { padding: 10px; }
+            .slide-inner { padding: 24px 16px; max-height: 90vh; }
+            .slide p { font-size: 15px; }
+            .slide li { font-size: 14px; }
+            .slide h2 { font-size: 20px; }
+            .slide-title h1 { font-size: 28px; }
+            .slide-title .sub { font-size: 14px; }
+            .flex-row { flex-direction: column; gap: 12px; }
+            .flex-row img { max-width: 120px; }
+            .nav-controls { padding: 6px 10px; gap: 4px; flex-wrap: wrap; justify-content: center; }
+            .nav-controls button { font-size: 20px; padding: 6px 14px; min-width: 44px; min-height: 44px; }
+            .nav-controls .page-indicator { font-size: 12px; min-width: 60px; }
+            .slide-inner::-webkit-scrollbar { width: 3px; }
+        }
+    </style></head>
 <body><div class="presentation" id="presentation">
-<div class="slide slide-title active" data-index="0"><div class="slide-inner"><div class="lesson-num">Web 前端 · �?�?/div><h1>CSS 基础样式</h1><div class="sub">给网页穿上衣�?/div></div></div>
-<div class="slide" data-index="1"><div class="slide-inner"><h2>CSS 是什么？</h2><p>CSS（层叠样式表）用来控制网页的<strong>外观</strong>�?/p><ul><li>颜色、字体、大小、间�?/li><li>居中、对齐、排�?/li><li>动画、过渡、特�?/li></ul><p>HTML 是骨架，CSS 是皮肉——同一�?HTML 配上不同�?CSS，看起来完全不一样�?/p></div></div>
-<div class="slide" data-index="2"><div class="slide-inner"><h2>三种添加方式</h2><ul><li><strong>行内样式</strong> �?在标签上�?style 属�?/li></ul><p><code>&lt;p style="color:red"&gt;红字&lt;/p&gt;</code></p><ul><li><strong>内部样式</strong> �?&lt;head&gt; 里写 &lt;style&gt;</li></ul><p><code>&lt;style&gt; p { color: red; } &lt;/style&gt;</code></p><ul><li><strong>外部样式</strong> �?单独�?.css 文件（推荐）</li></ul><p><code>&lt;link rel="stylesheet" href="style.css"&gt;</code></p></div></div>
-<div class="slide" data-index="3"><div class="slide-inner"><h2>基本语法</h2><p><code>选择�?{ 属�? �? 属�? �? }</code></p><p>例子�?/p><p><code>h1 {</code></p><p><code>&nbsp;&nbsp;color: #333;</code></p><p><code>&nbsp;&nbsp;font-size: 32px;</code></p><p><code>&nbsp;&nbsp;text-align: center;</code></p><p><code>}</code></p><p>把页面上所�?h1 文字变成深灰色�?2 像素、居中�?/p></div></div>
-<div class="slide" data-index="4"><div class="slide-inner"><h2>常见属�?/h2><ul><li><strong>color</strong> �?文字颜色</li><li><strong>background-color</strong> �?背景颜色</li><li><strong>font-size</strong> �?字体大小</li><li><strong>font-weight</strong> �?字体粗细</li><li><strong>width / height</strong> �?宽高</li><li><strong>margin</strong> �?外边距（元素外的间距�?/li><li><strong>padding</strong> �?内边距（元素内的间距�?/li><li><strong>border</strong> �?边框</li></ul></div></div>
-<div class="slide" data-index="5"><div class="slide-inner"><h2>类选择�?.class</h2><p>CSS 最常用的选择器：</p><p><code>.card {</code></p><p><code>&nbsp;&nbsp;background: white;</code></p><p><code>&nbsp;&nbsp;border-radius: 12px;</code></p><p><code>&nbsp;&nbsp;padding: 20px;</code></p><p><code>&nbsp;&nbsp;box-shadow: 0 2px 8px rgba(0,0,0,0.1);</code></p><p><code>}</code></p><p>HTML 里写 <code>&lt;div class="card"&gt;内容&lt;/div&gt;</code></p></div></div>
-<div class="slide" data-index="6"><div class="slide-inner"><h2>Flex 布局</h2><p>让元素水平居中排列：</p><p><code>.container {</code></p><p><code>&nbsp;&nbsp;display: flex;</code></p><p><code>&nbsp;&nbsp;justify-content: center;</code></p><p><code>&nbsp;&nbsp;align-items: center;</code></p><p><code>}</code></p><ul><li>display: flex �?开启弹性布局</li><li>justify-content �?水平排列（center/space-between/around�?/li><li>align-items �?垂直排列</li></ul></div></div>
-<div class="slide" data-index="7"><div class="slide-inner"><h2>总结</h2><ul><li>CSS = 选择�?{ 属�? �?}</li><li>三种方式：行�?/ 内部 / 外部</li><li>常用属性：color、background、font-size、margin、padding</li><li>.class 选择器选中带有 class 属性的元素</li><li>flexbox 是最强大的布局方式</li></ul></div></div>
+<div class="slide slide-title active" data-index="0"><div class="slide-inner"><div class="lesson-num">Web 前端 · 第试/div><h1>CSS 基础样式</h1><div class="sub">给网页穿上衣有/div></div></div>
+<div class="slide" data-index="1"><div class="slide-inner"><h2>CSS 是什么？</h2><p>CSS（层叠样式表）用来控制网页的<strong>外观</strong>！/p><ul><li>颜色、字体、大小、间跀/li><li>居中、对齐、排片/li><li>动画、过渡、特数/li></ul><p>HTML 是骨架，CSS 是皮肉——同一一HTML 配上不同的CSS，看起来完全不一样、/p></div></div>
+<div class="slide" data-index="2"><div class="slide-inner"><h2>三种添加方式</h2><ul><li><strong>行内样式</strong> —在标签上力style 属态/li></ul><p><code>&lt;p style="color:red"&gt;红字&lt;/p&gt;</code></p><ul><li><strong>内部样式</strong> —&lt;head&gt; 里写 &lt;style&gt;</li></ul><p><code>&lt;style&gt; p { color: red; } &lt;/style&gt;</code></p><ul><li><strong>外部样式</strong> —单独的.css 文件（推荐）</li></ul><p><code>&lt;link rel="stylesheet" href="style.css"&gt;</code></p></div></div>
+<div class="slide" data-index="3"><div class="slide-inner"><h2>基本语法</h2><p><code>选择器{ 属态 倀 属态 倀 }</code></p><p>例子！/p><p><code>h1 {</code></p><p><code>&nbsp;&nbsp;color: #333;</code></p><p><code>&nbsp;&nbsp;font-size: 32px;</code></p><p><code>&nbsp;&nbsp;text-align: center;</code></p><p><code>}</code></p><p>把页面上所有h1 文字变成深灰色、2 像素、居中、/p></div></div>
+<div class="slide" data-index="4"><div class="slide-inner"><h2>常见属态/h2><ul><li><strong>color</strong> —文字颜色</li><li><strong>background-color</strong> —背景颜色</li><li><strong>font-size</strong> —字体大小</li><li><strong>font-weight</strong> —字体粗细</li><li><strong>width / height</strong> —宽高</li><li><strong>margin</strong> —外边距（元素外的间距！/li><li><strong>padding</strong> —内边距（元素内的间距！/li><li><strong>border</strong> —边框</li></ul></div></div>
+<div class="slide" data-index="5"><div class="slide-inner"><h2>类选择器.class</h2><p>CSS 最常用的选择器：</p><p><code>.card {</code></p><p><code>&nbsp;&nbsp;background: white;</code></p><p><code>&nbsp;&nbsp;border-radius: 12px;</code></p><p><code>&nbsp;&nbsp;padding: 20px;</code></p><p><code>&nbsp;&nbsp;box-shadow: 0 2px 8px rgba(0,0,0,0.1);</code></p><p><code>}</code></p><p>HTML 里写 <code>&lt;div class="card"&gt;内容&lt;/div&gt;</code></p></div></div>
+<div class="slide" data-index="6"><div class="slide-inner"><h2>Flex 布局</h2><p>让元素水平居中排列：</p><p><code>.container {</code></p><p><code>&nbsp;&nbsp;display: flex;</code></p><p><code>&nbsp;&nbsp;justify-content: center;</code></p><p><code>&nbsp;&nbsp;align-items: center;</code></p><p><code>}</code></p><ul><li>display: flex —开启弹性布局</li><li>justify-content —水平排列（center/space-between/around！/li><li>align-items —垂直排列</li></ul></div></div>
+<div class="slide" data-index="7"><div class="slide-inner"><h2>总结</h2><ul><li>CSS = 选择器{ 属态 倀}</li><li>三种方式：行内/ 内部 / 外部</li><li>常用属性：color、background、font-size、margin、padding</li><li>.class 选择器选中带有 class 属性的元素</li><li>flexbox 是最强大的布局方式</li></ul></div></div>
 </div>
-<div class="nav-bar"><a class="back-link" href="index.html">�?目录</a><button id="prevBtn">◀</button><span class="counter" id="counter">1 / 8</span><button id="nextBtn">�?/button></div>
+<div class="nav-bar"><a class="back-link" href="index.html">ↀ目录</a><button id="prevBtn">◀</button><span class="counter" id="counter">1 / 8</span><button id="nextBtn">▀/button></div>
 <script>
 const slides=document.querySelectorAll('.slide'),total=slides.length;let current=0;
 function goTo(n){slides.forEach(s=>s.classList.remove('active'));current=(n+total)%total;slides[current].classList.add('active');document.getElementById('counter').textContent=(current+1)+' / '+total}

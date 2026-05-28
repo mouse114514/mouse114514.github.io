@@ -26,18 +26,34 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',s
 .nav-bar .back-link{color:rgba(255,255,255,.25);text-decoration:none;font-size:13px;padding:6px 12px;border-radius:8px;transition:all .2s}
 .nav-bar .back-link:hover{color:#fff;background:rgba(255,255,255,.06)}
 @media(max-width:640px){.slide{padding:16px}.slide-inner{padding:24px 18px}.nav-bar{padding:8px 12px;gap:8px;bottom:14px}}
-</style></head>
+
+        @media (max-width: 640px) {
+            .slide { padding: 10px; }
+            .slide-inner { padding: 24px 16px; max-height: 90vh; }
+            .slide p { font-size: 15px; }
+            .slide li { font-size: 14px; }
+            .slide h2 { font-size: 20px; }
+            .slide-title h1 { font-size: 28px; }
+            .slide-title .sub { font-size: 14px; }
+            .flex-row { flex-direction: column; gap: 12px; }
+            .flex-row img { max-width: 120px; }
+            .nav-controls { padding: 6px 10px; gap: 4px; flex-wrap: wrap; justify-content: center; }
+            .nav-controls button { font-size: 20px; padding: 6px 14px; min-width: 44px; min-height: 44px; }
+            .nav-controls .page-indicator { font-size: 12px; min-width: 60px; }
+            .slide-inner::-webkit-scrollbar { width: 3px; }
+        }
+    </style></head>
 <body><div class="presentation" id="presentation">
-<div class="slide slide-title active" data-index="0"><div class="slide-inner"><div class="lesson-num">Web 后端 · 进阶�?�?/div><h1>Flask 用户认证</h1><div class="sub">注册、登录、Session</div></div></div>
-<div class="slide" data-index="1"><div class="slide-inner"><h2>Flask-Login</h2><p>Flask-Login 帮我们管理用户登录状态：</p><p><code>pip install flask-login</code></p><p>它提供：</p><ul><li>用户登录/登出</li><li>记住登录（Cookie�?/li><li>限制未登录用户访�?/li></ul></div></div>
-<div class="slide" data-index="2"><div class="slide-inner"><h2>用户模型改�?/h2><p>�?User 模型支持登录�?/p><p><code>from flask_login import UserMixin</code></p><p><code>class User(UserMixin, db.Model):</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;id = db.Column(db.Integer, primary_key=True)</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;username = db.Column(db.String(80), unique=True)</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;password_hash = db.Column(db.String(200))</code></p><p>继承 UserMixin 获得 is_authenticated 等方法�?/p></div></div>
-<div class="slide" data-index="3"><div class="slide-inner"><h2>密码哈希</h2><p>永远不要明文存密码！�?Werkzeug 的哈希：</p><p><code>from werkzeug.security import generate_password_hash, check_password_hash</code></p><p>注册时：<code>user.password_hash = generate_password_hash(password)</code></p><p>登录时：<code>check_password_hash(user.password_hash, password)</code></p></div></div>
-<div class="slide" data-index="4"><div class="slide-inner"><h2>初始�?Flask-Login</h2><p><code>from flask_login import LoginManager</code></p><p><code>login_manager = LoginManager()</code></p><p><code>login_manager.init_app(app)</code></p><p><code>login_manager.login_view = "login"</code> �?未登录时跳转到登录页</p><p>还需要一个回调：</p><p><code>@login_manager.user_loader</code></p><p><code>def load_user(user_id): return User.query.get(int(user_id))</code></p></div></div>
-<div class="slide" data-index="5"><div class="slide-inner"><h2>登录路由</h2><p><code>@app.route("/login", methods=["GET", "POST"])</code></p><p><code>def login():</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;if request.method == "POST":</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;user = User.query.filter_by(username=request.form["username"]).first()</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if user and check_password_hash(user.password_hash, request.form["password"]):</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;login_user(user)</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return redirect(url_for("dashboard"))</code></p><p>logout�?code>logout_user()</code></p></div></div>
-<div class="slide" data-index="6"><div class="slide-inner"><h2>限制访问 @login_required</h2><p>在需要登录的路由上加装饰器：</p><p><code>from flask_login import login_required</code></p><p><code>@app.route("/dashboard")</code></p><p><code>@login_required</code></p><p><code>def dashboard():</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;return f"你好，{current_user.username}�?</code></p><p>current_user 是当前登录的用户对象，未登录时是 AnonymousUser�?/p></div></div>
-<div class="slide" data-index="7"><div class="slide-inner"><h2>总结</h2><ul><li>Flask-Login 管理 Session 登录状�?/li><li>generate_password_hash 加密密码</li><li>login_user() / logout_user() 登录登出</li><li>@login_required 限制未登录访�?/li><li>current_user 获取当前登录用户</li></ul></div></div>
+<div class="slide slide-title active" data-index="0"><div class="slide-inner"><div class="lesson-num">Web 后端 · 进阶第试/div><h1>Flask 用户认证</h1><div class="sub">注册、登录、Session</div></div></div>
+<div class="slide" data-index="1"><div class="slide-inner"><h2>Flask-Login</h2><p>Flask-Login 帮我们管理用户登录状态：</p><p><code>pip install flask-login</code></p><p>它提供：</p><ul><li>用户登录/登出</li><li>记住登录（Cookie！/li><li>限制未登录用户访问/li></ul></div></div>
+<div class="slide" data-index="2"><div class="slide-inner"><h2>用户模型改通/h2><p>设User 模型支持登录！/p><p><code>from flask_login import UserMixin</code></p><p><code>class User(UserMixin, db.Model):</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;id = db.Column(db.Integer, primary_key=True)</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;username = db.Column(db.String(80), unique=True)</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;password_hash = db.Column(db.String(200))</code></p><p>继承 UserMixin 获得 is_authenticated 等方法、/p></div></div>
+<div class="slide" data-index="3"><div class="slide-inner"><h2>密码哈希</h2><p>永远不要明文存密码！用Werkzeug 的哈希：</p><p><code>from werkzeug.security import generate_password_hash, check_password_hash</code></p><p>注册时：<code>user.password_hash = generate_password_hash(password)</code></p><p>登录时：<code>check_password_hash(user.password_hash, password)</code></p></div></div>
+<div class="slide" data-index="4"><div class="slide-inner"><h2>初始包Flask-Login</h2><p><code>from flask_login import LoginManager</code></p><p><code>login_manager = LoginManager()</code></p><p><code>login_manager.init_app(app)</code></p><p><code>login_manager.login_view = "login"</code> ↀ未登录时跳转到登录页</p><p>还需要一个回调：</p><p><code>@login_manager.user_loader</code></p><p><code>def load_user(user_id): return User.query.get(int(user_id))</code></p></div></div>
+<div class="slide" data-index="5"><div class="slide-inner"><h2>登录路由</h2><p><code>@app.route("/login", methods=["GET", "POST"])</code></p><p><code>def login():</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;if request.method == "POST":</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;user = User.query.filter_by(username=request.form["username"]).first()</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if user and check_password_hash(user.password_hash, request.form["password"]):</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;login_user(user)</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return redirect(url_for("dashboard"))</code></p><p>logout！code>logout_user()</code></p></div></div>
+<div class="slide" data-index="6"><div class="slide-inner"><h2>限制访问 @login_required</h2><p>在需要登录的路由上加装饰器：</p><p><code>from flask_login import login_required</code></p><p><code>@app.route("/dashboard")</code></p><p><code>@login_required</code></p><p><code>def dashboard():</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;return f"你好，{current_user.username}！</code></p><p>current_user 是当前登录的用户对象，未登录时是 AnonymousUser、/p></div></div>
+<div class="slide" data-index="7"><div class="slide-inner"><h2>总结</h2><ul><li>Flask-Login 管理 Session 登录状态/li><li>generate_password_hash 加密密码</li><li>login_user() / logout_user() 登录登出</li><li>@login_required 限制未登录访问/li><li>current_user 获取当前登录用户</li></ul></div></div>
 </div>
-<div class="nav-bar"><a class="back-link" href="index.html">�?目录</a><button id="prevBtn">◀</button><span class="counter" id="counter">1 / 8</span><button id="nextBtn">�?/button></div>
+<div class="nav-bar"><a class="back-link" href="index.html">ↀ目录</a><button id="prevBtn">◀</button><span class="counter" id="counter">1 / 8</span><button id="nextBtn">▀/button></div>
 <script>
 const slides=document.querySelectorAll('.slide'),total=slides.length;let current=0;
 function goTo(n){slides.forEach(s=>s.classList.remove('active'));current=(n+total)%total;slides[current].classList.add('active');document.getElementById('counter').textContent=(current+1)+' / '+total}

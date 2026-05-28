@@ -26,18 +26,34 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',s
 .nav-bar .back-link{color:rgba(255,255,255,.25);text-decoration:none;font-size:13px;padding:6px 12px;border-radius:8px;transition:all .2s}
 .nav-bar .back-link:hover{color:#fff;background:rgba(255,255,255,.06)}
 @media(max-width:640px){.slide{padding:16px}.slide-inner{padding:24px 18px}.nav-bar{padding:8px 12px;gap:8px;bottom:14px}}
-</style></head>
+
+        @media (max-width: 640px) {
+            .slide { padding: 10px; }
+            .slide-inner { padding: 24px 16px; max-height: 90vh; }
+            .slide p { font-size: 15px; }
+            .slide li { font-size: 14px; }
+            .slide h2 { font-size: 20px; }
+            .slide-title h1 { font-size: 28px; }
+            .slide-title .sub { font-size: 14px; }
+            .flex-row { flex-direction: column; gap: 12px; }
+            .flex-row img { max-width: 120px; }
+            .nav-controls { padding: 6px 10px; gap: 4px; flex-wrap: wrap; justify-content: center; }
+            .nav-controls button { font-size: 20px; padding: 6px 14px; min-width: 44px; min-height: 44px; }
+            .nav-controls .page-indicator { font-size: 12px; min-width: 60px; }
+            .slide-inner::-webkit-scrollbar { width: 3px; }
+        }
+    </style></head>
 <body><div class="presentation" id="presentation">
-<div class="slide slide-title active" data-index="0"><div class="slide-inner"><div class="lesson-num">Web 后端 · �?�?/div><h1>数据库基础</h1><div class="sub">存储数据�?仓库"</div></div></div>
-<div class="slide" data-index="1"><div class="slide-inner"><h2>为什么需要数据库�?/h2><p>网站需�?strong>持久化存�?/strong>数据�?/p><ul><li>用户注册信息（用户名、密码）</li><li>文章、评论、帖�?/li><li>商品信息、订�?/li></ul><p>文件也能存，但数据库更快、更安全、更方便查询�?/p><div class="highlight-box">如果把后端比作餐厅，数据库就是厨房后面的仓库——存着所有原材料�?/div></div></div>
-<div class="slide" data-index="2"><div class="slide-inner"><h2>关系型数据库</h2><p>最常见的是<strong>关系型数据库</strong>（像 Excel 表格）：</p><ul><li>数据存成"�?（Table�?/li><li>表里�?�?（Row）和"�?（Column�?/li><li>表之间可以关联（用户�?�?订单表）</li></ul><p>常见的关系型数据库：<strong>SQLite</strong>（轻量）�?strong>MySQL</strong>（流行）�?strong>PostgreSQL</strong>（高级）</p></div></div>
-<div class="slide" data-index="3"><div class="slide-inner"><h2>SQL 基本语句</h2><p>SQL（Structured Query Language）是操作数据库的语言�?/p><p><strong>查询</strong>�?code>SELECT * FROM users WHERE age > 18</code></p><p><strong>插入</strong>�?code>INSERT INTO users (name, age) VALUES ('张三', 20)</code></p><p><strong>更新</strong>�?code>UPDATE users SET age = 21 WHERE name = '张三'</code></p><p><strong>删除</strong>�?code>DELETE FROM users WHERE name = '张三'</code></p></div></div>
-<div class="slide" data-index="4"><div class="slide-inner"><h2>SQLite + Flask</h2><p>SQLite 不需要安装服务器，文件即数据库：</p><p><code>import sqlite3</code></p><p><code>conn = sqlite3.connect("data.db")</code></p><p><code>cursor = conn.cursor()</code></p><p><code>cursor.execute("CREATE TABLE IF NOT EXISTS users (id INTEGER, name TEXT)")</code></p><p>�?Flask 里用 SQLite 就能做一个完整的带后端的网站�?/p></div></div>
-<div class="slide" data-index="5"><div class="slide-inner"><h2>数据库设计示�?/h2><p>一个简单的博客数据库：</p><p><code>users</code> 表：id、username、password</p><p><code>posts</code> 表：id、title、content、user_id、created_at</p><p><code>comments</code> 表：id、content、post_id、user_id、created_at</p><p>user_id 把帖子和用户关联起来——这�?strong>外键</strong>�?/p></div></div>
-<div class="slide" data-index="6"><div class="slide-inner"><h2>ORM 概念</h2><p>ORM（对象关系映射）让你�?Python 对象操作数据库，不用�?SQL�?/p><p>�?SQLAlchemy（Flask 常用）：</p><p><code>class User(db.Model):</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;id = db.Column(db.Integer, primary_key=True)</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;name = db.Column(db.String(100))</code></p><p><code>db.session.add(User(name="张三"))</code></p><p><code>db.session.commit()</code></p></div></div>
-<div class="slide" data-index="7"><div class="slide-inner"><h2>总结</h2><ul><li>数据库持久化存储数据，比文件更快更安�?/li><li>关系型数据库 = 表（�?列）</li><li>SQL 语句：SELECT / INSERT / UPDATE / DELETE</li><li>SQLite 轻量易用，适合学习和个人项�?/li><li>ORM 让你�?Python 类操作数据库，不用手�?SQL</li></ul></div></div>
+<div class="slide slide-title active" data-index="0"><div class="slide-inner"><div class="lesson-num">Web 后端 · 第试/div><h1>数据库基础</h1><div class="sub">存储数据的仓库"</div></div></div>
+<div class="slide" data-index="1"><div class="slide-inner"><h2>为什么需要数据库！/h2><p>网站需要strong>持久化存傀/strong>数据！/p><ul><li>用户注册信息（用户名、密码）</li><li>文章、评论、帖字/li><li>商品信息、订单/li></ul><p>文件也能存，但数据库更快、更安全、更方便查询、/p><div class="highlight-box">如果把后端比作餐厅，数据库就是厨房后面的仓库——存着所有原材料、/div></div></div>
+<div class="slide" data-index="2"><div class="slide-inner"><h2>关系型数据库</h2><p>最常见的是<strong>关系型数据库</strong>（像 Excel 表格）：</p><ul><li>数据存成"行（Table！/li><li>表里有行（Row）和"分（Column！/li><li>表之间可以关联（用户行ↀ订单表）</li></ul><p>常见的关系型数据库：<strong>SQLite</strong>（轻量）、strong>MySQL</strong>（流行）、strong>PostgreSQL</strong>（高级）</p></div></div>
+<div class="slide" data-index="3"><div class="slide-inner"><h2>SQL 基本语句</h2><p>SQL（Structured Query Language）是操作数据库的语言！/p><p><strong>查询</strong>！code>SELECT * FROM users WHERE age > 18</code></p><p><strong>插入</strong>！code>INSERT INTO users (name, age) VALUES ('张三', 20)</code></p><p><strong>更新</strong>！code>UPDATE users SET age = 21 WHERE name = '张三'</code></p><p><strong>删除</strong>！code>DELETE FROM users WHERE name = '张三'</code></p></div></div>
+<div class="slide" data-index="4"><div class="slide-inner"><h2>SQLite + Flask</h2><p>SQLite 不需要安装服务器，文件即数据库：</p><p><code>import sqlite3</code></p><p><code>conn = sqlite3.connect("data.db")</code></p><p><code>cursor = conn.cursor()</code></p><p><code>cursor.execute("CREATE TABLE IF NOT EXISTS users (id INTEGER, name TEXT)")</code></p><p>在Flask 里用 SQLite 就能做一个完整的带后端的网站、/p></div></div>
+<div class="slide" data-index="5"><div class="slide-inner"><h2>数据库设计示例/h2><p>一个简单的博客数据库：</p><p><code>users</code> 表：id、username、password</p><p><code>posts</code> 表：id、title、content、user_id、created_at</p><p><code>comments</code> 表：id、content、post_id、user_id、created_at</p><p>user_id 把帖子和用户关联起来——这参strong>外键</strong>、/p></div></div>
+<div class="slide" data-index="6"><div class="slide-inner"><h2>ORM 概念</h2><p>ORM（对象关系映射）让你用Python 对象操作数据库，不用内SQL！/p><p>用SQLAlchemy（Flask 常用）：</p><p><code>class User(db.Model):</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;id = db.Column(db.Integer, primary_key=True)</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;name = db.Column(db.String(100))</code></p><p><code>db.session.add(User(name="张三"))</code></p><p><code>db.session.commit()</code></p></div></div>
+<div class="slide" data-index="7"><div class="slide-inner"><h2>总结</h2><ul><li>数据库持久化存储数据，比文件更快更安入/li><li>关系型数据库 = 表（行列）</li><li>SQL 语句：SELECT / INSERT / UPDATE / DELETE</li><li>SQLite 轻量易用，适合学习和个人项目/li><li>ORM 让你用Python 类操作数据库，不用手内SQL</li></ul></div></div>
 </div>
-<div class="nav-bar"><a class="back-link" href="index.html">�?目录</a><button id="prevBtn">◀</button><span class="counter" id="counter">1 / 8</span><button id="nextBtn">�?/button></div>
+<div class="nav-bar"><a class="back-link" href="index.html">ↀ目录</a><button id="prevBtn">◀</button><span class="counter" id="counter">1 / 8</span><button id="nextBtn">▀/button></div>
 <script>
 const slides=document.querySelectorAll('.slide'),total=slides.length;let current=0;
 function goTo(n){slides.forEach(s=>s.classList.remove('active'));current=(n+total)%total;slides[current].classList.add('active');document.getElementById('counter').textContent=(current+1)+' / '+total}

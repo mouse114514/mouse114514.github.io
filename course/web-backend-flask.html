@@ -26,18 +26,34 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',s
 .nav-bar .back-link{color:rgba(255,255,255,.25);text-decoration:none;font-size:13px;padding:6px 12px;border-radius:8px;transition:all .2s}
 .nav-bar .back-link:hover{color:#fff;background:rgba(255,255,255,.06)}
 @media(max-width:640px){.slide{padding:16px}.slide-inner{padding:24px 18px}.nav-bar{padding:8px 12px;gap:8px;bottom:14px}}
-</style></head>
+
+        @media (max-width: 640px) {
+            .slide { padding: 10px; }
+            .slide-inner { padding: 24px 16px; max-height: 90vh; }
+            .slide p { font-size: 15px; }
+            .slide li { font-size: 14px; }
+            .slide h2 { font-size: 20px; }
+            .slide-title h1 { font-size: 28px; }
+            .slide-title .sub { font-size: 14px; }
+            .flex-row { flex-direction: column; gap: 12px; }
+            .flex-row img { max-width: 120px; }
+            .nav-controls { padding: 6px 10px; gap: 4px; flex-wrap: wrap; justify-content: center; }
+            .nav-controls button { font-size: 20px; padding: 6px 14px; min-width: 44px; min-height: 44px; }
+            .nav-controls .page-indicator { font-size: 12px; min-width: 60px; }
+            .slide-inner::-webkit-scrollbar { width: 3px; }
+        }
+    </style></head>
 <body><div class="presentation" id="presentation">
-<div class="slide slide-title active" data-index="0"><div class="slide-inner"><div class="lesson-num">Web 后端 · �?�?/div><h1>Flask 入门</h1><div class="sub">�?Python 写第一个后�?/div></div></div>
-<div class="slide" data-index="1"><div class="slide-inner"><h2>Flask 是什么？</h2><p>Flask 是一�?Python �?strong>Web 框架</strong>——帮你快速搭建后端服务器�?/p><ul><li>轻量、简单、适合新手</li><li>一�?.py 文件就能跑起一个网站后�?/li><li>处理 HTTP 请求、返回响�?/li></ul><div class="highlight-box">框架 = 半成品，你只需要写核心逻辑，框架处理底层的东西（路由、请求解析、响应封装）�?/div></div></div>
-<div class="slide" data-index="2"><div class="slide-inner"><h2>安装 Flask</h2><p><strong>pip install flask</strong></p><p>验证安装�?/p><p><code>python -c "import flask; print(flask.__version__)"</code></p><p>能显示版本就成功了�?/p></div></div>
-<div class="slide" data-index="3"><div class="slide-inner"><h2>Hello World</h2><p>新建 app.py�?/p><p><code>from flask import Flask</code></p><p><code>app = Flask(__name__)</code></p><p><code>@app.route("/")</code></p><p><code>def home():</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;return "Hello World"</code></p><p><code>if __name__ == "__main__":</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;app.run(debug=True)</code></p><p>运行�?code>python app.py</code> �?浏览器访�?http://127.0.0.1:5000</p></div></div>
-<div class="slide" data-index="4"><div class="slide-inner"><h2>路由（Route�?/h2><p>不同�?URL 路径 �?不同的处理函数：</p><p><code>@app.route("/")</code> �?首页</p><p><code>@app.route("/about")</code> �?关于页面</p><p><code>@app.route("/user/&lt;name&gt;")</code> �?动态路�?/p><p>示例�?/p><p><code>def user(name):</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;return f"你好，{name}"</code></p></div></div>
-<div class="slide" data-index="5"><div class="slide-inner"><h2>返回 JSON</h2><p>后端经常返回 JSON 数据给前端：</p><p><code>from flask import jsonify</code></p><p><code>@app.route("/api/data")</code></p><p><code>def get_data():</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;return jsonify({"name": "张三", "score": 95})</code></p><p>浏览器访�?/api/data �?看到 JSON 格式的数据�?/p></div></div>
-<div class="slide" data-index="6"><div class="slide-inner"><h2>GET �?POST</h2><p>指定请求方法�?/p><p><code>@app.route("/login", methods=["GET", "POST"])</code></p><p><code>def login():</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;if request.method == "POST":</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;username = request.form["username"]</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return f"欢迎，{username}"</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;return "这是登录页面"</code></p></div></div>
-<div class="slide" data-index="7"><div class="slide-inner"><h2>总结</h2><ul><li>Flask �?Python 的轻量级 Web 框架</li><li>pip install flask 一键安�?/li><li>@app.route() 定义 URL 路由</li><li>return 字符�?�?网页；jsonify() �?JSON 数据</li><li>methods 参数控制 GET / POST</li></ul></div></div>
+<div class="slide slide-title active" data-index="0"><div class="slide-inner"><div class="lesson-num">Web 后端 · 第试/div><h1>Flask 入门</h1><div class="sub">用Python 写第一个后站/div></div></div>
+<div class="slide" data-index="1"><div class="slide-inner"><h2>Flask 是什么？</h2><p>Flask 是一一Python 的strong>Web 框架</strong>——帮你快速搭建后端服务器、/p><ul><li>轻量、简单、适合新手</li><li>一一.py 文件就能跑起一个网站后站/li><li>处理 HTTP 请求、返回响序/li></ul><div class="highlight-box">框架 = 半成品，你只需要写核心逻辑，框架处理底层的东西（路由、请求解析、响应封装）、/div></div></div>
+<div class="slide" data-index="2"><div class="slide-inner"><h2>安装 Flask</h2><p><strong>pip install flask</strong></p><p>验证安装！/p><p><code>python -c "import flask; print(flask.__version__)"</code></p><p>能显示版本就成功了、/p></div></div>
+<div class="slide" data-index="3"><div class="slide-inner"><h2>Hello World</h2><p>新建 app.py！/p><p><code>from flask import Flask</code></p><p><code>app = Flask(__name__)</code></p><p><code>@app.route("/")</code></p><p><code>def home():</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;return "Hello World"</code></p><p><code>if __name__ == "__main__":</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;app.run(debug=True)</code></p><p>运行！code>python app.py</code> ↀ浏览器访问http://127.0.0.1:5000</p></div></div>
+<div class="slide" data-index="4"><div class="slide-inner"><h2>路由（Route！/h2><p>不同的URL 路径 ↀ不同的处理函数：</p><p><code>@app.route("/")</code> ↀ首页</p><p><code>@app.route("/about")</code> ↀ关于页面</p><p><code>@app.route("/user/&lt;name&gt;")</code> ↀ动态路得/p><p>示例！/p><p><code>def user(name):</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;return f"你好，{name}"</code></p></div></div>
+<div class="slide" data-index="5"><div class="slide-inner"><h2>返回 JSON</h2><p>后端经常返回 JSON 数据给前端：</p><p><code>from flask import jsonify</code></p><p><code>@app.route("/api/data")</code></p><p><code>def get_data():</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;return jsonify({"name": "张三", "score": 95})</code></p><p>浏览器访问/api/data ↀ看到 JSON 格式的数据、/p></div></div>
+<div class="slide" data-index="6"><div class="slide-inner"><h2>GET 和POST</h2><p>指定请求方法！/p><p><code>@app.route("/login", methods=["GET", "POST"])</code></p><p><code>def login():</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;if request.method == "POST":</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;username = request.form["username"]</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return f"欢迎，{username}"</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;return "这是登录页面"</code></p></div></div>
+<div class="slide" data-index="7"><div class="slide-inner"><h2>总结</h2><ul><li>Flask 是Python 的轻量级 Web 框架</li><li>pip install flask 一键安装/li><li>@app.route() 定义 URL 路由</li><li>return 字符一ↀ网页；jsonify() ↀJSON 数据</li><li>methods 参数控制 GET / POST</li></ul></div></div>
 </div>
-<div class="nav-bar"><a class="back-link" href="index.html">�?目录</a><button id="prevBtn">◀</button><span class="counter" id="counter">1 / 8</span><button id="nextBtn">�?/button></div>
+<div class="nav-bar"><a class="back-link" href="index.html">ↀ目录</a><button id="prevBtn">◀</button><span class="counter" id="counter">1 / 8</span><button id="nextBtn">▀/button></div>
 <script>
 const slides=document.querySelectorAll('.slide'),total=slides.length;let current=0;
 function goTo(n){slides.forEach(s=>s.classList.remove('active'));current=(n+total)%total;slides[current].classList.add('active');document.getElementById('counter').textContent=(current+1)+' / '+total}

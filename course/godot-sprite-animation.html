@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html><head><meta charset="UTF-8">
-    <link rel="icon" type="image/png" href="/favicon.png"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Godot 2D 精灵与动�?/title><style>
+    <link rel="icon" type="image/png" href="/favicon.png"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Godot 2D 精灵与动用/title><style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',sans-serif;background:#0a0f1e;color:#e0e8f0;height:100vh;overflow:hidden}
 .presentation{width:100%;height:100vh;position:relative}
@@ -26,18 +26,34 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',s
 .nav-bar .back-link{color:rgba(255,255,255,.25);text-decoration:none;font-size:13px;padding:6px 12px;border-radius:8px;transition:all .2s}
 .nav-bar .back-link:hover{color:#fff;background:rgba(255,255,255,.06)}
 @media(max-width:640px){.slide{padding:16px}.slide-inner{padding:24px 18px}.nav-bar{padding:8px 12px;gap:8px;bottom:14px}}
-</style></head>
+
+        @media (max-width: 640px) {
+            .slide { padding: 10px; }
+            .slide-inner { padding: 24px 16px; max-height: 90vh; }
+            .slide p { font-size: 15px; }
+            .slide li { font-size: 14px; }
+            .slide h2 { font-size: 20px; }
+            .slide-title h1 { font-size: 28px; }
+            .slide-title .sub { font-size: 14px; }
+            .flex-row { flex-direction: column; gap: 12px; }
+            .flex-row img { max-width: 120px; }
+            .nav-controls { padding: 6px 10px; gap: 4px; flex-wrap: wrap; justify-content: center; }
+            .nav-controls button { font-size: 20px; padding: 6px 14px; min-width: 44px; min-height: 44px; }
+            .nav-controls .page-indicator { font-size: 12px; min-width: 60px; }
+            .slide-inner::-webkit-scrollbar { width: 3px; }
+        }
+    </style></head>
 <body><div class="presentation" id="presentation">
-<div class="slide slide-title active" data-index="0"><div class="slide-inner"><div class="lesson-num">Godot · �?�?/div><h1>2D 精灵与动�?/h1><div class="sub">让角色有画面</div></div></div>
-<div class="slide" data-index="1"><div class="slide-inner"><h2>Sprite2D 节点</h2><p>Sprite2D �?2D 游戏最基本的显示节点，用来展示一张图片�?/p><ul><li>创建 Sprite2D 节点</li><li>在属性面板找�?<strong>Texture</strong> 属�?/li><li>拖入一�?PNG 图片 �?图片出现在画面上</li></ul><div class="tip-box">Godot 支持 PNG、JPG、SVG 等格式。推荐用 PNG，支持透明背景�?/div></div></div>
-<div class="slide" data-index="2"><div class="slide-inner"><h2>图片拖入项目</h2><p>图片文件必须放在项目文件夹里才能用：</p><ul><li>�?Godot 编辑器底�?FileSystem 面板</li><li>直接把图片文件拖�?FileSystem</li><li>建个 <strong>assets/</strong> �?<strong>images/</strong> 文件夹管理素�?/li><li>然后把图片从 FileSystem 拖到 Sprite2D �?Texture 属性上</li></ul></div></div>
-<div class="slide" data-index="3"><div class="slide-inner"><h2>区域（Region�?/h2><p>如果一张大图里包含多个小图（精灵表/Sprite Sheet），可以�?Region 功能裁切�?/p><ul><li>选中 Sprite2D 节点</li><li>在属性面板找�?<strong>Region</strong> �?勾�?Enabled</li><li>点击 Region 属�?�?在弹出窗口里框选所需区域</li></ul><div class="highlight-box">跨雪碧表（Sprite Sheet）是一张大图里排列着多帧动画，用 Region 逐帧切出来播放�?/div></div></div>
-<div class="slide" data-index="4"><div class="slide-inner"><h2>AnimatedSprite2D</h2><p>AnimatedSprite2D 用来做帧动画�?/p><ul><li>创建 AnimatedSprite2D 节点</li><li>在属性面板的 <strong>SpriteFrames</strong> 属�?�?新建 SpriteFrames 资源</li><li>双击打开 SpriteFrames 面板</li><li>添加动画名称（如 "idle"�?run"�?/li><li>把帧图片拖入对应动画序列</li></ul></div></div>
-<div class="slide" data-index="5"><div class="slide-inner"><h2>脚本控制动画</h2><p>用代码切换动画播放：</p><p><code>$AnimatedSprite2D.play("idle")</code></p><p><code>$AnimatedSprite2D.play("run")</code></p><p>还可以控制方向：</p><p><code>$AnimatedSprite2D.flip_h = true</code> �?水平翻转</p><p><code>$AnimatedSprite2D.flip_v = true</code> �?垂直翻转</p></div></div>
-<div class="slide" data-index="6"><div class="slide-inner"><h2>碰撞形状（CollisionShape2D�?/h2><p>光有画面不够，角色还需要碰撞体才能"撞到"东西�?/p><ul><li>添加 <strong>CollisionShape2D</strong> 子节�?/li><li>�?Shape 属�?�?�?RectangleShape2D �?CircleShape2D</li><li>调整绿色框的大小对齐角色画面</li></ul><div class="tip-box">CharacterBody2D + Sprite2D + CollisionShape2D 是最常用�?角色三件�?�?/div></div></div>
-<div class="slide" data-index="7"><div class="slide-inner"><h2>总结</h2><ul><li>Sprite2D 显示单张图片，Texture 属性指定图�?/li><li>图片拖入 FileSystem 再引�?/li><li>精灵表用 Region 裁切</li><li>AnimatedSprite2D 做帧动画，play() 控制播放</li><li>加上 CollisionShape2D 才能碰撞</li></ul></div></div>
+<div class="slide slide-title active" data-index="0"><div class="slide-inner"><div class="lesson-num">Godot · 第试/div><h1>2D 精灵与动用/h1><div class="sub">让角色有画面</div></div></div>
+<div class="slide" data-index="1"><div class="slide-inner"><h2>Sprite2D 节点</h2><p>Sprite2D 是2D 游戏最基本的显示节点，用来展示一张图片、/p><ul><li>创建 Sprite2D 节点</li><li>在属性面板找分<strong>Texture</strong> 属态/li><li>拖入一开PNG 图片 ↀ图片出现在画面上</li></ul><div class="tip-box">Godot 支持 PNG、JPG、SVG 等格式。推荐用 PNG，支持透明背景、/div></div></div>
+<div class="slide" data-index="2"><div class="slide-inner"><h2>图片拖入项目</h2><p>图片文件必须放在项目文件夹里才能用：</p><ul><li>在Godot 编辑器底都FileSystem 面板</li><li>直接把图片文件拖入FileSystem</li><li>建个 <strong>assets/</strong> 戏<strong>images/</strong> 文件夹管理素来/li><li>然后把图片从 FileSystem 拖到 Sprite2D 的Texture 属性上</li></ul></div></div>
+<div class="slide" data-index="3"><div class="slide-inner"><h2>区域（Region！/h2><p>如果一张大图里包含多个小图（精灵表/Sprite Sheet），可以用Region 功能裁切！/p><ul><li>选中 Sprite2D 节点</li><li>在属性面板找分<strong>Region</strong> ↀ勾通Enabled</li><li>点击 Region 属态ↀ在弹出窗口里框选所需区域</li></ul><div class="highlight-box">跨雪碧表（Sprite Sheet）是一张大图里排列着多帧动画，用 Region 逐帧切出来播放、/div></div></div>
+<div class="slide" data-index="4"><div class="slide-inner"><h2>AnimatedSprite2D</h2><p>AnimatedSprite2D 用来做帧动画！/p><ul><li>创建 AnimatedSprite2D 节点</li><li>在属性面板的 <strong>SpriteFrames</strong> 属态ↀ新建 SpriteFrames 资源</li><li>双击打开 SpriteFrames 面板</li><li>添加动画名称（如 "idle"、run"！/li><li>把帧图片拖入对应动画序列</li></ul></div></div>
+<div class="slide" data-index="5"><div class="slide-inner"><h2>脚本控制动画</h2><p>用代码切换动画播放：</p><p><code>$AnimatedSprite2D.play("idle")</code></p><p><code>$AnimatedSprite2D.play("run")</code></p><p>还可以控制方向：</p><p><code>$AnimatedSprite2D.flip_h = true</code> ↀ水平翻转</p><p><code>$AnimatedSprite2D.flip_v = true</code> ↀ垂直翻转</p></div></div>
+<div class="slide" data-index="6"><div class="slide-inner"><h2>碰撞形状（CollisionShape2D！/h2><p>光有画面不够，角色还需要碰撞体才能"撞到"东西！/p><ul><li>添加 <strong>CollisionShape2D</strong> 子节点/li><li>在Shape 属态ↀ通RectangleShape2D 戏CircleShape2D</li><li>调整绿色框的大小对齐角色画面</li></ul><div class="tip-box">CharacterBody2D + Sprite2D + CollisionShape2D 是最常用的角色三件奀、/div></div></div>
+<div class="slide" data-index="7"><div class="slide-inner"><h2>总结</h2><ul><li>Sprite2D 显示单张图片，Texture 属性指定图片/li><li>图片拖入 FileSystem 再引用/li><li>精灵表用 Region 裁切</li><li>AnimatedSprite2D 做帧动画，play() 控制播放</li><li>加上 CollisionShape2D 才能碰撞</li></ul></div></div>
 </div>
-<div class="nav-bar"><a class="back-link" href="index.html">�?目录</a><button id="prevBtn">◀</button><span class="counter" id="counter">1 / 8</span><button id="nextBtn">�?/button></div>
+<div class="nav-bar"><a class="back-link" href="index.html">ↀ目录</a><button id="prevBtn">◀</button><span class="counter" id="counter">1 / 8</span><button id="nextBtn">▀/button></div>
 <script>
 const slides=document.querySelectorAll('.slide'),total=slides.length;let current=0;
 function goTo(n){slides.forEach(s=>s.classList.remove('active'));current=(n+total)%total;slides[current].classList.add('active');document.getElementById('counter').textContent=(current+1)+' / '+total}

@@ -26,18 +26,34 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',s
 .nav-bar .back-link{color:rgba(255,255,255,.25);text-decoration:none;font-size:13px;padding:6px 12px;border-radius:8px;transition:all .2s}
 .nav-bar .back-link:hover{color:#fff;background:rgba(255,255,255,.06)}
 @media(max-width:640px){.slide{padding:16px}.slide-inner{padding:24px 18px}.nav-bar{padding:8px 12px;gap:8px;bottom:14px}}
-</style></head>
+
+        @media (max-width: 640px) {
+            .slide { padding: 10px; }
+            .slide-inner { padding: 24px 16px; max-height: 90vh; }
+            .slide p { font-size: 15px; }
+            .slide li { font-size: 14px; }
+            .slide h2 { font-size: 20px; }
+            .slide-title h1 { font-size: 28px; }
+            .slide-title .sub { font-size: 14px; }
+            .flex-row { flex-direction: column; gap: 12px; }
+            .flex-row img { max-width: 120px; }
+            .nav-controls { padding: 6px 10px; gap: 4px; flex-wrap: wrap; justify-content: center; }
+            .nav-controls button { font-size: 20px; padding: 6px 14px; min-width: 44px; min-height: 44px; }
+            .nav-controls .page-indicator { font-size: 12px; min-width: 60px; }
+            .slide-inner::-webkit-scrollbar { width: 3px; }
+        }
+    </style></head>
 <body><div class="presentation" id="presentation">
-<div class="slide slide-title active" data-index="0"><div class="slide-inner"><div class="lesson-num">Web 前端 · �?�?/div><h1>HTML 基础标签</h1><div class="sub">网页的骨�?/div></div></div>
-<div class="slide" data-index="1"><div class="slide-inner"><h2>HTML 文档结构</h2><p><code>&lt;!DOCTYPE html&gt;</code> �?声明类型</p><p><code>&lt;html&gt;</code> �?根标�?/p><p><code>&lt;head&gt;</code> �?头部（不可见配置�?/p><p><code>&lt;body&gt;</code> �?身体（页面显示的内容�?/p><p>所有网页都是这个基本结构。就像一栋房子的地基和框架�?/p></div></div>
-<div class="slide" data-index="2"><div class="slide-inner"><h2>标题标签 h1~h6</h2><p><code>&lt;h1&gt;一级标�?lt;/h1&gt;</code> 最�?/p><p><code>&lt;h2&gt;二级标题&lt;/h2&gt;</code></p><p>�?/p><p><code>&lt;h6&gt;六级标题&lt;/h6&gt;</code> 最�?/p><div class="highlight-box">一个页面一般只有一�?h1（搜索引擎用它理解页面主题），h2-h6 用来分层�?/div></div></div>
-<div class="slide" data-index="3"><div class="slide-inner"><h2>段落和文�?/h2><p><code>&lt;p&gt;这是一个段落�?lt;/p&gt;</code></p><p><code>&lt;strong&gt;加粗&lt;/strong&gt;</code> �?强调</p><p><code>&lt;em&gt;斜体&lt;/em&gt;</code> �?着�?/p><p><code>&lt;br&gt;</code> �?换行（单标签�?/p><p><code>&lt;hr&gt;</code> �?水平分割�?/p></div></div>
-<div class="slide" data-index="4"><div class="slide-inner"><h2>链接 a 标签</h2><p>超链接是互联网的基础�?/p><p><code>&lt;a href="https://example.com"&gt;点我访问&lt;/a&gt;</code></p><p>属性：</p><ul><li><strong>href</strong> �?链接地址</li><li><strong>target="_blank"</strong> �?在新标签页打开</li><li>可以链接到外部网站、内部页面、甚至是页面内的某个位置</li></ul></div></div>
-<div class="slide" data-index="5"><div class="slide-inner"><h2>图片 img 标签</h2><p><code>&lt;img src="图片地址" alt="描述文字"&gt;</code></p><ul><li><strong>src</strong> �?图片文件路径（支持相�?绝对/URL�?/li><li><strong>alt</strong> �?图片加载失败时显示的文字（也用于辅助阅读�?/li><li><strong>width / height</strong> �?可控制尺�?/li></ul></div></div>
-<div class="slide" data-index="6"><div class="slide-inner"><h2>列表 ul / ol</h2><p>无序列表（圆点）�?/p><p><code>&lt;ul&gt;</code></p><p><code>&nbsp;&nbsp;&lt;li&gt;苹果&lt;/li&gt;</code></p><p><code>&nbsp;&nbsp;&lt;li&gt;香蕉&lt;/li&gt;</code></p><p><code>&lt;/ul&gt;</code></p><p>有序列表（数字）�?<code>&lt;ol&gt;</code>�?/p></div></div>
-<div class="slide" data-index="7"><div class="slide-inner"><h2>总结</h2><ul><li>HTML 由标签组成，成对出现</li><li>h1~h6 标题，p 段落，a 超链接，img 图片</li><li>ul/ol + li 做列�?/li><li>标签可以有属性（href、src、class 等）</li></ul></div></div>
+<div class="slide slide-title active" data-index="0"><div class="slide-inner"><div class="lesson-num">Web 前端 · 第试/div><h1>HTML 基础标签</h1><div class="sub">网页的骨析/div></div></div>
+<div class="slide" data-index="1"><div class="slide-inner"><h2>HTML 文档结构</h2><p><code>&lt;!DOCTYPE html&gt;</code> ↀ声明类型</p><p><code>&lt;html&gt;</code> ↀ根标筀/p><p><code>&lt;head&gt;</code> ↀ头部（不可见配置！/p><p><code>&lt;body&gt;</code> ↀ身体（页面显示的内容！/p><p>所有网页都是这个基本结构。就像一栋房子的地基和框架、/p></div></div>
+<div class="slide" data-index="2"><div class="slide-inner"><h2>标题标签 h1~h6</h2><p><code>&lt;h1&gt;一级标题lt;/h1&gt;</code> 最备/p><p><code>&lt;h2&gt;二级标题&lt;/h2&gt;</code></p><p>—/p><p><code>&lt;h6&gt;六级标题&lt;/h6&gt;</code> 最就/p><div class="highlight-box">一个页面一般只有一一h1（搜索引擎用它理解页面主题），h2-h6 用来分层、/div></div></div>
+<div class="slide" data-index="3"><div class="slide-inner"><h2>段落和文有/h2><p><code>&lt;p&gt;这是一个段落、lt;/p&gt;</code></p><p><code>&lt;strong&gt;加粗&lt;/strong&gt;</code> —强调</p><p><code>&lt;em&gt;斜体&lt;/em&gt;</code> —着释/p><p><code>&lt;br&gt;</code> —换行（单标签！/p><p><code>&lt;hr&gt;</code> —水平分割级/p></div></div>
+<div class="slide" data-index="4"><div class="slide-inner"><h2>链接 a 标签</h2><p>超链接是互联网的基础！/p><p><code>&lt;a href="https://example.com"&gt;点我访问&lt;/a&gt;</code></p><p>属性：</p><ul><li><strong>href</strong> —链接地址</li><li><strong>target="_blank"</strong> —在新标签页打开</li><li>可以链接到外部网站、内部页面、甚至是页面内的某个位置</li></ul></div></div>
+<div class="slide" data-index="5"><div class="slide-inner"><h2>图片 img 标签</h2><p><code>&lt;img src="图片地址" alt="描述文字"&gt;</code></p><ul><li><strong>src</strong> —图片文件路径（支持相密绝对/URL！/li><li><strong>alt</strong> —图片加载失败时显示的文字（也用于辅助阅读！/li><li><strong>width / height</strong> —可控制尺密/li></ul></div></div>
+<div class="slide" data-index="6"><div class="slide-inner"><h2>列表 ul / ol</h2><p>无序列表（圆点）！/p><p><code>&lt;ul&gt;</code></p><p><code>&nbsp;&nbsp;&lt;li&gt;苹果&lt;/li&gt;</code></p><p><code>&nbsp;&nbsp;&lt;li&gt;香蕉&lt;/li&gt;</code></p><p><code>&lt;/ul&gt;</code></p><p>有序列表（数字）用<code>&lt;ol&gt;</code>、/p></div></div>
+<div class="slide" data-index="7"><div class="slide-inner"><h2>总结</h2><ul><li>HTML 由标签组成，成对出现</li><li>h1~h6 标题，p 段落，a 超链接，img 图片</li><li>ul/ol + li 做列行/li><li>标签可以有属性（href、src、class 等）</li></ul></div></div>
 </div>
-<div class="nav-bar"><a class="back-link" href="index.html">�?目录</a><button id="prevBtn">◀</button><span class="counter" id="counter">1 / 8</span><button id="nextBtn">�?/button></div>
+<div class="nav-bar"><a class="back-link" href="index.html">ↀ目录</a><button id="prevBtn">◀</button><span class="counter" id="counter">1 / 8</span><button id="nextBtn">▀/button></div>
 <script>
 const slides=document.querySelectorAll('.slide'),total=slides.length;let current=0;
 function goTo(n){slides.forEach(s=>s.classList.remove('active'));current=(n+total)%total;slides[current].classList.add('active');document.getElementById('counter').textContent=(current+1)+' / '+total}
