@@ -5,127 +5,56 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>课程目录 - X_studio</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            font-family: 'Arial', 'Microsoft YaHei', sans-serif;
-            background: #0a0f1e;
-            color: #e0e8f0;
-            line-height: 1.8;
-            padding: 40px 20px;
-        }
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-        h1 {
-            font-size: 36px;
-            background: linear-gradient(to right, #4da8ff, #b0e0ff);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            margin-bottom: 8px;
-        }
-        .desc {
-            color: rgba(255,255,255,0.5);
-            margin-bottom: 40px;
-            border-bottom: 1px solid rgba(77, 168, 255, 0.2);
-            padding-bottom: 15px;
-        }
-        .lesson-list {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-        .lesson {
-            background: rgba(20, 30, 50, 0.6);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(77, 168, 255, 0.25);
-            border-radius: 20px;
-            padding: 20px 25px;
-            transition: all 0.3s;
-            cursor: pointer;
-            text-decoration: none;
-            color: inherit;
-            display: block;
-        }
-        .lesson:hover {
-            border-color: #4da8ff;
-            background: rgba(77, 168, 255, 0.1);
-            box-shadow: 0 0 25px rgba(77, 168, 255, 0.15);
-            transform: translateX(5px);
-        }
-        .lesson .num {
-            font-size: 14px;
-            color: #4da8ff;
-            font-weight: bold;
-        }
-        .lesson .title {
-            font-size: 20px;
-            font-weight: bold;
-            margin: 4px 0;
-        }
-        .lesson .brief {
-            font-size: 15px;
-            color: rgba(255,255,255,0.6);
-        }
-        .back {
-            display: inline-block;
-            margin-top: 30px;
-            color: rgba(255,255,255,0.5);
-            text-decoration: none;
-            padding: 10px 20px;
-            border: 1px solid rgba(255,255,255,0.2);
-            border-radius: 20px;
-            transition: all 0.3s;
-        }
-        .back:hover {
-            color: white;
-            border-color: rgba(255,255,255,0.4);
-        }
-        @media (max-width: 600px) {
-            h1 { font-size: 26px; }
-            .lesson { padding: 15px 18px; }
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Arial', 'Microsoft YaHei', sans-serif; background: #0a0f1e; color: #e0e8f0; line-height: 1.8; padding: 40px 20px; }
+        .container { max-width: 800px; margin: 0 auto; }
+        h1 { font-size: 36px; background: linear-gradient(to right, #4da8ff, #b0e0ff); -webkit-background-clip: text; background-clip: text; color: transparent; margin-bottom: 8px; }
+        .desc { color: rgba(255,255,255,0.5); margin-bottom: 40px; border-bottom: 1px solid rgba(77, 168, 255, 0.2); padding-bottom: 15px; }
+        .lesson-list { display: flex; flex-direction: column; gap: 15px; }
+        .lesson { background: rgba(20, 30, 50, 0.6); backdrop-filter: blur(12px); border: 1px solid rgba(77, 168, 255, 0.25); border-radius: 20px; padding: 20px 25px; transition: all 0.3s; cursor: pointer; text-decoration: none; color: inherit; display: block; }
+        .lesson:hover { border-color: #4da8ff; background: rgba(77, 168, 255, 0.1); box-shadow: 0 0 25px rgba(77, 168, 255, 0.15); transform: translateX(5px); }
+        .lesson .num { font-size: 14px; color: #4da8ff; font-weight: bold; }
+        .lesson .title { font-size: 20px; font-weight: bold; margin: 4px 0; }
+        .lesson .brief { font-size: 15px; color: rgba(255,255,255,0.6); }
+        .back { display: inline-block; margin-top: 30px; color: rgba(255,255,255,0.5); text-decoration: none; padding: 10px 20px; border: 1px solid rgba(255,255,255,0.2); border-radius: 20px; transition: all 0.3s; }
+        .back:hover { color: white; border-color: rgba(255,255,255,0.4); }
+        @media (max-width: 600px) { h1 { font-size: 26px; } .lesson { padding: 15px 18px; } }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>课程目录</h1>
-        <div class="desc">从零开始理解计算机系统</div>
+        <div class="desc">零基础学电脑——从会用到懂一点</div>
         <div class="lesson-list">
             <a class="lesson" href="01-windows.html">
                 <div class="num">第1课</div>
                 <div class="title">认识 Windows 系统</div>
-                <div class="brief">操作系统的概念、Windows 版本演变与桌面组成</div>
+                <div class="brief">系统是什么、各版本的区别、桌面各部分的功能</div>
             </a>
             <a class="lesson" href="02-keyboard-focus.html">
                 <div class="num">第2课</div>
-                <div class="title">键盘与窗口焦点</div>
-                <div class="brief">窗口焦点的底层机制、消息队列与输入去向</div>
+                <div class="title">键盘快捷键与窗口焦点</div>
+                <div class="brief">打字跑错地方怎么办、最实用的快捷键、窗口切换</div>
             </a>
-            <a class="lesson" href="03-process-window-message.html">
+            <a class="lesson" href="03-task-manager.html">
                 <div class="num">第3课</div>
-                <div class="title">进程、窗口与消息机制</div>
-                <div class="brief">程序 vs 进程、HWND、消息队列与卡死原理</div>
+                <div class="title">任务管理器与电脑卡顿</div>
+                <div class="brief">电脑变慢是谁在偷跑、结束卡死程序、关掉开机自启</div>
             </a>
-            <a class="lesson" href="04-filesystem-principles.html">
+            <a class="lesson" href="04-files-basics.html">
                 <div class="num">第4课</div>
-                <div class="title">文件系统原理</div>
-                <div class="brief">NTFS、MFT、ACL 权限、硬链接与文件存储本质</div>
+                <div class="title">文件与文件夹的那些事儿</div>
+                <div class="brief">扩展名、复制粘贴删除、回收站的秘密、搜索文件</div>
             </a>
-            <a class="lesson" href="05-software-registry.html">
+            <a class="lesson" href="05-software-basics.html">
                 <div class="num">第5课</div>
-                <div class="title">软件安装与系统注册表</div>
-                <div class="brief">注册表结构、文件关联、服务与自启持久化</div>
+                <div class="title">软件安装与避坑</div>
+                <div class="brief">从哪下载才安全、安装时注意什么、如何正确卸载</div>
             </a>
-            <a class="lesson" href="06-network-principles.html">
+            <a class="lesson" href="06-internet-safety.html">
                 <div class="num">第6课</div>
-                <div class="title">网络通信原理</div>
-                <div class="brief">IP/DNS/TCP、端口、三次握手与网页的全过程</div>
+                <div class="title">上网安全与隐私</div>
+                <div class="brief">锁头标志、钓鱼网站、密码设置、公共Wi-Fi风险</div>
             </a>
         </div>
         <a class="back" href="../index.html">← 返回首页</a>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>第4课：文件系统原理</title>
+    <title>第3课：任务管理器与电脑卡顿</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif; background: #0a0f1e; color: #e0e8f0; height: 100vh; overflow: hidden; }
@@ -22,15 +22,14 @@
         .slide ul { margin: 8px 0 12px 20px; }
         .slide li { font-size: 16px; line-height: 1.7; margin-bottom: 5px; color: rgba(255,255,255,0.8); }
         .slide li strong { color: #b0e0ff; }
-        .slide .highlight-box { background: rgba(77, 168, 255, 0.08); border-left: 4px solid #4da8ff; padding: 16px 20px; border-radius: 0 12px 12px 0; margin: 14px 0; font-size: 15px; }
         .slide .tip-box { background: rgba(255, 200, 0, 0.06); border-left: 4px solid #ffc800; padding: 14px 18px; border-radius: 0 10px 10px 0; margin: 14px 0; font-size: 15px; }
-        .slide code { background: rgba(255,255,255,0.1); padding: 2px 8px; border-radius: 4px; font-size: 14px; }
         .nav-bar { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 16px; background: rgba(10, 15, 30, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.06); border-radius: 30px; padding: 10px 20px; z-index: 10; }
         .nav-bar button { background: none; border: none; color: rgba(255,255,255,0.4); font-size: 18px; cursor: pointer; padding: 6px 12px; border-radius: 8px; transition: all 0.2s; }
         .nav-bar button:hover { color: #fff; background: rgba(255,255,255,0.06); }
         .nav-bar .counter { font-size: 14px; color: rgba(255,255,255,0.35); min-width: 60px; text-align: center; }
         .nav-bar .back-link { color: rgba(255,255,255,0.25); text-decoration: none; font-size: 13px; padding: 6px 12px; border-radius: 8px; transition: all 0.2s; }
         .nav-bar .back-link:hover { color: #fff; background: rgba(255,255,255,0.06); }
+        .key { display: inline-block; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12); border-radius: 5px; padding: 2px 10px; font-size: 14px; color: #b0e0ff; font-family: monospace; margin: 2px 0; }
         @media (max-width: 640px) { .slide { padding: 16px; } .slide-inner { padding: 24px 18px; } .nav-bar { padding: 8px 12px; gap: 8px; bottom: 14px; } .flex-row { flex-direction: column; } }
     </style>
 </head>
@@ -38,95 +37,95 @@
     <div class="presentation" id="presentation">
         <div class="slide slide-title active" data-index="0">
             <div class="slide-inner">
-                <img src="images/folder-icon.png" alt="文件系统" style="width:100px;margin-bottom:16px;opacity:0.8">
-                <div class="lesson-num">第四课</div>
-                <h1>文件系统原理</h1>
-                <div class="sub">文件到底是怎么存在硬盘上的？</div>
+                <div class="lesson-num">第三课</div>
+                <h1>任务管理器与电脑卡顿</h1>
+                <div class="sub">电脑变慢了怎么办？</div>
             </div>
         </div>
 
         <div class="slide" data-index="1">
             <div class="slide-inner">
-                <h2>什么是文件系统？</h2>
-                <p>文件系统是操作系统用来<strong>组织和管理硬盘数据</strong>的一套规则。你可以把它理解为"硬盘的目录索引系统"。</p>
-                <p>没有文件系统，硬盘就是一个巨大的字节数组，没办法知道哪段数据是哪个文件。</p>
-                <div class="highlight-box">
-                    常见文件系统：Windows 用 <strong>NTFS</strong>，U盘常用 <strong>FAT32 / exFAT</strong>，Linux 用 <strong>ext4</strong>。
-                </div>
+                <h2>电脑卡顿，谁在偷懒？</h2>
+                <p>电脑变慢，通常是有东西在"抢资源"。打开<strong>任务管理器</strong>就能看到谁在搞鬼。</p>
+                <p>打开方式：</p>
+                <ul>
+                    <li>按 <span class="key">Ctrl</span> + <span class="key">Shift</span> + <span class="key">Esc</span>（最快）</li>
+                    <li>或者按 <span class="key">Ctrl</span> + <span class="key">Alt</span> + <span class="key">Del</span>，选"任务管理器"</li>
+                    <li>或者右键任务栏空白处 → 任务管理器</li>
+                </ul>
             </div>
         </div>
 
         <div class="slide" data-index="2">
             <div class="slide-inner">
-                <h2>NTFS 核心结构</h2>
-                <p>NTFS 把所有数据都视为"文件"。包括目录本身也是一个文件——$Root 文件。</p>
+                <h2>任务管理器长什么样？</h2>
+                <p>第一次打开可能是"简洁模式"，只显示几个程序名。点左下角的<strong>"详细信息"</strong>展开完整版。</p>
+                <p>你会看到几个标签页：</p>
                 <ul>
-                    <li><strong>MFT</strong>（主文件表）—— 文件系统的核心索引，每个文件在 MFT 中有一条记录</li>
-                    <li>MFT 记录包含了文件的<strong>属性</strong>：文件名、大小、时间戳、数据位置</li>
-                    <li>小文件的数据可以<strong>直接存在 MFT 记录里</strong>（resident），不用额外分配空间</li>
+                    <li><strong>进程</strong> — 现在正在运行的所有程序</li>
+                    <li><strong>性能</strong> — CPU、内存、磁盘的使用率</li>
+                    <li><strong>启动</strong> — 开机时自动启动的程序</li>
+                    <li><strong>用户</strong> — 当前登录的用户</li>
                 </ul>
-                <div class="tip-box">
-                    查看一个文件占用的实际扇区位置：用工具 <code>fsutil</code> 命令。
-                </div>
             </div>
         </div>
 
         <div class="slide" data-index="3">
             <div class="slide-inner">
-                <h2>文件路径的本质</h2>
-                <img class="img-wide" src="images/filesystem-tree.png" alt="文件系统树" style="display:block;max-width:100%;border-radius:12px;margin:10px 0">
-                <p>路径如 <code>C:\Users\YourName\test.txt</code> 不是简单的字符串，而是一条<strong>引用链</strong>：</p>
+                <h2>进程标签：谁在偷跑？</h2>
+                <p>进程 = 正在运行的程序。每个打开的程序都是一个进程。</p>
+                <p>表格里有几列很重要：</p>
                 <ul>
-                    <li>从根目录的 MFT 记录 <code>$Root</code> 开始</li>
-                    <li>查找目录项"Users" → 得到 Users 文件夹的 MFT 引用</li>
-                    <li>在 Users 文件夹中查找"YourName" → 得到其 MFT 引用</li>
-                    <li>最终找到 test.txt 的 MFT 记录</li>
+                    <li><strong>CPU</strong> — 这个程序用了多少%的处理器。如果一直是 100% → 卡顿原因</li>
+                    <li><strong>内存</strong> — 占用了多少内存。内存不够也会卡</li>
+                    <li><strong>磁盘</strong> — 在读写硬盘。100% 磁盘占用也是卡顿元凶</li>
                 </ul>
+                <div class="tip-box">
+                    💡 哪一列数值高，点那一列的标题排序，最高的那个就是"罪魁祸首"。
+                </div>
             </div>
         </div>
 
         <div class="slide" data-index="4">
             <div class="slide-inner">
-                <h2>文件的实际存储</h2>
-                <p>一个文件不是连续存放在硬盘上的！</p>
+                <h2>CPU 和内存是什么？</h2>
+                <p>用个厨房的比喻：</p>
                 <ul>
-                    <li>NTFS 把文件数据分成 <strong>簇</strong>（Cluster，默认 4KB）</li>
-                    <li>文件可能分散在硬盘的不同位置——这叫<strong>碎片化</strong></li>
-                    <li>MFT 记录里有一个 <strong>$Data 属性</strong>，指向文件数据的簇列表</li>
-                    <li>大文件的 $Data 会分成多个 <strong>Extent</strong>（段）记录</li>
+                    <li><strong>CPU</strong>（处理器） = 厨师。一个厨师一次只能做一道菜。</li>
+                    <li><strong>内存</strong> = 灶台，放马上要用的食材。灶台越大能同时准备的菜越多。</li>
+                    <li><strong>硬盘</strong> = 冰箱，放所有的食材。从冰箱拿东西比从灶台慢得多。</li>
                 </ul>
-                <div class="highlight-box">
-                    "删除文件"并没有擦除数据，只是把 MFT 记录标记为"可用"。这也是为什么删除的文件能恢复。
-                </div>
+                <p>电脑卡顿，要么是<strong>厨师忙不过来</strong>（CPU 100%），要么是<strong>灶台堆满了</strong>（内存不足）。</p>
             </div>
         </div>
 
         <div class="slide" data-index="5">
             <div class="slide-inner">
-                <h2>NTFS 权限机制</h2>
-                <p>NTFS 权限是基于 <strong>ACL</strong>（访问控制列表）的：</p>
+                <h2>卡死了怎么办？结束进程</h2>
+                <p>当一个程序"无响应"（点哪里都没反应）：</p>
                 <ul>
-                    <li>每个文件/文件夹有一个 <strong>安全描述符</strong>（Security Descriptor）</li>
-                    <li>安全描述符包含 <strong>ACE</strong>（访问控制项）列表</li>
-                    <li>每条 ACE 规定了某个用户/组可以做或不能做什么</li>
-                    <li>权限类型：读取、写入、修改、完全控制</li>
+                    <li>打开任务管理器</li>
+                    <li>找到那个卡死的程序（状态会显示"无响应"）</li>
+                    <li>选中它，点右下角的<strong>"结束任务"</strong></li>
                 </ul>
                 <div class="tip-box">
-                    右键文件 → 属性 → 安全，就能看到这个文件的 ACL。
+                    ⚠️ 结束任务会丢失未保存的数据！但卡死了也只能这样。
                 </div>
+                <p>原理：程序不再处理消息（见第2课的"焦点"），系统强制关掉它的进程。</p>
             </div>
         </div>
 
         <div class="slide" data-index="6">
             <div class="slide-inner">
-                <h2>硬链接、软链接与快捷方式</h2>
+                <h2>开机太慢？关掉自启项</h2>
+                <p>有些程序一开机就自动运行（微信、QQ、迅雷等），拖慢开机速度。</p>
                 <ul>
-                    <li><strong>硬链接</strong>（Hard Link）— 同一个 MFT 记录有多个文件名，删一个不影响数据</li>
-                    <li><strong>符号链接</strong>（Symlink）— 重定向到另一个路径，目标可以是远程共享</li>
-                    <li><strong>快捷方式</strong>（.lnk）— 只是一个普通文件，里面存了目标路径</li>
+                    <li>打开任务管理器 → <strong>"启动"标签</strong></li>
+                    <li>看"启动影响"那一列：高影响的开机最拖速度</li>
+                    <li>不需要开机自启的 → 右键 → <strong>禁用</strong></li>
                 </ul>
-                <div class="highlight-box">
-                    用 <code>mklink</code> 命令可以创建硬链接和符号链接。这是管理磁盘空间的强大工具。
+                <div class="tip-box">
+                    💡 除了杀毒软件和系统必要服务，大部分程序都不需要开机自启。等用的时候再手动打开就行。
                 </div>
             </div>
         </div>
@@ -135,13 +134,11 @@
             <div class="slide-inner">
                 <h2>总结</h2>
                 <ul>
-                    <li>文件系统 = 硬盘的索引系统，NTFS 是 Windows 的核心 FS</li>
-                    <li>MFT 是 NTFS 的"总索引表"</li>
-                    <li>路径是一层层目录 MFT 引用的链式查找</li>
-                    <li>文件数据不连续存放，用簇列表定位</li>
-                    <li>删除文件只是标记 MFT 记录为"可用"</li>
-                    <li>权限通过 ACL/ACE 控制</li>
-                    <li>硬链接不复制数据，同一个 MFT 记录有多个名字</li>
+                    <li>按 <span class="key">Ctrl</span> + <span class="key">Shift</span> + <span class="key">Esc</span> 快速打开任务管理器</li>
+                    <li>卡顿看"进程"标签：CPU/内存/磁盘哪一项满了</li>
+                    <li>CPU=厨师，内存=灶台，硬盘=冰箱</li>
+                    <li>程序卡死 → 结束任务（会丢失未保存数据）</li>
+                    <li>开机慢 → 启动标签禁用不必要的自启项</li>
                 </ul>
             </div>
         </div>

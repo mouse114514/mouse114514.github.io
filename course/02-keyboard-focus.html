@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>第2课：键盘与窗口焦点</title>
+    <title>第2课：键盘快捷键与窗口焦点</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif; background: #0a0f1e; color: #e0e8f0; height: 100vh; overflow: hidden; }
@@ -22,7 +22,6 @@
         .slide ul { margin: 8px 0 12px 20px; }
         .slide li { font-size: 16px; line-height: 1.7; margin-bottom: 5px; color: rgba(255,255,255,0.8); }
         .slide li strong { color: #b0e0ff; }
-        .slide .highlight-box { background: rgba(77, 168, 255, 0.08); border-left: 4px solid #4da8ff; padding: 16px 20px; border-radius: 0 12px 12px 0; margin: 14px 0; font-size: 15px; }
         .slide .tip-box { background: rgba(255, 200, 0, 0.06); border-left: 4px solid #ffc800; padding: 14px 18px; border-radius: 0 10px 10px 0; margin: 14px 0; font-size: 15px; }
         .key { display: inline-block; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12); border-radius: 5px; padding: 2px 10px; font-size: 14px; color: #b0e0ff; font-family: monospace; margin: 2px 0; }
         .shortcut-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 12px 0; }
@@ -44,97 +43,88 @@
             <div class="slide-inner">
                 <img src="images/keyboard-shortcut.png" alt="键盘" style="width:180px;margin-bottom:16px;opacity:0.7">
                 <div class="lesson-num">第二课</div>
-                <h1>键盘与窗口焦点</h1>
-                <div class="sub">你的按键到底去了哪里？</div>
+                <h1>键盘快捷键与窗口焦点</h1>
+                <div class="sub">打字跑到哪去了？</div>
             </div>
         </div>
 
         <div class="slide" data-index="1">
             <div class="slide-inner">
-                <h2>窗口焦点是什么？</h2>
-                <p>你面前有多个窗口，但你打字时字只会出现在<strong>其中一个</strong>——那个就是<strong>焦点窗口</strong>。</p>
-                <p>焦点（Focus）是操作系统用来决定"键盘输入送给谁"的机制。任何时候，整个系统里<strong>有且只有一个</strong>窗口拥有焦点。</p>
-                <div class="highlight-box">
-                    点击一个窗口 → 它拿到焦点，标题栏变亮 → 你的按键都发给它
+                <h2>你肯定遇到过这种事</h2>
+                <p>你在聊天窗口打字，突然字跑到别的地方去了。不是电脑坏了——只是<strong>焦点</strong>跑了。</p>
+                <p>电脑同时开着好几个窗口，但你的键盘只能"对着"其中一个说话。那个被对着的窗口就叫<strong>焦点窗口</strong>。</p>
+                <div class="tip-box">
+                    💡 点击哪个窗口，焦点就给哪个。标题栏变亮的就是焦点。
                 </div>
-                <p>标题栏变灰的窗口在"后台"，收不到键盘消息。</p>
             </div>
         </div>
 
         <div class="slide" data-index="2">
             <div class="slide-inner">
-                <h2>焦点丢失：你到底在往哪打字？</h2>
-                <p>新手最常见的问题："我明明在打字，怎么字跑到别的地方去了？"</p>
+                <h2>焦点怎么丢的？</h2>
+                <p>最常见的丢焦点原因：<strong>不小心点了一下别的地方</strong></p>
                 <ul>
-                    <li>你打开了记事本和浏览器，在记事本打字正常</li>
-                    <li>不小心<strong>点了一下</strong>浏览器 → 焦点转到浏览器</li>
-                    <li>继续敲键盘 → 字全进了浏览器的搜索框</li>
+                    <li>你在记事本打字 → 焦点在记事本</li>
+                    <li>不小心点到浏览器 → 焦点跳到浏览器</li>
+                    <li>继续敲键盘 → 字全进了浏览器的地址栏或搜索框</li>
                 </ul>
+                <p>你以为你在打字，其实焦点已经跑了。</p>
                 <div class="tip-box">
-                    用 <span class="key">Alt</span> + <span class="key">Tab</span> 切换窗口时，焦点跟着走。
-                </div>
-                <div class="highlight-box">
-                    <strong>核心：</strong>焦点的本质是"系统当前把键盘消息发送给哪个窗口句柄"。
+                    💡 按 <span class="key">Alt</span> + <span class="key">Tab</span> 可以切换焦点：按住 Alt 不放，每按一下 Tab 就换一个窗口。
                 </div>
             </div>
         </div>
 
         <div class="slide" data-index="3">
             <div class="slide-inner">
-                <h2>焦点的背后：消息队列</h2>
-                <p>Windows 是一个<strong>消息驱动</strong>的系统。你按下键盘 → 硬件中断 → 系统生成一个"按键消息" → 投递到焦点窗口的消息队列。</p>
-                <ul>
-                    <li>每个窗口都有自己的<strong>消息队列</strong>（Message Queue）</li>
-                    <li>系统只把键盘消息发给<strong>拥有焦点</strong>的那个窗口</li>
-                    <li>程序不断从队列里取消息处理——这叫<strong>消息泵</strong>（Message Pump）</li>
-                </ul>
-                <div class="highlight-box">
-                    按键 → 系统消息队列 → 分发到焦点窗口的消息队列 → 程序取走处理
+                <h2>最实用的快捷键（黄金三件套）</h2>
+                <div class="shortcut-grid">
+                    <div class="shortcut-item"><span class="keys"><span class="key">Ctrl</span> + <span class="key">C</span></span><span class="action">复制</span></div>
+                    <div class="shortcut-item"><span class="keys"><span class="key">Ctrl</span> + <span class="key">V</span></span><span class="action">粘贴</span></div>
+                    <div class="shortcut-item"><span class="keys"><span class="key">Ctrl</span> + <span class="key">X</span></span><span class="action">剪切</span></div>
+                    <div class="shortcut-item"><span class="keys"><span class="key">Ctrl</span> + <span class="key">Z</span></span><span class="action">撤销（后悔药）</span></div>
+                    <div class="shortcut-item"><span class="keys"><span class="key">Ctrl</span> + <span class="key">S</span></span><span class="action">保存</span></div>
+                    <div class="shortcut-item"><span class="keys"><span class="key">Ctrl</span> + <span class="key">A</span></span><span class="action">全选</span></div>
                 </div>
+                <p>这6个在任何软件里都能用，先记住它们。</p>
             </div>
         </div>
 
         <div class="slide" data-index="4">
             <div class="slide-inner">
-                <h2>Z 序（Z-Order）</h2>
-                <p>窗口在屏幕上不光有 X、Y（位置），还有<strong>Z 轴</strong>——即谁在上面、谁在下面。这叫做 Z 序。</p>
-                <ul>
-                    <li>最上面的窗口叫<strong>顶层窗口</strong>（Top-Level）</li>
-                    <li>顶层窗口通常拥有焦点（但不一定！）</li>
-                    <li>被盖住的叫<strong>下层窗口</strong></li>
-                    <li>把窗口"置顶"（TopMost）可以强制它一直在最前</li>
-                </ul>
-                <div class="tip-box">
-                    <span class="key">Alt</span> + <span class="key">Esc</span> 可以强制把下一个窗口提到顶层，但不一定给焦点。
+                <h2>Win 键快捷键（系统级）</h2>
+                <p>键盘上有个 <span class="key">Win</span> 键（Windows 图标），按它能直接控制操作系统本身：</p>
+                <div class="shortcut-grid">
+                    <div class="shortcut-item"><span class="keys"><span class="key">Win</span> + <span class="key">D</span></span><span class="action">一键回到桌面</span></div>
+                    <div class="shortcut-item"><span class="keys"><span class="key">Win</span> + <span class="key">E</span></span><span class="action">打开文件管理器</span></div>
+                    <div class="shortcut-item"><span class="keys"><span class="key">Win</span> + <span class="key">L</span></span><span class="action">锁屏（离开时按一下）</span></div>
+                    <div class="shortcut-item"><span class="keys"><span class="key">Win</span> + <span class="key">I</span></span><span class="action">打开设置</span></div>
+                    <div class="shortcut-item"><span class="keys"><span class="key">Win</span> + <span class="key">S</span></span><span class="action">搜索电脑里的东西</span></div>
+                    <div class="shortcut-item"><span class="keys"><span class="key">Win</span> + <span class="key">V</span></span><span class="action">查看剪贴板历史</span></div>
                 </div>
             </div>
         </div>
 
         <div class="slide" data-index="5">
             <div class="slide-inner">
-                <h2>前台窗口 vs 焦点窗口</h2>
-                <p>很多人以为"最前面的窗口"就是焦点窗口，其实不完全正确：</p>
-                <ul>
-                    <li><strong>前台窗口</strong>（Foreground Window）：Z 序最顶层的窗口</li>
-                    <li><strong>焦点窗口</strong>（Focus Window）：实际收到键盘输入的窗口</li>
-                </ul>
-                <p>一般情况下它俩是同一个，但也可以不同。</p>
-                <div class="highlight-box">
-                    比如一个对话框弹出来，对话框是前台窗口，但它里面的文本框之间的焦点切换，不会影响主窗口。
+                <h2>窗口管理快捷键</h2>
+                <p>这几个能让你像变魔术一样排布窗口：</p>
+                <div class="shortcut-grid">
+                    <div class="shortcut-item"><span class="keys"><span class="key">Win</span> + <span class="key">↑</span></span><span class="action">窗口最大化</span></div>
+                    <div class="shortcut-item"><span class="keys"><span class="key">Win</span> + <span class="key">↓</span></span><span class="action">窗口缩小/最小化</span></div>
+                    <div class="shortcut-item"><span class="keys"><span class="key">Win</span> + <span class="key">←</span></span><span class="action">窗口靠左半屏</span></div>
+                    <div class="shortcut-item"><span class="keys"><span class="key">Win</span> + <span class="key">→</span></span><span class="action">窗口靠右半屏</span></div>
                 </div>
+                <p>一边看网页一边记笔记？左边放浏览器，右边放记事本，刚刚好。</p>
             </div>
         </div>
 
         <div class="slide" data-index="6">
             <div class="slide-inner">
-                <h2>快捷键的底层原理</h2>
-                <p>快捷键（Accelerator / Hotkey）本质就是<strong>预注册的消息过滤器</strong>：</p>
-                <ul>
-                    <li>系统投递键盘消息前，先检查有没有<strong>全局热键</strong>（如 <span class="key">Win</span>+<span class="key">D</span>）匹配</li>
-                    <li>匹配上了就直接消费掉，不再发给焦点窗口</li>
-                    <li>没匹配上才发给焦点窗口</li>
-                </ul>
-                <p><span class="key">Win</span>+<span class="key">L</span> 锁定系统 → 这是系统级热键，任何时刻都能抢走焦点。</p>
+                <h2>快捷键的小秘密</h2>
+                <p>为什么 <span class="key">Win</span> + <span class="key">L</span> 在任何时候都能锁屏？</p>
+                <p>因为系统永远在"偷听"键盘——即使焦点不在它那里。所有的 Win 键组合都是<strong>系统级热键</strong>，优先级最高。</p>
+                <p>而 <span class="key">Ctrl</span> + <span class="key">C</span> 这样的快捷键，只对当前焦点窗口有效。这就是为什么你在游戏里按 Ctrl+C 不会复制——因为游戏没注册这个快捷键。</p>
             </div>
         </div>
 
@@ -142,15 +132,12 @@
             <div class="slide-inner">
                 <h2>总结</h2>
                 <ul>
-                    <li><strong>焦点</strong> = 系统决定"键盘输入给哪个窗口"的机制</li>
-                    <li>每个窗口有一个消息队列，消息驱动运行</li>
-                    <li>Z 序决定窗口前后层次，前台窗口通常拥有焦点</li>
-                    <li>快捷键是系统层级的消息过滤器，优先级高于普通按键</li>
-                    <li>打字跑错地方 → 检查焦点在哪里</li>
+                    <li><strong>焦点</strong> = 键盘当前在跟哪个窗口"说话"</li>
+                    <li>打字跑错地方 → 检查焦点在哪（看标题栏亮不亮）</li>
+                    <li><span class="key">Alt</span> + <span class="key">Tab</span> 切换窗口 = 切换焦点</li>
+                    <li>先记住 Ctrl+C/V/X/Z/S/A，再用 Win+ 快捷键</li>
+                    <li>Win+ 快捷键是系统级的，任何时候都有效</li>
                 </ul>
-                <div class="tip-box">
-                    想知道当前焦点在哪个窗口？按 <span class="key">Alt</span> + <span class="key">Tab</span> 看高亮的那个就是。
-                </div>
             </div>
         </div>
     </div>

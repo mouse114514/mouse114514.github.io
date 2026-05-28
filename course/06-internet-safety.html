@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>第5课：软件安装与系统注册表</title>
+    <title>第6课：上网安全与隐私</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif; background: #0a0f1e; color: #e0e8f0; height: 100vh; overflow: hidden; }
@@ -22,8 +22,9 @@
         .slide ul { margin: 8px 0 12px 20px; }
         .slide li { font-size: 16px; line-height: 1.7; margin-bottom: 5px; color: rgba(255,255,255,0.8); }
         .slide li strong { color: #b0e0ff; }
-        .slide .highlight-box { background: rgba(77, 168, 255, 0.08); border-left: 4px solid #4da8ff; padding: 16px 20px; border-radius: 0 12px 12px 0; margin: 14px 0; font-size: 15px; }
         .slide .tip-box { background: rgba(255, 200, 0, 0.06); border-left: 4px solid #ffc800; padding: 14px 18px; border-radius: 0 10px 10px 0; margin: 14px 0; font-size: 15px; }
+        .slide .highlight-box { background: rgba(77, 168, 255, 0.08); border-left: 4px solid #4da8ff; padding: 16px 20px; border-radius: 0 12px 12px 0; margin: 14px 0; font-size: 15px; }
+        .slide .warn-box { background: rgba(255, 80, 80, 0.08); border-left: 4px solid #ff5050; padding: 14px 18px; border-radius: 0 10px 10px 0; margin: 14px 0; font-size: 15px; }
         .slide code { background: rgba(255,255,255,0.1); padding: 2px 8px; border-radius: 4px; font-size: 14px; }
         .nav-bar { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 16px; background: rgba(10, 15, 30, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.06); border-radius: 30px; padding: 10px 20px; z-index: 10; }
         .nav-bar button { background: none; border: none; color: rgba(255,255,255,0.4); font-size: 18px; cursor: pointer; padding: 6px 12px; border-radius: 8px; transition: all 0.2s; }
@@ -31,6 +32,7 @@
         .nav-bar .counter { font-size: 14px; color: rgba(255,255,255,0.35); min-width: 60px; text-align: center; }
         .nav-bar .back-link { color: rgba(255,255,255,0.25); text-decoration: none; font-size: 13px; padding: 6px 12px; border-radius: 8px; transition: all 0.2s; }
         .nav-bar .back-link:hover { color: #fff; background: rgba(255,255,255,0.06); }
+        .key { display: inline-block; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12); border-radius: 5px; padding: 2px 10px; font-size: 14px; color: #b0e0ff; font-family: monospace; margin: 2px 0; }
         @media (max-width: 640px) { .slide { padding: 16px; } .slide-inner { padding: 24px 18px; } .nav-bar { padding: 8px 12px; gap: 8px; bottom: 14px; } .flex-row { flex-direction: column; } }
     </style>
 </head>
@@ -38,106 +40,100 @@
     <div class="presentation" id="presentation">
         <div class="slide slide-title active" data-index="0">
             <div class="slide-inner">
-                <img src="images/download-icon.png" alt="软件" style="width:100px;margin-bottom:16px;opacity:0.8">
-                <div class="lesson-num">第五课</div>
-                <h1>软件安装与系统注册表</h1>
-                <div class="sub">安装一个软件时，系统到底做了什么？</div>
+                <img src="images/internet-icon.png" alt="互联网" style="width:100px;margin-bottom:16px;opacity:0.8">
+                <div class="lesson-num">第六课</div>
+                <h1>上网安全与隐私</h1>
+                <div class="sub">怎么上网才安全？</div>
             </div>
         </div>
 
         <div class="slide" data-index="1">
             <div class="slide-inner">
-                <h2>安装的本质</h2>
-                <p>安装一个软件不只是"把文件复制到硬盘"。它触发了操作系统多个子系统：</p>
+                <h2>互联网就是"没有隐私的广场"</h2>
+                <p>你在网上做的每一件事，都像在广场上大声说话——所有人都能听见。</p>
                 <ul>
-                    <li>释放文件到目标目录（通常在 <code>C:\Program Files</code>）</li>
-                    <li>向<strong>注册表</strong>写入配置信息</li>
-                    <li>注册<strong>文件关联</strong>（如 .txt 文件默认用记事本打开）</li>
-                    <li>安装<strong>服务</strong>（Services）或<strong>自启项</strong></li>
-                    <li>写入<strong>开始菜单</strong>和<strong>快捷方式</strong></li>
+                    <li>你上了什么网站，你的<strong>网络运营商</strong>知道</li>
+                    <li>你搜了什么关键词，<strong>搜索引擎</strong>知道</li>
+                    <li>你买了什么东西，<strong>购物网站</strong>知道</li>
+                    <li>你发了什么消息，<strong>聊天软件</strong>知道</li>
                 </ul>
-                <div class="highlight-box">
-                    安装程序（如 MSI 或 Setup.exe）本质上是一个"脚本执行器"，按照清单执行以上操作。
-                </div>
+                <p>互联网天生就不是安全的，但我们可以学会保护自己。</p>
             </div>
         </div>
 
         <div class="slide" data-index="2">
             <div class="slide-inner">
-                <h2>什么是注册表？</h2>
-                <p>注册表是 Windows 的<strong>核心配置数据库</strong>，是一个树状结构的分层存储系统。</p>
-                <img class="img-wide" src="images/registry-tree.png" alt="注册表结构" style="display:block;max-width:100%;border-radius:12px;margin:10px 0">
+                <h2>看看这个锁头 🔒</h2>
+                <p>看浏览器地址栏——网址前面有没有一个<strong>小锁头</strong>图标？</p>
                 <ul>
-                    <li><strong>HKEY_CLASSES_ROOT</strong> — 文件关联和 COM 组件注册</li>
-                    <li><strong>HKEY_CURRENT_USER</strong> — 当前用户的设置</li>
-                    <li><strong>HKEY_LOCAL_MACHINE</strong> — 系统级配置</li>
-                    <li><strong>HKEY_CURRENT_CONFIG</strong> — 硬件配置文件</li>
+                    <li><strong>有锁头</strong> → 这个网站是加密的（HTTPS），别人偷看也看不懂</li>
+                    <li><strong>没有锁头</strong> → 这个网站没加密（HTTP），信息是明文传输的</li>
                 </ul>
+                <div class="warn-box">
+                    ⚠️ 在没锁头的网站上输入密码、银行卡号等于在大街上喊出你的密码！
+                </div>
+                <p>锁头 = 安全。没锁头 = 小心。</p>
             </div>
         </div>
 
         <div class="slide" data-index="3">
             <div class="slide-inner">
-                <h2>注册表项与值</h2>
-                <p>注册表的每个节点叫<strong>项</strong>（Key），每个项下可以有<strong>值</strong>（Value）：</p>
+                <h2>三种最常见的网络骗局</h2>
                 <ul>
-                    <li><strong>字符串值</strong>（REG_SZ）— 文本数据</li>
-                    <li><strong>二进制值</strong>（REG_BINARY）— 二进制数据</li>
-                    <li><strong>DWORD 值</strong>（REG_DWORD）— 32 位整数</li>
-                    <li><strong>多字符串值</strong>（REG_MULTI_SZ）— 多行文本</li>
-                    <li><strong>可扩展字符串</strong>（REG_EXPAND_SZ）— 含环境变量的文本</li>
+                    <li><strong>钓鱼网站</strong> — 做一个和银行/淘宝一模一样的假网站，骗你输密码。看网址是不是官方域名</li>
+                    <li><strong>"你的电脑中毒了"弹窗</strong> — 假警报，让你打电话过去。真的杀毒软件不会弹这种窗</li>
+                    <li><strong>陌生链接/附件</strong> — 微信/QQ/短信里的不明链接，不要点！不要点！不要点！</li>
                 </ul>
                 <div class="highlight-box">
-                    按 <span class="key">Win</span> + <span class="key">R</span>，输入 <code>regedit</code> → 这就是注册表编辑器。
+                    记住：<strong>天上不会掉馅饼</strong>。中奖、免费领、紧急通知，都是骗人的。
                 </div>
             </div>
         </div>
 
         <div class="slide" data-index="4">
             <div class="slide-inner">
-                <h2>文件关联（File Association）</h2>
-                <p>为什么双击 .txt 文件会自动用记事本打开？注册表里记录了：</p>
+                <h2>密码怎么设才安全？</h2>
+                <p>避免用这些：<code>123456</code>、<code>password</code>、<code>888888</code>、生日、名字拼音</p>
+                <p>好的密码习惯：</p>
                 <ul>
-                    <li><code>.txt</code> 扩展名 → 关联到 <strong>txtfile</strong> 这个 ProgID</li>
-                    <li><strong>txtfile</strong> 的 shell/open/command → <code>C:\Windows\notepad.exe "%1"</code></li>
-                    <li>双击文件时，系统查注册表找到对应命令来执行</li>
+                    <li>越长越好（至少8位）</li>
+                    <li>大小写字母 + 数字 + 符号混用</li>
+                    <li><strong>不同的网站用不同的密码</strong>（一个被盗，其他的也安全）</li>
+                    <li>用<strong>密码管理器</strong>或<strong>记在纸上</strong>（放在安全的地方，比用同一个密码强）</li>
                 </ul>
                 <div class="tip-box">
-                    右键文件 → 打开方式 → 选择其他应用，就是在修改注册表中的文件关联。
+                    💡 记不住不同密码？用"网站名 + 一个固定密码"：如 WB_MySafePwd2025、QQ_MySafePwd2025
                 </div>
             </div>
         </div>
 
         <div class="slide" data-index="5">
             <div class="slide-inner">
-                <h2>服务（Services）</h2>
-                <p>服务是<strong>后台运行</strong>的进程，不需要用户登录就能运行：</p>
+                <h2>公共 Wi-Fi 危险吗？</h2>
+                <p>咖啡馆、机场、酒店的免费 Wi-Fi <strong>非常不安全</strong>。</p>
                 <ul>
-                    <li>在系统启动时自动启动（或手动/延迟启动）</li>
-                    <li>运行在 <strong>SYSTEM</strong> 账户或特定服务账户下，权限往往很高</li>
-                    <li>没有用户界面，不需要登录就能跑</li>
-                </li>
+                    <li>别人可以用同一个 Wi-Fi 拦截你的数据</li>
+                    <li>如果网站没锁头（非 HTTPS），你的密码会被直接看到</li>
+                    <li>骗子可以伪装成 Wi-Fi 热点（名字叫"Free Wi-Fi"之类的）</li>
                 </ul>
-                <div class="highlight-box">
-                    按 <span class="key">Win</span> + <span class="key">R</span> 输入 <code>services.msc</code> 打开服务管理器。里面每一行就是一个服务。
+                <div class="warn-box">
+                    ⚠️ 连公共 Wi-Fi 时不要登录网银、购物网站、社交账号！用手机流量更安全。
                 </div>
-                <p>恶意软件常把自己注册为服务来持久化——即使没人登录也在运行。</p>
             </div>
         </div>
 
         <div class="slide" data-index="6">
             <div class="slide-inner">
-                <h2>自启与持久化</h2>
-                <p>软件想让每次开机自动运行，有这些方式：</p>
+                <h2>隐私设置小建议</h2>
                 <ul>
-                    <li><strong>启动文件夹</strong> — <code>shell:startup</code>（当前用户）</li>
-                    <li><strong>注册表 Run 项</strong> — <code>HKCU\Software\Microsoft\Windows\CurrentVersion\Run</code></li>
-                    <li><strong>计划任务</strong>（Task Scheduler）— 可设置触发条件</li>
-                    <li><strong>服务</strong> — 设置为自动启动</li>
-                    <li><strong>驱动</strong> — 最底层，在内核态加载</li>
+                    <li><strong>浏览器设置：</strong>不要勾选"记住密码"（除非是家里的电脑）</li>
+                    <li><strong>社交媒体：</strong>朋友圈/动态设为仅好友可见</li>
+                    <li><strong>定位：</strong>不需要定位的 App 关掉定位权限</li>
+                    <li><strong>摄像头/麦克风：</strong>不让无关的 App 使用</li>
+                    <li><strong>定期清理：</strong>浏览器历史、cookies、下载文件夹</li>
                 </ul>
-                <div class="tip-box">
-                    任务管理器 → 启动标签页，可以看到所有自启项。
+                <div class="highlight-box">
+                    💡 在 Windows 设置 → 隐私和安全，可以管理所有 App 的权限。
                 </div>
             </div>
         </div>
@@ -146,13 +142,16 @@
             <div class="slide-inner">
                 <h2>总结</h2>
                 <ul>
-                    <li>安装软件 = 解压文件 + 注册表配置 + 关联 + 服务 + 自启</li>
-                    <li>注册表是树状配置数据库，regedit 可以查看</li>
-                    <li>文件关联告诉 Windows 双击某后缀用什么程序打开</li>
-                    <li>服务在后台运行，不需要用户登录</li>
-                    <li>恶意软件通过 Run 项、服务、计划任务做持久化</li>
-                    <li>卸载软件不只是删文件，要清理注册表和相关配置</li>
+                    <li>互联网没有绝对隐私，但可以<strong>降低风险</strong></li>
+                    <li>看地址栏的<strong>锁头 🔒</strong>确认网站安全</li>
+                    <li>不点陌生链接，不信"中奖"通知</li>
+                    <li>不同网站用不同密码</li>
+                    <li>公共 Wi-Fi 不登录敏感账号</li>
+                    <li>管好应用的权限（定位、摄像头、麦克风）</li>
                 </ul>
+                <div class="tip-box">
+                    💡 简单的安全意识，能避开 90% 的网络陷阱。
+                </div>
             </div>
         </div>
     </div>
