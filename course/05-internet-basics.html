@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>第5课：互联网与浏览器基础</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif; background: #0a0f1e; color: #e0e8f0; height: 100vh; overflow: hidden; }
+        .presentation { width: 100%; height: 100vh; position: relative; }
+        .slide { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 60px; opacity: 0; pointer-events: none; transition: opacity 0.4s ease; }
+        .slide.active { opacity: 1; pointer-events: auto; }
+        .slide-inner { max-width: 820px; width: 100%; background: rgba(20, 30, 50, 0.6); backdrop-filter: blur(12px); border: 1px solid rgba(77, 168, 255, 0.2); border-radius: 28px; padding: 44px 54px; box-shadow: 0 0 50px rgba(0,0,0,0.4); max-height: 82vh; overflow-y: auto; }
+        .flex-row { display: flex; gap: 30px; align-items: center; }
+        .flex-row .text { flex: 1; }
+        .slide-title .slide-inner { text-align: center; background: rgba(20, 30, 50, 0.4); border-color: rgba(77, 168, 255, 0.15); }
+        .slide-title h1 { font-size: clamp(32px, 5vw, 52px); font-weight: 800; background: linear-gradient(135deg, #4da8ff, #b0e0ff); -webkit-background-clip: text; background-clip: text; color: transparent; line-height: 1.2; margin-bottom: 12px; }
+        .slide-title .sub { font-size: 18px; color: rgba(255,255,255,0.4); }
+        .slide-title .lesson-num { font-size: 14px; color: rgba(255,255,255,0.25); margin-bottom: 18px; letter-spacing: 3px; }
+        .slide h2 { font-size: clamp(22px, 3vw, 32px); font-weight: 700; color: #4da8ff; margin-bottom: 18px; padding-bottom: 10px; border-bottom: 1px solid rgba(77, 168, 255, 0.15); }
+        .slide p { font-size: 17px; line-height: 1.8; margin-bottom: 12px; color: rgba(255,255,255,0.85); }
+        .slide ul { margin: 8px 0 12px 20px; }
+        .slide li { font-size: 16px; line-height: 1.7; margin-bottom: 5px; color: rgba(255,255,255,0.8); }
+        .slide li strong { color: #b0e0ff; }
+        .slide .highlight-box { background: rgba(77, 168, 255, 0.08); border-left: 4px solid #4da8ff; padding: 16px 20px; border-radius: 0 12px 12px 0; margin: 14px 0; font-size: 15px; }
+        .slide .tip-box { background: rgba(255, 200, 0, 0.06); border-left: 4px solid #ffc800; padding: 14px 18px; border-radius: 0 10px 10px 0; margin: 14px 0; font-size: 15px; }
+        .slide .warn-box { background: rgba(255, 80, 80, 0.08); border-left: 4px solid #ff5050; padding: 14px 18px; border-radius: 0 10px 10px 0; margin: 14px 0; font-size: 15px; }
+        .nav-bar { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 16px; background: rgba(10, 15, 30, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.06); border-radius: 30px; padding: 10px 20px; z-index: 10; }
+        .nav-bar button { background: none; border: none; color: rgba(255,255,255,0.4); font-size: 18px; cursor: pointer; padding: 6px 12px; border-radius: 8px; transition: all 0.2s; }
+        .nav-bar button:hover { color: #fff; background: rgba(255,255,255,0.06); }
+        .nav-bar .counter { font-size: 14px; color: rgba(255,255,255,0.35); min-width: 60px; text-align: center; }
+        .nav-bar .back-link { color: rgba(255,255,255,0.25); text-decoration: none; font-size: 13px; padding: 6px 12px; border-radius: 8px; transition: all 0.2s; }
+        .nav-bar .back-link:hover { color: #fff; background: rgba(255,255,255,0.06); }
+        @media (max-width: 640px) { .slide { padding: 16px; } .slide-inner { padding: 24px 18px; } .nav-bar { padding: 8px 12px; gap: 8px; bottom: 14px; } .flex-row { flex-direction: column; } }
+    </style>
+</head>
+<body>
+    <div class="presentation" id="presentation">
+        <div class="slide slide-title active" data-index="0">
+            <div class="slide-inner">
+                <div class="lesson-num">第五课</div>
+                <h1>互联网与浏览器基础</h1>
+                <div class="sub">上网冲浪的基本功</div>
+            </div>
+        </div>
+
+        <div class="slide" data-index="1">
+            <div class="slide-inner">
+                <h2>什么是互联网？</h2>
+                <p>互联网（Internet）是一个连接全球电脑的网络，就像一张巨大的蜘蛛网，把全世界的电脑连在一起。</p>
+                <p>有了互联网，你可以：</p>
+                <ul>
+                    <li>浏览网站、看新闻</li>
+                    <li>看视频、听音乐</li>
+                    <li>和朋友聊天、发邮件</li>
+                    <li>购物、点外卖、付款</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="slide" data-index="2">
+            <div class="slide-inner">
+                <h2>什么是浏览器？</h2>
+                <p><strong>浏览器</strong> 是用来访问互联网的工具，它可以打开并显示网页。</p>
+                <div class="highlight-box">💡 常见浏览器：Microsoft Edge、Google Chrome、Firefox</div>
+                <p>Windows 系统自带了 Edge 浏览器（蓝色/白色 e 图标），打开就能用。</p>
+            </div>
+        </div>
+
+        <div class="slide" data-index="3">
+            <div class="slide-inner">
+                <h2>浏览器的基本结构</h2>
+                <ul>
+                    <li><strong>地址栏</strong> — 顶部输入网址的地方，如 <code>www.baidu.com</code></li>
+                    <li><strong>标签页</strong> — 可以同时打开多个网页，点标签切换</li>
+                    <li><strong>前进/后退</strong> — 切换到上一个/下一个页面</li>
+                    <li><strong>刷新</strong> — 重新加载当前页面（🔄 按钮或 <span class="key">F5</span>）</li>
+                    <li><strong>书签/收藏夹</strong> — 保存喜欢的网页方便以后打开</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="slide" data-index="4">
+            <div class="slide-inner">
+                <h2>什么是网址？</h2>
+                <p>网址（URL）就是网站在互联网上的"地址"，输入地址栏就能访问。</p>
+                <p>常见格式：<code>https://www.xxxx.com</code></p>
+                <ul>
+                    <li><code>https://</code> — 安全协议（锁头图标表示连接安全）</li>
+                    <li><code>www</code> — 万维网</li>
+                    <li><code>baidu.com</code> — 域名（网站的名字）</li>
+                    <li><code>.com / .cn / .org</code> — 域名后缀</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="slide" data-index="5">
+            <div class="slide-inner">
+                <h2>如何搜索信息？</h2>
+                <p>使用<strong>搜索引擎</strong>：</p>
+                <ul>
+                    <li><strong>百度</strong>（<code>www.baidu.com</code>）— 国内最常用</li>
+                    <li><strong>Google</strong>（<code>www.google.com</code>）— 全球最大</li>
+                    <li><strong>必应</strong>（<code>www.bing.com</code>）— 微软的搜索引擎</li>
+                </ul>
+                <p>使用技巧：输入关键词（如"天气预报"、"如何安装打印机"），按回车搜索。</p>
+                <div class="tip-box">💡 关键词越精准，搜索结果越好，比如搜"Win11 截图快捷键"而不是"电脑怎么截图"。</div>
+            </div>
+        </div>
+
+        <div class="slide" data-index="6">
+            <div class="slide-inner">
+                <h2>上网安全须知</h2>
+                <div class="warn-box">⚠️ 不要随便点开不明链接，尤其是陌生人发来的</div>
+                <div class="warn-box">⚠️ 不要在非正规网站输入你的密码、手机号</div>
+                <div class="warn-box">⚠️ 看到"你的电脑中毒了"弹窗，不要打电话，那是诈骗</div>
+                <p>认准网址前面有 🔒 锁头标志的才是安全网站。</p>
+            </div>
+        </div>
+
+        <div class="slide" data-index="7">
+            <div class="slide-inner">
+                <h2>总结</h2>
+                <ul>
+                    <li>浏览器是上网的工具，Edge / Chrome 是首选</li>
+                    <li>地址栏输入网址访问网站</li>
+                    <li>用搜索引擎搜需要的信息</li>
+                    <li>小心不明链接，保护个人信息</li>
+                    <li>有锁头的网站才安全</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="nav-bar">
+        <a class="back-link" href="index.html">← 目录</a>
+        <button id="prevBtn">◀</button>
+        <span class="counter" id="counter">1 / 8</span>
+        <button id="nextBtn">▶</button>
+    </div>
+
+    <script>
+        const slides = document.querySelectorAll('.slide'); const total = slides.length; let current = 0;
+        function goTo(n) { slides.forEach(s => s.classList.remove('active')); current = (n + total) % total; slides[current].classList.add('active'); document.getElementById('counter').textContent = (current + 1) + ' / ' + total; }
+        document.getElementById('prevBtn').addEventListener('click', () => goTo(current - 1));
+        document.getElementById('nextBtn').addEventListener('click', () => goTo(current + 1));
+        document.addEventListener('keydown', (e) => { if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); goTo(current + 1); } if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); goTo(current - 1); } });
+        document.getElementById('presentation').addEventListener('click', (e) => { if (e.target.closest('.nav-bar') || e.target.closest('.slide-inner')) return; goTo(current + 1); });
+    </script>
+</body>
+</html>
