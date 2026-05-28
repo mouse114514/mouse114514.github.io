@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>第2课：键盘与窗口焦点</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif; background: #0a0f1e; color: #e0e8f0; height: 100vh; overflow: hidden; }
+        .presentation { width: 100%; height: 100vh; position: relative; }
+        .slide { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 60px; opacity: 0; pointer-events: none; transition: opacity 0.4s ease; }
+        .slide.active { opacity: 1; pointer-events: auto; }
+        .slide-inner { max-width: 840px; width: 100%; background: rgba(20, 30, 50, 0.6); backdrop-filter: blur(12px); border: 1px solid rgba(77, 168, 255, 0.2); border-radius: 28px; padding: 44px 54px; box-shadow: 0 0 50px rgba(0,0,0,0.4); max-height: 82vh; overflow-y: auto; }
+        .flex-row { display: flex; gap: 30px; align-items: center; }
+        .flex-row .text { flex: 1; }
+        .slide-title .slide-inner { text-align: center; background: rgba(20, 30, 50, 0.4); border-color: rgba(77, 168, 255, 0.15); }
+        .slide-title h1 { font-size: clamp(32px, 5vw, 52px); font-weight: 800; background: linear-gradient(135deg, #4da8ff, #b0e0ff); -webkit-background-clip: text; background-clip: text; color: transparent; line-height: 1.2; margin-bottom: 12px; }
+        .slide-title .sub { font-size: 18px; color: rgba(255,255,255,0.4); }
+        .slide-title .lesson-num { font-size: 14px; color: rgba(255,255,255,0.25); margin-bottom: 18px; letter-spacing: 3px; }
+        .slide h2 { font-size: clamp(22px, 3vw, 32px); font-weight: 700; color: #4da8ff; margin-bottom: 18px; padding-bottom: 10px; border-bottom: 1px solid rgba(77, 168, 255, 0.15); }
+        .slide p { font-size: 17px; line-height: 1.8; margin-bottom: 12px; color: rgba(255,255,255,0.85); }
+        .slide ul { margin: 8px 0 12px 20px; }
+        .slide li { font-size: 16px; line-height: 1.7; margin-bottom: 5px; color: rgba(255,255,255,0.8); }
+        .slide li strong { color: #b0e0ff; }
+        .slide .highlight-box { background: rgba(77, 168, 255, 0.08); border-left: 4px solid #4da8ff; padding: 16px 20px; border-radius: 0 12px 12px 0; margin: 14px 0; font-size: 15px; }
+        .slide .tip-box { background: rgba(255, 200, 0, 0.06); border-left: 4px solid #ffc800; padding: 14px 18px; border-radius: 0 10px 10px 0; margin: 14px 0; font-size: 15px; }
+        .key { display: inline-block; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12); border-radius: 5px; padding: 2px 10px; font-size: 14px; color: #b0e0ff; font-family: monospace; margin: 2px 0; }
+        .shortcut-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 12px 0; }
+        .shortcut-item { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 10px; padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; }
+        .shortcut-item .keys { color: #b0e0ff; font-family: monospace; font-size: 15px; }
+        .shortcut-item .action { color: rgba(255,255,255,0.6); font-size: 14px; }
+        .nav-bar { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 16px; background: rgba(10, 15, 30, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.06); border-radius: 30px; padding: 10px 20px; z-index: 10; }
+        .nav-bar button { background: none; border: none; color: rgba(255,255,255,0.4); font-size: 18px; cursor: pointer; padding: 6px 12px; border-radius: 8px; transition: all 0.2s; }
+        .nav-bar button:hover { color: #fff; background: rgba(255,255,255,0.06); }
+        .nav-bar .counter { font-size: 14px; color: rgba(255,255,255,0.35); min-width: 60px; text-align: center; }
+        .nav-bar .back-link { color: rgba(255,255,255,0.25); text-decoration: none; font-size: 13px; padding: 6px 12px; border-radius: 8px; transition: all 0.2s; }
+        .nav-bar .back-link:hover { color: #fff; background: rgba(255,255,255,0.06); }
+        @media (max-width: 640px) { .slide { padding: 16px; } .slide-inner { padding: 24px 18px; } .nav-bar { padding: 8px 12px; gap: 8px; bottom: 14px; } .flex-row { flex-direction: column; } .shortcut-grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+    <div class="presentation" id="presentation">
+        <div class="slide slide-title active" data-index="0">
+            <div class="slide-inner">
+                <img src="images/keyboard-shortcut.png" alt="键盘" style="width:180px;margin-bottom:16px;opacity:0.7">
+                <div class="lesson-num">第二课</div>
+                <h1>键盘与窗口焦点</h1>
+                <div class="sub">你的按键到底去了哪里？</div>
+            </div>
+        </div>
+
+        <div class="slide" data-index="1">
+            <div class="slide-inner">
+                <h2>窗口焦点是什么？</h2>
+                <p>你面前有多个窗口，但你打字时字只会出现在<strong>其中一个</strong>——那个就是<strong>焦点窗口</strong>。</p>
+                <p>焦点（Focus）是操作系统用来决定"键盘输入送给谁"的机制。任何时候，整个系统里<strong>有且只有一个</strong>窗口拥有焦点。</p>
+                <div class="highlight-box">
+                    点击一个窗口 → 它拿到焦点，标题栏变亮 → 你的按键都发给它
+                </div>
+                <p>标题栏变灰的窗口在"后台"，收不到键盘消息。</p>
+            </div>
+        </div>
+
+        <div class="slide" data-index="2">
+            <div class="slide-inner">
+                <h2>焦点丢失：你到底在往哪打字？</h2>
+                <p>新手最常见的问题："我明明在打字，怎么字跑到别的地方去了？"</p>
+                <ul>
+                    <li>你打开了记事本和浏览器，在记事本打字正常</li>
+                    <li>不小心<strong>点了一下</strong>浏览器 → 焦点转到浏览器</li>
+                    <li>继续敲键盘 → 字全进了浏览器的搜索框</li>
+                </ul>
+                <div class="tip-box">
+                    用 <span class="key">Alt</span> + <span class="key">Tab</span> 切换窗口时，焦点跟着走。
+                </div>
+                <div class="highlight-box">
+                    <strong>核心：</strong>焦点的本质是"系统当前把键盘消息发送给哪个窗口句柄"。
+                </div>
+            </div>
+        </div>
+
+        <div class="slide" data-index="3">
+            <div class="slide-inner">
+                <h2>焦点的背后：消息队列</h2>
+                <p>Windows 是一个<strong>消息驱动</strong>的系统。你按下键盘 → 硬件中断 → 系统生成一个"按键消息" → 投递到焦点窗口的消息队列。</p>
+                <ul>
+                    <li>每个窗口都有自己的<strong>消息队列</strong>（Message Queue）</li>
+                    <li>系统只把键盘消息发给<strong>拥有焦点</strong>的那个窗口</li>
+                    <li>程序不断从队列里取消息处理——这叫<strong>消息泵</strong>（Message Pump）</li>
+                </ul>
+                <div class="highlight-box">
+                    按键 → 系统消息队列 → 分发到焦点窗口的消息队列 → 程序取走处理
+                </div>
+            </div>
+        </div>
+
+        <div class="slide" data-index="4">
+            <div class="slide-inner">
+                <h2>Z 序（Z-Order）</h2>
+                <p>窗口在屏幕上不光有 X、Y（位置），还有<strong>Z 轴</strong>——即谁在上面、谁在下面。这叫做 Z 序。</p>
+                <ul>
+                    <li>最上面的窗口叫<strong>顶层窗口</strong>（Top-Level）</li>
+                    <li>顶层窗口通常拥有焦点（但不一定！）</li>
+                    <li>被盖住的叫<strong>下层窗口</strong></li>
+                    <li>把窗口"置顶"（TopMost）可以强制它一直在最前</li>
+                </ul>
+                <div class="tip-box">
+                    <span class="key">Alt</span> + <span class="key">Esc</span> 可以强制把下一个窗口提到顶层，但不一定给焦点。
+                </div>
+            </div>
+        </div>
+
+        <div class="slide" data-index="5">
+            <div class="slide-inner">
+                <h2>前台窗口 vs 焦点窗口</h2>
+                <p>很多人以为"最前面的窗口"就是焦点窗口，其实不完全正确：</p>
+                <ul>
+                    <li><strong>前台窗口</strong>（Foreground Window）：Z 序最顶层的窗口</li>
+                    <li><strong>焦点窗口</strong>（Focus Window）：实际收到键盘输入的窗口</li>
+                </ul>
+                <p>一般情况下它俩是同一个，但也可以不同。</p>
+                <div class="highlight-box">
+                    比如一个对话框弹出来，对话框是前台窗口，但它里面的文本框之间的焦点切换，不会影响主窗口。
+                </div>
+            </div>
+        </div>
+
+        <div class="slide" data-index="6">
+            <div class="slide-inner">
+                <h2>快捷键的底层原理</h2>
+                <p>快捷键（Accelerator / Hotkey）本质就是<strong>预注册的消息过滤器</strong>：</p>
+                <ul>
+                    <li>系统投递键盘消息前，先检查有没有<strong>全局热键</strong>（如 <span class="key">Win</span>+<span class="key">D</span>）匹配</li>
+                    <li>匹配上了就直接消费掉，不再发给焦点窗口</li>
+                    <li>没匹配上才发给焦点窗口</li>
+                </ul>
+                <p><span class="key">Win</span>+<span class="key">L</span> 锁定系统 → 这是系统级热键，任何时刻都能抢走焦点。</p>
+            </div>
+        </div>
+
+        <div class="slide" data-index="7">
+            <div class="slide-inner">
+                <h2>总结</h2>
+                <ul>
+                    <li><strong>焦点</strong> = 系统决定"键盘输入给哪个窗口"的机制</li>
+                    <li>每个窗口有一个消息队列，消息驱动运行</li>
+                    <li>Z 序决定窗口前后层次，前台窗口通常拥有焦点</li>
+                    <li>快捷键是系统层级的消息过滤器，优先级高于普通按键</li>
+                    <li>打字跑错地方 → 检查焦点在哪里</li>
+                </ul>
+                <div class="tip-box">
+                    想知道当前焦点在哪个窗口？按 <span class="key">Alt</span> + <span class="key">Tab</span> 看高亮的那个就是。
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="nav-bar">
+        <a class="back-link" href="index.html">← 目录</a>
+        <button id="prevBtn">◀</button>
+        <span class="counter" id="counter">1 / 8</span>
+        <button id="nextBtn">▶</button>
+    </div>
+
+    <script>
+        const slides = document.querySelectorAll('.slide'); const total = slides.length; let current = 0;
+        function goTo(n) { slides.forEach(s => s.classList.remove('active')); current = (n + total) % total; slides[current].classList.add('active'); document.getElementById('counter').textContent = (current + 1) + ' / ' + total; }
+        document.getElementById('prevBtn').addEventListener('click', () => goTo(current - 1));
+        document.getElementById('nextBtn').addEventListener('click', () => goTo(current + 1));
+        document.addEventListener('keydown', (e) => { if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); goTo(current + 1); } if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); goTo(current - 1); } });
+        document.getElementById('presentation').addEventListener('click', (e) => { if (e.target.closest('.nav-bar') || e.target.closest('.slide-inner')) return; goTo(current + 1); });
+    </script>
+</body>
+</html>

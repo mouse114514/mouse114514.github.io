@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>第5课：软件安装与系统注册表</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif; background: #0a0f1e; color: #e0e8f0; height: 100vh; overflow: hidden; }
+        .presentation { width: 100%; height: 100vh; position: relative; }
+        .slide { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 60px; opacity: 0; pointer-events: none; transition: opacity 0.4s ease; }
+        .slide.active { opacity: 1; pointer-events: auto; }
+        .slide-inner { max-width: 840px; width: 100%; background: rgba(20, 30, 50, 0.6); backdrop-filter: blur(12px); border: 1px solid rgba(77, 168, 255, 0.2); border-radius: 28px; padding: 44px 54px; box-shadow: 0 0 50px rgba(0,0,0,0.4); max-height: 82vh; overflow-y: auto; }
+        .flex-row { display: flex; gap: 30px; align-items: center; }
+        .flex-row .text { flex: 1; }
+        .slide-title .slide-inner { text-align: center; background: rgba(20, 30, 50, 0.4); border-color: rgba(77, 168, 255, 0.15); }
+        .slide-title h1 { font-size: clamp(32px, 5vw, 52px); font-weight: 800; background: linear-gradient(135deg, #4da8ff, #b0e0ff); -webkit-background-clip: text; background-clip: text; color: transparent; line-height: 1.2; margin-bottom: 12px; }
+        .slide-title .sub { font-size: 18px; color: rgba(255,255,255,0.4); }
+        .slide-title .lesson-num { font-size: 14px; color: rgba(255,255,255,0.25); margin-bottom: 18px; letter-spacing: 3px; }
+        .slide h2 { font-size: clamp(22px, 3vw, 32px); font-weight: 700; color: #4da8ff; margin-bottom: 18px; padding-bottom: 10px; border-bottom: 1px solid rgba(77, 168, 255, 0.15); }
+        .slide p { font-size: 17px; line-height: 1.8; margin-bottom: 12px; color: rgba(255,255,255,0.85); }
+        .slide ul { margin: 8px 0 12px 20px; }
+        .slide li { font-size: 16px; line-height: 1.7; margin-bottom: 5px; color: rgba(255,255,255,0.8); }
+        .slide li strong { color: #b0e0ff; }
+        .slide .highlight-box { background: rgba(77, 168, 255, 0.08); border-left: 4px solid #4da8ff; padding: 16px 20px; border-radius: 0 12px 12px 0; margin: 14px 0; font-size: 15px; }
+        .slide .tip-box { background: rgba(255, 200, 0, 0.06); border-left: 4px solid #ffc800; padding: 14px 18px; border-radius: 0 10px 10px 0; margin: 14px 0; font-size: 15px; }
+        .slide code { background: rgba(255,255,255,0.1); padding: 2px 8px; border-radius: 4px; font-size: 14px; }
+        .nav-bar { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 16px; background: rgba(10, 15, 30, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.06); border-radius: 30px; padding: 10px 20px; z-index: 10; }
+        .nav-bar button { background: none; border: none; color: rgba(255,255,255,0.4); font-size: 18px; cursor: pointer; padding: 6px 12px; border-radius: 8px; transition: all 0.2s; }
+        .nav-bar button:hover { color: #fff; background: rgba(255,255,255,0.06); }
+        .nav-bar .counter { font-size: 14px; color: rgba(255,255,255,0.35); min-width: 60px; text-align: center; }
+        .nav-bar .back-link { color: rgba(255,255,255,0.25); text-decoration: none; font-size: 13px; padding: 6px 12px; border-radius: 8px; transition: all 0.2s; }
+        .nav-bar .back-link:hover { color: #fff; background: rgba(255,255,255,0.06); }
+        @media (max-width: 640px) { .slide { padding: 16px; } .slide-inner { padding: 24px 18px; } .nav-bar { padding: 8px 12px; gap: 8px; bottom: 14px; } .flex-row { flex-direction: column; } }
+    </style>
+</head>
+<body>
+    <div class="presentation" id="presentation">
+        <div class="slide slide-title active" data-index="0">
+            <div class="slide-inner">
+                <img src="images/download-icon.png" alt="软件" style="width:100px;margin-bottom:16px;opacity:0.8">
+                <div class="lesson-num">第五课</div>
+                <h1>软件安装与系统注册表</h1>
+                <div class="sub">安装一个软件时，系统到底做了什么？</div>
+            </div>
+        </div>
+
+        <div class="slide" data-index="1">
+            <div class="slide-inner">
+                <h2>安装的本质</h2>
+                <p>安装一个软件不只是"把文件复制到硬盘"。它触发了操作系统多个子系统：</p>
+                <ul>
+                    <li>释放文件到目标目录（通常在 <code>C:\Program Files</code>）</li>
+                    <li>向<strong>注册表</strong>写入配置信息</li>
+                    <li>注册<strong>文件关联</strong>（如 .txt 文件默认用记事本打开）</li>
+                    <li>安装<strong>服务</strong>（Services）或<strong>自启项</strong></li>
+                    <li>写入<strong>开始菜单</strong>和<strong>快捷方式</strong></li>
+                </ul>
+                <div class="highlight-box">
+                    安装程序（如 MSI 或 Setup.exe）本质上是一个"脚本执行器"，按照清单执行以上操作。
+                </div>
+            </div>
+        </div>
+
+        <div class="slide" data-index="2">
+            <div class="slide-inner">
+                <h2>什么是注册表？</h2>
+                <p>注册表是 Windows 的<strong>核心配置数据库</strong>，是一个树状结构的分层存储系统。</p>
+                <img class="img-wide" src="images/registry-tree.png" alt="注册表结构" style="display:block;max-width:100%;border-radius:12px;margin:10px 0">
+                <ul>
+                    <li><strong>HKEY_CLASSES_ROOT</strong> — 文件关联和 COM 组件注册</li>
+                    <li><strong>HKEY_CURRENT_USER</strong> — 当前用户的设置</li>
+                    <li><strong>HKEY_LOCAL_MACHINE</strong> — 系统级配置</li>
+                    <li><strong>HKEY_CURRENT_CONFIG</strong> — 硬件配置文件</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="slide" data-index="3">
+            <div class="slide-inner">
+                <h2>注册表项与值</h2>
+                <p>注册表的每个节点叫<strong>项</strong>（Key），每个项下可以有<strong>值</strong>（Value）：</p>
+                <ul>
+                    <li><strong>字符串值</strong>（REG_SZ）— 文本数据</li>
+                    <li><strong>二进制值</strong>（REG_BINARY）— 二进制数据</li>
+                    <li><strong>DWORD 值</strong>（REG_DWORD）— 32 位整数</li>
+                    <li><strong>多字符串值</strong>（REG_MULTI_SZ）— 多行文本</li>
+                    <li><strong>可扩展字符串</strong>（REG_EXPAND_SZ）— 含环境变量的文本</li>
+                </ul>
+                <div class="highlight-box">
+                    按 <span class="key">Win</span> + <span class="key">R</span>，输入 <code>regedit</code> → 这就是注册表编辑器。
+                </div>
+            </div>
+        </div>
+
+        <div class="slide" data-index="4">
+            <div class="slide-inner">
+                <h2>文件关联（File Association）</h2>
+                <p>为什么双击 .txt 文件会自动用记事本打开？注册表里记录了：</p>
+                <ul>
+                    <li><code>.txt</code> 扩展名 → 关联到 <strong>txtfile</strong> 这个 ProgID</li>
+                    <li><strong>txtfile</strong> 的 shell/open/command → <code>C:\Windows\notepad.exe "%1"</code></li>
+                    <li>双击文件时，系统查注册表找到对应命令来执行</li>
+                </ul>
+                <div class="tip-box">
+                    右键文件 → 打开方式 → 选择其他应用，就是在修改注册表中的文件关联。
+                </div>
+            </div>
+        </div>
+
+        <div class="slide" data-index="5">
+            <div class="slide-inner">
+                <h2>服务（Services）</h2>
+                <p>服务是<strong>后台运行</strong>的进程，不需要用户登录就能运行：</p>
+                <ul>
+                    <li>在系统启动时自动启动（或手动/延迟启动）</li>
+                    <li>运行在 <strong>SYSTEM</strong> 账户或特定服务账户下，权限往往很高</li>
+                    <li>没有用户界面，不需要登录就能跑</li>
+                </li>
+                </ul>
+                <div class="highlight-box">
+                    按 <span class="key">Win</span> + <span class="key">R</span> 输入 <code>services.msc</code> 打开服务管理器。里面每一行就是一个服务。
+                </div>
+                <p>恶意软件常把自己注册为服务来持久化——即使没人登录也在运行。</p>
+            </div>
+        </div>
+
+        <div class="slide" data-index="6">
+            <div class="slide-inner">
+                <h2>自启与持久化</h2>
+                <p>软件想让每次开机自动运行，有这些方式：</p>
+                <ul>
+                    <li><strong>启动文件夹</strong> — <code>shell:startup</code>（当前用户）</li>
+                    <li><strong>注册表 Run 项</strong> — <code>HKCU\Software\Microsoft\Windows\CurrentVersion\Run</code></li>
+                    <li><strong>计划任务</strong>（Task Scheduler）— 可设置触发条件</li>
+                    <li><strong>服务</strong> — 设置为自动启动</li>
+                    <li><strong>驱动</strong> — 最底层，在内核态加载</li>
+                </ul>
+                <div class="tip-box">
+                    任务管理器 → 启动标签页，可以看到所有自启项。
+                </div>
+            </div>
+        </div>
+
+        <div class="slide" data-index="7">
+            <div class="slide-inner">
+                <h2>总结</h2>
+                <ul>
+                    <li>安装软件 = 解压文件 + 注册表配置 + 关联 + 服务 + 自启</li>
+                    <li>注册表是树状配置数据库，regedit 可以查看</li>
+                    <li>文件关联告诉 Windows 双击某后缀用什么程序打开</li>
+                    <li>服务在后台运行，不需要用户登录</li>
+                    <li>恶意软件通过 Run 项、服务、计划任务做持久化</li>
+                    <li>卸载软件不只是删文件，要清理注册表和相关配置</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="nav-bar">
+        <a class="back-link" href="index.html">← 目录</a>
+        <button id="prevBtn">◀</button>
+        <span class="counter" id="counter">1 / 8</span>
+        <button id="nextBtn">▶</button>
+    </div>
+
+    <script>
+        const slides = document.querySelectorAll('.slide'); const total = slides.length; let current = 0;
+        function goTo(n) { slides.forEach(s => s.classList.remove('active')); current = (n + total) % total; slides[current].classList.add('active'); document.getElementById('counter').textContent = (current + 1) + ' / ' + total; }
+        document.getElementById('prevBtn').addEventListener('click', () => goTo(current - 1));
+        document.getElementById('nextBtn').addEventListener('click', () => goTo(current + 1));
+        document.addEventListener('keydown', (e) => { if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); goTo(current + 1); } if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); goTo(current - 1); } });
+        document.getElementById('presentation').addEventListener('click', (e) => { if (e.target.closest('.nav-bar') || e.target.closest('.slide-inner')) return; goTo(current + 1); });
+    </script>
+</body>
+</html>
