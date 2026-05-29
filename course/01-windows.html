@@ -307,12 +307,7 @@
         const total = slides.length;
         let current = 0;
 
-        function goTo(n) {
-            slides[current].classList.remove('active');
-            current = (n + total) % total;
-            slides[current].classList.add('active');
-            document.getElementById('counter').textContent = (current + 1) + ' / ' + total;
-        }
+        function goTo(n) { slides.forEach(s => s.style.display = 'none'); slides[current].classList.remove('active'); current = (n + total) % total; slides[current].style.display = 'flex'; slides[current].classList.add('active'); document.getElementById('counter').textContent = (current + 1) + ' / ' + total; }
 
         document.getElementById('prevBtn').addEventListener('click', () => goTo(current - 1));
         document.getElementById('nextBtn').addEventListener('click', () => goTo(current + 1));
