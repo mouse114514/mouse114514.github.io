@@ -47,7 +47,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',s
 <body>
     <div class="presentation" id="presentation">
         <div class="slide slide-title" id="slideContainer">
-            <div class="lesson-num">Web 后端 · 进阶第试</div><h1>RESTful API 设计</h1><div class="sub">前后端分离的接口规范</div></div>
+            <div class="lesson-num">Web 后端 · 进阶第试</div><h1>RESTful API 设计</h1><div class="sub">前后端分离的接口规范</div>
         </div>
     </div>
 
@@ -55,11 +55,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',s
 
     <script>
     const slidesData = [
-        { html: `<div class="lesson-num">Web 后端 · 进阶第试</div><h1>RESTful API 设计</h1><div class="sub">前后端分离的接口规范</div></div>`, cls: 'slide slide-title active' },
-        { html: `<h2>URL 设计规范</h2><p>资源用名词复数：</p><ul><li><code>GET /api/posts</code> —获取文章列表</li><li><code>GET /api/posts/1</code> —获取单篇文章</li><li><code>POST /api/posts</code> —创建文章</li><li><code>PUT /api/posts/1</code> —更新文章</li><li><code>DELETE /api/posts/1</code> —删除文章</li></ul><div class="tip-box">URL 里不用动词（不要 /getPosts 戏/createPost），用HTTP 方法表达操作、</div></div>`, cls: 'slide' },
+        { html: `<div class="lesson-num">Web 后端 · 进阶第试</div><h1>RESTful API 设计</h1><div class="sub">前后端分离的接口规范</div>`, cls: 'slide slide-title active' },
+        { html: `<h2>URL 设计规范</h2><p>资源用名词复数：</p><ul><li><code>GET /api/posts</code> —获取文章列表</li><li><code>GET /api/posts/1</code> —获取单篇文章</li><li><code>POST /api/posts</code> —创建文章</li><li><code>PUT /api/posts/1</code> —更新文章</li><li><code>DELETE /api/posts/1</code> —删除文章</li></ul><div class="tip-box">URL 里不用动词（不要 /getPosts 戏/createPost），用HTTP 方法表达操作、</div>`, cls: 'slide' },
         { html: `<h2>状态码</h2><ul><li><strong>200</strong> —GET 成功</li><li><strong>201</strong> —POST 创建成功</li><li><strong>204</strong> —DELETE 成功（无返回内容！/li><li><strong>400</strong> —请求参数错误</li><li><strong>401</strong> —未认试/li><li><strong>403</strong> —没有权限</li><li><strong>404</strong> —资源不存在/li><li><strong>500</strong> —服务器内部错试/li></ul>`, cls: 'slide' },
         { html: `<h2>错误处理</h2><p>统一返回 JSON 错误！/p><p><code>@app.errorhandler(404)</code></p><p><code>def not_found(e):</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;return jsonify({"error": "资源不存在}), 404</code></p><p>&nbsp;</p><p><code>@app.errorhandler(400)</code></p><p><code>def bad_request(e):</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;return jsonify({"error": "请求参数错误"}), 400</code></p>`, cls: 'slide' },
-        { html: `<h2>Postman 测试 API</h2><p>Postman 是测试API 的常用工具：</p><ul><li>选择 GET/POST/PUT/DELETE</li><li>输入 URL</li><li>Body ↀraw ↀJSON 输入参数</li><li>点Send 查看返回结果</li></ul><div class="highlight-box">也可以直接用 curl 命令测试！code>curl -X GET http://localhost:5000/api/posts</code></div>`, cls: 'slide' },
+        { html: `<h2>Postman 测试 API</h2><p>Postman 是测试API 的常用工具：</p><ul><li>选择 GET/POST/PUT/DELETE</li><li>输入 URL</li><li>Body ↀraw ↀJSON 输入参数</li><li>点Send 查看返回结果</li></ul><div class="highlight-box">也可以直接用 curl 命令测试！code>curl -X GET http://localhost:5000/api/posts</code>`, cls: 'slide' },
         { html: `<h2>总结</h2><ul><li>REST = 用HTTP 方法操作资源，返回JSON</li><li>GET 查/ POST 墀/ PUT 支/ DELETE 分/li><li>URL 用名词复数，不用动词</li><li>状态码正确表达结果！01 创建、04 未找到）</li><li>request.get_json() 获取请求但JSON</li><li>jsonify() 返回 JSON 响应</li></ul>`, cls: 'slide' }
     ];
     let current = 0;

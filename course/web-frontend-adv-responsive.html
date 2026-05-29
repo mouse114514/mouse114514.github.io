@@ -49,13 +49,12 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',s
         <div class="slide slide-title" id="slideContainer">
             <div class="lesson-num">Web 前端 · 进阶第试</div><h1>响应式设计与媒体查询</h1><div class="sub">一个页面适配所有屏幀</div>
         </div>
-    </div>
 
     <div class="nav-bar"><a class="back-link" href="index.html">ↀ目录</a><button id="prevBtn">◀</button><span class="counter" id="counter">1 / 8</span><button id="nextBtn">▀/button></div>
 
     <script>
     const slidesData = [
-        { html: `<div class="lesson-num">Web 前端 · 进阶第试</div><h1>响应式设计与媒体查询</h1><div class="sub">一个页面适配所有屏幀</div>`, cls: 'slide slide-title active' },
+        { html: `<div class="lesson-num">Web 前端 · 进阶第试</div><h1>响应式设计与媒体查询</h1><div class="sub">一个页面适配所有屏幀`, cls: 'slide slide-title active' },
         { html: `<h2>什么是响应式？</h2><p>同一个网页在手机、平板、电脑上都能正常显示，自动适配屏幕大小、/p><ul><li>电脑一3 列布局 ↀ手机上变 1 分/li><li>大屏字体 18px ↀ小屏字体 14px</li><li>导航栏菜单ↀ手机折叠为汉堡菜单/li></ul>`, cls: 'slide' },
         { html: `<h2>viewport 设置</h2><p>响应式的第一步：HTML 头部力viewport meta 标签、/p><p><code>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</code></p><p>告诉浏览器按设备真实宽度渲染，不缩放页面、/p>`, cls: 'slide' },
         { html: `<h2>媒体查询 @media</h2><p>针对不同屏幕宽度写不名CSS！/p><p><code>.container { display: grid; grid-template-columns: 1fr 1fr 1fr; }</code></p><p><code>@media (max-width: 768px) {</code></p><p><code>&nbsp;&nbsp;.container { grid-template-columns: 1fr; }</code></p><p><code>}</code></p><p>屏幕宽度 ≀768px 时变成单列、/p>`, cls: 'slide' },

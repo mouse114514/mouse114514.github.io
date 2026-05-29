@@ -48,19 +48,18 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',s
         <div class="slide slide-title" id="slideContainer">
             <div class="lesson-num">Godot · 第试</div><h1>场景与节点/h1><div class="sub">理解 Godot 最核心的概快</div>
         </div>
-    </div>
 
     <div class="nav-bar"><a class="back-link" href="index.html">ↀ目录</a><button id="prevBtn">◀</button><span class="counter" id="counter">1 / 8</span><button id="nextBtn">▀/button></div>
 
     <script>
     const slidesData = [
-        { html: `<div class="lesson-num">Godot · 第试</div><h1>场景与节点/h1><div class="sub">理解 Godot 最核心的概快</div>`, cls: 'slide slide-title active' },
-        { html: `<h2>节点（Node！/h2><p>在Godot 里，<strong>一切皆节点</strong>。一个节点就是游戏里的一一零件"、/p><ul><li>一一strong>Sprite2D 节点</strong> = 显示一张图片/li><li>一一strong>AudioStreamPlayer 节点</strong> = 播放音效</li><li>一一strong>CollisionShape2D 节点</strong> = 碰撞检测/li><li>一一strong>Label 节点</strong> = 显示文字</li></ul><div class="highlight-box">最小的游戏可能只需要几个节点。复杂的游戏需要几百个。节点可以嵌套——一个节点里放另一个节点、</div>`, cls: 'slide' },
-        { html: `<h2>场景（Scene！/h2><p><strong>场景</strong>是一组节点的集合，可以独立保存和加载、/p><ul><li>一一关卡"可以是一个场景/li><li>一一玩家角色"也可以是一个场景/li><li>一一按钮"也可以是一个场景/li></ul><p>场景可以嵌套——把"玩家"场景放进"关卡"场景里、/p><div class="highlight-box">Godot 做游戏= 搭积木。先把小积木（场景）做好，再拼成大积木（关卡场景）、</div>`, cls: 'slide' },
+        { html: `<div class="lesson-num">Godot · 第试</div><h1>场景与节点/h1><div class="sub">理解 Godot 最核心的概快`, cls: 'slide slide-title active' },
+        { html: `<h2>节点（Node！/h2><p>在Godot 里，<strong>一切皆节点</strong>。一个节点就是游戏里的一一零件"、/p><ul><li>一一strong>Sprite2D 节点</strong> = 显示一张图片/li><li>一一strong>AudioStreamPlayer 节点</strong> = 播放音效</li><li>一一strong>CollisionShape2D 节点</strong> = 碰撞检测/li><li>一一strong>Label 节点</strong> = 显示文字</li></ul><div class="highlight-box">最小的游戏可能只需要几个节点。复杂的游戏需要几百个。节点可以嵌套——一个节点里放另一个节点、`, cls: 'slide' },
+        { html: `<h2>场景（Scene！/h2><p><strong>场景</strong>是一组节点的集合，可以独立保存和加载、/p><ul><li>一一关卡"可以是一个场景/li><li>一一玩家角色"也可以是一个场景/li><li>一一按钮"也可以是一个场景/li></ul><p>场景可以嵌套——把"玩家"场景放进"关卡"场景里、/p><div class="highlight-box">Godot 做游戏= 搭积木。先把小积木（场景）做好，再拼成大积木（关卡场景）、`, cls: 'slide' },
         { html: `<h2>场景树（Scene Tree！/h2><p>你编辑器的左边面板就是strong>场景校/strong>——显示当前场景里所有节点的层级关系、/p><ul><li><strong>根节点/strong> —场景最顶层的节点/li><li><strong>子节点/strong> —挂在其他节点下面的节点/li><li><strong>父节点/strong> —移动父节点，子节点跟着力/li></ul><p>比如：根节点是Node2D ↀ子节点Sprite2D + CollisionShape2D</p>`, cls: 'slide' },
         { html: `<h2>常用节点类型</h2><ul><li><strong>Node</strong> —最基础的节点，没有位置</li><li><strong>Node2D</strong> —2D 游戏的基础，有 x/y 坐标</li><li><strong>Sprite2D</strong> —显示图片精灵</li><li><strong>Area2D</strong> —检测其他物体进入离开区域</li><li><strong>RigidBody2D</strong> —物理模拟（重力、碰撞）</li><li><strong>StaticBody2D</strong> —静态障碍物（墙壁、地板）</li><li><strong>CharacterBody2D</strong> —角色控制器（玩家移动！/li><li><strong>Camera2D</strong> —摄像机（跟随玩家！/li></ul>`, cls: 'slide' },
-        { html: `<h2>添加节点</h2><ul><li>在场景树面板点右键ↀAdd Child Node</li><li>或者点左上角的"+"按钮</li><li>搜索节点类型（如 Sprite2D！/li><li>选中后点"Create"</li></ul><div class="tip-box">创建节点后，右边属性面板会显示该节点的所有属性，可以直接修改数值、</div>`, cls: 'slide' },
-        { html: `<h2>保存和运行场景/h2><ul><li>持<strong>Ctrl + S</strong> 保存场景！tscn 格式！/li><li>持<strong>F5</strong> 运行当前场景</li><li>持<strong>F6</strong> 运行整个项目</li><li>主场景在项目设置里指定（Project ↀProject Settings ↀMain Scene！/li></ul><div class="highlight-box">.tscn 文件其实是一个文本文件，用记事本也能打开看。但你一般不需要手动编辑它、</div>`, cls: 'slide' },
+        { html: `<h2>添加节点</h2><ul><li>在场景树面板点右键ↀAdd Child Node</li><li>或者点左上角的"+"按钮</li><li>搜索节点类型（如 Sprite2D！/li><li>选中后点"Create"</li></ul><div class="tip-box">创建节点后，右边属性面板会显示该节点的所有属性，可以直接修改数值、`, cls: 'slide' },
+        { html: `<h2>保存和运行场景/h2><ul><li>持<strong>Ctrl + S</strong> 保存场景！tscn 格式！/li><li>持<strong>F5</strong> 运行当前场景</li><li>持<strong>F6</strong> 运行整个项目</li><li>主场景在项目设置里指定（Project ↀProject Settings ↀMain Scene！/li></ul><div class="highlight-box">.tscn 文件其实是一个文本文件，用记事本也能打开看。但你一般不需要手动编辑它、`, cls: 'slide' },
         { html: `<h2>总结</h2><ul><li>节点 = 游戏里的"零件"，每个节点有不同功能</li><li>场景 = 一组节点的集合，可保存可嵌奀/li><li>场景校= 节点的层级结构，父子关系</li><li>右键场景面板添加新节点，属性面板改参数</li><li>Ctrl+S 保存，F5 运行</li></ul>`, cls: 'slide' }
     ];
     let current = 0;

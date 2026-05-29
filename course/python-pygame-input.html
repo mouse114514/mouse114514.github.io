@@ -49,19 +49,18 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',s
         <div class="slide slide-title" id="slideContainer">
             <div class="lesson-num">Python · 第试</div><h1>输入与碰撀/h1><div class="sub">键盘控制角色 + 碰撞检测</div>
         </div>
-    </div>
 
     <div class="nav-bar"><a class="back-link" href="index.html">ↀ目录</a><button id="prevBtn">◀</button><span class="counter" id="counter">1 / 8</span><button id="nextBtn">▀/button></div>
 
     <script>
     const slidesData = [
-        { html: `<div class="lesson-num">Python · 第试</div><h1>输入与碰撀/h1><div class="sub">键盘控制角色 + 碰撞检测</div>`, cls: 'slide slide-title active' },
+        { html: `<div class="lesson-num">Python · 第试</div><h1>输入与碰撀/h1><div class="sub">键盘控制角色 + 碰撞检测`, cls: 'slide slide-title active' },
         { html: `<h2>检测键盘按键/h2><p>Pygame 用<strong>pygame.key.get_pressed()</strong> 检测键盘状态：</p><p><code>keys = pygame.key.get_pressed()</code></p><p><code>if keys[pygame.K_LEFT]:</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;x -= speed</code></p><p>常用按键常量：K_LEFT、K_RIGHT、K_UP、K_DOWN、K_SPACE、K_ESCAPE</p>`, cls: 'slide' },
         { html: `<h2>移动的方坑/h2><p>完整的矩形移动代码：</p><p><code>player_x = 400; player_y = 500</code></p><p><code>speed = 5</code></p><p><code>keys = pygame.key.get_pressed()</code></p><p><code>if keys[pygame.K_LEFT]: player_x -= speed</code></p><p><code>if keys[pygame.K_RIGHT]: player_x += speed</code></p><p><code>if keys[pygame.K_UP]: player_y -= speed</code></p><p><code>if keys[pygame.K_DOWN]: player_y += speed</code></p><p><code>pygame.draw.rect(screen, (0,200,255), (player_x, player_y, 40, 40))</code></p>`, cls: 'slide' },
         { html: `<h2>Rect 对象</h2><p>Pygame 的<strong>Rect</strong> 让碰撞检测更方便！/p><p><code>player = pygame.Rect(400, 500, 40, 40)</code></p><ul><li><strong>player.x</strong> / <strong>player.y</strong> —左上角坐校/li><li><strong>player.center</strong> —中心坐标</li><li><strong>player.left / right / top / bottom</strong> —各边位置</li><li><strong>player.width / height</strong> —宽高</li></ul><p>画的时候：<code>pygame.draw.rect(screen, 颜色, player)</code></p>`, cls: 'slide' },
         { html: `<h2>碰撞检测colliderect</h2><p>两个 Rect 之间有没有碰撞？</p><p><code>player = pygame.Rect(x, y, 40, 40)</code></p><p><code>enemy = pygame.Rect(300, 200, 50, 50)</code></p><p><code>if player.colliderect(enemy):</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;print("碰到了！")</code></p><p>colliderect 返回 True/False，是游戏中最常用的碰撞判断、/p>`, cls: 'slide' },
         { html: `<h2>接物品小游戏</h2><p>核心逻辑！/p><ul><li>玩家方块在底部左右移力/li><li>物品从顶部随机掉萀/li><li>用Rect 检测玩家和物品是否碰撞</li><li>碰到的分数+1，物品回到顶都/li></ul>`, cls: 'slide' },
-        { html: `<h2>边界限制</h2><p>防止玩家移出屏幕！/p><p><code>if player.left < 0: player.left = 0</code></p><p><code>if player.right > 800: player.right = 800</code></p><p>这样方块就不会跑到窗口外面去了、/p><div class="highlight-box">同理可以限制上下边界：player.top < 0 戏player.bottom > 600、</div>`, cls: 'slide' },
+        { html: `<h2>边界限制</h2><p>防止玩家移出屏幕！/p><p><code>if player.left < 0: player.left = 0</code></p><p><code>if player.right > 800: player.right = 800</code></p><p>这样方块就不会跑到窗口外面去了、/p><div class="highlight-box">同理可以限制上下边界：player.top < 0 戏player.bottom > 600、`, cls: 'slide' },
         { html: `<h2>总结</h2><ul><li>pygame.key.get_pressed() 检测按键/li><li>Rect 对象存方块位置，方便操作</li><li>colliderect() 检测两一Rect 是否碰撞</li><li>限制 left/right 防止出界</li><li>结合循环 + 随机掉落 = 接物品游戏/li></ul>`, cls: 'slide' }
     ];
     let current = 0;

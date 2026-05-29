@@ -47,7 +47,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',s
 <body>
     <div class="presentation" id="presentation">
         <div class="slide slide-title" id="slideContainer">
-            <div class="lesson-num">Web 后端 · 进阶第试</div><h1>Flask 用户认证</h1><div class="sub">注册、登录、Session</div></div>
+            <div class="lesson-num">Web 后端 · 进阶第试</div><h1>Flask 用户认证</h1><div class="sub">注册、登录、Session</div>
         </div>
     </div>
 
@@ -55,7 +55,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',s
 
     <script>
     const slidesData = [
-        { html: `<div class="lesson-num">Web 后端 · 进阶第试</div><h1>Flask 用户认证</h1><div class="sub">注册、登录、Session</div></div>`, cls: 'slide slide-title active' },
+        { html: `<div class="lesson-num">Web 后端 · 进阶第试</div><h1>Flask 用户认证</h1><div class="sub">注册、登录、Session</div>`, cls: 'slide slide-title active' },
         { html: `<h2>用户模型改通/h2><p>设User 模型支持登录！/p><p><code>from flask_login import UserMixin</code></p><p><code>class User(UserMixin, db.Model):</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;id = db.Column(db.Integer, primary_key=True)</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;username = db.Column(db.String(80), unique=True)</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;password_hash = db.Column(db.String(200))</code></p><p>继承 UserMixin 获得 is_authenticated 等方法、/p>`, cls: 'slide' },
         { html: `<h2>密码哈希</h2><p>永远不要明文存密码！用Werkzeug 的哈希：</p><p><code>from werkzeug.security import generate_password_hash, check_password_hash</code></p><p>注册时：<code>user.password_hash = generate_password_hash(password)</code></p><p>登录时：<code>check_password_hash(user.password_hash, password)</code></p>`, cls: 'slide' },
         { html: `<h2>初始包Flask-Login</h2><p><code>from flask_login import LoginManager</code></p><p><code>login_manager = LoginManager()</code></p><p><code>login_manager.init_app(app)</code></p><p><code>login_manager.login_view = "login"</code> ↀ未登录时跳转到登录页</p><p>还需要一个回调：</p><p><code>@login_manager.user_loader</code></p><p><code>def load_user(user_id): return User.query.get(int(user_id))</code></p>`, cls: 'slide' },

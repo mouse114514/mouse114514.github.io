@@ -49,19 +49,18 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',s
         <div class="slide slide-title" id="slideContainer">
             <div class="lesson-num">Godot · 进阶第试</div><h1>游戏状态管理与 UI</h1><div class="sub">生命周期与用户界静</div>
         </div>
-    </div>
 
     <div class="nav-bar"><a class="back-link" href="index.html">ↀ目录</a><button id="prevBtn">◀</button><span class="counter" id="counter">1 / 8</span><button id="nextBtn">▀/button></div>
 
     <script>
     const slidesData = [
-        { html: `<div class="lesson-num">Godot · 进阶第试</div><h1>游戏状态管理与 UI</h1><div class="sub">生命周期与用户界静</div>`, cls: 'slide slide-title active' },
+        { html: `<div class="lesson-num">Godot · 进阶第试</div><h1>游戏状态管理与 UI</h1><div class="sub">生命周期与用户界静`, cls: 'slide slide-title active' },
         { html: `<h2>游戏状态机</h2><p>游戏有不名状态，状态之间切换：</p><ul><li><strong>menu</strong> —主菜单/li><li><strong>playing</strong> —游戏一/li><li><strong>paused</strong> —暂停</li><li><strong>game_over</strong> —游戏结束</li></ul><p>不同状态下显示不同界面、暂做恢复游戏逻辑、/p>`, cls: 'slide' },
         { html: `<h2>用枚举管理状态/h2><p><code>enum GameState { MENU, PLAYING, PAUSED, GAME_OVER }</code></p><p><code>var current_state = GameState.MENU</code></p><p>切换状态时检查合法性：</p><p><code>func set_state(new_state):</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;if new_state == current_state: return</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;current_state = new_state</code></p><p>&nbsp;&nbsp;&nbsp;&nbsp;根据新状态显示隐藏对应 UI 节点</p>`, cls: 'slide' },
-        { html: `<h2>UI 节点 (Control)</h2><p>Godot 的UI 系统基于 <strong>Control</strong> 节点！/p><ul><li><strong>Label</strong> —显示文字（得分、生命值）</li><li><strong>Button</strong> —按钮</li><li><strong>TextureProgressBar</strong> —血来进度来/li><li><strong>Panel</strong> —面板容器</li><li><strong>VBoxContainer / HBoxContainer</strong> —自动排版</li></ul><div class="tip-box">UI 场景最好单独做一一CanvasLayer 节点，和游戏世界分离，不受摄像机影响、</div>`, cls: 'slide' },
+        { html: `<h2>UI 节点 (Control)</h2><p>Godot 的UI 系统基于 <strong>Control</strong> 节点！/p><ul><li><strong>Label</strong> —显示文字（得分、生命值）</li><li><strong>Button</strong> —按钮</li><li><strong>TextureProgressBar</strong> —血来进度来/li><li><strong>Panel</strong> —面板容器</li><li><strong>VBoxContainer / HBoxContainer</strong> —自动排版</li></ul><div class="tip-box">UI 场景最好单独做一一CanvasLayer 节点，和游戏世界分离，不受摄像机影响、`, cls: 'slide' },
         { html: `<h2>更新 UI 倀/h2><p>在脚本里通过路径更新 UI！/p><p><code>$UI/ScoreLabel.text = "得分: " + str(score)</code></p><p><code>$UI/HealthBar.value = hp</code></p><p>str() 把整数转字符串、br>TextureProgressBar 的min_value / max_value / value 控制血条范围、/p>`, cls: 'slide' },
         { html: `<h2>暂停游戏</h2><p>持ESC 键暂停：</p><p><code>func _input(event):</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;if event.is_action_pressed("ui_cancel"):</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;get_tree().paused = !get_tree().paused</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$PauseMenu.visible = get_tree().paused</code></p><p>get_tree().paused = true 会暂停所有节点的 _process()，但 UI 节点可以力<strong>process_mode = ALWAYS</strong> 不受影响、/p>`, cls: 'slide' },
-        { html: `<h2>场景切换</h2><p>关卡之间切换！/p><p><code>get_tree().change_scene_to_file("res://scenes/Level2.tscn")</code></p><p>或者：</p><p><code>get_tree().reload_current_scene()</code> ↀ重玩当前关卡</p><div class="highlight-box">切换场景后所有节点都会被销毁。如果想跨场景传数据（如玩家生命值），用 Autoload（全局脚本）、</div>`, cls: 'slide' },
+        { html: `<h2>场景切换</h2><p>关卡之间切换！/p><p><code>get_tree().change_scene_to_file("res://scenes/Level2.tscn")</code></p><p>或者：</p><p><code>get_tree().reload_current_scene()</code> ↀ重玩当前关卡</p><div class="highlight-box">切换场景后所有节点都会被销毁。如果想跨场景传数据（如玩家生命值），用 Autoload（全局脚本）、`, cls: 'slide' },
         { html: `<h2>总结</h2><ul><li>用枚一+ set_state() 管理游戏状态/li><li>Control 系节点做 UI：Label、Button、ProgressBar</li><li>CanvasLayer 设UI 独立于摄像机</li><li>get_tree().paused 暂停/恢复游戏</li><li>change_scene_to_file() 切换场景</li><li>Autoload 脚本跨场景保留数据/li></ul>`, cls: 'slide' }
     ];
     let current = 0;

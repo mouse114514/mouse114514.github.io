@@ -47,7 +47,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',s
 <body>
     <div class="presentation" id="presentation">
         <div class="slide slide-title" id="slideContainer">
-            <div class="lesson-num">Godot · 第试</div><h1>2D 精灵与动用/h1><div class="sub">让角色有画面</div></div>
+            <div class="lesson-num">Godot · 第试</div><h1>2D 精灵与动用/h1><div class="sub">让角色有画面</div>
         </div>
     </div>
 
@@ -55,11 +55,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',s
 
     <script>
     const slidesData = [
-        { html: `<div class="lesson-num">Godot · 第试</div><h1>2D 精灵与动用/h1><div class="sub">让角色有画面</div></div>`, cls: 'slide slide-title active' },
+        { html: `<div class="lesson-num">Godot · 第试</div><h1>2D 精灵与动用/h1><div class="sub">让角色有画面</div>`, cls: 'slide slide-title active' },
         { html: `<h2>图片拖入项目</h2><p>图片文件必须放在项目文件夹里才能用：</p><ul><li>在Godot 编辑器底都FileSystem 面板</li><li>直接把图片文件拖入FileSystem</li><li>建个 <strong>assets/</strong> 戏<strong>images/</strong> 文件夹管理素来/li><li>然后把图片从 FileSystem 拖到 Sprite2D 的Texture 属性上</li></ul>`, cls: 'slide' },
-        { html: `<h2>区域（Region！/h2><p>如果一张大图里包含多个小图（精灵表/Sprite Sheet），可以用Region 功能裁切！/p><ul><li>选中 Sprite2D 节点</li><li>在属性面板找分<strong>Region</strong> ↀ勾通Enabled</li><li>点击 Region 属态ↀ在弹出窗口里框选所需区域</li></ul><div class="highlight-box">跨雪碧表（Sprite Sheet）是一张大图里排列着多帧动画，用 Region 逐帧切出来播放、</div></div>`, cls: 'slide' },
+        { html: `<h2>区域（Region！/h2><p>如果一张大图里包含多个小图（精灵表/Sprite Sheet），可以用Region 功能裁切！/p><ul><li>选中 Sprite2D 节点</li><li>在属性面板找分<strong>Region</strong> ↀ勾通Enabled</li><li>点击 Region 属态ↀ在弹出窗口里框选所需区域</li></ul><div class="highlight-box">跨雪碧表（Sprite Sheet）是一张大图里排列着多帧动画，用 Region 逐帧切出来播放、</div>`, cls: 'slide' },
         { html: `<h2>脚本控制动画</h2><p>用代码切换动画播放：</p><p><code>$AnimatedSprite2D.play("idle")</code></p><p><code>$AnimatedSprite2D.play("run")</code></p><p>还可以控制方向：</p><p><code>$AnimatedSprite2D.flip_h = true</code> ↀ水平翻转</p><p><code>$AnimatedSprite2D.flip_v = true</code> ↀ垂直翻转</p>`, cls: 'slide' },
-        { html: `<h2>碰撞形状（CollisionShape2D！/h2><p>光有画面不够，角色还需要碰撞体才能"撞到"东西！/p><ul><li>添加 <strong>CollisionShape2D</strong> 子节点/li><li>在Shape 属态ↀ通RectangleShape2D 戏CircleShape2D</li><li>调整绿色框的大小对齐角色画面</li></ul><div class="tip-box">CharacterBody2D + Sprite2D + CollisionShape2D 是最常用的角色三件奀、</div></div>`, cls: 'slide' }
+        { html: `<h2>碰撞形状（CollisionShape2D！/h2><p>光有画面不够，角色还需要碰撞体才能"撞到"东西！/p><ul><li>添加 <strong>CollisionShape2D</strong> 子节点/li><li>在Shape 属态ↀ通RectangleShape2D 戏CircleShape2D</li><li>调整绿色框的大小对齐角色画面</li></ul><div class="tip-box">CharacterBody2D + Sprite2D + CollisionShape2D 是最常用的角色三件奀、</div>`, cls: 'slide' }
     ];
     let current = 0;
     const container = document.getElementById('slideContainer');

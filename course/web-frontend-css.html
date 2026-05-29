@@ -49,13 +49,12 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',s
         <div class="slide slide-title" id="slideContainer">
             <div class="lesson-num">Web 前端 · 第试</div><h1>CSS 基础样式</h1><div class="sub">给网页穿上衣有</div>
         </div>
-    </div>
 
     <div class="nav-bar"><a class="back-link" href="index.html">ↀ目录</a><button id="prevBtn">◀</button><span class="counter" id="counter">1 / 8</span><button id="nextBtn">▀/button></div>
 
     <script>
     const slidesData = [
-        { html: `<div class="lesson-num">Web 前端 · 第试</div><h1>CSS 基础样式</h1><div class="sub">给网页穿上衣有</div>`, cls: 'slide slide-title active' },
+        { html: `<div class="lesson-num">Web 前端 · 第试</div><h1>CSS 基础样式</h1><div class="sub">给网页穿上衣有`, cls: 'slide slide-title active' },
         { html: `<h2>CSS 是什么？</h2><p>CSS（层叠样式表）用来控制网页的<strong>外观</strong>！/p><ul><li>颜色、字体、大小、间跀/li><li>居中、对齐、排片/li><li>动画、过渡、特数/li></ul><p>HTML 是骨架，CSS 是皮肉——同一一HTML 配上不同的CSS，看起来完全不一样、/p>`, cls: 'slide' },
         { html: `<h2>三种添加方式</h2><ul><li><strong>行内样式</strong> —在标签上力style 属态/li></ul><p><code>&lt;p style="color:red"&gt;红字&lt;/p&gt;</code></p><ul><li><strong>内部样式</strong> —&lt;head&gt; 里写 &lt;style&gt;</li></ul><p><code>&lt;style&gt; p { color: red; } &lt;/style&gt;</code></p><ul><li><strong>外部样式</strong> —单独的.css 文件（推荐）</li></ul><p><code>&lt;link rel="stylesheet" href="style.css"&gt;</code></p>`, cls: 'slide' },
         { html: `<h2>基本语法</h2><p><code>选择器{ 属态 倀 属态 倀 }</code></p><p>例子！/p><p><code>h1 {</code></p><p><code>&nbsp;&nbsp;color: #333;</code></p><p><code>&nbsp;&nbsp;font-size: 32px;</code></p><p><code>&nbsp;&nbsp;text-align: center;</code></p><p><code>}</code></p><p>把页面上所有h1 文字变成深灰色、2 像素、居中、/p>`, cls: 'slide' },

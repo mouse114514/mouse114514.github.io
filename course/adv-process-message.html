@@ -40,8 +40,6 @@
                 <div class="lesson-num">进阶 · 第一试</div>
                 <h1>进程、窗口与消息机制</h1>
                 <div class="sub">操作系统底层是怎么运行的？</div>
-            </div>
-        
         </div>
     </div>
 
@@ -57,9 +55,7 @@
         { html: `
                 <div class="lesson-num">进阶 · 第一试</div>
                 <h1>进程、窗口与消息机制</h1>
-                <div class="sub">操作系统底层是怎么运行的？</div>
-            </div>
-        `, cls: 'slide slide-title active' },
+                <div class="sub">操作系统底层是怎么运行的？</div>`, cls: 'slide slide-title active' },
         { html: `
                 <h2>窗口的本贀/h2>
                 <p>在Windows 系统里，窗口不是"画出来的图片"，而是一一strong>数据结构</strong>、/p>
@@ -89,9 +85,7 @@
                     <li>消息队列越积越多，系统检测到超时不处理/li>
                     <li>标题栏出现无响序——系统提示你安死了"</li>
                 </ul>
-                <div class="tip-box">任务管理器结束进程，就是强制杀掉它的消息循环、</div>
-            </div>
-        `, cls: 'slide' },
+                <div class="tip-box">任务管理器结束进程，就是强制杀掉它的消息循环、</div>`, cls: 'slide' },
         { html: `
                 <h2>句柄（Handle！/h2>
                 <p>句柄是Windows 里非常重要的概念——它是一一strong>编号</strong>，代表系统内部某个对象：</p>
@@ -101,9 +95,7 @@
                     <li><strong>HFILE</strong> —文件句柄（打开的文件）</li>
                     <li><strong>HKEY</strong> —注册表键句柄</li>
                 </ul>
-                <div class="highlight-box">句柄的本质是一个索引，指向系统内部维护的对象表。你不能直接操作对象，只能通过句柄"间接"操作、</div>
-            </div>
-        `, cls: 'slide' }
+                <div class="highlight-box">句柄的本质是一个索引，指向系统内部维护的对象表。你不能直接操作对象，只能通过句柄"间接"操作、</div>`, cls: 'slide' }
     ];
     let current = 0;
     const container = document.getElementById('slideContainer');

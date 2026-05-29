@@ -49,13 +49,12 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',s
         <div class="slide slide-title" id="slideContainer">
             <div class="lesson-num">Python · 进阶第试</div><h1>游戏状态管理/h1><div class="sub">菜单、关卡、暂停、结来</div>
         </div>
-    </div>
 
     <div class="nav-bar"><a class="back-link" href="index.html">ↀ目录</a><button id="prevBtn">◀</button><span class="counter" id="counter">1 / 8</span><button id="nextBtn">▀/button></div>
 
     <script>
     const slidesData = [
-        { html: `<div class="lesson-num">Python · 进阶第试</div><h1>游戏状态管理/h1><div class="sub">菜单、关卡、暂停、结来</div>`, cls: 'slide slide-title active' },
+        { html: `<div class="lesson-num">Python · 进阶第试</div><h1>游戏状态管理/h1><div class="sub">菜单、关卡、暂停、结来`, cls: 'slide slide-title active' },
         { html: `<h2>为什么需要状态管理？</h2><p>一个完整的游戏有多一屏幕"！/p><ul><li><strong>主菜单/strong> —显示标题、开始按钀/li><li><strong>游戏一/strong> —实际游戏逻辑</li><li><strong>暂停</strong> —覆盖层，游戏冻结</li><li><strong>游戏结束</strong> —显示得分、重玩按钀/li></ul><p>用一个变量记录当前状态，不同状态下执行不同的更新和绘制代码、/p>`, cls: 'slide' },
         { html: `<h2>状态常释+ 变量</h2><p><code>MENU = 0</code></p><p><code>PLAYING = 1</code></p><p><code>PAUSED = 2</code></p><p><code>GAME_OVER = 3</code></p><p><code>state = MENU</code></p><p>主循环里根据 state 执行对应的代码段、br>按键或事件触参state 切换、/p>`, cls: 'slide' },
         { html: `<h2>函数化状态/h2><p>把不同状态的逻辑拆成函数！/p><p><code>def handle_menu():</code> ↀ显示标题、处理开始按钀/p><p><code>def handle_playing():</code> ↀ更新游戏逻辑、精灵、碰撀/p><p><code>def handle_paused():</code> ↀ显示暂停文字，检测按 ESC 继续</p><p><code>def handle_game_over():</code> ↀ显示得分，检测R 重玩</p><p>主循环：</p><p><code>if state == MENU: handle_menu()</code></p><p><code>elif state == PLAYING: handle_playing()</code></p>`, cls: 'slide' },

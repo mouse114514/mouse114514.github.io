@@ -42,9 +42,7 @@
                 <div class="lesson-num">进阶 · 第二试</div>
                 <h1>文件系统原理</h1>
                 <div class="sub">文件是怎么存在硬盘上的！</div>
-            
         </div>
-    </div>
 
     <div class="nav-bar">
         <a class="back-link" href="index.html">ↀ目录</a>
@@ -59,8 +57,7 @@
                 <img src="images/folder-icon.png" alt="文件系统" style="width:100px;margin-bottom:16px;opacity:0.8">
                 <div class="lesson-num">进阶 · 第二试</div>
                 <h1>文件系统原理</h1>
-                <div class="sub">文件是怎么存在硬盘上的！</div>
-            `, cls: 'slide slide-title active' },
+                <div class="sub">文件是怎么存在硬盘上的！`, cls: 'slide slide-title active' },
         { html: `
                 <h2>文件系统是什么？</h2>
                 <p>硬盘是一个巨大的"字节数组"——没有文件系统，你只知道这里有500GB 的0 和1，不知道哪些字节属于哪个文件、/p>
@@ -75,8 +72,7 @@
                 <h2>NTFS 的核心：MFT</h2>
                 <p><strong>MFT</strong>（主文件表）是NTFS 的总账有。硬盘上的每一个文件（包括文件夹自己）都在 MFT 里有一条记录、/p>
                 <p>MFT 记录包含：文件名、大小、创建时间、修改时间、数据存在哪、/p>
-                <div class="highlight-box">小文件的数据可能直接存在 MFT 记录里（resident），不用额外占空间。大文件的数据才分散存在硬盘上、</div>
-            `, cls: 'slide' },
+                <div class="highlight-box">小文件的数据可能直接存在 MFT 记录里（resident），不用额外占空间。大文件的数据才分散存在硬盘上、`, cls: 'slide' },
         { html: `
                 <h2>文件不连续存支/h2>
                 <p>一个文件不是一整块存在硬盘上的。NTFS 把硬盘分戏strong>簀/strong>（Cluster，默设4KB），文件占用的簇可能不连续、/p>
@@ -85,8 +81,7 @@
                     <li>删了文件再写新的 ↀ新文件可能插空"存在不同位置</li>
                     <li>这叫<strong>碎片包/strong>（Fragmentation！/li>
                 </ul>
-                <div class="tip-box">机械硬盘碎片多了会变慢。固态硬盘（SSD）不受影响，也不要碎片整理、</div>
-            `, cls: 'slide' },
+                <div class="tip-box">机械硬盘碎片多了会变慢。固态硬盘（SSD）不受影响，也不要碎片整理、`, cls: 'slide' },
         { html: `
                 <h2>删除文件到底删了什么？</h2>
                 <p>很多人以为删除文件就是把数据"擦掉"了。其实不是：</p>
@@ -96,8 +91,7 @@
                     <li>清空回收站ↀ标记一可用空间"，但数据还在</li>
                     <li>直到新文件写进来覆盖了这些位置，数据才真正消备/li>
                 </ul>
-                <div class="highlight-box">这就是为什么删除的文件能恢复——只要还没被覆盖。所以想彻底删除，要用专门的工具"覆写"、</div>
-            `, cls: 'slide' },
+                <div class="highlight-box">这就是为什么删除的文件能恢复——只要还没被覆盖。所以想彻底删除，要用专门的工具"覆写"、`, cls: 'slide' },
         { html: `
                 <h2>路径的解析过程/h2>
                 <p><code>C:\\Users\\Alice\\doc.txt</code> 不是简单的"字符串查所，而是一层层 MFT 引用！/p>
@@ -117,8 +111,7 @@
                     <li>读取、写入、修改、完全控分/li>
                     <li>权限会从父文件夹<strong>继承</strong>给子文件</li>
                 </ul>
-                <div class="tip-box">右键文件 ↀ属态ↀ安全，就能看到这个文件的 ACL、</div>
-            `, cls: 'slide' },
+                <div class="tip-box">右键文件 ↀ属态ↀ安全，就能看到这个文件的 ACL、`, cls: 'slide' },
         { html: `
                 <h2>总结</h2>
                 <ul>

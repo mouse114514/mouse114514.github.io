@@ -49,15 +49,14 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',s
         <div class="slide slide-title" id="slideContainer">
             <div class="lesson-num">Web 前端 · 第试</div><h1>HTML 基础标签</h1><div class="sub">网页的骨析</div>
         </div>
-    </div>
 
     <div class="nav-bar"><a class="back-link" href="index.html">ↀ目录</a><button id="prevBtn">◀</button><span class="counter" id="counter">1 / 8</span><button id="nextBtn">▀/button></div>
 
     <script>
     const slidesData = [
-        { html: `<div class="lesson-num">Web 前端 · 第试</div><h1>HTML 基础标签</h1><div class="sub">网页的骨析</div>`, cls: 'slide slide-title active' },
+        { html: `<div class="lesson-num">Web 前端 · 第试</div><h1>HTML 基础标签</h1><div class="sub">网页的骨析`, cls: 'slide slide-title active' },
         { html: `<h2>HTML 文档结构</h2><p><code>&lt;!DOCTYPE html&gt;</code> ↀ声明类型</p><p><code>&lt;html&gt;</code> ↀ根标筀/p><p><code>&lt;head&gt;</code> ↀ头部（不可见配置！/p><p><code>&lt;body&gt;</code> ↀ身体（页面显示的内容！/p><p>所有网页都是这个基本结构。就像一栋房子的地基和框架、/p>`, cls: 'slide' },
-        { html: `<h2>标题标签 h1~h6</h2><p><code>&lt;h1&gt;一级标题lt;/h1&gt;</code> 最备/p><p><code>&lt;h2&gt;二级标题&lt;/h2&gt;</code></p><p>—/p><p><code>&lt;h6&gt;六级标题&lt;/h6&gt;</code> 最就/p><div class="highlight-box">一个页面一般只有一一h1（搜索引擎用它理解页面主题），h2-h6 用来分层、</div>`, cls: 'slide' },
+        { html: `<h2>标题标签 h1~h6</h2><p><code>&lt;h1&gt;一级标题lt;/h1&gt;</code> 最备/p><p><code>&lt;h2&gt;二级标题&lt;/h2&gt;</code></p><p>—/p><p><code>&lt;h6&gt;六级标题&lt;/h6&gt;</code> 最就/p><div class="highlight-box">一个页面一般只有一一h1（搜索引擎用它理解页面主题），h2-h6 用来分层、`, cls: 'slide' },
         { html: `<h2>段落和文有/h2><p><code>&lt;p&gt;这是一个段落、lt;/p&gt;</code></p><p><code>&lt;strong&gt;加粗&lt;/strong&gt;</code> —强调</p><p><code>&lt;em&gt;斜体&lt;/em&gt;</code> —着释/p><p><code>&lt;br&gt;</code> —换行（单标签！/p><p><code>&lt;hr&gt;</code> —水平分割级/p>`, cls: 'slide' },
         { html: `<h2>链接 a 标签</h2><p>超链接是互联网的基础！/p><p><code>&lt;a href="https://example.com"&gt;点我访问&lt;/a&gt;</code></p><p>属性：</p><ul><li><strong>href</strong> —链接地址</li><li><strong>target="_blank"</strong> —在新标签页打开</li><li>可以链接到外部网站、内部页面、甚至是页面内的某个位置</li></ul>`, cls: 'slide' },
         { html: `<h2>图片 img 标签</h2><p><code>&lt;img src="图片地址" alt="描述文字"&gt;</code></p><ul><li><strong>src</strong> —图片文件路径（支持相密绝对/URL！/li><li><strong>alt</strong> —图片加载失败时显示的文字（也用于辅助阅读！/li><li><strong>width / height</strong> —可控制尺密/li></ul>`, cls: 'slide' },

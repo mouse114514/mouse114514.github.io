@@ -47,7 +47,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',s
 <body>
     <div class="presentation" id="presentation">
         <div class="slide slide-title" id="slideContainer">
-            <div class="lesson-num">安卓逆向 · 进阶第试</div><h1>Frida 入门</h1><div class="sub">动态插桩，无需重启</div></div>
+            <div class="lesson-num">安卓逆向 · 进阶第试</div><h1>Frida 入门</h1><div class="sub">动态插桩，无需重启</div>
         </div>
     </div>
 
@@ -55,7 +55,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',s
 
     <script>
     const slidesData = [
-        { html: `<div class="lesson-num">安卓逆向 · 进阶第试</div><h1>Frida 入门</h1><div class="sub">动态插桩，无需重启</div></div>`, cls: 'slide slide-title active' },
+        { html: `<div class="lesson-num">安卓逆向 · 进阶第试</div><h1>Frida 入门</h1><div class="sub">动态插桩，无需重启</div>`, cls: 'slide slide-title active' },
         { html: `<h2>安装 Frida</h2><p>电脑端（PC）：</p><p><code>pip install frida-tools</code></p><p>手机端（Android）：</p><ol><li>GitHub 下载 frida-server 对应版本/架构</li><li><code>adb push frida-server /data/local/tmp/</code></li><li><code>adb shell chmod 755 /data/local/tmp/frida-server</code></li><li><code>adb shell /data/local/tmp/frida-server &</code></li></ol>`, cls: 'slide' },
         { html: `<h2>基础 Hook 脚本</h2><p>创建 hook.js！/p><p><code>Java.perform(function() {</code></p><p><code>&nbsp;&nbsp;var Main = Java.use("com.example.MainActivity");</code></p><p><code>&nbsp;&nbsp;Main.isPaid.implementation = function() {</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;console.log("isPaid called!");</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;return true;</code></p><p><code>&nbsp;&nbsp;};</code></p><p><code>});</code></p><p>运行！code>frida -U com.example.app -l hook.js</code></p>`, cls: 'slide' },
         { html: `<h2>Frida 常用命令</h2><ul><li><code>frida-ps -U</code> —列出 USB 设备上运行的进程</li><li><code>frida -U 进程名-l script.js</code> —附加到运行中的进程/li><li><code>frida -U -f com.example.app -l script.js --no-pause</code> —启动 App 并注入/li><li><code>frida -U 进程名/code> —进入 REPL 交互模式</li></ul>`, cls: 'slide' },

@@ -47,7 +47,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',s
 <body>
     <div class="presentation" id="presentation">
         <div class="slide slide-title" id="slideContainer">
-            <div class="lesson-num">安卓逆向 · 进阶第试</div><h1>脱壳基础</h1><div class="sub">撕掉 App 的保护壀</div></div>
+            <div class="lesson-num">安卓逆向 · 进阶第试</div><h1>脱壳基础</h1><div class="sub">撕掉 App 的保护壀</div>
         </div>
     </div>
 
@@ -55,7 +55,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',s
 
     <script>
     const slidesData = [
-        { html: `<div class="lesson-num">安卓逆向 · 进阶第试</div><h1>脱壳基础</h1><div class="sub">撕掉 App 的保护壀</div></div>`, cls: 'slide slide-title active' },
+        { html: `<div class="lesson-num">安卓逆向 · 进阶第试</div><h1>脱壳基础</h1><div class="sub">撕掉 App 的保护壀</div>`, cls: 'slide slide-title active' },
         { html: `<h2>常见的壳</h2><ul><li><strong>360 加固</strong> —国内最流行的壳之一</li><li><strong>腾讯加固</strong> —应用宝上的App 常用</li><li><strong>梆梆加固</strong> —银行/金融类App</li><li><strong>娜迦加固</strong> —游戏类App</li><li><strong>DexGuard</strong> —国外流行的商业壳</li></ul>`, cls: 'slide' },
         { html: `<h2>脱壳原理</h2><p>无论壳怎么加密，最终必须把原始 DEX 加载到内存才能执行、/p><p>脱壳的时机：</p><ol><li>App 启动，壳加载并解密DEX</li><li>壳调用<strong>DexClassLoader</strong> 或反射加软DEX</li><li>原始 DEX 出现在内存中</li><li>在内存中找到 DEX ↀdump 到文代/li></ol>`, cls: 'slide' },
         { html: `<h2>Frida 脱壳脚本</h2><p>用Frida 的DumpDex 脚本！/p><p><code>function dump_dex() {</code></p><p><code>&nbsp;&nbsp;Java.perform(function() {</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;var cl = Java.use("java.lang.ClassLoader");</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;cl.getLoadedClasses.overload().implementation = function() {</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var arr = this.getLoadedClasses();</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// 遍历类名，寻找脱壳后的DEX</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return arr;</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;}</code></p><p><code>&nbsp;&nbsp;});</code></p><p><code>}</code></p>`, cls: 'slide' },

@@ -47,7 +47,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',s
 <body>
     <div class="presentation" id="presentation">
         <div class="slide slide-title" id="slideContainer">
-            <div class="lesson-num">Web 后端 · 第试</div><h1>数据库基础</h1><div class="sub">存储数据的仓库"</div></div>
+            <div class="lesson-num">Web 后端 · 第试</div><h1>数据库基础</h1><div class="sub">存储数据的仓库"</div>
         </div>
     </div>
 
@@ -55,7 +55,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',s
 
     <script>
     const slidesData = [
-        { html: `<div class="lesson-num">Web 后端 · 第试</div><h1>数据库基础</h1><div class="sub">存储数据的仓库"</div></div>`, cls: 'slide slide-title active' },
+        { html: `<div class="lesson-num">Web 后端 · 第试</div><h1>数据库基础</h1><div class="sub">存储数据的仓库"</div>`, cls: 'slide slide-title active' },
         { html: `<h2>关系型数据库</h2><p>最常见的是<strong>关系型数据库</strong>（像 Excel 表格）：</p><ul><li>数据存成"行（Table！/li><li>表里有行（Row）和"分（Column！/li><li>表之间可以关联（用户行ↀ订单表）</li></ul><p>常见的关系型数据库：<strong>SQLite</strong>（轻量）、strong>MySQL</strong>（流行）、strong>PostgreSQL</strong>（高级）</p>`, cls: 'slide' },
         { html: `<h2>SQL 基本语句</h2><p>SQL（Structured Query Language）是操作数据库的语言！/p><p><strong>查询</strong>！code>SELECT * FROM users WHERE age > 18</code></p><p><strong>插入</strong>！code>INSERT INTO users (name, age) VALUES ('张三', 20)</code></p><p><strong>更新</strong>！code>UPDATE users SET age = 21 WHERE name = '张三'</code></p><p><strong>删除</strong>！code>DELETE FROM users WHERE name = '张三'</code></p>`, cls: 'slide' },
         { html: `<h2>SQLite + Flask</h2><p>SQLite 不需要安装服务器，文件即数据库：</p><p><code>import sqlite3</code></p><p><code>conn = sqlite3.connect("data.db")</code></p><p><code>cursor = conn.cursor()</code></p><p><code>cursor.execute("CREATE TABLE IF NOT EXISTS users (id INTEGER, name TEXT)")</code></p><p>在Flask 里用 SQLite 就能做一个完整的带后端的网站、/p>`, cls: 'slide' },

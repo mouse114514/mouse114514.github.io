@@ -47,7 +47,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',s
 <body>
     <div class="presentation" id="presentation">
         <div class="slide slide-title" id="slideContainer">
-            <div class="lesson-num">Python · 进阶第试</div><h1>音效与文字渲查/h1><div class="sub">声音 + 字体 = 完整游戏体验</div></div>
+            <div class="lesson-num">Python · 进阶第试</div><h1>音效与文字渲查/h1><div class="sub">声音 + 字体 = 完整游戏体验</div>
         </div>
     </div>
 
@@ -55,7 +55,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',s
 
     <script>
     const slidesData = [
-        { html: `<div class="lesson-num">Python · 进阶第试</div><h1>音效与文字渲查/h1><div class="sub">声音 + 字体 = 完整游戏体验</div></div>`, cls: 'slide slide-title active' },
+        { html: `<div class="lesson-num">Python · 进阶第试</div><h1>音效与文字渲查/h1><div class="sub">声音 + 字体 = 完整游戏体验</div>`, cls: 'slide slide-title active' },
         { html: `<h2>加载和播放音数/h2><p><code>shoot_sound = pygame.mixer.Sound("shoot.wav")</code></p><p><code>shoot_sound.play()</code> ↀ播放一欀/p><p><code>shoot_sound.play(-1)</code> ↀ循环播放</p><p>设置音量！code>shoot_sound.set_volume(0.5)</code> ↀ0-1</p><p>背景音乐！/p><p><code>pygame.mixer.music.load("bgm.ogg")</code></p><p><code>pygame.mixer.music.play(-1)</code> ↀ循环</p>`, cls: 'slide' },
         { html: `<h2>pygame.font 文字渲染</h2><p><code>my_font = pygame.font.Font("msyh.ttf", 36)</code> ↀ微软雅黑</p><p>系统默认字体！code>pygame.font.SysFont("simsun", 36)</code></p><p>渲染文字！/p><p><code>text_surface = my_font.render("得分: 100", True, (255,255,255))</code></p><p><code>screen.blit(text_surface, (20, 20))</code></p>`, cls: 'slide' },
         { html: `<h2>文字居中</h2><p>让文字在屏幕中间！/p><p><code>text = font.render("Game Over", True, (255,0,0))</code></p><p><code>text_rect = text.get_rect(center=(400, 300))</code></p><p><code>screen.blit(text, text_rect)</code></p><p>get_rect(center=(x,y)) 让文字居中于某点、/p>`, cls: 'slide' },

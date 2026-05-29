@@ -47,7 +47,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',s
 <body>
     <div class="presentation" id="presentation">
         <div class="slide slide-title" id="slideContainer">
-            <div class="lesson-num">安卓逆向 · 进阶第试</div><h1>静态分析与 Hook 框架</h1><div class="sub">不运行代码分析，和运行时拦截</div></div>
+            <div class="lesson-num">安卓逆向 · 进阶第试</div><h1>静态分析与 Hook 框架</h1><div class="sub">不运行代码分析，和运行时拦截</div>
         </div>
     </div>
 
@@ -55,12 +55,12 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',s
 
     <script>
     const slidesData = [
-        { html: `<div class="lesson-num">安卓逆向 · 进阶第试</div><h1>静态分析与 Hook 框架</h1><div class="sub">不运行代码分析，和运行时拦截</div></div>`, cls: 'slide slide-title active' },
+        { html: `<div class="lesson-num">安卓逆向 · 进阶第试</div><h1>静态分析与 Hook 框架</h1><div class="sub">不运行代码分析，和运行时拦截</div>`, cls: 'slide slide-title active' },
         { html: `<h2>静态分析流程/h2><ol><li>jadx-gui 打开 APK，浏览反编译代码</li><li>搜索关键词找关键代码！http"、password"、AES"、pay"！/li><li>查看 AndroidManifest.xml 了解权限和入参/li><li>分析 res/values/strings.xml 找硬编码字符一/li><li>搜索 "native" 找到 Native 层方法/li></ol>`, cls: 'slide' },
         { html: `<h2>常见的代码混淀/h2><p>很多 App 会混淆代码增加逆向难度！/p><ul><li><strong>ProGuard</strong> —把类名方法名变戏a、b、c</li><li><strong>字符串加密/strong> —关键字符串运行时才解密/li><li><strong>反射调用</strong> —通过字符串动态调用方法（不直接出现在代码里）</li></ul>`, cls: 'slide' },
         { html: `<h2>Hook 框架是什么？</h2><p>Hook 就是"拦截函数调用"——在函数执行前后插入自己的代码、/p><ul><li>截获函数参数和返回倀/li><li>修改返回值（妀isPaid ↀtrue！/li><li>在函数执行前后执行自定义逻辑</li></ul><p>常见 Hook 框架！strong>Xposed</strong>、strong>Frida</strong>、strong>LSPosed</strong></p>`, cls: 'slide' },
         { html: `<h2>Xposed 框架</h2><ul><li>需要Root 手机</li><li>安装 Xposed Installer</li><li>写模块（Module）Hook 特定方法</li><li>优点：稳定成熟，覆盖面广</li><li>缺点：需要刷框架，不支持 Android 8+（LSPosed 替代！/li></ul>`, cls: 'slide' },
-        { html: `<h2>LSPosed (Xposed 替代)</h2><p>基于 <strong>Magisk</strong> 的新一代Xposed 框架！/p><ul><li>支持 Android 8.0 ~ 14</li><li>每个模块可以仅作用到指定的App</li><li>不修改系统分包/li><li>更稳定、效率更髀/li></ul><div class="tip-box">安装：Magisk ↀ刷入 LSPosed 模块 ↀ重启 ↀLSPosed 管理器里启用模块、</div></div>`, cls: 'slide' }
+        { html: `<h2>LSPosed (Xposed 替代)</h2><p>基于 <strong>Magisk</strong> 的新一代Xposed 框架！/p><ul><li>支持 Android 8.0 ~ 14</li><li>每个模块可以仅作用到指定的App</li><li>不修改系统分包/li><li>更稳定、效率更髀/li></ul><div class="tip-box">安装：Magisk ↀ刷入 LSPosed 模块 ↀ重启 ↀLSPosed 管理器里启用模块、</div>`, cls: 'slide' }
     ];
     let current = 0;
     const container = document.getElementById('slideContainer');
