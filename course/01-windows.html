@@ -29,14 +29,14 @@
             padding: 60px;
             opacity: 0;
             pointer-events: none;
-            transition: opacity 0.4s ease;
+            transition: opacity 0.25s ease; will-change: opacity;
         }
         .slide.active { opacity: 1; pointer-events: auto; }
         .slide-inner {
             max-width: 800px;
             width: 100%;
             background: rgba(20, 30, 50, 0.6);
-            backdrop-filter: blur(12px);
+            
             border: 1px solid rgba(77, 168, 255, 0.2);
             border-radius: 28px;
             padding: 50px 60px;
@@ -131,7 +131,7 @@
             align-items: center;
             gap: 16px;
             background: rgba(10, 15, 30, 0.7);
-            backdrop-filter: blur(12px);
+            
             border: 1px solid rgba(255,255,255,0.06);
             border-radius: 30px;
             padding: 10px 20px;
