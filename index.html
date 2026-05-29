@@ -496,7 +496,7 @@
             document.addEventListener('mousemove', (e) => {
                 resetIdleTimer();
                 if (rafId) return;
-                const rx = (window.innerHeight / 2 - e.clientY) / (window.innerHeight / 2) * -25;
+                const rx = (window.innerHeight / 2 - e.clientY) / (window.innerHeight / 2) * 25;
                 const ry = (e.clientX - window.innerWidth / 2) / (window.innerWidth / 2) * 35;
                 heroX.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg)`;
                 heroStudio.style.transform = `rotateX(${rx * 0.6}deg) rotateY(${ry * 0.6}deg)`;
