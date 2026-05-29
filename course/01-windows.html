@@ -22,16 +22,14 @@
         .slide {
             position: absolute;
             inset: 0;
-            display: flex;
+            display: none;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             padding: 60px;
-            opacity: 0;
             pointer-events: none;
-            
         }
-        .slide.active { opacity: 1; pointer-events: auto; }
+        .slide.active { display: flex; pointer-events: auto; }
         .slide-inner {
             max-width: 800px;
             width: 100%;
