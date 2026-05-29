@@ -140,7 +140,7 @@
     </div>
     <script>
         const slides = document.querySelectorAll('.slide'); const total = slides.length; let current = 0;
-        function goTo(n) { slides.forEach(s => s.classList.remove('active')); current = (n + total) % total; slides[current].classList.add('active'); document.getElementById('counter').textContent = (current + 1) + ' / ' + total; }
+        function goTo(n) { slides[current].classList.remove('active'); current = (n + total) % total; slides[current].classList.add('active'); document.getElementById('counter').textContent = (current + 1) + ' / ' + total; }
         document.getElementById('prevBtn').addEventListener('click', () => goTo(current - 1));
         document.getElementById('nextBtn').addEventListener('click', () => goTo(current + 1));
         document.addEventListener('keydown', (e) => { if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); goTo(current + 1); } if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); goTo(current - 1); } });

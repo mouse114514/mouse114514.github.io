@@ -310,7 +310,7 @@
         let current = 0;
 
         function goTo(n) {
-            slides.forEach(s => s.classList.remove('active'));
+            slides[current].classList.remove('active');
             current = (n + total) % total;
             slides[current].classList.add('active');
             document.getElementById('counter').textContent = (current + 1) + ' / ' + total;
