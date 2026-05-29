@@ -3,9 +3,7 @@
     <link rel="icon" type="image/png" href="/favicon.png"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Pygame 输入与碰撀/title><style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',sans-serif;background:#0a0f1e;color:#e0e8f0;height:100vh;overflow:hidden}
-.presentation{width:100%;height:100vh;position:relative}
-.slide{position:absolute;inset:0;display: none;flex-direction:column;align-items:center;justify-content:center;padding:60px;pointer-events:none;transition:opacity .4s ease}
-.slide.active{opacity:1;pointer-events:auto}
+.presentation { width: 100%; height: 100vh; display: flex; align-items: center; justify-content: center; padding: 60px; }
 .slide-inner{max-width:840px;width:100%;background:rgba(20,30,50,.6);border:1px solid rgba(77,168,255,.2);border-radius:28px;padding:44px 54px;box-shadow:0 0 50px rgba(0,0,0,.4);max-height:82vh;overflow-y:auto}
 .slide-title .slide-inner{text-align:center;background:rgba(20,30,50,.4);border-color:rgba(77,168,255,.15)}
 .slide-title h1{font-size:clamp(32px,5vw,52px);font-weight:800;background:linear-gradient(135deg,#4da8ff,#b0e0ff);-webkit-background-clip:text;background-clip:text;color:transparent;line-height:1.2;margin-bottom:12px}
@@ -25,10 +23,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',s
 .nav-bar .counter{font-size:14px;color:rgba(255,255,255,.35);min-width:60px;text-align:center}
 .nav-bar .back-link{color:rgba(255,255,255,.25);text-decoration:none;font-size:13px;padding:6px 12px;border-radius:8px;transition:all .2s}
 .nav-bar .back-link:hover{color:#fff;background:rgba(255,255,255,.06)}
-@media(max-width:640px){.slide{padding:16px}.slide-inner{padding:24px 18px}.nav-bar{padding:8px 12px;gap:8px;bottom:14px}}
+@media(max-width:640px){.slide-inner{padding:24px 18px}.nav-bar{padding:8px 12px;gap:8px;bottom:14px}}
 
         @media (max-width: 640px) {
-            .slide { padding: 10px; }
             .slide-inner { padding: 24px 16px; max-height: 90vh; }
             .slide p { font-size: 15px; }
             .slide li { font-size: 14px; }
