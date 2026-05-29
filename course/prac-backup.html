@@ -34,30 +34,35 @@
         @media (max-width: 640px) { .slide { padding: 16px; } .slide-inner { padding: 24px 18px; } .nav-bar { padding: 8px 12px; gap: 8px; bottom: 14px; } }
     </style>
 </head>
+
 <body>
     <div class="presentation" id="presentation">
-        <div class="slide slide-title active" data-index="0">
-            <div class="slide-inner">
-                <div class="lesson-num">实用 · 第一试/div>
+        <div class="slide slide-title" id="slideContainer">
+            
+                <div class="lesson-num">实用 · 第一试</div>
                 <h1>系统备份与还原/h1>
                 <div class="sub">不怕电脑出问题</div>
             </div>
+        
         </div>
-        <div class="slide" data-index="1">
-            <div class="slide-inner">
-                <h2>为什么要备份！/h2>
-                <p>电脑会出各种各样的问题：</p>
-                <ul>
-                    <li>突然蓝屏无法开有/li>
-                    <li>装了某个软件后系统崩満/li>
-                    <li>病毒把所有文件加密了（勒索病毒）</li>
-                    <li>硬盘坏了</li>
-                </ul>
-                <p>备份就是为了——strong>出了问题能回到正常状态/strong>、/p>
+    </div>
+
+    <div class="nav-bar">
+        <a class="back-link" href="index.html">ↀ目录</a>
+        <button id="prevBtn">◀</button>
+        <span class="counter" id="counter">1 / 8</span>
+        <button id="nextBtn">▀/button>
+    </div>
+
+    <script>
+    const slidesData = [
+        { html: `
+                <div class="lesson-num">实用 · 第一试</div>
+                <h1>系统备份与还原/h1>
+                <div class="sub">不怕电脑出问题</div>
             </div>
-        </div>
-        <div class="slide" data-index="2">
-            <div class="slide-inner">
+        `, cls: 'slide slide-title active' },
+        { html: `
                 <h2>系统还原点/h2>
                 <p>Windows 自带的功能，定期给你的系统配置和文件"拍快煀、/p>
                 <p>设置：控制面来ↀ系统和安入ↀ系统 ↀ系统保护</p>
@@ -66,23 +71,10 @@
                     <li>之后每次安装软件或更新前，Windows 自动创建还原点/li>
                     <li>出问题ↀ点击"系统还原"ↀ选择一个还原点回退</li>
                 </ul>
-                <div class="tip-box">还原点不影响个人文件，只影响系统和安装的程序、/div>
+                <div class="tip-box">还原点不影响个人文件，只影响系统和安装的程序、</div>
             </div>
-        </div>
-        <div class="slide" data-index="3">
-            <div class="slide-inner">
-                <h2>备份个人文件</h2>
-                <p>最重要的不是系统——是你的文件（照片、文档、项目）、/p>
-                <ul>
-                    <li><strong>外部硬盘/U 目/strong> —手动复制重要文件过去</li>
-                    <li><strong>云存傀/strong> —百度网盘、OneDrive、iCloud</li>
-                    <li><strong>Windows 备份</strong> —设置 ↀ更新和安入ↀ备份</li>
-                </ul>
-                <div class="highlight-box">321 原则！strong>3</strong> 份备份，<strong>2</strong> 种介质，<strong>1</strong> 份在异地、/div>
-            </div>
-        </div>
-        <div class="slide" data-index="4">
-            <div class="slide-inner">
+        `, cls: 'slide' },
+        { html: `
                 <h2>重装系统</h2>
                 <p>如果系统彻底坏了，可能需要重装：</p>
                 <ul>
@@ -90,22 +82,10 @@
                     <li>选择"保留我的文件"（只清软件）戏删除所有内安（彻底重装）</li>
                     <li>也可以用安装 U 盘启动重装/li>
                 </ul>
-                <div class="highlight-box">重装前一定要备份重要文件！重置时会删际C 盘的所有程序、/div>
+                <div class="highlight-box">重装前一定要备份重要文件！重置时会删际C 盘的所有程序、</div>
             </div>
-        </div>
-        <div class="slide" data-index="5">
-            <div class="slide-inner">
-                <h2>创建系统镜像</h2>
-                <p>把整一C 盘打包成一一镜像文件"，崩溃时一键恢复：</p>
-                <ul>
-                    <li>控制面板 ↀ备份和还原ↀ创建系统映像</li>
-                    <li>选择一个外置硬盘存放（不能放在 C 盘本身！！/li>
-                    <li>恢复时：开机按 <span class="key">F11</span> 或从安装 U 盘启力ↀ选择系统镜像恢复</li>
-                </ul>
-            </div>
-        </div>
-        <div class="slide" data-index="6">
-            <div class="slide-inner">
+        `, cls: 'slide' },
+        { html: `
                 <h2>制作启动 U 目/h2>
                 <p>一一8GB 以上的U 盘，可以做系统安装盘！/p>
                 <ul>
@@ -114,35 +94,32 @@
                     <li>选择 U 目ↀ等待下载完成</li>
                     <li>以后用这一U 盘插到任何电脑上，从 U 盘启动就能装系统</li>
                 </ul>
-                <div class="tip-box">家里备一一Windows 安装 U 盘，出问题时不慌、/div>
+                <div class="tip-box">家里备一一Windows 安装 U 盘，出问题时不慌、</div>
             </div>
-        </div>
-        <div class="slide" data-index="7">
-            <div class="slide-inner">
-                <h2>总结</h2>
-                <ul>
-                    <li>系统还原点—拍快照，程序出问题能回退</li>
-                    <li>文件备份 —照片文档至少存两处（硬盘 + 云盘！/li>
-                    <li>重置此电脀—系统坏了先试这个</li>
-                    <li>系统镜像 —完整备份，恢复最彻底</li>
-                    <li>启动 U 目—以备不时之需</li>
-                </ul>
-            </div>
-        </div>
-    </div>
-    <div class="nav-bar">
-        <a class="back-link" href="index.html">ↀ目录</a>
-        <button id="prevBtn">◀</button>
-        <span class="counter" id="counter">1 / 8</span>
-        <button id="nextBtn">▀/button>
-    </div>
-    <script>
-        const slides = document.querySelectorAll('.slide'); const total = slides.length; let current = 0;
-        function goTo(n) { slides.forEach(s => s.style.display = 'none'); slides[current].classList.remove('active'); current = (n + total) % total; slides[current].style.display = 'flex'; slides[current].classList.add('active'); document.getElementById('counter').textContent = (current + 1) + ' / ' + total; }
-        document.getElementById('prevBtn').addEventListener('click', () => goTo(current - 1));
-        document.getElementById('nextBtn').addEventListener('click', () => goTo(current + 1));
-        document.addEventListener('keydown', (e) => { if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); goTo(current + 1); } if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); goTo(current - 1); } });
-        document.getElementById('presentation').addEventListener('click', (e) => { if (e.target.closest('.nav-bar') || e.target.closest('.slide-inner')) return; goTo(current + 1); });
+        `, cls: 'slide' }
+    ];
+    let current = 0;
+    const container = document.getElementById('slideContainer');
+    const counter = document.getElementById('counter');
+
+    function goTo(n) {
+        current = (n + slidesData.length) % slidesData.length;
+        container.className = slidesData[current].cls;
+        container.innerHTML = slidesData[current].html;
+        counter.textContent = (current + 1) + ' / ' + slidesData.length;
+    }
+
+    document.getElementById('prevBtn').addEventListener('click', () => goTo(current - 1));
+    document.getElementById('nextBtn').addEventListener('click', () => goTo(current + 1));
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); goTo(current + 1); }
+        if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); goTo(current - 1); }
+    });
+    document.getElementById('presentation').addEventListener('click', (e) => {
+        if (e.target.closest('.nav-bar') || e.target.closest('.slide-inner')) return;
+        goTo(current + 1);
+    });
     </script>
 </body>
+
 </html>

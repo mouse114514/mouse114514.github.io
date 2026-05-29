@@ -33,31 +33,37 @@
         @media (max-width: 640px) { .slide { padding: 16px; } .slide-inner { padding: 24px 18px; } .nav-bar { padding: 8px 12px; gap: 8px; bottom: 14px; } }
     </style>
 </head>
+
 <body>
     <div class="presentation" id="presentation">
-        <div class="slide slide-title active" data-index="0">
-            <div class="slide-inner">
+        <div class="slide slide-title" id="slideContainer">
+            
                 <img src="images/internet-icon.png" alt="网络" style="width:100px;margin-bottom:16px;opacity:0.8">
-                <div class="lesson-num">进阶 · 第四试/div>
+                <div class="lesson-num">进阶 · 第四试</div>
                 <h1>网络通信原理</h1>
                 <div class="sub">打开一个网页背后发生了什么？</div>
             </div>
+        
         </div>
-        <div class="slide" data-index="1">
-            <div class="slide-inner">
-                <h2>网络的四层模垀/h2>
-                <p>网络通信是分层处理的，每一层只关心自己的事！/p>
-                <ul>
-                    <li><strong>应用局/strong> —你用的软件（HTTP / DNS / SMTP！/li>
-                    <li><strong>传输局/strong> —确保数据可靠到达（TCP / UDP！/li>
-                    <li><strong>网络局/strong> —路由和寻址（IP！/li>
-                    <li><strong>链路局/strong> —物理传输（以太网 / Wi-Fi！/li>
-                </ul>
-                <p>上层的数据被封装进下层的"包裹"里，一层套一层，像俄罗斯套娃、/p>
+    </div>
+
+    <div class="nav-bar">
+        <a class="back-link" href="index.html">ↀ目录</a>
+        <button id="prevBtn">◀</button>
+        <span class="counter" id="counter">1 / 8</span>
+        <button id="nextBtn">▀/button>
+    </div>
+
+    <script>
+    const slidesData = [
+        { html: `
+                <img src="images/internet-icon.png" alt="网络" style="width:100px;margin-bottom:16px;opacity:0.8">
+                <div class="lesson-num">进阶 · 第四试</div>
+                <h1>网络通信原理</h1>
+                <div class="sub">打开一个网页背后发生了什么？</div>
             </div>
-        </div>
-        <div class="slide" data-index="2">
-            <div class="slide-inner">
+        `, cls: 'slide slide-title active' },
+        { html: `
                 <h2>IP 地址</h2>
                 <p>每台联网设备有一一<strong>IP 地址</strong>，像网络门牌号、/p>
                 <ul>
@@ -66,25 +72,10 @@
                     <li><strong>公网 IP</strong> —全球唯一，可直接从互联网访问</li>
                     <li><strong>内网 IP</strong> —妀192.168.x.x，只在局域网内有数/li>
                 </ul>
-                <div class="tip-box">命令提示符输入<code>ipconfig</code> 查看本机 IP、/div>
+                <div class="tip-box">命令提示符输入<code>ipconfig</code> 查看本机 IP、</div>
             </div>
-        </div>
-        <div class="slide" data-index="3">
-            <div class="slide-inner">
-                <h2>DNS：电话簿</h2>
-                <p>你记不住 IP 地址，所以用域名！code>baidu.com</code>）。DNS 就是"电话簀！/p>
-                <ul>
-                    <li>你输入<code>www.baidu.com</code></li>
-                    <li>系统所DNS 服务器查这个域名对应哪个 IP</li>
-                    <li>DNS 返回 IP（如 183.232.231.172！/li>
-                    <li>浏览器再用这一IP 去连接服务器</li>
-                </ul>
-                <div class="highlight-box">查询顺序：浏览器缓存 ↀ系统缓存 ↀ路由器缓字ↀISP 的DNS ↀ校DNS ↀ顶级埀ↀ权威 DNS</div>
-                <p>试试 <code>nslookup baidu.com</code></p>
-            </div>
-        </div>
-        <div class="slide" data-index="4">
-            <div class="slide-inner">
+        `, cls: 'slide' },
+        { html: `
                 <h2>TCP 三次握手</h2>
                 <p>TCP 是面向连接的协议，传数据前要入strong>建立连接</strong>！/p>
                 <ul>
@@ -93,10 +84,8 @@
                     <li><strong>ACK</strong> —客户站ↀ服务器："收到，开始传数据"</li>
                 </ul>
                 <p>这就是三次握手"。目的是确认双方的发送和接收能力都正常、/p>
-            </div>
-        </div>
-        <div class="slide" data-index="5">
-            <div class="slide-inner">
+            `, cls: 'slide' },
+        { html: `
                 <h2>端口（Port！/h2>
                 <p>IP 地址找到设备！strong>端口</strong>找到设备上的具体程序！/p>
                 <ul>
@@ -104,52 +93,32 @@
                     <li>Web 服务默认用80（HTTP）或 443（HTTPS！/li>
                     <li>DNS 用53，SSH 用22，远程桌面用 3389</li>
                 </ul>
-                <div class="highlight-box">用<code>netstat -ano</code> 查看当前系统所有的网络连接和监听端口、/div>
+                <div class="highlight-box">用<code>netstat -ano</code> 查看当前系统所有的网络连接和监听端口、</div>
             </div>
-        </div>
-        <div class="slide" data-index="6">
-            <div class="slide-inner">
-                <h2>打开网页的全过程</h2>
-                <p>你在地址栏输入<code>www.baidu.com</code>！/p>
-                <ul>
-                    <li>浏览器查缓存（有就直接用！/li>
-                    <li>DNS 解析 ↀ拿到 IP 地址</li>
-                    <li>TCP 三次握手建立连接</li>
-                    <li>发通HTTP GET 请求</li>
-                    <li>服务器返回HTML 页面</li>
-                    <li>浏览器发现页面里还有 CSS、JS、图片/li>
-                    <li>重复以上步骤下载所有资満/li>
-                    <li>渲染引擎把这些拼成一个完整页静/li>
-                </ul>
-            </div>
-        </div>
-        <div class="slide" data-index="7">
-            <div class="slide-inner">
-                <h2>总结</h2>
-                <ul>
-                    <li>网络分层处理，每层关注自己的了/li>
-                    <li>IP 是设备地址，DNS 把域名翻译成 IP</li>
-                    <li>TCP 三次握手建立可靠连接</li>
-                    <li>端口号区分同一设备上的不同程序</li>
-                    <li>打开网页 = DNS + TCP + HTTP + 渲染</li>
-                </ul>
-                <div class="tip-box">持<span class="key">F12</span> 打开浏览器开发者工入ↀ网络标签，能看到每个请求的全过程、/div>
-            </div>
-        </div>
-    </div>
-    <div class="nav-bar">
-        <a class="back-link" href="index.html">ↀ目录</a>
-        <button id="prevBtn">◀</button>
-        <span class="counter" id="counter">1 / 8</span>
-        <button id="nextBtn">▀/button>
-    </div>
-    <script>
-        const slides = document.querySelectorAll('.slide'); const total = slides.length; let current = 0;
-        function goTo(n) { slides.forEach(s => s.style.display = 'none'); slides[current].classList.remove('active'); current = (n + total) % total; slides[current].style.display = 'flex'; slides[current].classList.add('active'); document.getElementById('counter').textContent = (current + 1) + ' / ' + total; }
-        document.getElementById('prevBtn').addEventListener('click', () => goTo(current - 1));
-        document.getElementById('nextBtn').addEventListener('click', () => goTo(current + 1));
-        document.addEventListener('keydown', (e) => { if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); goTo(current + 1); } if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); goTo(current - 1); } });
-        document.getElementById('presentation').addEventListener('click', (e) => { if (e.target.closest('.nav-bar') || e.target.closest('.slide-inner')) return; goTo(current + 1); });
+        `, cls: 'slide' }
+    ];
+    let current = 0;
+    const container = document.getElementById('slideContainer');
+    const counter = document.getElementById('counter');
+
+    function goTo(n) {
+        current = (n + slidesData.length) % slidesData.length;
+        container.className = slidesData[current].cls;
+        container.innerHTML = slidesData[current].html;
+        counter.textContent = (current + 1) + ' / ' + slidesData.length;
+    }
+
+    document.getElementById('prevBtn').addEventListener('click', () => goTo(current - 1));
+    document.getElementById('nextBtn').addEventListener('click', () => goTo(current + 1));
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); goTo(current + 1); }
+        if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); goTo(current - 1); }
+    });
+    document.getElementById('presentation').addEventListener('click', (e) => {
+        if (e.target.closest('.nav-bar') || e.target.closest('.slide-inner')) return;
+        goTo(current + 1);
+    });
     </script>
 </body>
+
 </html>

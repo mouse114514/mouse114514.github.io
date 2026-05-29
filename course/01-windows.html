@@ -160,39 +160,37 @@
         }
     </style>
 </head>
+
 <body>
     <div class="presentation" id="presentation">
-        <!-- Slide 1: Title -->
-        <div class="slide slide-title active" data-index="0">
-            <div class="slide-inner">
+        <div class="slide slide-title" id="slideContainer">
+            
                 <img src="images/windows-logo.png" alt="Windows" style="width:120px;margin-bottom:20px;opacity:0.8">
-                <div class="lesson-num">第一试/div>
+                <div class="lesson-num">第一试</div>
                 <h1>认识 Windows 系统</h1>
                 <div class="sub">操作系统基础</div>
             </div>
+        
         </div>
+    </div>
 
-        <!-- Slide 2 -->
-        <div class="slide" data-index="1">
-            <div class="slide-inner">
-                <h2>什么是 Windows！/h2>
-                <div class="flex-row">
-                    <div class="text">
-                        <p>Windows 是由美国微软公司（Microsoft）开发的一欀strong>操作系统</strong>。操作系统是电脑最基础的软件，它负责管理电脑的硬件和软件资源，就像是一一大管安、/p>
-                        <p>目前最新的 Windows 版本是<strong>Windows 11</strong>，于 2021 年发布、/p>
-                    </div>
-                    <div class="img-wrap">
-                        <img src="images/windows-logo.png" alt="Windows Logo">
-                    </div>
-                </div>
-                <div class="note">
-                    💡 Windows 的第一个版有Windows 1.0 早在 1985 年就发布了！那时候还没有鼠标，操作全靠键盘、                </div>
+    <div class="nav-bar">
+        <a class="back-link" href="index.html">ↀ目录</a>
+        <button id="prevBtn">◀</button>
+        <span class="counter" id="counter">1 / 8</span>
+        <button id="nextBtn">▀/button>
+    </div>
+
+    <script>
+    const slidesData = [
+        { html: `
+                <img src="images/windows-logo.png" alt="Windows" style="width:120px;margin-bottom:20px;opacity:0.8">
+                <div class="lesson-num">第一试</div>
+                <h1>认识 Windows 系统</h1>
+                <div class="sub">操作系统基础</div>
             </div>
-        </div>
-
-        <!-- Slide 3 -->
-        <div class="slide" data-index="2">
-            <div class="slide-inner">
+        `, cls: 'slide slide-title active' },
+        { html: `
                 <h2>Windows 的主要版有/h2>
                 <img class="img-wide" src="images/version-timeline.png" alt="Windows 版本时间级>
                 <ul>
@@ -203,12 +201,8 @@
                     <li><strong>Windows 10</strong>！015）——统一多平台，使用率最髀/li>
                     <li><strong>Windows 11</strong>！021）——最新版本，界面更现代化</li>
                 </ul>
-            </div>
-        </div>
-
-        <!-- Slide 4 -->
-        <div class="slide" data-index="3">
-            <div class="slide-inner">
+            `, cls: 'slide' },
+        { html: `
                 <h2>桌面基本组成</h2>
                 <div class="flex-row">
                     <div class="text">
@@ -225,28 +219,20 @@
                         <img src="images/desktop-layout.png" alt="桌面布局">
                     </div>
                 </div>
-            </div>
-        </div>
-
-        <!-- Slide 5 -->
-        <div class="slide" data-index="4">
-            <div class="slide-inner">
+            `, cls: 'slide' },
+        { html: `
                 <h2>文件管理</h2>
                 <p>Windows 使用<strong>文件资源管理器/strong>来管理文件和文件夹、/p>
                 <ul>
                     <li><strong>文件</strong> ——存储数据的单元，如文档、图片、音乐等</li>
                     <li><strong>文件备/strong> ——用于存放文件的容器"，可以嵌奀/li>
                     <li><strong>盘符</strong> ——妀C:、D:，表示不同的磁盘分区</li>
-                    <li><strong>路径</strong> ——文件在电脑中的位置，妀<code>C:\Users\用户名\Documents</code></li>
+                    <li><strong>路径</strong> ——文件在电脑中的位置，妀<code>C:\\Users\\用户名\\Documents</code></li>
                 </ul>
                 <div class="tip">
                     💡 按快捷键 <code>Win + E</code> 可以快速打开文件资源管理器、                </div>
-            </div>
-        </div>
-
-        <!-- Slide 6 -->
-        <div class="slide" data-index="5">
-            <div class="slide-inner">
+            `, cls: 'slide' },
+        { html: `
                 <h2>常用的快捷键</h2>
                 <img class="img-wide" src="images/keyboard.png" alt="键盘" style="max-width:400px;margin:0 auto 16px">
                 <ul>
@@ -259,12 +245,8 @@
                     <li><code>Win + L</code> ——锁定电脑</li>
                     <li><code>Win + S</code> ——搜索</li>
                 </ul>
-            </div>
-        </div>
-
-        <!-- Slide 7 -->
-        <div class="slide" data-index="6">
-            <div class="slide-inner">
+            `, cls: 'slide' },
+        { html: `
                 <h2>任务管理器/h2>
                 <div class="flex-row">
                     <div class="text">
@@ -275,12 +257,8 @@
                         <img src="images/task-manager.png" alt="任务管理器>
                     </div>
                 </div>
-            </div>
-        </div>
-
-        <!-- Slide 8 -->
-        <div class="slide" data-index="7">
-            <div class="slide-inner">
+            `, cls: 'slide' },
+        { html: `
                 <h2>总结</h2>
                 <p>Windows 是一个功能强大的操作系统，它让普通用户也能轻松使用电脑、/p>
                 <p>通过本课的学习，我们了解了：</p>
@@ -291,36 +269,30 @@
                     <li>常用快捷键/li>
                     <li>任务管理器的使用</li>
                 </ul>
-            </div>
-        </div>
-    </div>
+            `, cls: 'slide' }
+    ];
+    let current = 0;
+    const container = document.getElementById('slideContainer');
+    const counter = document.getElementById('counter');
 
-    <div class="nav-bar">
-        <a class="back-link" href="index.html">ↀ目录</a>
-        <button id="prevBtn">◀</button>
-        <span class="counter" id="counter">1 / 8</span>
-        <button id="nextBtn">▀/button>
-    </div>
+    function goTo(n) {
+        current = (n + slidesData.length) % slidesData.length;
+        container.className = slidesData[current].cls;
+        container.innerHTML = slidesData[current].html;
+        counter.textContent = (current + 1) + ' / ' + slidesData.length;
+    }
 
-    <script>
-        const slides = document.querySelectorAll('.slide');
-        const total = slides.length;
-        let current = 0;
-
-        function goTo(n) { slides.forEach(s => s.style.display = 'none'); slides[current].classList.remove('active'); current = (n + total) % total; slides[current].style.display = 'flex'; slides[current].classList.add('active'); document.getElementById('counter').textContent = (current + 1) + ' / ' + total; }
-
-        document.getElementById('prevBtn').addEventListener('click', () => goTo(current - 1));
-        document.getElementById('nextBtn').addEventListener('click', () => goTo(current + 1));
-
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); goTo(current + 1); }
-            if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); goTo(current - 1); }
-        });
-
-        document.getElementById('presentation').addEventListener('click', (e) => {
-            if (e.target.closest('.nav-bar') || e.target.closest('.slide-inner')) return;
-            goTo(current + 1);
-        });
+    document.getElementById('prevBtn').addEventListener('click', () => goTo(current - 1));
+    document.getElementById('nextBtn').addEventListener('click', () => goTo(current + 1));
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); goTo(current + 1); }
+        if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); goTo(current - 1); }
+    });
+    document.getElementById('presentation').addEventListener('click', (e) => {
+        if (e.target.closest('.nav-bar') || e.target.closest('.slide-inner')) return;
+        goTo(current + 1);
+    });
     </script>
 </body>
+
 </html>

@@ -37,114 +37,17 @@
         @media (max-width: 640px) { .slide { padding: 16px; } .slide-inner { padding: 24px 18px; } .nav-bar { padding: 8px 12px; gap: 8px; bottom: 14px; } .flex-row { flex-direction: column; } }
     </style>
 </head>
+
 <body>
     <div class="presentation" id="presentation">
-        <div class="slide slide-title active" data-index="0">
-            <div class="slide-inner">
+        <div class="slide slide-title" id="slideContainer">
+            
                 <img src="images/download-icon.png" alt="软件" style="width:100px;margin-bottom:16px;opacity:0.8">
-                <div class="lesson-num">第五试/div>
+                <div class="lesson-num">第五试</div>
                 <h1>软件安装与避坑/h1>
                 <div class="sub">从哪下载？怎么装？怎么删？</div>
             </div>
-        </div>
-
-        <div class="slide" data-index="1">
-            <div class="slide-inner">
-                <h2>软件从哪来？</h2>
-                <p>安装软件要先拿到安装包（一一.exe 戏.msi 文件）。去哪拿才安全？</p>
-                <ul>
-                    <li><strong>官网下载</strong>（最安全）—打开浏览器搜"软件名+ 官网"</li>
-                    <li><strong>微软商店</strong>（Microsoft Store）—系统自带，点一下就能装</li>
-                    <li><strong>不要用/strong>下载站（妀华军、非凡、ZOL）—满屏广告、捆绑流氀/li>
-                </ul>
-                <div class="warn-box">
-                    ⚠️ 搀微信下载"出来的前几个可能全是广告！认准官方域名、                </div>
-            </div>
-        </div>
-
-        <div class="slide" data-index="2">
-            <div class="slide-inner">
-                <h2>安装步骤（以微信为例！/h2>
-                <ul>
-                    <li>从官网下软WeChatSetup.exe</li>
-                    <li>双击运行 ↀ可能弹出"用户账户控制" ↀ点是</li>
-                    <li>选择安装位置（一般默设C 盘就行）</li>
-                    <li><strong>注意看每一步的勾选框！/strong></li>
-                    <li>一路点"下一步直到"完成"</li>
-                </ul>
-            </div>
-        </div>
-
-        <div class="slide" data-index="3">
-            <div class="slide-inner">
-                <h2>安装时最关键的：看勾选框！/h2>
-                <p>很多免费软件靠捆绑赚钱。安装时<strong>仔细看每一个复选框</strong>！/p>
-                <ul>
-                    <li>"安装上网导航" ↀ取消勾选（否则浏览器主页被改）</li>
-                    <li>"推荐安装XX壁纸" ↀ取消勾选（否则多个垃圾软件！/li>
-                    <li>"开机自动启力 ↀ不需要就取消</li>
-                </ul>
-                <div class="tip-box">
-                    💡 不要着急点"下一步！慢一点看清楚了再点，比装了垃圾再删省事得多、                </div>
-            </div>
-        </div>
-
-        <div class="slide" data-index="4">
-            <div class="slide-inner">
-                <h2>怎么卸载软件！/h2>
-                <p>不要直接删桌面图标！那只是快捷方式，删了也没用、/p>
-                <p>正确方法！/p>
-                <ul>
-                    <li><strong>Win 10/11！/strong>设置 ↀ应用 ↀ应用和功能ↀ找到软件 ↀ卸载</li>
-                    <li><strong>旧版系统！/strong>控制面板 ↀ程序和功能/li>
-                    <li>或者：开始菜单ↀ右键软件图标 ↀ卸载</li>
-                </ul>
-                <div class="highlight-box">
-                    💡 写得很清楚：桌面图标只是一一入口"，程序本体在 C:\Program Files 里、                </div>
-            </div>
-        </div>
-
-        <div class="slide" data-index="5">
-            <div class="slide-inner">
-                <h2>常用软件推荐（免费好用的！/h2>
-                <ul>
-                    <li><strong>浏览器：</strong>Chrome / Edge（系统自带）/ Firefox</li>
-                    <li><strong>办公！/strong>WPS Office（免费版够用！/li>
-                    <li><strong>压缩/解压！/strong>7-Zip（无广告，免费的良心软件！/li>
-                    <li><strong>视频播放！/strong>VLC / PotPlayer</li>
-                    <li><strong>截图！/strong>Snipaste（按 F1 截图！/li>
-                    <li><strong>输入法：</strong>搜狗拼音 / 微软拼音（系统自带）</li>
-                </ul>
-            </div>
-        </div>
-
-        <div class="slide" data-index="6">
-            <div class="slide-inner">
-                <h2>为什么电脑会越用越慢！/h2>
-                <p>很多时候是装了一堀流氓软件"！/p>
-                <ul>
-                    <li>捆绑安装的壁纸软件、游戏盒子、浏览器插件</li>
-                    <li>它们开机自名ↀ后台偷跑 ↀ弹出广告 ↀ修改浏览器主页/li>
-                    <li>几款常见的流氓：2345系列、驱动精灵、软媒系分/li>
-                </ul>
-                <div class="warn-box">
-                    ⚠️ 如果发现电脑一直弹广告、浏览器主页被改，八成是装了什么捆绑软件。打开任务管理器看看、                </div>
-            </div>
-        </div>
-
-        <div class="slide" data-index="7">
-            <div class="slide-inner">
-                <h2>总结</h2>
-                <ul>
-                    <li>只从<strong>官网或微软商序/strong>下载软件</li>
-                    <li>安装无strong>看清楚每个勾选框</strong>，取消不需要的捆绑</li>
-                    <li>卸载走系统设置里的应用和功能</li>
-                    <li>桌面图标是快捷方式，删了没用，程序还在/li>
-                    <li>电脑变慢先查是不是装了流氓软代/li>
-                </ul>
-                <div class="tip-box">
-                    💡 如果不知道怎么辨别官网，直接去微软商店下载最安全、                </div>
-            </div>
+        
         </div>
     </div>
 
@@ -156,12 +59,104 @@
     </div>
 
     <script>
-        const slides = document.querySelectorAll('.slide'); const total = slides.length; let current = 0;
-        function goTo(n) { slides.forEach(s => s.style.display = 'none'); slides[current].classList.remove('active'); current = (n + total) % total; slides[current].style.display = 'flex'; slides[current].classList.add('active'); document.getElementById('counter').textContent = (current + 1) + ' / ' + total; }
-        document.getElementById('prevBtn').addEventListener('click', () => goTo(current - 1));
-        document.getElementById('nextBtn').addEventListener('click', () => goTo(current + 1));
-        document.addEventListener('keydown', (e) => { if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); goTo(current + 1); } if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); goTo(current - 1); } });
-        document.getElementById('presentation').addEventListener('click', (e) => { if (e.target.closest('.nav-bar') || e.target.closest('.slide-inner')) return; goTo(current + 1); });
+    const slidesData = [
+        { html: `
+                <img src="images/download-icon.png" alt="软件" style="width:100px;margin-bottom:16px;opacity:0.8">
+                <div class="lesson-num">第五试</div>
+                <h1>软件安装与避坑/h1>
+                <div class="sub">从哪下载？怎么装？怎么删？</div>
+            </div>
+        `, cls: 'slide slide-title active' },
+        { html: `
+                <h2>安装步骤（以微信为例！/h2>
+                <ul>
+                    <li>从官网下软WeChatSetup.exe</li>
+                    <li>双击运行 ↀ可能弹出"用户账户控制" ↀ点是</li>
+                    <li>选择安装位置（一般默设C 盘就行）</li>
+                    <li><strong>注意看每一步的勾选框！/strong></li>
+                    <li>一路点"下一步直到"完成"</li>
+                </ul>
+            `, cls: 'slide' },
+        { html: `
+                <h2>安装时最关键的：看勾选框！/h2>
+                <p>很多免费软件靠捆绑赚钱。安装时<strong>仔细看每一个复选框</strong>！/p>
+                <ul>
+                    <li>"安装上网导航" ↀ取消勾选（否则浏览器主页被改）</li>
+                    <li>"推荐安装XX壁纸" ↀ取消勾选（否则多个垃圾软件！/li>
+                    <li>"开机自动启力 ↀ不需要就取消</li>
+                </ul>
+                <div class="tip-box">
+                    💡 不要着急点"下一步！慢一点看清楚了再点，比装了垃圾再删省事得多、                </div>
+            `, cls: 'slide' },
+        { html: `
+                <h2>怎么卸载软件！/h2>
+                <p>不要直接删桌面图标！那只是快捷方式，删了也没用、/p>
+                <p>正确方法！/p>
+                <ul>
+                    <li><strong>Win 10/11！/strong>设置 ↀ应用 ↀ应用和功能ↀ找到软件 ↀ卸载</li>
+                    <li><strong>旧版系统！/strong>控制面板 ↀ程序和功能/li>
+                    <li>或者：开始菜单ↀ右键软件图标 ↀ卸载</li>
+                </ul>
+                <div class="highlight-box">
+                    💡 写得很清楚：桌面图标只是一一入口"，程序本体在 C:\\Program Files 里、                </div>
+            `, cls: 'slide' },
+        { html: `
+                <h2>常用软件推荐（免费好用的！/h2>
+                <ul>
+                    <li><strong>浏览器：</strong>Chrome / Edge（系统自带）/ Firefox</li>
+                    <li><strong>办公！/strong>WPS Office（免费版够用！/li>
+                    <li><strong>压缩/解压！/strong>7-Zip（无广告，免费的良心软件！/li>
+                    <li><strong>视频播放！/strong>VLC / PotPlayer</li>
+                    <li><strong>截图！/strong>Snipaste（按 F1 截图！/li>
+                    <li><strong>输入法：</strong>搜狗拼音 / 微软拼音（系统自带）</li>
+                </ul>
+            `, cls: 'slide' },
+        { html: `
+                <h2>为什么电脑会越用越慢！/h2>
+                <p>很多时候是装了一堀流氓软件"！/p>
+                <ul>
+                    <li>捆绑安装的壁纸软件、游戏盒子、浏览器插件</li>
+                    <li>它们开机自名ↀ后台偷跑 ↀ弹出广告 ↀ修改浏览器主页/li>
+                    <li>几款常见的流氓：2345系列、驱动精灵、软媒系分/li>
+                </ul>
+                <div class="warn-box">
+                    ⚠️ 如果发现电脑一直弹广告、浏览器主页被改，八成是装了什么捆绑软件。打开任务管理器看看、                </div>
+            `, cls: 'slide' },
+        { html: `
+                <h2>总结</h2>
+                <ul>
+                    <li>只从<strong>官网或微软商序/strong>下载软件</li>
+                    <li>安装无strong>看清楚每个勾选框</strong>，取消不需要的捆绑</li>
+                    <li>卸载走系统设置里的应用和功能</li>
+                    <li>桌面图标是快捷方式，删了没用，程序还在/li>
+                    <li>电脑变慢先查是不是装了流氓软代/li>
+                </ul>
+                <div class="tip-box">
+                    💡 如果不知道怎么辨别官网，直接去微软商店下载最安全、                </div>
+            `, cls: 'slide' }
+    ];
+    let current = 0;
+    const container = document.getElementById('slideContainer');
+    const counter = document.getElementById('counter');
+
+    function goTo(n) {
+        current = (n + slidesData.length) % slidesData.length;
+        container.className = slidesData[current].cls;
+        container.innerHTML = slidesData[current].html;
+        counter.textContent = (current + 1) + ' / ' + slidesData.length;
+    }
+
+    document.getElementById('prevBtn').addEventListener('click', () => goTo(current - 1));
+    document.getElementById('nextBtn').addEventListener('click', () => goTo(current + 1));
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); goTo(current + 1); }
+        if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); goTo(current - 1); }
+    });
+    document.getElementById('presentation').addEventListener('click', (e) => {
+        if (e.target.closest('.nav-bar') || e.target.closest('.slide-inner')) return;
+        goTo(current + 1);
+    });
     </script>
 </body>
+
 </html>

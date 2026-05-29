@@ -32,26 +32,35 @@
         @media (max-width: 640px) { .slide { padding: 16px; } .slide-inner { padding: 24px 18px; } .nav-bar { padding: 8px 12px; gap: 8px; bottom: 14px; } }
     </style>
 </head>
+
 <body>
     <div class="presentation" id="presentation">
-        <div class="slide slide-title active" data-index="0">
-            <div class="slide-inner">
-                <div class="lesson-num">进阶 · 第一试/div>
+        <div class="slide slide-title" id="slideContainer">
+            
+                <div class="lesson-num">进阶 · 第一试</div>
                 <h1>进程、窗口与消息机制</h1>
                 <div class="sub">操作系统底层是怎么运行的？</div>
             </div>
+        
         </div>
-        <div class="slide" data-index="1">
-            <div class="slide-inner">
-                <h2>程序 ≀进程</h2>
-                <p><strong>程序</strong>是硬盘上的文代(.exe)，静态的，不会动、/p>
-                <p><strong>进程</strong>是程序被加载到内存后"活起来的实例、/p>
-                <p>同一个程序打开三次 ↀ三个独立的进程，各有各的内存空间，互不干扰、/p>
-                <div class="highlight-box">每个进程有一个唯一的PID（进程ID），在任务管理器里能看到、/div>
+    </div>
+
+    <div class="nav-bar">
+        <a class="back-link" href="index.html">ↀ目录</a>
+        <button id="prevBtn">◀</button>
+        <span class="counter" id="counter">1 / 8</span>
+        <button id="nextBtn">▀/button>
+    </div>
+
+    <script>
+    const slidesData = [
+        { html: `
+                <div class="lesson-num">进阶 · 第一试</div>
+                <h1>进程、窗口与消息机制</h1>
+                <div class="sub">操作系统底层是怎么运行的？</div>
             </div>
-        </div>
-        <div class="slide" data-index="2">
-            <div class="slide-inner">
+        `, cls: 'slide slide-title active' },
+        { html: `
                 <h2>窗口的本贀/h2>
                 <p>在Windows 系统里，窗口不是"画出来的图片"，而是一一strong>数据结构</strong>、/p>
                 <ul>
@@ -60,10 +69,8 @@
                     <li>窗口属于进程——一个进程可以有多个窗口</li>
                     <li>窗口关闭 ↀ系统销毁对应的数据结构</li>
                 </ul>
-            </div>
-        </div>
-        <div class="slide" data-index="3">
-            <div class="slide-inner">
+            `, cls: 'slide' },
+        { html: `
                 <h2>消息队列</h2>
                 <p>Windows 是strong>消息驱动</strong>系统。一切输入都变成"消息"！/p>
                 <ul>
@@ -72,10 +79,8 @@
                     <li>窗口需要重统ↀ生成一来WM_PAINT 消息</li>
                 </ul>
                 <p>每个线程（有窗口的）有自己的消息队列。系统把消息投进队列，线程不断取出来处理——这参strong>消息循环</strong>、/p>
-            </div>
-        </div>
-        <div class="slide" data-index="4">
-            <div class="slide-inner">
+            `, cls: 'slide' },
+        { html: `
                 <h2>卡死的根本原回/h2>
                 <p>为什么程序会"无响序！/p>
                 <ul>
@@ -84,23 +89,10 @@
                     <li>消息队列越积越多，系统检测到超时不处理/li>
                     <li>标题栏出现无响序——系统提示你安死了"</li>
                 </ul>
-                <div class="tip-box">任务管理器结束进程，就是强制杀掉它的消息循环、/div>
+                <div class="tip-box">任务管理器结束进程，就是强制杀掉它的消息循环、</div>
             </div>
-        </div>
-        <div class="slide" data-index="5">
-            <div class="slide-inner">
-                <h2>Z 序（Z-Order！/h2>
-                <p>窗口不仅有X、Y 位置，还有Z 轴——前后顺序：</p>
-                <ul>
-                    <li><strong>顶层窗口</strong>（Foreground）—Z 序最上面，用户正在操但/li>
-                    <li><strong>底层窗口</strong> —被盖在下面，可能完全看不解/li>
-                    <li><strong>TopMost 窗口</strong> —强制始终在最前（如任务管理器"总在最前！/li>
-                </ul>
-                <p>Z 序+ 焦点 = 决定你按键盘时输入去哪、/p>
-            </div>
-        </div>
-        <div class="slide" data-index="6">
-            <div class="slide-inner">
+        `, cls: 'slide' },
+        { html: `
                 <h2>句柄（Handle！/h2>
                 <p>句柄是Windows 里非常重要的概念——它是一一strong>编号</strong>，代表系统内部某个对象：</p>
                 <ul>
@@ -109,35 +101,32 @@
                     <li><strong>HFILE</strong> —文件句柄（打开的文件）</li>
                     <li><strong>HKEY</strong> —注册表键句柄</li>
                 </ul>
-                <div class="highlight-box">句柄的本质是一个索引，指向系统内部维护的对象表。你不能直接操作对象，只能通过句柄"间接"操作、/div>
+                <div class="highlight-box">句柄的本质是一个索引，指向系统内部维护的对象表。你不能直接操作对象，只能通过句柄"间接"操作、</div>
             </div>
-        </div>
-        <div class="slide" data-index="7">
-            <div class="slide-inner">
-                <h2>总结</h2>
-                <ul>
-                    <li>程序是文件，进程是运行实例，有PID</li>
-                    <li>窗口是数据结构，用HWND 标识</li>
-                    <li>所有输入通过消息队列传递，系统消息驱动</li>
-                    <li>卡死 = 消息循环被阻塀/li>
-                    <li>Z 序决定窗口层次，句柄是操作对象的钥匙</li>
-                </ul>
-            </div>
-        </div>
-    </div>
-    <div class="nav-bar">
-        <a class="back-link" href="index.html">ↀ目录</a>
-        <button id="prevBtn">◀</button>
-        <span class="counter" id="counter">1 / 8</span>
-        <button id="nextBtn">▀/button>
-    </div>
-    <script>
-        const slides = document.querySelectorAll('.slide'); const total = slides.length; let current = 0;
-        function goTo(n) { slides.forEach(s => s.style.display = 'none'); slides[current].classList.remove('active'); current = (n + total) % total; slides[current].style.display = 'flex'; slides[current].classList.add('active'); document.getElementById('counter').textContent = (current + 1) + ' / ' + total; }
-        document.getElementById('prevBtn').addEventListener('click', () => goTo(current - 1));
-        document.getElementById('nextBtn').addEventListener('click', () => goTo(current + 1));
-        document.addEventListener('keydown', (e) => { if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); goTo(current + 1); } if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); goTo(current - 1); } });
-        document.getElementById('presentation').addEventListener('click', (e) => { if (e.target.closest('.nav-bar') || e.target.closest('.slide-inner')) return; goTo(current + 1); });
+        `, cls: 'slide' }
+    ];
+    let current = 0;
+    const container = document.getElementById('slideContainer');
+    const counter = document.getElementById('counter');
+
+    function goTo(n) {
+        current = (n + slidesData.length) % slidesData.length;
+        container.className = slidesData[current].cls;
+        container.innerHTML = slidesData[current].html;
+        counter.textContent = (current + 1) + ' / ' + slidesData.length;
+    }
+
+    document.getElementById('prevBtn').addEventListener('click', () => goTo(current - 1));
+    document.getElementById('nextBtn').addEventListener('click', () => goTo(current + 1));
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); goTo(current + 1); }
+        if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); goTo(current - 1); }
+    });
+    document.getElementById('presentation').addEventListener('click', (e) => {
+        if (e.target.closest('.nav-bar') || e.target.closest('.slide-inner')) return;
+        goTo(current + 1);
+    });
     </script>
 </body>
+
 </html>

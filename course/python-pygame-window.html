@@ -43,23 +43,47 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',s
             .slide-inner::-webkit-scrollbar { width: 3px; }
         }
     </style></head>
-<body><div class="presentation" id="presentation">
-<div class="slide slide-title active" data-index="0"><div class="slide-inner"><div class="lesson-num">Python · 第试/div><h1>Pygame 创建游戏窗口</h1><div class="sub">第一个图形化程序</div></div></div>
-<div class="slide" data-index="1"><div class="slide-inner"><h2>安装 Pygame</h2><p>打开终端（Win+R ↀcmd）：</p><p><strong>pip install pygame</strong></p><p>等下载完成后测试！/p><p><code>python -c "import pygame; print(pygame.ver)"</code></p><p>如果显示版本号说明安装成功、/p><div class="tip-box">如果报错 "pip 不是命令"，重新运行Python 安装程序，勾通"Add Python to PATH"、/div></div></div>
-<div class="slide" data-index="2"><div class="slide-inner"><h2>创建窗口</h2><p>完整的Pygame 窗口程序！/p><p><code>import pygame</code></p><p><code>pygame.init()</code></p><p><code>screen = pygame.display.set_mode((800, 600))</code></p><p><code>pygame.display.set_caption("我的游戏")</code></p><p><code>while True:</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;for event in pygame.event.get():</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if event.type == pygame.QUIT:</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;exit()</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;pygame.display.update()</code></p></div></div>
-<div class="slide" data-index="2"><div class="slide-inner"><h2>逐行解释</h2><ul><li><strong>import pygame</strong> —导入 Pygame 序/li><li><strong>pygame.init()</strong> —初始化所有Pygame 模块</li><li><strong>set_mode((800,600))</strong> —创建 800×600 像素的窗参/li><li><strong>set_caption</strong> —设置窗口标题</li><li><strong>while True</strong> —游戏主循环（每帧执行一次）</li><li><strong>event.get()</strong> —获取所有事件（按键、点击、关闭等！/li><li><strong>pygame.QUIT</strong> —用户点×关闭窗口的事件</li><li><strong>display.update()</strong> —刷新画面</li></ul></div></div>
-<div class="slide" data-index="3"><div class="slide-inner"><h2>设置背景颜色</h2><p>在循环里加这句：</p><p><code>screen.fill((100, 150, 200))</code></p><p>RGB 颜色！级 统 蓀，每个倀0-255、/p><p>例子！/p><ul><li>(0, 0, 0) = 黑色</li><li>(255, 255, 255) = 白色</li><li>(100, 200, 100) = 草绿艀/li></ul></div></div>
-<div class="slide" data-index="4"><div class="slide-inner"><h2>帧率控制 (Clock)</h2><p>不加帧率控制游戏会跑得飞快，加个时钟！/p><p><code>clock = pygame.time.Clock()</code> ↀ在初始化部分</p><p>在主循环末尾加：</p><p><code>clock.tick(60)</code> ↀ限制每秒 60 常/p><div class="highlight-box">60 FPS 是标准的游戏帧率。tick(60) 会让循环每秒钟最多运行60 次、/div></div></div>
-<div class="slide" data-index="5"><div class="slide-inner"><h2>画一个矩录/h2><p>在循环里加：</p><p><code>pygame.draw.rect(screen, (255,0,0), (100, 100, 80, 60))</code></p><ul><li>screen —画到哪个表面</li><li>(255,0,0) —红色</li><li>(100, 100, 80, 60) —(x, y, 安 髀</li></ul></div></div>
-<div class="slide" data-index="6"><div class="slide-inner"><h2>画一个圆录/h2><p><code>pygame.draw.circle(screen, (0,255,0), (400, 300), 50)</code></p><ul><li>(0,255,0) —绿色</li><li>(400, 300) —圆心坐标</li><li>50 —半径（像素）</li></ul><p>还有 <strong>ellipse</strong>（椭圆）、strong>line</strong>（线条）、strong>polygon</strong>（多边形）等、/p></div></div>
-<div class="slide" data-index="7"><div class="slide-inner"><h2>总结</h2><ul><li>pip install pygame 安装序/li><li>pygame.init() 初始化，set_mode() 创建窗口</li><li>主循现while True 持续更新画面</li><li>event.get() 检测用户操但/li><li>screen.fill() 设置背景艀/li><li>clock.tick(60) 锁定 60 常/li><li>draw.rect() / draw.circle() 画图录/li></ul></div></div>
-</div>
-<div class="nav-bar"><a class="back-link" href="index.html">ↀ目录</a><button id="prevBtn">◀</button><span class="counter" id="counter">1 / 8</span><button id="nextBtn">▀/button></div>
-<script>
-const slides=document.querySelectorAll('.slide'),total=slides.length;let current=0;
-function goTo(n) { slides.forEach(s => s.style.display = 'none'); slides[current].classList.remove('active'); current = (n + total) % total; slides[current].style.display = 'flex'; slides[current].classList.add('active'); document.getElementById('counter').textContent = (current + 1) + ' / ' + total; }
-document.getElementById('prevBtn').addEventListener('click',()=>goTo(current-1));
-document.getElementById('nextBtn').addEventListener('click',()=>goTo(current+1));
-document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key==='ArrowDown'||e.key===' '){e.preventDefault();goTo(current+1)}if(e.key==='ArrowLeft'||e.key==='ArrowUp'){e.preventDefault();goTo(current-1)}});
-document.getElementById('presentation').addEventListener('click',e=>{if(e.target.closest('.nav-bar')||e.target.closest('.slide-inner'))return;goTo(current+1)});
-</script></body></html>
+
+<body>
+    <div class="presentation" id="presentation">
+        <div class="slide slide-title" id="slideContainer">
+            <div class="lesson-num">Python · 第试</div><h1>Pygame 创建游戏窗口</h1><div class="sub">第一个图形化程序</div></div>
+        </div>
+    </div>
+
+    <div class="nav-bar"><a class="back-link" href="index.html">ↀ目录</a><button id="prevBtn">◀</button><span class="counter" id="counter">1 / 8</span><button id="nextBtn">▀/button></div>
+
+    <script>
+    const slidesData = [
+        { html: `<div class="lesson-num">Python · 第试</div><h1>Pygame 创建游戏窗口</h1><div class="sub">第一个图形化程序</div></div>`, cls: 'slide slide-title active' },
+        { html: `<h2>创建窗口</h2><p>完整的Pygame 窗口程序！/p><p><code>import pygame</code></p><p><code>pygame.init()</code></p><p><code>screen = pygame.display.set_mode((800, 600))</code></p><p><code>pygame.display.set_caption("我的游戏")</code></p><p><code>while True:</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;for event in pygame.event.get():</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if event.type == pygame.QUIT:</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;exit()</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;pygame.display.update()</code></p>`, cls: 'slide' },
+        { html: `<h2>逐行解释</h2><ul><li><strong>import pygame</strong> —导入 Pygame 序/li><li><strong>pygame.init()</strong> —初始化所有Pygame 模块</li><li><strong>set_mode((800,600))</strong> —创建 800×600 像素的窗参/li><li><strong>set_caption</strong> —设置窗口标题</li><li><strong>while True</strong> —游戏主循环（每帧执行一次）</li><li><strong>event.get()</strong> —获取所有事件（按键、点击、关闭等！/li><li><strong>pygame.QUIT</strong> —用户点×关闭窗口的事件</li><li><strong>display.update()</strong> —刷新画面</li></ul>`, cls: 'slide' },
+        { html: `<h2>设置背景颜色</h2><p>在循环里加这句：</p><p><code>screen.fill((100, 150, 200))</code></p><p>RGB 颜色！级 统 蓀，每个倀0-255、/p><p>例子！/p><ul><li>(0, 0, 0) = 黑色</li><li>(255, 255, 255) = 白色</li><li>(100, 200, 100) = 草绿艀/li></ul>`, cls: 'slide' },
+        { html: `<h2>帧率控制 (Clock)</h2><p>不加帧率控制游戏会跑得飞快，加个时钟！/p><p><code>clock = pygame.time.Clock()</code> ↀ在初始化部分</p><p>在主循环末尾加：</p><p><code>clock.tick(60)</code> ↀ限制每秒 60 常/p><div class="highlight-box">60 FPS 是标准的游戏帧率。tick(60) 会让循环每秒钟最多运行60 次、</div></div>`, cls: 'slide' },
+        { html: `<h2>画一个圆录/h2><p><code>pygame.draw.circle(screen, (0,255,0), (400, 300), 50)</code></p><ul><li>(0,255,0) —绿色</li><li>(400, 300) —圆心坐标</li><li>50 —半径（像素）</li></ul><p>还有 <strong>ellipse</strong>（椭圆）、strong>line</strong>（线条）、strong>polygon</strong>（多边形）等、/p>`, cls: 'slide' },
+        { html: `<h2>总结</h2><ul><li>pip install pygame 安装序/li><li>pygame.init() 初始化，set_mode() 创建窗口</li><li>主循现while True 持续更新画面</li><li>event.get() 检测用户操但/li><li>screen.fill() 设置背景艀/li><li>clock.tick(60) 锁定 60 常/li><li>draw.rect() / draw.circle() 画图录/li></ul>`, cls: 'slide' }
+    ];
+    let current = 0;
+    const container = document.getElementById('slideContainer');
+    const counter = document.getElementById('counter');
+
+    function goTo(n) {
+        current = (n + slidesData.length) % slidesData.length;
+        container.className = slidesData[current].cls;
+        container.innerHTML = slidesData[current].html;
+        counter.textContent = (current + 1) + ' / ' + slidesData.length;
+    }
+
+    document.getElementById('prevBtn').addEventListener('click', () => goTo(current - 1));
+    document.getElementById('nextBtn').addEventListener('click', () => goTo(current + 1));
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); goTo(current + 1); }
+        if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); goTo(current - 1); }
+    });
+    document.getElementById('presentation').addEventListener('click', (e) => {
+        if (e.target.closest('.nav-bar') || e.target.closest('.slide-inner')) return;
+        goTo(current + 1);
+    });
+    </script>
+</body>
+</html>

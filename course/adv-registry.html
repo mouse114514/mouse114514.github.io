@@ -33,31 +33,37 @@
         @media (max-width: 640px) { .slide { padding: 16px; } .slide-inner { padding: 24px 18px; } .nav-bar { padding: 8px 12px; gap: 8px; bottom: 14px; } }
     </style>
 </head>
+
 <body>
     <div class="presentation" id="presentation">
-        <div class="slide slide-title active" data-index="0">
-            <div class="slide-inner">
+        <div class="slide slide-title" id="slideContainer">
+            
                 <img src="images/download-icon.png" alt="软件" style="width:100px;margin-bottom:16px;opacity:0.8">
-                <div class="lesson-num">进阶 · 第三试/div>
+                <div class="lesson-num">进阶 · 第三试</div>
                 <h1>软件安装与注册表</h1>
                 <div class="sub">装一个软件，系统到底做了什么？</div>
             </div>
+        
         </div>
-        <div class="slide" data-index="1">
-            <div class="slide-inner">
-                <h2>安装不只是复制文件"</h2>
-                <p>当你运行安装程序（Setup.exe / MSI），它在系统里触发一系列操作！/p>
-                <ul>
-                    <li>把程序文件解压到 <code>C:\Program Files</code></li>
-                    <li>名*注册行*写入配置信息</li>
-                    <li>注册文件关联（如 .txt 用记事本打开！/li>
-                    <li>安装系统服务或开机自启项</li>
-                    <li>在开始菜单和桌面创建快捷方式</li>
-                </ul>
+    </div>
+
+    <div class="nav-bar">
+        <a class="back-link" href="index.html">ↀ目录</a>
+        <button id="prevBtn">◀</button>
+        <span class="counter" id="counter">1 / 8</span>
+        <button id="nextBtn">▀/button>
+    </div>
+
+    <script>
+    const slidesData = [
+        { html: `
+                <img src="images/download-icon.png" alt="软件" style="width:100px;margin-bottom:16px;opacity:0.8">
+                <div class="lesson-num">进阶 · 第三试</div>
+                <h1>软件安装与注册表</h1>
+                <div class="sub">装一个软件，系统到底做了什么？</div>
             </div>
-        </div>
-        <div class="slide" data-index="2">
-            <div class="slide-inner">
+        `, cls: 'slide slide-title active' },
+        { html: `
                 <h2>什么是注册表？</h2>
                 <p>注册表是 Windows 的strong>核心配置数据序/strong>，树状结构。按 <span class="key">Win</span> + <span class="key">R</span> 输入 <code>regedit</code> 打开、/p>
                 <p>五大根键！/p>
@@ -68,36 +74,20 @@
                     <li><strong>HKEY_USERS</strong> —所有用户的配置</li>
                     <li><strong>HKEY_CURRENT_CONFIG</strong> —硬件配置</li>
                 </ul>
-            </div>
-        </div>
-        <div class="slide" data-index="3">
-            <div class="slide-inner">
+            `, cls: 'slide' },
+        { html: `
                 <h2>注册表里有什么？</h2>
                 <p>每个节点（项）下面可以有多种<strong>倀/strong>！/p>
                 <ul>
-                    <li><strong>REG_SZ</strong> —字符串（如路得"C:\Windows"！/li>
+                    <li><strong>REG_SZ</strong> —字符串（如路得"C:\\Windows"！/li>
                     <li><strong>REG_DWORD</strong> —数字（如 1 表示启用！/li>
                     <li><strong>REG_BINARY</strong> —二进制数据/li>
                     <li><strong>REG_MULTI_SZ</strong> —多行文本</li>
                 </ul>
-                <div class="tip-box">很多软件的设置就存在注册表里。重装系统前导出注册行= 备份软件设置、/div>
+                <div class="tip-box">很多软件的设置就存在注册表里。重装系统前导出注册行= 备份软件设置、</div>
             </div>
-        </div>
-        <div class="slide" data-index="4">
-            <div class="slide-inner">
-                <h2>文件关联是怎么工作的？</h2>
-                <p>双击 .txt 文件 ↀ系统查注册表！/p>
-                <ul>
-                    <li><code>.txt</code> 扩展名ↀ关联分<strong>txtfile</strong> 这个 ProgID</li>
-                    <li><strong>txtfile</strong> ↀ找到 shell ↀopen ↀcommand</li>
-                    <li>倀= <code>C:\Windows\notepad.exe "%1"</code></li>
-                    <li>系统执行这个命令，把文件路径传进原/li>
-                </ul>
-                <div class="highlight-box">打开方式 ↀ选择其他应用 ↀ勾通始终使用此应用 ↀ就是在改注册表、/div>
-            </div>
-        </div>
-        <div class="slide" data-index="5">
-            <div class="slide-inner">
+        `, cls: 'slide' },
+        { html: `
                 <h2>服务（Services！/h2>
                 <p>服务是strong>没有界面的后台进程/strong>，不需要用户登录就能运行：</p>
                 <ul>
@@ -105,24 +95,10 @@
                     <li>代SYSTEM 账户运行，权限很髀/li>
                     <li>持<span class="key">Win</span> + <span class="key">R</span> ↀ<code>services.msc</code> 查看</li>
                 </ul>
-                <div class="highlight-box">恶意软件常把自己注册为服务来持久化——即使没人登录也在运行且很难被发现、/div>
+                <div class="highlight-box">恶意软件常把自己注册为服务来持久化——即使没人登录也在运行且很难被发现、</div>
             </div>
-        </div>
-        <div class="slide" data-index="6">
-            <div class="slide-inner">
-                <h2>软件自启的多种方开/h2>
-                <ul>
-                    <li><strong>启动文件备/strong> —<code>shell:startup</code></li>
-                    <li><strong>注册行Run 键/strong> —<code>HKCU\...\Run</code></li>
-                    <li><strong>计划任务</strong> —可以设触发条件（如登录时！/li>
-                    <li><strong>服务</strong> —设为自动启动</li>
-                    <li><strong>驱动</strong> —最底层，内核态加软/li>
-                </ul>
-                <div class="tip-box">任务管理器ↀ启动标签，能看到大部分自启项。但服务和计划任务要到各自的管理器里查看、/div>
-            </div>
-        </div>
-        <div class="slide" data-index="7">
-            <div class="slide-inner">
+        `, cls: 'slide' },
+        { html: `
                 <h2>总结</h2>
                 <ul>
                     <li>安装软件 = 解压文件 + 注册表配网+ 文件关联 + 服务/自启</li>
@@ -132,22 +108,30 @@
                     <li>自启有启动项、注册表 Run、计划任务、服务、驱动多种方开/li>
                     <li>卸载不只是删文件，还要清理注册表</li>
                 </ul>
-            </div>
-        </div>
-    </div>
-    <div class="nav-bar">
-        <a class="back-link" href="index.html">ↀ目录</a>
-        <button id="prevBtn">◀</button>
-        <span class="counter" id="counter">1 / 8</span>
-        <button id="nextBtn">▀/button>
-    </div>
-    <script>
-        const slides = document.querySelectorAll('.slide'); const total = slides.length; let current = 0;
-        function goTo(n) { slides.forEach(s => s.style.display = 'none'); slides[current].classList.remove('active'); current = (n + total) % total; slides[current].style.display = 'flex'; slides[current].classList.add('active'); document.getElementById('counter').textContent = (current + 1) + ' / ' + total; }
-        document.getElementById('prevBtn').addEventListener('click', () => goTo(current - 1));
-        document.getElementById('nextBtn').addEventListener('click', () => goTo(current + 1));
-        document.addEventListener('keydown', (e) => { if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); goTo(current + 1); } if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); goTo(current - 1); } });
-        document.getElementById('presentation').addEventListener('click', (e) => { if (e.target.closest('.nav-bar') || e.target.closest('.slide-inner')) return; goTo(current + 1); });
+            `, cls: 'slide' }
+    ];
+    let current = 0;
+    const container = document.getElementById('slideContainer');
+    const counter = document.getElementById('counter');
+
+    function goTo(n) {
+        current = (n + slidesData.length) % slidesData.length;
+        container.className = slidesData[current].cls;
+        container.innerHTML = slidesData[current].html;
+        counter.textContent = (current + 1) + ' / ' + slidesData.length;
+    }
+
+    document.getElementById('prevBtn').addEventListener('click', () => goTo(current - 1));
+    document.getElementById('nextBtn').addEventListener('click', () => goTo(current + 1));
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); goTo(current + 1); }
+        if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); goTo(current - 1); }
+    });
+    document.getElementById('presentation').addEventListener('click', (e) => {
+        if (e.target.closest('.nav-bar') || e.target.closest('.slide-inner')) return;
+        goTo(current + 1);
+    });
     </script>
 </body>
+
 </html>

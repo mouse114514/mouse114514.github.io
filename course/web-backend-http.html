@@ -43,22 +43,48 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',s
             .slide-inner::-webkit-scrollbar { width: 3px; }
         }
     </style></head>
-<body><div class="presentation" id="presentation">
-<div class="slide slide-title active" data-index="0"><div class="slide-inner"><div class="lesson-num">Web 后端 · 第试/div><h1>HTTP 协议基础</h1><div class="sub">浏览器和服务器是怎么聊天的/div></div></div>
-<div class="slide" data-index="1"><div class="slide-inner"><h2>HTTP 是什么？</h2><p>HTTP（超文本传输协议）是浏览器和服务器之问strong>沟通的语言</strong>、/p><ul><li>你打开网页 ↀ浏览器用 HTTP 向服务器"要数据</li><li>服务器收到请汀ↀ用HTTP 返回网页内容</li><li>每次访问网页，都是一欀HTTP 请求-响应</li></ul></div></div>
-<div class="slide" data-index="2"><div class="slide-inner"><h2>请求方法</h2><p>最常用的两个：</p><p><strong>GET</strong> —从服务器获取数据</p><p>&nbsp;&nbsp;&nbsp;访问网页、看图片、搜紀ↀ都是 GET</p><p><strong>POST</strong> —向服务器发送数据/p><p>&nbsp;&nbsp;&nbsp;登录、注册、提交表单ↀ都是 POST</p><p>其他还有：PUT（更新）、DELETE（删除）、PATCH（修改部分）</p></div></div>
-<div class="slide" data-index="3"><div class="slide-inner"><h2>URL 的结析/h2><p><code>https://www.example.com:443/path/page?id=1#section</code></p><ul><li><strong>https://</strong> —协议</li><li><strong>www.example.com</strong> —域名</li><li><strong>:443</strong> —端口号（https 默认 443，http 默认 80！/li><li><strong>/path/page</strong> —路径</li><li><strong>?id=1</strong> —查询参数</li><li><strong>#section</strong> —锚点（页面内位置！/li></ul></div></div>
-<div class="slide" data-index="4"><div class="slide-inner"><h2>状态码</h2><p>服务器用状态码告诉浏览器结果：</p><ul><li><strong>200 OK</strong> —成功，网页正常返回/li><li><strong>301/302</strong> —重定向（跳转到另一个地址！/li><li><strong>404 Not Found</strong> —找不到页静/li><li><strong>500 Internal Server Error</strong> —服务器内部错试/li></ul><div class="tip-box">持F12 ↀNetwork 标签 ↀ刷新页面，能看到每个请求的状态码、/div></div></div>
-<div class="slide" data-index="5"><div class="slide-inner"><h2>请求和响应头</h2><p>HTTP 消息除了"正文"，还有头信恀（Headers）：</p><p><strong>请求头（Request Headers！/strong>！/p><ul><li>User-Agent —浏览器信恀/li><li>Cookie —登录状态/li></ul><p><strong>响应头（Response Headers！/strong>！/p><ul><li>Content-Type —返回内容的类型（text/html, application/json！/li><li>Set-Cookie —让浏览器保存 Cookie</li></ul></div></div>
-<div class="slide" data-index="6"><div class="slide-inner"><h2>HTTP 是无状态的</h2><p>HTTP 每次请求都是独立的，服务器不记得你之前做过什么、/p><ul><li>第一次请求：你是谁？</li><li>第二次请求：又是谁？</li></ul><div class="highlight-box">所以需要<strong>Cookie</strong> 和<strong>Session</strong> 来解内记住登录状态的问题。服务器给浏览器发一一身份试（Cookie），下次请求时浏览器带上它、/div></div></div>
-<div class="slide" data-index="7"><div class="slide-inner"><h2>总结</h2><ul><li>HTTP = 浏览器和服务器通信的协设/li><li>GET 请求数据，POST 提交数据</li><li>URL = 协议 + 域名 + 路径 + 参数</li><li>状态码！00 成功、04 找不到、00 服务器错试/li><li>Headers 传递附加信息（Cookie、Content-Type！/li><li>HTTP 无状态，用Cookie/Session 记忆身份</li></ul></div></div>
-</div>
-<div class="nav-bar"><a class="back-link" href="index.html">ↀ目录</a><button id="prevBtn">◀</button><span class="counter" id="counter">1 / 8</span><button id="nextBtn">▀/button></div>
-<script>
-const slides=document.querySelectorAll('.slide'),total=slides.length;let current=0;
-function goTo(n) { slides.forEach(s => s.style.display = 'none'); slides[current].classList.remove('active'); current = (n + total) % total; slides[current].style.display = 'flex'; slides[current].classList.add('active'); document.getElementById('counter').textContent = (current + 1) + ' / ' + total; }
-document.getElementById('prevBtn').addEventListener('click',()=>goTo(current-1));
-document.getElementById('nextBtn').addEventListener('click',()=>goTo(current+1));
-document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key==='ArrowDown'||e.key===' '){e.preventDefault();goTo(current+1)}if(e.key==='ArrowLeft'||e.key==='ArrowUp'){e.preventDefault();goTo(current-1)}});
-document.getElementById('presentation').addEventListener('click',e=>{if(e.target.closest('.nav-bar')||e.target.closest('.slide-inner'))return;goTo(current+1)});
-</script></body></html>
+
+<body>
+    <div class="presentation" id="presentation">
+        <div class="slide slide-title" id="slideContainer">
+            <div class="lesson-num">Web 后端 · 第试</div><h1>HTTP 协议基础</h1><div class="sub">浏览器和服务器是怎么聊天的</div>
+        </div>
+    </div>
+
+    <div class="nav-bar"><a class="back-link" href="index.html">ↀ目录</a><button id="prevBtn">◀</button><span class="counter" id="counter">1 / 8</span><button id="nextBtn">▀/button></div>
+
+    <script>
+    const slidesData = [
+        { html: `<div class="lesson-num">Web 后端 · 第试</div><h1>HTTP 协议基础</h1><div class="sub">浏览器和服务器是怎么聊天的</div>`, cls: 'slide slide-title active' },
+        { html: `<h2>HTTP 是什么？</h2><p>HTTP（超文本传输协议）是浏览器和服务器之问strong>沟通的语言</strong>、/p><ul><li>你打开网页 ↀ浏览器用 HTTP 向服务器"要数据</li><li>服务器收到请汀ↀ用HTTP 返回网页内容</li><li>每次访问网页，都是一欀HTTP 请求-响应</li></ul>`, cls: 'slide' },
+        { html: `<h2>请求方法</h2><p>最常用的两个：</p><p><strong>GET</strong> —从服务器获取数据</p><p>&nbsp;&nbsp;&nbsp;访问网页、看图片、搜紀ↀ都是 GET</p><p><strong>POST</strong> —向服务器发送数据/p><p>&nbsp;&nbsp;&nbsp;登录、注册、提交表单ↀ都是 POST</p><p>其他还有：PUT（更新）、DELETE（删除）、PATCH（修改部分）</p>`, cls: 'slide' },
+        { html: `<h2>URL 的结析/h2><p><code>https://www.example.com:443/path/page?id=1#section</code></p><ul><li><strong>https://</strong> —协议</li><li><strong>www.example.com</strong> —域名</li><li><strong>:443</strong> —端口号（https 默认 443，http 默认 80！/li><li><strong>/path/page</strong> —路径</li><li><strong>?id=1</strong> —查询参数</li><li><strong>#section</strong> —锚点（页面内位置！/li></ul>`, cls: 'slide' },
+        { html: `<h2>状态码</h2><p>服务器用状态码告诉浏览器结果：</p><ul><li><strong>200 OK</strong> —成功，网页正常返回/li><li><strong>301/302</strong> —重定向（跳转到另一个地址！/li><li><strong>404 Not Found</strong> —找不到页静/li><li><strong>500 Internal Server Error</strong> —服务器内部错试/li></ul><div class="tip-box">持F12 ↀNetwork 标签 ↀ刷新页面，能看到每个请求的状态码、</div>`, cls: 'slide' },
+        { html: `<h2>请求和响应头</h2><p>HTTP 消息除了"正文"，还有头信恀（Headers）：</p><p><strong>请求头（Request Headers！/strong>！/p><ul><li>User-Agent —浏览器信恀/li><li>Cookie —登录状态/li></ul><p><strong>响应头（Response Headers！/strong>！/p><ul><li>Content-Type —返回内容的类型（text/html, application/json！/li><li>Set-Cookie —让浏览器保存 Cookie</li></ul>`, cls: 'slide' },
+        { html: `<h2>HTTP 是无状态的</h2><p>HTTP 每次请求都是独立的，服务器不记得你之前做过什么、/p><ul><li>第一次请求：你是谁？</li><li>第二次请求：又是谁？</li></ul><div class="highlight-box">所以需要<strong>Cookie</strong> 和<strong>Session</strong> 来解内记住登录状态的问题。服务器给浏览器发一一身份试（Cookie），下次请求时浏览器带上它、</div>`, cls: 'slide' },
+        { html: `<h2>总结</h2><ul><li>HTTP = 浏览器和服务器通信的协设/li><li>GET 请求数据，POST 提交数据</li><li>URL = 协议 + 域名 + 路径 + 参数</li><li>状态码！00 成功、04 找不到、00 服务器错试/li><li>Headers 传递附加信息（Cookie、Content-Type！/li><li>HTTP 无状态，用Cookie/Session 记忆身份</li></ul>`, cls: 'slide' }
+    ];
+    let current = 0;
+    const container = document.getElementById('slideContainer');
+    const counter = document.getElementById('counter');
+
+    function goTo(n) {
+        current = (n + slidesData.length) % slidesData.length;
+        container.className = slidesData[current].cls;
+        container.innerHTML = slidesData[current].html;
+        counter.textContent = (current + 1) + ' / ' + slidesData.length;
+    }
+
+    document.getElementById('prevBtn').addEventListener('click', () => goTo(current - 1));
+    document.getElementById('nextBtn').addEventListener('click', () => goTo(current + 1));
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); goTo(current + 1); }
+        if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); goTo(current - 1); }
+    });
+    document.getElementById('presentation').addEventListener('click', (e) => {
+        if (e.target.closest('.nav-bar') || e.target.closest('.slide-inner')) return;
+        goTo(current + 1);
+    });
+    </script>
+</body>
+</html>

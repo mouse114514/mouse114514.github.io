@@ -31,17 +31,33 @@
         @media (max-width: 640px) { .slide { padding: 16px; } .slide-inner { padding: 24px 18px; } .nav-bar { padding: 8px 12px; gap: 8px; bottom: 14px; } }
     </style>
 </head>
+
 <body>
     <div class="presentation" id="presentation">
-        <div class="slide slide-title active" data-index="0">
-            <div class="slide-inner">
-                <div class="lesson-num">Web 前端 · 第试/div>
+        <div class="slide slide-title" id="slideContainer">
+            
+                <div class="lesson-num">Web 前端 · 第试</div>
                 <h1>网页是怎么工作的/h1>
-                <div class="sub">HTML、CSS、JavaScript 是什之/div>
-            </div>
+                <div class="sub">HTML、CSS、JavaScript 是什之</div>
+            
         </div>
-        <div class="slide" data-index="1">
-            <div class="slide-inner">
+    </div>
+
+    <div class="nav-bar">
+        <a class="back-link" href="index.html">ↀ目录</a>
+        <button id="prevBtn">◀</button>
+        <span class="counter" id="counter">1 / 8</span>
+        <button id="nextBtn">▀/button>
+    </div>
+
+    <script>
+    const slidesData = [
+        { html: `
+                <div class="lesson-num">Web 前端 · 第试</div>
+                <h1>网页是怎么工作的/h1>
+                <div class="sub">HTML、CSS、JavaScript 是什之</div>
+            `, cls: 'slide slide-title active' },
+        { html: `
                 <h2>你每次打开网页发生了什么？</h2>
                 <ul>
                     <li>你在浏览器地址栏输入一个网址（如 baidu.com！/li>
@@ -49,11 +65,9 @@
                     <li>服务器返回一堆代码（HTML + CSS + JS！/li>
                     <li>浏览器把这些代码"渲染"成你看到的页静/li>
                 </ul>
-                <div class="highlight-box">这段代码就是"前端"要做的事情——你看到的页面效果，都是前端代码决定的、/div>
-            </div>
-        </div>
-        <div class="slide" data-index="2">
-            <div class="slide-inner">
+                <div class="highlight-box">这段代码就是"前端"要做的事情——你看到的页面效果，都是前端代码决定的、</div>
+            `, cls: 'slide' },
+        { html: `
                 <h2>HTML：骨析/h2>
                 <p>HTML（超文本标记语言）是网页的strong>结构</strong>，就像房子的框架！/p>
                 <ul>
@@ -64,10 +78,8 @@
                     <li><code>&lt;button&gt;</code> —按钮</li>
                 </ul>
                 <p>HTML 只是决定了有什之，不决定"长什么样"、/p>
-            </div>
-        </div>
-        <div class="slide" data-index="3">
-            <div class="slide-inner">
+            `, cls: 'slide' },
+        { html: `
                 <h2>CSS：衣服和化妆哀/h2>
                 <p>CSS（层叠样式表）控制网页的<strong>外观</strong>！/p>
                 <ul>
@@ -77,11 +89,9 @@
                     <li>背景 —<code>background: black;</code></li>
                     <li>动画 —<code>transition: 0.3s;</code></li>
                 </ul>
-                <div class="highlight-box">同一一HTML，用不同的CSS 就能长得完全不一样、/div>
-            </div>
-        </div>
-        <div class="slide" data-index="4">
-            <div class="slide-inner">
+                <div class="highlight-box">同一一HTML，用不同的CSS 就能长得完全不一样、</div>
+            `, cls: 'slide' },
+        { html: `
                 <h2>JavaScript：大脑和行为</h2>
                 <p>JavaScript 让网页strong>动起来/strong>，能干各种事！/p>
                 <ul>
@@ -91,10 +101,8 @@
                     <li>发请求获取数据（不用刷新页面！/li>
                     <li>做游戏、处理图片、操作音视频</li>
                 </ul>
-            </div>
-        </div>
-        <div class="slide" data-index="5">
-            <div class="slide-inner">
+            `, cls: 'slide' },
+        { html: `
                 <h2>三者的关系</h2>
                 <p>用盖房子来理解：</p>
                 <ul>
@@ -103,21 +111,17 @@
                     <li><strong>JavaScript</strong> = 家电设施（开灯、关门、按门铃有反应）</li>
                 </ul>
                 <p>这三个合在一起，才是一个完整的网页、/p>
-            </div>
-        </div>
-        <div class="slide" data-index="6">
-            <div class="slide-inner">
+            `, cls: 'slide' },
+        { html: `
                 <h2>前端开发工入/h2>
                 <ul>
                     <li><strong>浏览器/strong> —Chrome / Edge（按 F12 打开开发者工具）</li>
                     <li><strong>编辑器/strong> —VS Code（最热门，免费）</li>
                     <li><strong>内HTML 就够了/strong> —新建一一.html 文件，用记事本就能写</li>
                 </ul>
-                <div class="highlight-box">你可以现在就用记事本写一个网页：写几行HTML，保存为 .html，双击用浏览器打开、/div>
-            </div>
-        </div>
-        <div class="slide" data-index="7">
-            <div class="slide-inner">
+                <div class="highlight-box">你可以现在就用记事本写一个网页：写几行HTML，保存为 .html，双击用浏览器打开、</div>
+            `, cls: 'slide' },
+        { html: `
                 <h2>总结</h2>
                 <ul>
                     <li>网页用HTML（结构）+ CSS（样式）+ JS（行为）组成</li>
@@ -125,22 +129,30 @@
                     <li>持F12 可以看任何网页的 HTML 和CSS</li>
                     <li>用记事本就能写第一个网页，保存一.html 即可</li>
                 </ul>
-            </div>
-        </div>
-    </div>
-    <div class="nav-bar">
-        <a class="back-link" href="index.html">ↀ目录</a>
-        <button id="prevBtn">◀</button>
-        <span class="counter" id="counter">1 / 8</span>
-        <button id="nextBtn">▀/button>
-    </div>
-    <script>
-        const slides = document.querySelectorAll('.slide'); const total = slides.length; let current = 0;
-        function goTo(n) { slides.forEach(s => s.style.display = 'none'); slides[current].classList.remove('active'); current = (n + total) % total; slides[current].style.display = 'flex'; slides[current].classList.add('active'); document.getElementById('counter').textContent = (current + 1) + ' / ' + total; }
-        document.getElementById('prevBtn').addEventListener('click', () => goTo(current - 1));
-        document.getElementById('nextBtn').addEventListener('click', () => goTo(current + 1));
-        document.addEventListener('keydown', (e) => { if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); goTo(current + 1); } if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); goTo(current - 1); } });
-        document.getElementById('presentation').addEventListener('click', (e) => { if (e.target.closest('.nav-bar') || e.target.closest('.slide-inner')) return; goTo(current + 1); });
+            `, cls: 'slide' }
+    ];
+    let current = 0;
+    const container = document.getElementById('slideContainer');
+    const counter = document.getElementById('counter');
+
+    function goTo(n) {
+        current = (n + slidesData.length) % slidesData.length;
+        container.className = slidesData[current].cls;
+        container.innerHTML = slidesData[current].html;
+        counter.textContent = (current + 1) + ' / ' + slidesData.length;
+    }
+
+    document.getElementById('prevBtn').addEventListener('click', () => goTo(current - 1));
+    document.getElementById('nextBtn').addEventListener('click', () => goTo(current + 1));
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); goTo(current + 1); }
+        if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); goTo(current - 1); }
+    });
+    document.getElementById('presentation').addEventListener('click', (e) => {
+        if (e.target.closest('.nav-bar') || e.target.closest('.slide-inner')) return;
+        goTo(current + 1);
+    });
     </script>
 </body>
+
 </html>

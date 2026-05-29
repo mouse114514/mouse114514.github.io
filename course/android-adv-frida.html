@@ -43,22 +43,47 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',s
             .slide-inner::-webkit-scrollbar { width: 3px; }
         }
     </style></head>
-<body><div class="presentation" id="presentation">
-<div class="slide slide-title active" data-index="0"><div class="slide-inner"><div class="lesson-num">安卓逆向 · 进阶第试/div><h1>Frida 入门</h1><div class="sub">动态插桩，无需重启</div></div></div>
-<div class="slide" data-index="1"><div class="slide-inner"><h2>Frida 是什么？</h2><p>Frida 是一一strong>动态插桩框析/strong>——运行中注入 JavaScript 代码分App 进程、/p><ul><li>不需要重名App 就能 Hook</li><li>不需要Root（部分功能需要）</li><li>内JavaScript 就能 Hook Java 方法</li><li>电脑端控制，手机端运行/li></ul><div class="highlight-box">Frida 是目前安卓逆向最流行的Hook 工具，没有之一、/div></div></div>
-<div class="slide" data-index="2"><div class="slide-inner"><h2>安装 Frida</h2><p>电脑端（PC）：</p><p><code>pip install frida-tools</code></p><p>手机端（Android）：</p><ol><li>GitHub 下载 frida-server 对应版本/架构</li><li><code>adb push frida-server /data/local/tmp/</code></li><li><code>adb shell chmod 755 /data/local/tmp/frida-server</code></li><li><code>adb shell /data/local/tmp/frida-server &</code></li></ol></div></div>
-<div class="slide" data-index="3"><div class="slide-inner"><h2>基础 Hook 脚本</h2><p>创建 hook.js！/p><p><code>Java.perform(function() {</code></p><p><code>&nbsp;&nbsp;var Main = Java.use("com.example.MainActivity");</code></p><p><code>&nbsp;&nbsp;Main.isPaid.implementation = function() {</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;console.log("isPaid called!");</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;return true;</code></p><p><code>&nbsp;&nbsp;};</code></p><p><code>});</code></p><p>运行！code>frida -U com.example.app -l hook.js</code></p></div></div>
-<div class="slide" data-index="4"><div class="slide-inner"><h2>Frida 常用命令</h2><ul><li><code>frida-ps -U</code> —列出 USB 设备上运行的进程</li><li><code>frida -U 进程名-l script.js</code> —附加到运行中的进程/li><li><code>frida -U -f com.example.app -l script.js --no-pause</code> —启动 App 并注入/li><li><code>frida -U 进程名/code> —进入 REPL 交互模式</li></ul></div></div>
-<div class="slide" data-index="5"><div class="slide-inner"><h2>Hook 带参数的方法</h2><p>钩取带参数的方法！/p><p><code>var Cls = Java.use("com.example.Utils");</code></p><p><code>Cls.encrypt.overload("[B", "java.lang.String").implementation = function(data, key) {</code></p><p><code>&nbsp;&nbsp;console.log("encrypt called!");</code></p><p><code>&nbsp;&nbsp;console.log("data:", bytesToString(data));</code></p><p><code>&nbsp;&nbsp;console.log("key:", key);</code></p><p><code>&nbsp;&nbsp;var ret = this.encrypt(data, key);</code></p><p><code>&nbsp;&nbsp;return ret;</code></p><p><code>}</code></p></div></div>
-<div class="slide" data-index="6"><div class="slide-inner"><h2>修改函数返回倀/h2><p>常见场景：修改付费验证返回倀/p><p><code>var Pay = Java.use("com.example.PayManager");</code></p><p><code>Pay.isVip.implementation = function() {</code></p><p><code>&nbsp;&nbsp;return true;</code></p><p><code>}</code></p><p><code>Pay.getVipLevel.implementation = function() {</code></p><p><code>&nbsp;&nbsp;return 3;</code></p><p><code>}</code></p></div></div>
-<div class="slide" data-index="7"><div class="slide-inner"><h2>总结</h2><ul><li>Frida = 动态插桩，JS 脚本控制</li><li>frida-server 跑在手机上，frida-tools 跑在 PC 一/li><li>Java.use() 获取类，implementation = 替换方法</li><li>overload() 处理同名不同参数的方法/li><li>常用场景：修改返回值、打印参数和调用校/li></ul></div></div>
-</div>
-<div class="nav-bar"><a class="back-link" href="index.html">ↀ目录</a><button id="prevBtn">◀</button><span class="counter" id="counter">1 / 8</span><button id="nextBtn">▀/button></div>
-<script>
-const slides=document.querySelectorAll('.slide'),total=slides.length;let current=0;
-function goTo(n) { slides.forEach(s => s.style.display = 'none'); slides[current].classList.remove('active'); current = (n + total) % total; slides[current].style.display = 'flex'; slides[current].classList.add('active'); document.getElementById('counter').textContent = (current + 1) + ' / ' + total; }
-document.getElementById('prevBtn').addEventListener('click',()=>goTo(current-1));
-document.getElementById('nextBtn').addEventListener('click',()=>goTo(current+1));
-document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key==='ArrowDown'||e.key===' '){e.preventDefault();goTo(current+1)}if(e.key==='ArrowLeft'||e.key==='ArrowUp'){e.preventDefault();goTo(current-1)}});
-document.getElementById('presentation').addEventListener('click',e=>{if(e.target.closest('.nav-bar')||e.target.closest('.slide-inner'))return;goTo(current+1)});
-</script></body></html>
+
+<body>
+    <div class="presentation" id="presentation">
+        <div class="slide slide-title" id="slideContainer">
+            <div class="lesson-num">安卓逆向 · 进阶第试</div><h1>Frida 入门</h1><div class="sub">动态插桩，无需重启</div></div>
+        </div>
+    </div>
+
+    <div class="nav-bar"><a class="back-link" href="index.html">ↀ目录</a><button id="prevBtn">◀</button><span class="counter" id="counter">1 / 8</span><button id="nextBtn">▀/button></div>
+
+    <script>
+    const slidesData = [
+        { html: `<div class="lesson-num">安卓逆向 · 进阶第试</div><h1>Frida 入门</h1><div class="sub">动态插桩，无需重启</div></div>`, cls: 'slide slide-title active' },
+        { html: `<h2>安装 Frida</h2><p>电脑端（PC）：</p><p><code>pip install frida-tools</code></p><p>手机端（Android）：</p><ol><li>GitHub 下载 frida-server 对应版本/架构</li><li><code>adb push frida-server /data/local/tmp/</code></li><li><code>adb shell chmod 755 /data/local/tmp/frida-server</code></li><li><code>adb shell /data/local/tmp/frida-server &</code></li></ol>`, cls: 'slide' },
+        { html: `<h2>基础 Hook 脚本</h2><p>创建 hook.js！/p><p><code>Java.perform(function() {</code></p><p><code>&nbsp;&nbsp;var Main = Java.use("com.example.MainActivity");</code></p><p><code>&nbsp;&nbsp;Main.isPaid.implementation = function() {</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;console.log("isPaid called!");</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;return true;</code></p><p><code>&nbsp;&nbsp;};</code></p><p><code>});</code></p><p>运行！code>frida -U com.example.app -l hook.js</code></p>`, cls: 'slide' },
+        { html: `<h2>Frida 常用命令</h2><ul><li><code>frida-ps -U</code> —列出 USB 设备上运行的进程</li><li><code>frida -U 进程名-l script.js</code> —附加到运行中的进程/li><li><code>frida -U -f com.example.app -l script.js --no-pause</code> —启动 App 并注入/li><li><code>frida -U 进程名/code> —进入 REPL 交互模式</li></ul>`, cls: 'slide' },
+        { html: `<h2>Hook 带参数的方法</h2><p>钩取带参数的方法！/p><p><code>var Cls = Java.use("com.example.Utils");</code></p><p><code>Cls.encrypt.overload("[B", "java.lang.String").implementation = function(data, key) {</code></p><p><code>&nbsp;&nbsp;console.log("encrypt called!");</code></p><p><code>&nbsp;&nbsp;console.log("data:", bytesToString(data));</code></p><p><code>&nbsp;&nbsp;console.log("key:", key);</code></p><p><code>&nbsp;&nbsp;var ret = this.encrypt(data, key);</code></p><p><code>&nbsp;&nbsp;return ret;</code></p><p><code>}</code></p>`, cls: 'slide' },
+        { html: `<h2>修改函数返回倀/h2><p>常见场景：修改付费验证返回倀/p><p><code>var Pay = Java.use("com.example.PayManager");</code></p><p><code>Pay.isVip.implementation = function() {</code></p><p><code>&nbsp;&nbsp;return true;</code></p><p><code>}</code></p><p><code>Pay.getVipLevel.implementation = function() {</code></p><p><code>&nbsp;&nbsp;return 3;</code></p><p><code>}</code></p>`, cls: 'slide' },
+        { html: `<h2>总结</h2><ul><li>Frida = 动态插桩，JS 脚本控制</li><li>frida-server 跑在手机上，frida-tools 跑在 PC 一/li><li>Java.use() 获取类，implementation = 替换方法</li><li>overload() 处理同名不同参数的方法/li><li>常用场景：修改返回值、打印参数和调用校/li></ul>`, cls: 'slide' }
+    ];
+    let current = 0;
+    const container = document.getElementById('slideContainer');
+    const counter = document.getElementById('counter');
+
+    function goTo(n) {
+        current = (n + slidesData.length) % slidesData.length;
+        container.className = slidesData[current].cls;
+        container.innerHTML = slidesData[current].html;
+        counter.textContent = (current + 1) + ' / ' + slidesData.length;
+    }
+
+    document.getElementById('prevBtn').addEventListener('click', () => goTo(current - 1));
+    document.getElementById('nextBtn').addEventListener('click', () => goTo(current + 1));
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); goTo(current + 1); }
+        if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); goTo(current - 1); }
+    });
+    document.getElementById('presentation').addEventListener('click', (e) => {
+        if (e.target.closest('.nav-bar') || e.target.closest('.slide-inner')) return;
+        goTo(current + 1);
+    });
+    </script>
+</body>
+</html>

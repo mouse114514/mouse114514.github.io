@@ -34,27 +34,37 @@
         @media (max-width: 640px) { .slide { padding: 16px; } .slide-inner { padding: 24px 18px; } .nav-bar { padding: 8px 12px; gap: 8px; bottom: 14px; } }
     </style>
 </head>
+
 <body>
     <div class="presentation" id="presentation">
-        <div class="slide slide-title active" data-index="0">
-            <div class="slide-inner">
+        <div class="slide slide-title" id="slideContainer">
+            
                 <img src="images/terminal.png" alt="终端" style="width:180px;margin-bottom:16px;opacity:0.8">
-                <div class="lesson-num">进阶 · 第五试/div>
+                <div class="lesson-num">进阶 · 第五试</div>
                 <h1>命令行入问/h1>
                 <div class="sub">不用鼠标也能操控电脑</div>
             </div>
+        
         </div>
-        <div class="slide" data-index="1">
-            <div class="slide-inner">
-                <h2>命令行是什么？</h2>
-                <p>命令行（CMD）是 Windows 自带的文字交互工具。你看不到按钮和图标，只能输入命令，系统执行、/p>
-                <p>打开方式！span class="key">Win</span> + <span class="key">R</span> ↀ输入 <code>cmd</code> ↀ回车</p>
-                <p>或者：在文件夹的地址栏输入<code>cmd</code> ↀ直接在该路径打开命令行/p>
-                <div class="highlight-box">为什么学命令行？有些操作没有图形界面，只能命令行。而且一个命令可以批量处理成百上千个文件、/div>
+    </div>
+
+    <div class="nav-bar">
+        <a class="back-link" href="index.html">ↀ目录</a>
+        <button id="prevBtn">◀</button>
+        <span class="counter" id="counter">1 / 8</span>
+        <button id="nextBtn">▀/button>
+    </div>
+
+    <script>
+    const slidesData = [
+        { html: `
+                <img src="images/terminal.png" alt="终端" style="width:180px;margin-bottom:16px;opacity:0.8">
+                <div class="lesson-num">进阶 · 第五试</div>
+                <h1>命令行入问/h1>
+                <div class="sub">不用鼠标也能操控电脑</div>
             </div>
-        </div>
-        <div class="slide" data-index="2">
-            <div class="slide-inner">
+        `, cls: 'slide slide-title active' },
+        { html: `
                 <h2>最常用的命代/h2>
                 <ul>
                     <li><code>dir</code> —列出当前目录下的文件和文件夹</li>
@@ -65,10 +75,8 @@
                     <li><code>cls</code> —清屏</li>
                     <li><code>exit</code> —关闭命令行/li>
                 </ul>
-            </div>
-        </div>
-        <div class="slide" data-index="3">
-            <div class="slide-inner">
+            `, cls: 'slide' },
+        { html: `
                 <h2>文件和目录操但/h2>
                 <ul>
                     <li><code>copy 源文代目标位置</code> —复制文件</li>
@@ -77,24 +85,10 @@
                     <li><code>ren 旧名 新名</code> —重命名/li>
                     <li><code>tree</code> —以树形显示目录结析/li>
                 </ul>
-                <div class="tip-box">在命令行的路径里！code>.</code> 表示当前目录！code>..</code> 表示上一级目录、/div>
+                <div class="tip-box">在命令行的路径里！code>.</code> 表示当前目录！code>..</code> 表示上一级目录、</div>
             </div>
-        </div>
-        <div class="slide" data-index="4">
-            <div class="slide-inner">
-                <h2>网络命令</h2>
-                <ul>
-                    <li><code>ipconfig</code> —查看本机 IP 配置</li>
-                    <li><code>ping baidu.com</code> —测试网络连通态/li>
-                    <li><code>nslookup baidu.com</code> —查看域名的IP 地址</li>
-                    <li><code>netstat -ano</code> —查看所有网络连接和端口</li>
-                    <li><code>tracert baidu.com</code> —追踪数据包经过的路由</li>
-                </ul>
-                <div class="highlight-box">网络出问题时，先用<code>ping</code> 检查能不能通，再用 <code>ipconfig</code> 检查配置、/div>
-            </div>
-        </div>
-        <div class="slide" data-index="5">
-            <div class="slide-inner">
+        `, cls: 'slide' },
+        { html: `
                 <h2>系统信息命令</h2>
                 <ul>
                     <li><code>systeminfo</code> —详细系统信息（OS 版本、内存、网卡）</li>
@@ -103,10 +97,8 @@
                     <li><code>sfc /scannow</code> —扫描和修复系统文代/li>
                     <li><code>shutdown /r /t 0</code> —立即重启</li>
                 </ul>
-            </div>
-        </div>
-        <div class="slide" data-index="6">
-            <div class="slide-inner">
+            `, cls: 'slide' },
+        { html: `
                 <h2>管道和重定向</h2>
                 <p>命令行的强大在于组合！/p>
                 <ul>
@@ -115,36 +107,32 @@
                     <li><code>ipconfig | find "IPv4"</code> —只显示IPv4 地址</li>
                     <li><code>ping baidu.com >> log.txt</code> —追加输出到文代/li>
                 </ul>
-                <div class="highlight-box"><code>></code> 是输出到文件（覆盖）！code>>></code> 是追加，<code>|</code> 是管道（把前一个命令的结果传给后一个）、/div>
+                <div class="highlight-box"><code>></code> 是输出到文件（覆盖）！code>>></code> 是追加，<code>|</code> 是管道（把前一个命令的结果传给后一个）、</div>
             </div>
-        </div>
-        <div class="slide" data-index="7">
-            <div class="slide-inner">
-                <h2>总结</h2>
-                <ul>
-                    <li><span class="key">Win</span> + <span class="key">R</span> ↀ<code>cmd</code> 打开命令行/li>
-                    <li><code>dir</code>、code>cd</code>、code>copy</code>、code>del</code> 管理文件</li>
-                    <li><code>ipconfig</code>、code>ping</code>、code>netstat</code> 排查网络</li>
-                    <li><code>tasklist</code>、code>taskkill</code> 管理进程</li>
-                    <li><code>></code> 输出到文件，<code>|</code> 管道传通/li>
-                    <li>一个命令可以配合通配符批量操作，比如 <code>del *.tmp</code> 删所有临时文代/li>
-                </ul>
-            </div>
-        </div>
-    </div>
-    <div class="nav-bar">
-        <a class="back-link" href="index.html">ↀ目录</a>
-        <button id="prevBtn">◀</button>
-        <span class="counter" id="counter">1 / 8</span>
-        <button id="nextBtn">▀/button>
-    </div>
-    <script>
-        const slides = document.querySelectorAll('.slide'); const total = slides.length; let current = 0;
-        function goTo(n) { slides.forEach(s => s.style.display = 'none'); slides[current].classList.remove('active'); current = (n + total) % total; slides[current].style.display = 'flex'; slides[current].classList.add('active'); document.getElementById('counter').textContent = (current + 1) + ' / ' + total; }
-        document.getElementById('prevBtn').addEventListener('click', () => goTo(current - 1));
-        document.getElementById('nextBtn').addEventListener('click', () => goTo(current + 1));
-        document.addEventListener('keydown', (e) => { if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); goTo(current + 1); } if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); goTo(current - 1); } });
-        document.getElementById('presentation').addEventListener('click', (e) => { if (e.target.closest('.nav-bar') || e.target.closest('.slide-inner')) return; goTo(current + 1); });
+        `, cls: 'slide' }
+    ];
+    let current = 0;
+    const container = document.getElementById('slideContainer');
+    const counter = document.getElementById('counter');
+
+    function goTo(n) {
+        current = (n + slidesData.length) % slidesData.length;
+        container.className = slidesData[current].cls;
+        container.innerHTML = slidesData[current].html;
+        counter.textContent = (current + 1) + ' / ' + slidesData.length;
+    }
+
+    document.getElementById('prevBtn').addEventListener('click', () => goTo(current - 1));
+    document.getElementById('nextBtn').addEventListener('click', () => goTo(current + 1));
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); goTo(current + 1); }
+        if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); goTo(current - 1); }
+    });
+    document.getElementById('presentation').addEventListener('click', (e) => {
+        if (e.target.closest('.nav-bar') || e.target.closest('.slide-inner')) return;
+        goTo(current + 1);
+    });
     </script>
 </body>
+
 </html>

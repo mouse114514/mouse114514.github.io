@@ -31,17 +31,33 @@
         @media (max-width: 640px) { .slide { padding: 16px; } .slide-inner { padding: 24px 18px; } .nav-bar { padding: 8px 12px; gap: 8px; bottom: 14px; } }
     </style>
 </head>
+
 <body>
     <div class="presentation" id="presentation">
-        <div class="slide slide-title active" data-index="0">
-            <div class="slide-inner">
-                <div class="lesson-num">Web 后端 · 第试/div>
+        <div class="slide slide-title" id="slideContainer">
+            
+                <div class="lesson-num">Web 后端 · 第试</div>
                 <h1>什么是后端</h1>
-                <div class="sub">前端底下那部分/div>
-            </div>
+                <div class="sub">前端底下那部分</div>
+            
         </div>
-        <div class="slide" data-index="1">
-            <div class="slide-inner">
+    </div>
+
+    <div class="nav-bar">
+        <a class="back-link" href="index.html">ↀ目录</a>
+        <button id="prevBtn">◀</button>
+        <span class="counter" id="counter">1 / 8</span>
+        <button id="nextBtn">▀/button>
+    </div>
+
+    <script>
+    const slidesData = [
+        { html: `
+                <div class="lesson-num">Web 后端 · 第试</div>
+                <h1>什么是后端</h1>
+                <div class="sub">前端底下那部分</div>
+            `, cls: 'slide slide-title active' },
+        { html: `
                 <h2>前端 vs 后端</h2>
                 <div class="flex-row">
                     <div><p><strong>前端</strong> = 你看到的、点到的</p></div>
@@ -53,11 +69,9 @@
                     <li>后端去数据库查ↀ找到所有手有ↀ返回给前站/li>
                     <li>前端把结果显示给你看</li>
                 </ul>
-                <div class="highlight-box">前端 = 餐厅前台服务员；后端 = 厨房里的厨师、/div>
-            </div>
-        </div>
-        <div class="slide" data-index="2">
-            <div class="slide-inner">
+                <div class="highlight-box">前端 = 餐厅前台服务员；后端 = 厨房里的厨师、</div>
+            `, cls: 'slide' },
+        { html: `
                 <h2>后端在做什么？</h2>
                 <ul>
                     <li><strong>接收请求</strong> —前端试用户要登录</li>
@@ -66,10 +80,8 @@
                     <li><strong>返回结果</strong> —告诉前端"登录成功"戏密码错误"</li>
                     <li><strong>安全控制</strong> —权限检查、防攻击</li>
                 </ul>
-            </div>
-        </div>
-        <div class="slide" data-index="3">
-            <div class="slide-inner">
+            `, cls: 'slide' },
+        { html: `
                 <h2>常见的后端语言</h2>
                 <ul>
                     <li><strong>Python</strong> —Django / Flask，上手简单/li>
@@ -79,10 +91,8 @@
                     <li><strong>C#</strong> —.NET，微软技术栈</li>
                     <li><strong>Go</strong> —性能好，字节跳动等公司在用/li>
                 </ul>
-            </div>
-        </div>
-        <div class="slide" data-index="4">
-            <div class="slide-inner">
+            `, cls: 'slide' },
+        { html: `
                 <h2>什么是 API！/h2>
                 <p>API（接口）是前后端之间"对话的规分、/p>
                 <ul>
@@ -91,21 +101,17 @@
                     <li>后端返回 JSON 数据！code>{"products": [{"name": "iPhone 15", "price": 6999}]}</code></li>
                     <li>前端拿到数据，渲染成页面上好看的卡片</li>
                 </ul>
-            </div>
-        </div>
-        <div class="slide" data-index="5">
-            <div class="slide-inner">
+            `, cls: 'slide' },
+        { html: `
                 <h2>什么是数据库？</h2>
                 <p>数据库是存数据的"仓库"。后端把所有信息存在数据库里、/p>
                 <ul>
                     <li><strong>关系垀/strong>（SQL！—MySQL、PostgreSQL，像 Excel 表格，数据结构化</li>
                     <li><strong>非关系型</strong>（NoSQL！—MongoDB、Redis，更灵活，存 JSON 文档</li>
                 </ul>
-                <div class="highlight-box">后端 = 从数据库取数据+ 处理逻辑 + 通过 API 返回给前端、/div>
-            </div>
-        </div>
-        <div class="slide" data-index="6">
-            <div class="slide-inner">
+                <div class="highlight-box">后端 = 从数据库取数据+ 处理逻辑 + 通过 API 返回给前端、</div>
+            `, cls: 'slide' },
+        { html: `
                 <h2>全栈 = 前端 + 后端</h2>
                 <p><strong>全栈开参/strong>就是前端和后端都做、/p>
                 <ul>
@@ -113,11 +119,9 @@
                     <li>很多项目小团队里，一个人就是全栈</li>
                     <li>学习路径：前端入问ↀ后端入门 ↀ选一个方向深考/li>
                 </ul>
-                <div class="highlight-box">新手建议从前端开始，看到效果有成就感，再学后端、/div>
-            </div>
-        </div>
-        <div class="slide" data-index="7">
-            <div class="slide-inner">
+                <div class="highlight-box">新手建议从前端开始，看到效果有成就感，再学后端、</div>
+            `, cls: 'slide' },
+        { html: `
                 <h2>总结</h2>
                 <ul>
                     <li>前端 = 用户看到的界面，后端 = 服务器上的逻辑和数据/li>
@@ -126,22 +130,30 @@
                     <li>后端语言：Python、JS、Java、Go 筀/li>
                     <li>新手建议从前端学起，逐步走向全栈</li>
                 </ul>
-            </div>
-        </div>
-    </div>
-    <div class="nav-bar">
-        <a class="back-link" href="index.html">ↀ目录</a>
-        <button id="prevBtn">◀</button>
-        <span class="counter" id="counter">1 / 8</span>
-        <button id="nextBtn">▀/button>
-    </div>
-    <script>
-        const slides = document.querySelectorAll('.slide'); const total = slides.length; let current = 0;
-        function goTo(n) { slides.forEach(s => s.style.display = 'none'); slides[current].classList.remove('active'); current = (n + total) % total; slides[current].style.display = 'flex'; slides[current].classList.add('active'); document.getElementById('counter').textContent = (current + 1) + ' / ' + total; }
-        document.getElementById('prevBtn').addEventListener('click', () => goTo(current - 1));
-        document.getElementById('nextBtn').addEventListener('click', () => goTo(current + 1));
-        document.addEventListener('keydown', (e) => { if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); goTo(current + 1); } if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); goTo(current - 1); } });
-        document.getElementById('presentation').addEventListener('click', (e) => { if (e.target.closest('.nav-bar') || e.target.closest('.slide-inner')) return; goTo(current + 1); });
+            `, cls: 'slide' }
+    ];
+    let current = 0;
+    const container = document.getElementById('slideContainer');
+    const counter = document.getElementById('counter');
+
+    function goTo(n) {
+        current = (n + slidesData.length) % slidesData.length;
+        container.className = slidesData[current].cls;
+        container.innerHTML = slidesData[current].html;
+        counter.textContent = (current + 1) + ' / ' + slidesData.length;
+    }
+
+    document.getElementById('prevBtn').addEventListener('click', () => goTo(current - 1));
+    document.getElementById('nextBtn').addEventListener('click', () => goTo(current + 1));
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); goTo(current + 1); }
+        if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); goTo(current - 1); }
+    });
+    document.getElementById('presentation').addEventListener('click', (e) => {
+        if (e.target.closest('.nav-bar') || e.target.closest('.slide-inner')) return;
+        goTo(current + 1);
+    });
     </script>
 </body>
+
 </html>

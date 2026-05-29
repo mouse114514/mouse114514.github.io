@@ -37,33 +37,37 @@
         @media (max-width: 640px) { .slide { padding: 16px; } .slide-inner { padding: 24px 18px; } .nav-bar { padding: 8px 12px; gap: 8px; bottom: 14px; } .flex-row { flex-direction: column; } }
     </style>
 </head>
+
 <body>
     <div class="presentation" id="presentation">
-        <div class="slide slide-title active" data-index="0">
-            <div class="slide-inner">
+        <div class="slide slide-title" id="slideContainer">
+            
                 <img src="images/internet-icon.png" alt="互联网 style="width:100px;margin-bottom:16px;opacity:0.8">
-                <div class="lesson-num">第六试/div>
+                <div class="lesson-num">第六试</div>
                 <h1>上网安全与隐私/h1>
                 <div class="sub">怎么上网才安全？</div>
             </div>
+        
         </div>
+    </div>
 
-        <div class="slide" data-index="1">
-            <div class="slide-inner">
-                <h2>互联网就是没有隐私的广在</h2>
-                <p>你在网上做的每一件事，都像在广场上大声说话——所有人都能听见、/p>
-                <ul>
-                    <li>你上了什么网站，你的<strong>网络运营啀/strong>知道</li>
-                    <li>你搜了什么关键词！strong>搜索引擎</strong>知道</li>
-                    <li>你买了什么东西，<strong>购物网站</strong>知道</li>
-                    <li>你发了什么消息，<strong>聊天软件</strong>知道</li>
-                </ul>
-                <p>互联网天生就不是安全的，但我们可以学会保护自己、/p>
+    <div class="nav-bar">
+        <a class="back-link" href="index.html">ↀ目录</a>
+        <button id="prevBtn">◀</button>
+        <span class="counter" id="counter">1 / 8</span>
+        <button id="nextBtn">▀/button>
+    </div>
+
+    <script>
+    const slidesData = [
+        { html: `
+                <img src="images/internet-icon.png" alt="互联网 style="width:100px;margin-bottom:16px;opacity:0.8">
+                <div class="lesson-num">第六试</div>
+                <h1>上网安全与隐私/h1>
+                <div class="sub">怎么上网才安全？</div>
             </div>
-        </div>
-
-        <div class="slide" data-index="2">
-            <div class="slide-inner">
+        `, cls: 'slide slide-title active' },
+        { html: `
                 <h2>看看这个锁头 🔒</h2>
                 <p>看浏览器地址栏——网址前面有没有一一strong>小锁备/strong>图标！/p>
                 <ul>
@@ -74,11 +78,8 @@
                     ⚠️ 在没锁头的网站上输入密码、银行卡号等于在大街上喊出你的密码！
                 </div>
                 <p>锁头 = 安全。没锁头 = 小心、/p>
-            </div>
-        </div>
-
-        <div class="slide" data-index="3">
-            <div class="slide-inner">
+            `, cls: 'slide' },
+        { html: `
                 <h2>三种最常见的网络骗局</h2>
                 <ul>
                     <li><strong>钓鱼网站</strong> —做一个和银行/淘宝一模一样的假网站，骗你输密码。看网址是不是官方域名/li>
@@ -87,11 +88,8 @@
                 </ul>
                 <div class="highlight-box">
                     记住！strong>天上不会掉馅饀/strong>。中奖、免费领、紧急通知，都是骗人的、                </div>
-            </div>
-        </div>
-
-        <div class="slide" data-index="4">
-            <div class="slide-inner">
+            `, cls: 'slide' },
+        { html: `
                 <h2>密码怎么设才安全！/h2>
                 <p>避免用这些：<code>123456</code>、code>password</code>、code>888888</code>、生日、名字拼韀/p>
                 <p>好的密码习惯！/p>
@@ -104,11 +102,8 @@
                 <div class="tip-box">
                     💡 记不住不同密码？用网站名+ 一个固定密码：如 WB_MySafePwd2025、QQ_MySafePwd2025
                 </div>
-            </div>
-        </div>
-
-        <div class="slide" data-index="5">
-            <div class="slide-inner">
+            `, cls: 'slide' },
+        { html: `
                 <h2>公共 Wi-Fi 危险吗？</h2>
                 <p>咖啡馆、机场、酒店的免费 Wi-Fi <strong>非常不安入/strong>、/p>
                 <ul>
@@ -118,11 +113,8 @@
                 </ul>
                 <div class="warn-box">
                     ⚠️ 连公入Wi-Fi 时不要登录网银、购物网站、社交账号！用手机流量更安全、                </div>
-            </div>
-        </div>
-
-        <div class="slide" data-index="6">
-            <div class="slide-inner">
+            `, cls: 'slide' },
+        { html: `
                 <h2>隐私设置小建设/h2>
                 <ul>
                     <li><strong>浏览器设置：</strong>不要勾通记住密码"（除非是家里的电脑）</li>
@@ -133,11 +125,8 @@
                 </ul>
                 <div class="highlight-box">
                     💡 在Windows 设置 ↀ隐私和安全，可以管理所有App 的权限、                </div>
-            </div>
-        </div>
-
-        <div class="slide" data-index="7">
-            <div class="slide-inner">
+            `, cls: 'slide' },
+        { html: `
                 <h2>总结</h2>
                 <ul>
                     <li>互联网没有绝对隐私，但可代strong>降低风险</strong></li>
@@ -149,24 +138,30 @@
                 </ul>
                 <div class="tip-box">
                     💡 简单的安全意识，能避开 90% 的网络陷阱、                </div>
-            </div>
-        </div>
-    </div>
+            `, cls: 'slide' }
+    ];
+    let current = 0;
+    const container = document.getElementById('slideContainer');
+    const counter = document.getElementById('counter');
 
-    <div class="nav-bar">
-        <a class="back-link" href="index.html">ↀ目录</a>
-        <button id="prevBtn">◀</button>
-        <span class="counter" id="counter">1 / 8</span>
-        <button id="nextBtn">▀/button>
-    </div>
+    function goTo(n) {
+        current = (n + slidesData.length) % slidesData.length;
+        container.className = slidesData[current].cls;
+        container.innerHTML = slidesData[current].html;
+        counter.textContent = (current + 1) + ' / ' + slidesData.length;
+    }
 
-    <script>
-        const slides = document.querySelectorAll('.slide'); const total = slides.length; let current = 0;
-        function goTo(n) { slides.forEach(s => s.style.display = 'none'); slides[current].classList.remove('active'); current = (n + total) % total; slides[current].style.display = 'flex'; slides[current].classList.add('active'); document.getElementById('counter').textContent = (current + 1) + ' / ' + total; }
-        document.getElementById('prevBtn').addEventListener('click', () => goTo(current - 1));
-        document.getElementById('nextBtn').addEventListener('click', () => goTo(current + 1));
-        document.addEventListener('keydown', (e) => { if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); goTo(current + 1); } if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); goTo(current - 1); } });
-        document.getElementById('presentation').addEventListener('click', (e) => { if (e.target.closest('.nav-bar') || e.target.closest('.slide-inner')) return; goTo(current + 1); });
+    document.getElementById('prevBtn').addEventListener('click', () => goTo(current - 1));
+    document.getElementById('nextBtn').addEventListener('click', () => goTo(current + 1));
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); goTo(current + 1); }
+        if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); goTo(current - 1); }
+    });
+    document.getElementById('presentation').addEventListener('click', (e) => {
+        if (e.target.closest('.nav-bar') || e.target.closest('.slide-inner')) return;
+        goTo(current + 1);
+    });
     </script>
 </body>
+
 </html>

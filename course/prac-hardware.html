@@ -32,30 +32,37 @@
         @media (max-width: 640px) { .slide { padding: 16px; } .slide-inner { padding: 24px 18px; } .nav-bar { padding: 8px 12px; gap: 8px; bottom: 14px; } }
     </style>
 </head>
+
 <body>
     <div class="presentation" id="presentation">
-        <div class="slide slide-title active" data-index="0">
-            <div class="slide-inner">
+        <div class="slide slide-title" id="slideContainer">
+            
                 <img src="images/hardware.png" alt="硬件" style="width:200px;margin-bottom:16px;opacity:0.8">
-                <div class="lesson-num">实用 · 第二试/div>
+                <div class="lesson-num">实用 · 第二试</div>
                 <h1>认识电脑硬件</h1>
                 <div class="sub">机箱里到底有什么？</div>
             </div>
+        
         </div>
-        <div class="slide" data-index="1">
-            <div class="slide-inner">
-                <h2>电脑的四大核心部代/h2>
-                <p>任何一台电脑，不管台式还是笔记本，都由这四样组成：</p>
-                <ul>
-                    <li><strong>CPU</strong>（处理器）—电脑的大脑，负责计算</li>
-                    <li><strong>内存</strong>（RAM）—短期记忆，正在运行的程序存在这里</li>
-                    <li><strong>硬盘</strong>（存储）—长期记忆，文件、系统、软件都存在这里</li>
-                    <li><strong>主板</strong> —把以上所有东西连在一起的大底来/li>
-                </ul>
+    </div>
+
+    <div class="nav-bar">
+        <a class="back-link" href="index.html">ↀ目录</a>
+        <button id="prevBtn">◀</button>
+        <span class="counter" id="counter">1 / 8</span>
+        <button id="nextBtn">▀/button>
+    </div>
+
+    <script>
+    const slidesData = [
+        { html: `
+                <img src="images/hardware.png" alt="硬件" style="width:200px;margin-bottom:16px;opacity:0.8">
+                <div class="lesson-num">实用 · 第二试</div>
+                <h1>认识电脑硬件</h1>
+                <div class="sub">机箱里到底有什么？</div>
             </div>
-        </div>
-        <div class="slide" data-index="2">
-            <div class="slide-inner">
+        `, cls: 'slide slide-title active' },
+        { html: `
                 <h2>CPU（处理器！/h2>
                 <p>CPU 是电脑的"大脑"——执行所有计算和指令、/p>
                 <ul>
@@ -64,10 +71,8 @@
                     <li>频率（GHz）越高，单个任务跑得越快</li>
                     <li>日常办公 i5 / R5 就够用，玩游戏或视频剪辑需要i7 / R7 以上</li>
                 </ul>
-            </div>
-        </div>
-        <div class="slide" data-index="3">
-            <div class="slide-inner">
+            `, cls: 'slide' },
+        { html: `
                 <h2>内存（RAM！/h2>
                 <p>内存是工作参——打开的程序和文件都放在内存里。内存越大，同时开的东西越多、/p>
                 <ul>
@@ -75,22 +80,10 @@
                     <li>16GB —玩游戏、编程、多开浏览器strong>推荐</strong></li>
                     <li>32GB —视频剪辑、虚拟机、大型设设strong>充裕</strong></li>
                 </ul>
-                <div class="highlight-box">内存一断电就清空。所以没保存的文档一断电就丢了。硬盘不会丢、/div>
+                <div class="highlight-box">内存一断电就清空。所以没保存的文档一断电就丢了。硬盘不会丢、</div>
             </div>
-        </div>
-        <div class="slide" data-index="4">
-            <div class="slide-inner">
-                <h2>硬盘（存储）</h2>
-                <p>硬盘是仓库"——存操作系统、软件、照片、电影，断电也不丢、/p>
-                <ul>
-                    <li><strong>机械硬盘（HDD！/strong> —容量大便宜，但慢！400/7200 转）</li>
-                    <li><strong>固态硬盘（SSD！/strong> —速度快，开有10 秒，但容量小价格髀/li>
-                </ul>
-                <div class="highlight-box">老电脑换一SSD，速度提升最明显！把 Windows 装在 SSD 上，开机从 2 分钟参10 秒、/div>
-            </div>
-        </div>
-        <div class="slide" data-index="5">
-            <div class="slide-inner">
+        `, cls: 'slide' },
+        { html: `
                 <h2>显卡（GPU！/h2>
                 <p>显卡负责把图像渲染到屏幕上。电脑能显示的画质取决于它、/p>
                 <ul>
@@ -98,23 +91,10 @@
                     <li><strong>独立显卡</strong> —单独的硬件，玩游戏、视频剪辑、AI 绘图必备</li>
                     <li>常见品牌：NVIDIA（RTX 系列）、AMD（RX 系列！/li>
                 </ul>
-                <div class="tip-box">不玩游戏、不做设计的话，集成显卡完全够用，省电又省钱、/div>
+                <div class="tip-box">不玩游戏、不做设计的话，集成显卡完全够用，省电又省钱、</div>
             </div>
-        </div>
-        <div class="slide" data-index="6">
-            <div class="slide-inner">
-                <h2>怎么看自己电脑的配置！/h2>
-                <p>不用拆机箱，Windows 里就能看！/p>
-                <ul>
-                    <li><strong>任务管理器/strong> ↀ性能标签 —实时看CPU/内存/硬盘/显卡</li>
-                    <li><span class="key">Win</span> + <span class="key">R</span> ↀ<code>dxdiag</code> —详细信息，包括显卡型参/li>
-                    <li>设置 ↀ系统 ↀ关于 —基本配置概览</li>
-                </ul>
-                <div class="tip-box">买电脑时看懂 CPU + 内存 + 硬盘 + 显卡这四个参数就够了、/div>
-            </div>
-        </div>
-        <div class="slide" data-index="7">
-            <div class="slide-inner">
+        `, cls: 'slide' },
+        { html: `
                 <h2>总结</h2>
                 <ul>
                     <li>CPU = 大脑，Intel i5 / AMD R5 日常够用</li>
@@ -123,22 +103,30 @@
                     <li>显卡 = 画师，不玩游戏用集成就行</li>
                     <li>老电脑升级：加内字+ 据SSD = 重获新生</li>
                 </ul>
-            </div>
-        </div>
-    </div>
-    <div class="nav-bar">
-        <a class="back-link" href="index.html">ↀ目录</a>
-        <button id="prevBtn">◀</button>
-        <span class="counter" id="counter">1 / 8</span>
-        <button id="nextBtn">▀/button>
-    </div>
-    <script>
-        const slides = document.querySelectorAll('.slide'); const total = slides.length; let current = 0;
-        function goTo(n) { slides.forEach(s => s.style.display = 'none'); slides[current].classList.remove('active'); current = (n + total) % total; slides[current].style.display = 'flex'; slides[current].classList.add('active'); document.getElementById('counter').textContent = (current + 1) + ' / ' + total; }
-        document.getElementById('prevBtn').addEventListener('click', () => goTo(current - 1));
-        document.getElementById('nextBtn').addEventListener('click', () => goTo(current + 1));
-        document.addEventListener('keydown', (e) => { if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); goTo(current + 1); } if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); goTo(current - 1); } });
-        document.getElementById('presentation').addEventListener('click', (e) => { if (e.target.closest('.nav-bar') || e.target.closest('.slide-inner')) return; goTo(current + 1); });
+            `, cls: 'slide' }
+    ];
+    let current = 0;
+    const container = document.getElementById('slideContainer');
+    const counter = document.getElementById('counter');
+
+    function goTo(n) {
+        current = (n + slidesData.length) % slidesData.length;
+        container.className = slidesData[current].cls;
+        container.innerHTML = slidesData[current].html;
+        counter.textContent = (current + 1) + ' / ' + slidesData.length;
+    }
+
+    document.getElementById('prevBtn').addEventListener('click', () => goTo(current - 1));
+    document.getElementById('nextBtn').addEventListener('click', () => goTo(current + 1));
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); goTo(current + 1); }
+        if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); goTo(current - 1); }
+    });
+    document.getElementById('presentation').addEventListener('click', (e) => {
+        if (e.target.closest('.nav-bar') || e.target.closest('.slide-inner')) return;
+        goTo(current + 1);
+    });
     </script>
 </body>
+
 </html>

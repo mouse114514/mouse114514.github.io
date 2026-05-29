@@ -31,30 +31,35 @@
         @media (max-width: 640px) { .slide { padding: 16px; } .slide-inner { padding: 24px 18px; } .nav-bar { padding: 8px 12px; gap: 8px; bottom: 14px; } }
     </style>
 </head>
+
 <body>
     <div class="presentation" id="presentation">
-        <div class="slide slide-title active" data-index="0">
-            <div class="slide-inner">
-                <div class="lesson-num">Godot · 第试/div>
+        <div class="slide slide-title" id="slideContainer">
+            
+                <div class="lesson-num">Godot · 第试</div>
                 <h1>Godot 引擎简介与安装</h1>
                 <div class="sub">免费开源的游戏引擎</div>
             </div>
+        
         </div>
-        <div class="slide" data-index="1">
-            <div class="slide-inner">
-                <h2>什么是游戏引擎！/h2>
-                <p>游戏引擎就像盖房子的"脚手析——你不用从零开始搬砖，引擎已经帮你做好了最基础的工作、/p>
-                <ul>
-                    <li>渲染画面（把 3D/2D 画面显示到屏幕上！/li>
-                    <li>处理物理碰撞（东西掉地上不会穿模！/li>
-                    <li>播放音效、处理输入（键盘/鼠标/手柄！/li>
-                    <li>管理场景和资満/li>
-                </ul>
-                <div class="highlight-box">你用引擎做游戏，只需要关快这个游戏怎么现，不用去写底层渲染代码、/div>
+    </div>
+
+    <div class="nav-bar">
+        <a class="back-link" href="index.html">ↀ目录</a>
+        <button id="prevBtn">◀</button>
+        <span class="counter" id="counter">1 / 8</span>
+        <button id="nextBtn">▀/button>
+    </div>
+
+    <script>
+    const slidesData = [
+        { html: `
+                <div class="lesson-num">Godot · 第试</div>
+                <h1>Godot 引擎简介与安装</h1>
+                <div class="sub">免费开源的游戏引擎</div>
             </div>
-        </div>
-        <div class="slide" data-index="2">
-            <div class="slide-inner">
+        `, cls: 'slide slide-title active' },
+        { html: `
                 <h2>为什么通Godot！/h2>
                 <ul>
                     <li><strong>完全免费开満/strong> —不需要付 license 费，永久免费</li>
@@ -63,32 +68,17 @@
                     <li><strong>自研脚本语言 GDScript</strong> —语法僀Python，简单好上手</li>
                     <li><strong>导出一键打包/strong> —支持 Windows、Mac、Linux、Android、iOS、Web</li>
                 </ul>
-            </div>
-        </div>
-        <div class="slide" data-index="3">
-            <div class="slide-inner">
+            `, cls: 'slide' },
+        { html: `
                 <h2>Godot 的版有/h2>
                 <ul>
                     <li><strong>Godot 3.x</strong> —稳定版，教程多，资源丰富</li>
                     <li><strong>Godot 4.x</strong> —最新版，渲染引擎大升级（Vulkan），3D 更强</li>
                 </ul>
-                <div class="highlight-box">新手建议直接字<strong>Godot 4.x</strong>（最新稳定版）。需要中文教程的话，B 站搜"Godot 4 教程"、/div>
+                <div class="highlight-box">新手建议直接字<strong>Godot 4.x</strong>（最新稳定版）。需要中文教程的话，B 站搜"Godot 4 教程"、</div>
             </div>
-        </div>
-        <div class="slide" data-index="4">
-            <div class="slide-inner">
-                <h2>下载和安装/h2>
-                <ul>
-                    <li>打开官网！strong>godotengine.org</strong></li>
-                    <li>点击 Download ↀ选择你的系统（Windows / Mac / Linux！/li>
-                    <li>下载 .exe 文件（绿色版，不用安装，双击就能用）</li>
-                    <li>或者下软Steam 版本（在 Steam 上也能下！/li>
-                </ul>
-                <div class="highlight-box">官方下载的是"标准片（Standard），功能完整，直接开始用、/div>
-            </div>
-        </div>
-        <div class="slide" data-index="5">
-            <div class="slide-inner">
+        `, cls: 'slide' },
+        { html: `
                 <h2>第一次打开 Godot</h2>
                 <ul>
                     <li>双击运行 ↀ第一次会弹出项目管理器（Project Manager！/li>
@@ -97,10 +87,8 @@
                     <li>渲染器通Forward+（Godot 4 默认），也可以通Compatibility（兼容老显卡）</li>
                     <li>点Create & Edit" ↀ进入编辑器界静/li>
                 </ul>
-            </div>
-        </div>
-        <div class="slide" data-index="6">
-            <div class="slide-inner">
+            `, cls: 'slide' },
+        { html: `
                 <h2>编辑器界面概解/h2>
                 <ul>
                     <li><strong>场景面板</strong>（中间）—你的游戏画面实时预览</li>
@@ -109,10 +97,8 @@
                     <li><strong>属性面来/strong>（右）—选中节点的详细设网/li>
                     <li><strong>底部</strong> —运行按钮、输出日志、动画编辑器</li>
                 </ul>
-            </div>
-        </div>
-        <div class="slide" data-index="7">
-            <div class="slide-inner">
+            `, cls: 'slide' },
+        { html: `
                 <h2>总结</h2>
                 <ul>
                     <li>游戏引擎帮你处理底层，你只关心玩法/li>
@@ -120,22 +106,30 @@
                     <li>代godotengine.org 下载，无需安装直接运行</li>
                     <li>新建项目 ↀ进入编辑器，界面分场景、节点、属性三大块</li>
                 </ul>
-            </div>
-        </div>
-    </div>
-    <div class="nav-bar">
-        <a class="back-link" href="index.html">ↀ目录</a>
-        <button id="prevBtn">◀</button>
-        <span class="counter" id="counter">1 / 8</span>
-        <button id="nextBtn">▀/button>
-    </div>
-    <script>
-        const slides = document.querySelectorAll('.slide'); const total = slides.length; let current = 0;
-        function goTo(n) { slides.forEach(s => s.style.display = 'none'); slides[current].classList.remove('active'); current = (n + total) % total; slides[current].style.display = 'flex'; slides[current].classList.add('active'); document.getElementById('counter').textContent = (current + 1) + ' / ' + total; }
-        document.getElementById('prevBtn').addEventListener('click', () => goTo(current - 1));
-        document.getElementById('nextBtn').addEventListener('click', () => goTo(current + 1));
-        document.addEventListener('keydown', (e) => { if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); goTo(current + 1); } if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); goTo(current - 1); } });
-        document.getElementById('presentation').addEventListener('click', (e) => { if (e.target.closest('.nav-bar') || e.target.closest('.slide-inner')) return; goTo(current + 1); });
+            `, cls: 'slide' }
+    ];
+    let current = 0;
+    const container = document.getElementById('slideContainer');
+    const counter = document.getElementById('counter');
+
+    function goTo(n) {
+        current = (n + slidesData.length) % slidesData.length;
+        container.className = slidesData[current].cls;
+        container.innerHTML = slidesData[current].html;
+        counter.textContent = (current + 1) + ' / ' + slidesData.length;
+    }
+
+    document.getElementById('prevBtn').addEventListener('click', () => goTo(current - 1));
+    document.getElementById('nextBtn').addEventListener('click', () => goTo(current + 1));
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); goTo(current + 1); }
+        if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); goTo(current - 1); }
+    });
+    document.getElementById('presentation').addEventListener('click', (e) => {
+        if (e.target.closest('.nav-bar') || e.target.closest('.slide-inner')) return;
+        goTo(current + 1);
+    });
     </script>
 </body>
+
 </html>

@@ -34,30 +34,35 @@
         @media (max-width: 640px) { .slide { padding: 16px; } .slide-inner { padding: 24px 18px; } .nav-bar { padding: 8px 12px; gap: 8px; bottom: 14px; } }
     </style>
 </head>
+
 <body>
     <div class="presentation" id="presentation">
-        <div class="slide slide-title active" data-index="0">
-            <div class="slide-inner">
-                <div class="lesson-num">实用 · 第三试/div>
+        <div class="slide slide-title" id="slideContainer">
+            
+                <div class="lesson-num">实用 · 第三试</div>
                 <h1>常见故障排查</h1>
                 <div class="sub">出问题了别慌，先试试这些</div>
             </div>
+        
         </div>
-        <div class="slide" data-index="1">
-            <div class="slide-inner">
-                <h2>重启解决 90% 的问题/h2>
-                <p>这不是段子——很多问题重启就能好！/p>
-                <ul>
-                    <li>Wi-Fi 连不一ↀ重启电脑或路由器</li>
-                    <li>某个软件打不开 ↀ重启软件，不行就重启电脑</li>
-                    <li>电脑变慢了ↀ重启清空临时缓存</li>
-                    <li>外设不识分ↀ拔掉再插，不行重名/li>
-                </ul>
-                <div class="highlight-box">重启 = 清空内存 + 重新加载系统 + 重置硬件状态。先试试再说、/div>
+    </div>
+
+    <div class="nav-bar">
+        <a class="back-link" href="index.html">ↀ目录</a>
+        <button id="prevBtn">◀</button>
+        <span class="counter" id="counter">1 / 8</span>
+        <button id="nextBtn">▀/button>
+    </div>
+
+    <script>
+    const slidesData = [
+        { html: `
+                <div class="lesson-num">实用 · 第三试</div>
+                <h1>常见故障排查</h1>
+                <div class="sub">出问题了别慌，先试试这些</div>
             </div>
-        </div>
-        <div class="slide" data-index="2">
-            <div class="slide-inner">
+        `, cls: 'slide slide-title active' },
+        { html: `
                 <h2>上不了网！/h2>
                 <p>排查步骤！/p>
                 <ul>
@@ -67,10 +72,8 @@
                     <li>检查strong>飞行模式</strong>有没有误开，Wi-Fi 开关是不是关着</li>
                     <li>右键 Wi-Fi 图标 ↀ网络和Internet 设置 ↀ网络重置</li>
                 </ul>
-            </div>
-        </div>
-        <div class="slide" data-index="3">
-            <div class="slide-inner">
+            `, cls: 'slide' },
+        { html: `
                 <h2>蓝屏了怎么办？</h2>
                 <p>蓝屏是Windows 遇到无法恢复的错误时"自我了断"的机制、/p>
                 <ul>
@@ -79,22 +82,10 @@
                     <li>常见原因：驱动问题、硬件故障、内存不趀/li>
                     <li>如果还能进系统ↀ用事件查看器（eventvwr.msc）看原因</li>
                 </ul>
-                <div class="tip-box">偶尔蓝一次，重启就好。频繁蓝屏（每天几次）才需要找原因、/div>
+                <div class="tip-box">偶尔蓝一次，重启就好。频繁蓝屏（每天几次）才需要找原因、</div>
             </div>
-        </div>
-        <div class="slide" data-index="4">
-            <div class="slide-inner">
-                <h2>软件打不开或报键/h2>
-                <ul>
-                    <li><strong>缺少 DLL 文件</strong> —重新安装该软件，或安装Visual C++ 运行序/li>
-                    <li><strong>"该应用无法在你的电脑上运行</strong> —版本不对，下 64 位或 32 位版有/li>
-                    <li><strong>"请求的操作需要提单</strong> —右键 ↀ以管理员身份运行</li>
-                    <li><strong>程序已停止工但/strong> —尝试兼容模式：右键ↀ属态ↀ兼容态/li>
-                </ul>
-            </div>
-        </div>
-        <div class="slide" data-index="5">
-            <div class="slide-inner">
+        `, cls: 'slide' },
+        { html: `
                 <h2>USB / 外设不识分/h2>
                 <ul>
                     <li>换个 USB 口（机箱后面的口供电更稳定）</li>
@@ -103,23 +94,10 @@
                     <li>设备管理器里看看有没有黄色感叹号</li>
                     <li>右键黄色设备 ↀ更新驱动程序</li>
                 </ul>
-                <div class="highlight-box">右键"此电脀ↀ管理 ↀ设备管理器，所有硬件问题都在这里显示、/div>
+                <div class="highlight-box">右键"此电脀ↀ管理 ↀ设备管理器，所有硬件问题都在这里显示、</div>
             </div>
-        </div>
-        <div class="slide" data-index="6">
-            <div class="slide-inner">
-                <h2>开机太慢怎么办？</h2>
-                <ul>
-                    <li><strong>关掉不必要的自启页/strong> —任务管理器ↀ启动标签 ↀ禁用</li>
-                    <li><strong>检查硬目/strong> —如果是机械硬盘，建议据SSD</li>
-                    <li><strong>磁盘清理</strong> —右键 C 目ↀ属态ↀ磁盘清理 ↀ清理系统文件</li>
-                    <li><strong>关闭快速启力/strong> —电源选项 ↀ更改电源按钮 ↀ取消快速启力/li>
-                </ul>
-                <div class="tip-box">Windows 自带的磁盘清理"工具可以删掉临时文件、回收站、更新缓存、/div>
-            </div>
-        </div>
-        <div class="slide" data-index="7">
-            <div class="slide-inner">
+        `, cls: 'slide' },
+        { html: `
                 <h2>总结</h2>
                 <ul>
                     <li>先重启——解决大部分问题</li>
@@ -129,22 +107,30 @@
                     <li>外设不认 ↀ换口、换线、换电脑测试</li>
                     <li>开机慢 ↀ关自启、磁盘清理、换 SSD</li>
                 </ul>
-            </div>
-        </div>
-    </div>
-    <div class="nav-bar">
-        <a class="back-link" href="index.html">ↀ目录</a>
-        <button id="prevBtn">◀</button>
-        <span class="counter" id="counter">1 / 8</span>
-        <button id="nextBtn">▀/button>
-    </div>
-    <script>
-        const slides = document.querySelectorAll('.slide'); const total = slides.length; let current = 0;
-        function goTo(n) { slides.forEach(s => s.style.display = 'none'); slides[current].classList.remove('active'); current = (n + total) % total; slides[current].style.display = 'flex'; slides[current].classList.add('active'); document.getElementById('counter').textContent = (current + 1) + ' / ' + total; }
-        document.getElementById('prevBtn').addEventListener('click', () => goTo(current - 1));
-        document.getElementById('nextBtn').addEventListener('click', () => goTo(current + 1));
-        document.addEventListener('keydown', (e) => { if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); goTo(current + 1); } if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); goTo(current - 1); } });
-        document.getElementById('presentation').addEventListener('click', (e) => { if (e.target.closest('.nav-bar') || e.target.closest('.slide-inner')) return; goTo(current + 1); });
+            `, cls: 'slide' }
+    ];
+    let current = 0;
+    const container = document.getElementById('slideContainer');
+    const counter = document.getElementById('counter');
+
+    function goTo(n) {
+        current = (n + slidesData.length) % slidesData.length;
+        container.className = slidesData[current].cls;
+        container.innerHTML = slidesData[current].html;
+        counter.textContent = (current + 1) + ' / ' + slidesData.length;
+    }
+
+    document.getElementById('prevBtn').addEventListener('click', () => goTo(current - 1));
+    document.getElementById('nextBtn').addEventListener('click', () => goTo(current + 1));
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); goTo(current + 1); }
+        if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); goTo(current - 1); }
+    });
+    document.getElementById('presentation').addEventListener('click', (e) => {
+        if (e.target.closest('.nav-bar') || e.target.closest('.slide-inner')) return;
+        goTo(current + 1);
+    });
     </script>
 </body>
+
 </html>

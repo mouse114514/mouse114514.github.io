@@ -43,22 +43,47 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',s
             .slide-inner::-webkit-scrollbar { width: 3px; }
         }
     </style></head>
-<body><div class="presentation" id="presentation">
-<div class="slide slide-title active" data-index="0"><div class="slide-inner"><div class="lesson-num">Web 前端 · 进阶第试/div><h1>JavaScript DOM 高级操作</h1><div class="sub">动态创建、遍历与事件委托</div></div></div>
-<div class="slide" data-index="1"><div class="slide-inner"><h2>创建和插入元紀/h2><p>用JS 动态生戏HTML！/p><p><code>let li = document.createElement("li")</code></p><p><code>li.textContent = "新项目</code></p><p><code>li.classList.add("active")</code></p><p><code>document.querySelector("ul").appendChild(li)</code></p><p>appendChild 在末尾添加，prepend 在开头添加、/p></div></div>
-<div class="slide" data-index="2"><div class="slide-inner"><h2>删除和替换元紀/h2><p><code>element.remove()</code> —删除自身</p><p><code>parent.removeChild(child)</code> —父级删除子元紀/p><p><code>parent.replaceChild(newChild, oldChild)</code> —替换</p><p><code>element.innerHTML = ""</code> —清空所有子元素</p></div></div>
-<div class="slide" data-index="3"><div class="slide-inner"><h2>遍历 DOM 校/h2><p><code>element.parentElement</code> —父元紀/p><p><code>element.children</code> —所有子元素（HTMLCollection！/p><p><code>element.firstElementChild</code> —第一个子元素</p><p><code>element.lastElementChild</code> —最后一个子元素</p><p><code>element.previousElementSibling</code> —前一个兄开/p><p><code>element.nextElementSibling</code> —后一个兄开/p></div></div>
-<div class="slide" data-index="4"><div class="slide-inner"><h2>事件委托</h2><p>如果有100 一li，每个都绑事件性能差：</p><p>改为父元素监听：</p><p><code>document.querySelector("ul").addEventListener("click", function(e) {</code></p><p><code>&nbsp;&nbsp;if (e.target.tagName === "LI") {</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;console.log("点了:", e.target.textContent);</code></p><p><code>&nbsp;&nbsp;}</code></p><p><code>})</code></p><p>动态新增的 li 也自动有事件——这就是事件委托、/p></div></div>
-<div class="slide" data-index="5"><div class="slide-inner"><h2>dataset 自定义数据/h2><p>HTML 里用 data-* 属性存数据！/p><p><code>&lt;li data-id="42" data-type="enemy"&gt;哥布析lt;/li&gt;</code></p><p>JS 读取！/p><p><code>let id = li.dataset.id</code> ↀ"42"</p><p><code>let type = li.dataset.type</code> ↀ"enemy"</p><p>非常适合事件委托时获取相关数据、/p></div></div>
-<div class="slide" data-index="6"><div class="slide-inner"><h2>classList 操作</h2><p><code>element.classList.add("类名")</code></p><p><code>element.classList.remove("类名")</code></p><p><code>element.classList.toggle("类名")</code> —有则删无则加</p><p><code>element.classList.contains("类名")</code> —检查是否有</p><p>代替直接操作 className，避免了覆盖其他 class、/p></div></div>
-<div class="slide" data-index="7"><div class="slide-inner"><h2>总结</h2><ul><li>createElement + appendChild 动态添加元紀/li><li>remove() / removeChild() 删除</li><li>parentElement / children / siblings 遍历 DOM</li><li>事件委托 = 父元素监听，e.target 判断子元紀/li><li>dataset 存取 data-* 属态/li><li>classList 增删改查 CSS 类/li></ul></div></div>
-</div>
-<div class="nav-bar"><a class="back-link" href="index.html">ↀ目录</a><button id="prevBtn">◀</button><span class="counter" id="counter">1 / 8</span><button id="nextBtn">▀/button></div>
-<script>
-const slides=document.querySelectorAll('.slide'),total=slides.length;let current=0;
-function goTo(n) { slides.forEach(s => s.style.display = 'none'); slides[current].classList.remove('active'); current = (n + total) % total; slides[current].style.display = 'flex'; slides[current].classList.add('active'); document.getElementById('counter').textContent = (current + 1) + ' / ' + total; }
-document.getElementById('prevBtn').addEventListener('click',()=>goTo(current-1));
-document.getElementById('nextBtn').addEventListener('click',()=>goTo(current+1));
-document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key==='ArrowDown'||e.key===' '){e.preventDefault();goTo(current+1)}if(e.key==='ArrowLeft'||e.key==='ArrowUp'){e.preventDefault();goTo(current-1)}});
-document.getElementById('presentation').addEventListener('click',e=>{if(e.target.closest('.nav-bar')||e.target.closest('.slide-inner'))return;goTo(current+1)});
-</script></body></html>
+
+<body>
+    <div class="presentation" id="presentation">
+        <div class="slide slide-title" id="slideContainer">
+            <div class="lesson-num">Web 前端 · 进阶第试</div><h1>JavaScript DOM 高级操作</h1><div class="sub">动态创建、遍历与事件委托</div></div>
+        </div>
+    </div>
+
+    <div class="nav-bar"><a class="back-link" href="index.html">ↀ目录</a><button id="prevBtn">◀</button><span class="counter" id="counter">1 / 8</span><button id="nextBtn">▀/button></div>
+
+    <script>
+    const slidesData = [
+        { html: `<div class="lesson-num">Web 前端 · 进阶第试</div><h1>JavaScript DOM 高级操作</h1><div class="sub">动态创建、遍历与事件委托</div></div>`, cls: 'slide slide-title active' },
+        { html: `<h2>删除和替换元紀/h2><p><code>element.remove()</code> —删除自身</p><p><code>parent.removeChild(child)</code> —父级删除子元紀/p><p><code>parent.replaceChild(newChild, oldChild)</code> —替换</p><p><code>element.innerHTML = ""</code> —清空所有子元素</p>`, cls: 'slide' },
+        { html: `<h2>遍历 DOM 校/h2><p><code>element.parentElement</code> —父元紀/p><p><code>element.children</code> —所有子元素（HTMLCollection！/p><p><code>element.firstElementChild</code> —第一个子元素</p><p><code>element.lastElementChild</code> —最后一个子元素</p><p><code>element.previousElementSibling</code> —前一个兄开/p><p><code>element.nextElementSibling</code> —后一个兄开/p>`, cls: 'slide' },
+        { html: `<h2>事件委托</h2><p>如果有100 一li，每个都绑事件性能差：</p><p>改为父元素监听：</p><p><code>document.querySelector("ul").addEventListener("click", function(e) {</code></p><p><code>&nbsp;&nbsp;if (e.target.tagName === "LI") {</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;console.log("点了:", e.target.textContent);</code></p><p><code>&nbsp;&nbsp;}</code></p><p><code>})</code></p><p>动态新增的 li 也自动有事件——这就是事件委托、/p>`, cls: 'slide' },
+        { html: `<h2>dataset 自定义数据/h2><p>HTML 里用 data-* 属性存数据！/p><p><code>&lt;li data-id="42" data-type="enemy"&gt;哥布析lt;/li&gt;</code></p><p>JS 读取！/p><p><code>let id = li.dataset.id</code> ↀ"42"</p><p><code>let type = li.dataset.type</code> ↀ"enemy"</p><p>非常适合事件委托时获取相关数据、/p>`, cls: 'slide' },
+        { html: `<h2>classList 操作</h2><p><code>element.classList.add("类名")</code></p><p><code>element.classList.remove("类名")</code></p><p><code>element.classList.toggle("类名")</code> —有则删无则加</p><p><code>element.classList.contains("类名")</code> —检查是否有</p><p>代替直接操作 className，避免了覆盖其他 class、/p>`, cls: 'slide' },
+        { html: `<h2>总结</h2><ul><li>createElement + appendChild 动态添加元紀/li><li>remove() / removeChild() 删除</li><li>parentElement / children / siblings 遍历 DOM</li><li>事件委托 = 父元素监听，e.target 判断子元紀/li><li>dataset 存取 data-* 属态/li><li>classList 增删改查 CSS 类/li></ul>`, cls: 'slide' }
+    ];
+    let current = 0;
+    const container = document.getElementById('slideContainer');
+    const counter = document.getElementById('counter');
+
+    function goTo(n) {
+        current = (n + slidesData.length) % slidesData.length;
+        container.className = slidesData[current].cls;
+        container.innerHTML = slidesData[current].html;
+        counter.textContent = (current + 1) + ' / ' + slidesData.length;
+    }
+
+    document.getElementById('prevBtn').addEventListener('click', () => goTo(current - 1));
+    document.getElementById('nextBtn').addEventListener('click', () => goTo(current + 1));
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); goTo(current + 1); }
+        if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); goTo(current - 1); }
+    });
+    document.getElementById('presentation').addEventListener('click', (e) => {
+        if (e.target.closest('.nav-bar') || e.target.closest('.slide-inner')) return;
+        goTo(current + 1);
+    });
+    </script>
+</body>
+</html>

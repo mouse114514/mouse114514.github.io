@@ -31,30 +31,35 @@
         @media (max-width: 640px) { .slide { padding: 16px; } .slide-inner { padding: 24px 18px; } .nav-bar { padding: 8px 12px; gap: 8px; bottom: 14px; } }
     </style>
 </head>
+
 <body>
     <div class="presentation" id="presentation">
-        <div class="slide slide-title active" data-index="0">
-            <div class="slide-inner">
-                <div class="lesson-num">Python · 第试/div>
+        <div class="slide slide-title" id="slideContainer">
+            
+                <div class="lesson-num">Python · 第试</div>
                 <h1>Python 简介与安装</h1>
                 <div class="sub">最适合新手的编程语言</div>
             </div>
+        
         </div>
-        <div class="slide" data-index="1">
-            <div class="slide-inner">
-                <h2>Python 是什么？</h2>
-                <p>Python 是一私strong>编程语言</strong>——你用它"告诉电脑做什之、/p>
-                <ul>
-                    <li>语法简洁，接近英语！strong>很适合新手入门</strong></li>
-                    <li>能做的事非常多：做网站、写游戏、数据分析、AI</li>
-                    <li>有大量现成的"序（别人写好的功能包），直接拿来用</li>
-                    <li>完全免费，跨平台（Windows / Mac / Linux 都能用）</li>
-                </ul>
-                <div class="highlight-box">Python 的代码看起来就像在读英语，比妀<code>print("Hello World")</code> 就是"打印 Hello World"、/div>
+    </div>
+
+    <div class="nav-bar">
+        <a class="back-link" href="index.html">ↀ目录</a>
+        <button id="prevBtn">◀</button>
+        <span class="counter" id="counter">1 / 8</span>
+        <button id="nextBtn">▀/button>
+    </div>
+
+    <script>
+    const slidesData = [
+        { html: `
+                <div class="lesson-num">Python · 第试</div>
+                <h1>Python 简介与安装</h1>
+                <div class="sub">最适合新手的编程语言</div>
             </div>
-        </div>
-        <div class="slide" data-index="2">
-            <div class="slide-inner">
+        `, cls: 'slide slide-title active' },
+        { html: `
                 <h2>Python 能做什么？</h2>
                 <ul>
                     <li><strong>做游戏/strong> —用Pygame 库写 2D 游戏</li>
@@ -64,10 +69,8 @@
                     <li><strong>AI / 机器学习</strong> —TensorFlow、PyTorch</li>
                     <li><strong>写工入/strong> —下载视频、爬取网页信恀/li>
                 </ul>
-            </div>
-        </div>
-        <div class="slide" data-index="3">
-            <div class="slide-inner">
+            `, cls: 'slide' },
+        { html: `
                 <h2>下载和安装Python</h2>
                 <ul>
                     <li>打开官网！strong>python.org</strong></li>
@@ -76,38 +79,18 @@
                     <li>运行安装程序 ↀ<strong>一定要勾通"Add Python to PATH"</strong>（这步很重要！）</li>
                     <li>点Install Now ↀ等安装完戏/li>
                 </ul>
-            </div>
-        </div>
-        <div class="slide" data-index="4">
-            <div class="slide-inner">
+            `, cls: 'slide' },
+        { html: `
                 <h2>验证安装成功</h2>
                 <ul>
                     <li>持<span class="key">Win</span> + <span class="key">R</span> ↀ输入 <code>cmd</code> ↀ回车</li>
                     <li>在黑窗口里输入<code>python --version</code></li>
                     <li>如果显示 <code>Python 3.x.x</code>，说明安装成功了</li>
                 </ul>
-                <div class="highlight-box">如果提示"python 不是内部或外部命代，说明安装时没勾"Add Python to PATH"，重新装一次再勾上、/div>
+                <div class="highlight-box">如果提示"python 不是内部或外部命代，说明安装时没勾"Add Python to PATH"，重新装一次再勾上、</div>
             </div>
-        </div>
-        <div class="slide" data-index="5">
-            <div class="slide-inner">
-                <h2>写你的第一行Python 代码</h2>
-                <p>方法一：在命令行输入<code>python</code> 回车 ↀ进入交互模式</p>
-                <ul>
-                    <li>输入 <code>print("Hello World")</code> ↀ回车</li>
-                    <li>屏幕上就会显示<code>Hello World</code></li>
-                    <li>输入 <code>exit()</code> 退出/li>
-                </ul>
-                <p>方法二：用编辑器内.py 文件</p>
-                <ul>
-                    <li>新建一个记事本，写一<code>print("Hello World")</code></li>
-                    <li>保存一<code>hello.py</code>（不是.txt！）</li>
-                    <li>在命令行运行 <code>python hello.py</code></li>
-                </ul>
-            </div>
-        </div>
-        <div class="slide" data-index="6">
-            <div class="slide-inner">
+        `, cls: 'slide' },
+        { html: `
                 <h2>用Pygame 做游戏/h2>
                 <p>Pygame 是Python 最流行的2D 游戏库。安装很简单：</p>
                 <ul>
@@ -115,35 +98,32 @@
                     <li>等着下载完成</li>
                     <li>之后就能在你的Python 代码释import pygame 来用</li>
                 </ul>
-                <div class="highlight-box">pip 是Python 的包管理器"，用来安装别人写好的库。以后装任何 Python 库都用它、/div>
+                <div class="highlight-box">pip 是Python 的包管理器"，用来安装别人写好的库。以后装任何 Python 库都用它、</div>
             </div>
-        </div>
-        <div class="slide" data-index="7">
-            <div class="slide-inner">
-                <h2>总结</h2>
-                <ul>
-                    <li>Python 是最适合新手入门的编程语言</li>
-                    <li>可以写游戏、网站、工具、AI，用途广法/li>
-                    <li>代python.org 下载安装，记得勾 Add Python to PATH</li>
-                    <li><code>python --version</code> 验证安装</li>
-                    <li><code>pip install pygame</code> 安装游戏序/li>
-                </ul>
-            </div>
-        </div>
-    </div>
-    <div class="nav-bar">
-        <a class="back-link" href="index.html">ↀ目录</a>
-        <button id="prevBtn">◀</button>
-        <span class="counter" id="counter">1 / 8</span>
-        <button id="nextBtn">▀/button>
-    </div>
-    <script>
-        const slides = document.querySelectorAll('.slide'); const total = slides.length; let current = 0;
-        function goTo(n) { slides.forEach(s => s.style.display = 'none'); slides[current].classList.remove('active'); current = (n + total) % total; slides[current].style.display = 'flex'; slides[current].classList.add('active'); document.getElementById('counter').textContent = (current + 1) + ' / ' + total; }
-        document.getElementById('prevBtn').addEventListener('click', () => goTo(current - 1));
-        document.getElementById('nextBtn').addEventListener('click', () => goTo(current + 1));
-        document.addEventListener('keydown', (e) => { if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); goTo(current + 1); } if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); goTo(current - 1); } });
-        document.getElementById('presentation').addEventListener('click', (e) => { if (e.target.closest('.nav-bar') || e.target.closest('.slide-inner')) return; goTo(current + 1); });
+        `, cls: 'slide' }
+    ];
+    let current = 0;
+    const container = document.getElementById('slideContainer');
+    const counter = document.getElementById('counter');
+
+    function goTo(n) {
+        current = (n + slidesData.length) % slidesData.length;
+        container.className = slidesData[current].cls;
+        container.innerHTML = slidesData[current].html;
+        counter.textContent = (current + 1) + ' / ' + slidesData.length;
+    }
+
+    document.getElementById('prevBtn').addEventListener('click', () => goTo(current - 1));
+    document.getElementById('nextBtn').addEventListener('click', () => goTo(current + 1));
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); goTo(current + 1); }
+        if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); goTo(current - 1); }
+    });
+    document.getElementById('presentation').addEventListener('click', (e) => {
+        if (e.target.closest('.nav-bar') || e.target.closest('.slide-inner')) return;
+        goTo(current + 1);
+    });
     </script>
 </body>
+
 </html>

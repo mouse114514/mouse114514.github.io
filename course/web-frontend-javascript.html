@@ -43,22 +43,45 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',s
             .slide-inner::-webkit-scrollbar { width: 3px; }
         }
     </style></head>
-<body><div class="presentation" id="presentation">
-<div class="slide slide-title active" data-index="0"><div class="slide-inner"><div class="lesson-num">Web 前端 · 第试/div><h1>JavaScript 入门</h1><div class="sub">让网页动起来</div></div></div>
-<div class="slide" data-index="1"><div class="slide-inner"><h2>JavaScript 是什么？</h2><p>JavaScript（简私JS）是浏览器的<strong>编程语言</strong>、/p><ul><li>HTML 定义内容</li><li>CSS 定义样式</li><li>JavaScript 定义行为</li></ul><div class="highlight-box">点击按钮弹出提示、图片轮播、表单验证、页面动态加载——都是JS 做的、/div></div></div>
-<div class="slide" data-index="2"><div class="slide-inner"><h2>引入 JS</h2><p>在HTML 里写 JS！/p><p><code>&lt;script&gt;</code></p><p><code>&nbsp;&nbsp;alert("你好！);</code></p><p><code>&lt;/script&gt;</code></p><p>或者引用外部文件：</p><p><code>&lt;script src="script.js"&gt;&lt;/script&gt;</code></p><div class="tip-box">&lt;script&gt; 标签通常放在 &lt;/body&gt; 之前，这校HTML 先加载完再执行JS、/div></div></div>
-<div class="slide" data-index="3"><div class="slide-inner"><h2>变量和输出/h2><p><code>let name = "张三"</code> ↀ定义变量</p><p><code>const pi = 3.14</code> ↀ常量（不能改！/p><p><code>console.log(name)</code> ↀ在开发者工具控制台输出</p><p><code>alert(name)</code> ↀ弹出提示桀/p><p><code>document.write(name)</code> ↀ写入页面</p></div></div>
-<div class="slide" data-index="4"><div class="slide-inner"><h2>操作 DOM</h2><p>DOM = 浏览器把 HTML 转换成的"对象校、/p><p>选中元素！/p><p><code>let btn = document.querySelector("#myButton")</code></p><p><code>let title = document.querySelector("h1")</code></p><p>修改内容！/p><p><code>title.textContent = "新标题</code></p><p><code>title.style.color = "red"</code></p></div></div>
-<div class="slide" data-index="5"><div class="slide-inner"><h2>事件监听</h2><p>让按钮点击后执行代码！/p><p><code>let btn = document.querySelector("button")</code></p><p><code>btn.addEventListener("click", function() {</code></p><p><code>&nbsp;&nbsp;alert("按钮被点了！")</code></p><p><code>})</code></p><p>常见事件：click（点击）、mouseover（悬停）、keydown（按键）、submit（提交）</p></div></div>
-<div class="slide" data-index="6"><div class="slide-inner"><h2>函数</h2><p>把代码打包复用：</p><p><code>function add(a, b) {</code></p><p><code>&nbsp;&nbsp;return a + b</code></p><p><code>}</code></p><p><code>let result = add(3, 5)</code> ↀresult = 8</p><div class="highlight-box">函数是JS 最基础的组织代码方式。一个函数做一件事，名字要清楚、/div></div></div>
-<div class="slide" data-index="7"><div class="slide-inner"><h2>总结</h2><ul><li>JS = 浏览器的编程语言，给网页加交了/li><li>let 定义变量，const 定义常量</li><li>querySelector() 选中元素，textContent 改内安/li><li>addEventListener 绑定事件（如 click！/li><li>function 定义函数，return 返回倀/li></ul></div></div>
-</div>
-<div class="nav-bar"><a class="back-link" href="index.html">ↀ目录</a><button id="prevBtn">◀</button><span class="counter" id="counter">1 / 8</span><button id="nextBtn">▀/button></div>
-<script>
-const slides=document.querySelectorAll('.slide'),total=slides.length;let current=0;
-function goTo(n) { slides.forEach(s => s.style.display = 'none'); slides[current].classList.remove('active'); current = (n + total) % total; slides[current].style.display = 'flex'; slides[current].classList.add('active'); document.getElementById('counter').textContent = (current + 1) + ' / ' + total; }
-document.getElementById('prevBtn').addEventListener('click',()=>goTo(current-1));
-document.getElementById('nextBtn').addEventListener('click',()=>goTo(current+1));
-document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key==='ArrowDown'||e.key===' '){e.preventDefault();goTo(current+1)}if(e.key==='ArrowLeft'||e.key==='ArrowUp'){e.preventDefault();goTo(current-1)}});
-document.getElementById('presentation').addEventListener('click',e=>{if(e.target.closest('.nav-bar')||e.target.closest('.slide-inner'))return;goTo(current+1)});
-</script></body></html>
+
+<body>
+    <div class="presentation" id="presentation">
+        <div class="slide slide-title" id="slideContainer">
+            <div class="lesson-num">Web 前端 · 第试</div><h1>JavaScript 入门</h1><div class="sub">让网页动起来</div></div>
+        </div>
+    </div>
+
+    <div class="nav-bar"><a class="back-link" href="index.html">ↀ目录</a><button id="prevBtn">◀</button><span class="counter" id="counter">1 / 8</span><button id="nextBtn">▀/button></div>
+
+    <script>
+    const slidesData = [
+        { html: `<div class="lesson-num">Web 前端 · 第试</div><h1>JavaScript 入门</h1><div class="sub">让网页动起来</div></div>`, cls: 'slide slide-title active' },
+        { html: `<h2>引入 JS</h2><p>在HTML 里写 JS！/p><p><code>&lt;script&gt;</code></p><p><code>&nbsp;&nbsp;alert("你好！);</code></p><p><code>&lt;/script&gt;</code></p><p>或者引用外部文件：</p><p><code>&lt;script src="script.js"&gt;&lt;/script&gt;</code></p><div class="tip-box">&lt;script&gt; 标签通常放在 &lt;/body&gt; 之前，这校HTML 先加载完再执行JS、</div></div>`, cls: 'slide' },
+        { html: `<h2>操作 DOM</h2><p>DOM = 浏览器把 HTML 转换成的"对象校、/p><p>选中元素！/p><p><code>let btn = document.querySelector("#myButton")</code></p><p><code>let title = document.querySelector("h1")</code></p><p>修改内容！/p><p><code>title.textContent = "新标题</code></p><p><code>title.style.color = "red"</code></p>`, cls: 'slide' },
+        { html: `<h2>事件监听</h2><p>让按钮点击后执行代码！/p><p><code>let btn = document.querySelector("button")</code></p><p><code>btn.addEventListener("click", function() {</code></p><p><code>&nbsp;&nbsp;alert("按钮被点了！")</code></p><p><code>})</code></p><p>常见事件：click（点击）、mouseover（悬停）、keydown（按键）、submit（提交）</p>`, cls: 'slide' },
+        { html: `<h2>函数</h2><p>把代码打包复用：</p><p><code>function add(a, b) {</code></p><p><code>&nbsp;&nbsp;return a + b</code></p><p><code>}</code></p><p><code>let result = add(3, 5)</code> ↀresult = 8</p><div class="highlight-box">函数是JS 最基础的组织代码方式。一个函数做一件事，名字要清楚、</div></div>`, cls: 'slide' }
+    ];
+    let current = 0;
+    const container = document.getElementById('slideContainer');
+    const counter = document.getElementById('counter');
+
+    function goTo(n) {
+        current = (n + slidesData.length) % slidesData.length;
+        container.className = slidesData[current].cls;
+        container.innerHTML = slidesData[current].html;
+        counter.textContent = (current + 1) + ' / ' + slidesData.length;
+    }
+
+    document.getElementById('prevBtn').addEventListener('click', () => goTo(current - 1));
+    document.getElementById('nextBtn').addEventListener('click', () => goTo(current + 1));
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); goTo(current + 1); }
+        if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); goTo(current - 1); }
+    });
+    document.getElementById('presentation').addEventListener('click', (e) => {
+        if (e.target.closest('.nav-bar') || e.target.closest('.slide-inner')) return;
+        goTo(current + 1);
+    });
+    </script>
+</body>
+</html>
