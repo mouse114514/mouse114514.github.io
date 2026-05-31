@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html><head><meta charset="UTF-8">
-    <link rel="icon" type="image/png" href="/favicon.png"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>JavaScript 入门</title><style>
+    <link rel="icon" type="image/png" href="/favicon.png"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Python 函数与模块</title><style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',sans-serif;background:#0a0f1e;color:#e0e8f0;height:100vh;overflow:hidden}
 .presentation { width: 100%; height: 100vh; display: flex; align-items: center; justify-content: center; padding: 60px; }
@@ -32,31 +32,26 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',s
             .slide h2 { font-size: 20px; }
             .slide-title h1 { font-size: 28px; }
             .slide-title .sub { font-size: 14px; }
-            .flex-row { flex-direction: column; gap: 12px; }
-            .flex-row img { max-width: 120px; }
-            .nav-controls { padding: 6px 10px; gap: 4px; flex-wrap: wrap; justify-content: center; }
-            .nav-controls button { font-size: 20px; padding: 6px 14px; min-width: 44px; min-height: 44px; }
-            .nav-controls .page-indicator { font-size: 12px; min-width: 60px; }
-            .slide-inner::-webkit-scrollbar { width: 3px; }
         }
     </style></head>
 
 <body>
     <div class="presentation" id="presentation">
         <div class="slide slide-title" id="slideContainer">
-            <div class="lesson-num">Web 前端 · 第试</div><h1>JavaScript 入门</h1><div class="sub">让网页动起来</div>
+            <div class="lesson-num">Python · 第试</div><h1>函数与模块</h1><div class="sub">把代码打包，重复用</div>
         </div>
-    </div>
 
-    <div class="nav-bar"><a class="back-link" href="index.html">ↀ目录</a><button id="prevBtn">◀</button><span class="counter" id="counter">1 / 8</span><button id="nextBtn">▶</button></div>
+    <div class="nav-bar"><a class="back-link" href="index.html">ↀ目录</a><button id="prevBtn">◀</button><span class="counter" id="counter">1 / 7</span><button id="nextBtn">▶</button></div>
 
     <script>
     const slidesData = [
-        { html: `<div class="lesson-num">Web 前端 · 第试</div><h1>JavaScript 入门</h1><div class="sub">让网页动起来</div>`, cls: 'slide slide-title active' },
-        { html: `<h2>引入 JS</h2><p>在HTML 里写 JS！</p><p><code>&lt;script&gt;</code></p><p><code>&nbsp;&nbsp;alert("你好！);</code></p><p><code>&lt;/script&gt;</code></p><p>或者引用外部文件：</p><p><code>&lt;script src="script.js"&gt;&lt;/script&gt;</code></p><div class="tip-box">&lt;script&gt; 标签通常放在 &lt;/body&gt; 之前，这校HTML 先加载完再执行JS、</div>`, cls: 'slide' },
-        { html: `<h2>操作 DOM</h2><p>DOM = 浏览器把 HTML 转换成的"对象校、</p><p>选中元素！</p><p><code>let btn = document.querySelector("#myButton")</code></p><p><code>let title = document.querySelector("h1")</code></p><p>修改内容！</p><p><code>title.textContent = "新标题</code></p><p><code>title.style.color = "red"</code></p>`, cls: 'slide' },
-        { html: `<h2>事件监听</h2><p>让按钮点击后执行代码！</p><p><code>let btn = document.querySelector("button")</code></p><p><code>btn.addEventListener("click", function() {</code></p><p><code>&nbsp;&nbsp;alert("按钮被点了！")</code></p><p><code>})</code></p><p>常见事件：click（点击）、mouseover（悬停）、keydown（按键）、submit（提交）</p>`, cls: 'slide' },
-        { html: `<h2>函数</h2><p>把代码打包复用：</p><p><code>function add(a, b) {</code></p><p><code>&nbsp;&nbsp;return a + b</code></p><p><code>}</code></p><p><code>let result = add(3, 5)</code> ↀresult = 8</p><div class="highlight-box">函数是JS 最基础的组织代码方式。一个函数做一件事，名字要清楚、</div>`, cls: 'slide' }
+        { html: `<div class="lesson-num">Python · 第试</div><h1>函数与模块</h1><div class="sub">把代码打包，重复用`, cls: 'slide slide-title active' },
+        { html: `<h2>定义函数</h2><p>用 <code>def</code> 定义函数：</p><p><code>def greet(name):</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;print("你好, " + name)</code></p><p>调用：<code>greet("小明")</code> ↔ 显示"你好，小明"</p><p>函数先定义再调用，定义本身不会执行，调用才执行。</p><div class="tip-box">函数名用小写字母 + 下划线（snake_case），这是 Python 的习惯。`, cls: 'slide' },
+        { html: `<h2>参数与返回值</h2><p>函数可以接收参数，也能返回结果：</p><p><code>def add(a, b):</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;return a + b</code></p><p><code>result = add(3, 5)</code> ↔ result = 8</p><p><code>return</code> 立刻结束函数，把值还给调用者。</p><p>没有 return 的函数返回 <code>None</code>。</p>`, cls: 'slide' },
+        { html: `<h2>默认参数</h2><p>给参数设默认值，调用时可以不传：</p><p><code>def power(base, exp=2):</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;return base ** exp</code></p><p><code>power(4)</code> ↔ 16（4 的平方）</p><p><code>power(4, 3)</code> ↔ 64（4 的立方）</p><p>默认参数必须在普通参数后面。</p>`, cls: 'slide' },
+        { html: `<h2>导入模块</h2><p>Python 有大量内置功能，用 <code>import</code> 导入：</p><p><code>import random</code></p><p><code>print(random.randint(1, 100))</code> ↔ 随机 1~100</p><p><code>import math</code></p><p><code>print(math.sqrt(25))</code> ↔ 5.0</p><p>只导入需要的：<code>from random import randint</code></p>`, cls: 'slide' },
+        { html: `<h2>自己写模块</h2><p>任何 <code>.py</code> 文件都能当模块导入：</p><p>新建 <code>utils.py</code>：</p><p><code>def say_hello(name):</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;return f"Hello, {name}"</code></p><p>另一个文件里：<code>import utils</code></p><p>然后：<code>utils.say_hello("Tom")</code></p><p>一个文件夹加 <code>__init__.py</code> 就成了包，可以嵌套导入。</p>`, cls: 'slide' },
+        { html: `<h2>总结</h2><ul><li>def 定义函数，参数+return 传值</li><li>默认参数让调用更灵活</li><li>import 导入模块，复用别人或自己写的代码</li><li>.py 文件 = 模块，文件夹 + __init__.py = 包</li></ul>`, cls: 'slide' }
     ];
     let current = 0;
     const container = document.getElementById('slideContainer');

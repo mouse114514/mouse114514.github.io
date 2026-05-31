@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <link rel="icon" type="image/png" href="/favicon.png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>进阶：软件安装与注册行/title>
+    <title>进阶：软件安装与注册行</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif; background: #0a0f1e; color: #e0e8f0; height: 100vh; overflow: hidden; }
@@ -47,7 +47,7 @@
         <a class="back-link" href="index.html">ↀ目录</a>
         <button id="prevBtn">◀</button>
         <span class="counter" id="counter">1 / 8</span>
-        <button id="nextBtn">▀/button>
+        <button id="nextBtn">▶</button>
     </div>
 
     <script>
@@ -59,32 +59,32 @@
                 <div class="sub">装一个软件，系统到底做了什么？</div>`, cls: 'slide slide-title active' },
         { html: `
                 <h2>什么是注册表？</h2>
-                <p>注册表是 Windows 的strong>核心配置数据序/strong>，树状结构。按 <span class="key">Win</span> + <span class="key">R</span> 输入 <code>regedit</code> 打开、/p>
-                <p>五大根键！/p>
+                <p>注册表是 Windows 的strong>核心配置数据序</strong>，树状结构。按 <span class="key">Win</span> + <span class="key">R</span> 输入 <code>regedit</code> 打开、</p>
+                <p>五大根键！</p>
                 <ul>
                     <li><strong>HKEY_CLASSES_ROOT</strong> —文件关联和COM 组件</li>
-                    <li><strong>HKEY_CURRENT_USER</strong> —当前用户的设网/li>
-                    <li><strong>HKEY_LOCAL_MACHINE</strong> —系统级配网/li>
+                    <li><strong>HKEY_CURRENT_USER</strong> —当前用户的设网</li>
+                    <li><strong>HKEY_LOCAL_MACHINE</strong> —系统级配网</li>
                     <li><strong>HKEY_USERS</strong> —所有用户的配置</li>
                     <li><strong>HKEY_CURRENT_CONFIG</strong> —硬件配置</li>
                 </ul>
             `, cls: 'slide' },
         { html: `
                 <h2>注册表里有什么？</h2>
-                <p>每个节点（项）下面可以有多种<strong>倀/strong>！/p>
+                <p>每个节点（项）下面可以有多种<strong>倀</strong>！</p>
                 <ul>
-                    <li><strong>REG_SZ</strong> —字符串（如路得"C:\\Windows"！/li>
-                    <li><strong>REG_DWORD</strong> —数字（如 1 表示启用！/li>
-                    <li><strong>REG_BINARY</strong> —二进制数据/li>
+                    <li><strong>REG_SZ</strong> —字符串（如路得"C:\\Windows"！</li>
+                    <li><strong>REG_DWORD</strong> —数字（如 1 表示启用！</li>
+                    <li><strong>REG_BINARY</strong> —二进制数据</li>
                     <li><strong>REG_MULTI_SZ</strong> —多行文本</li>
                 </ul>
                 <div class="tip-box">很多软件的设置就存在注册表里。重装系统前导出注册行= 备份软件设置、</div>`, cls: 'slide' },
         { html: `
-                <h2>服务（Services！/h2>
-                <p>服务是strong>没有界面的后台进程/strong>，不需要用户登录就能运行：</p>
+                <h2>服务（Services！</h2>
+                <p>服务是strong>没有界面的后台进程</strong>，不需要用户登录就能运行：</p>
                 <ul>
-                    <li>开机时自动启动（或手动/延迟启动！/li>
-                    <li>代SYSTEM 账户运行，权限很髀/li>
+                    <li>开机时自动启动（或手动/延迟启动！</li>
+                    <li>代SYSTEM 账户运行，权限很髀</li>
                     <li>持<span class="key">Win</span> + <span class="key">R</span> ↀ<code>services.msc</code> 查看</li>
                 </ul>
                 <div class="highlight-box">恶意软件常把自己注册为服务来持久化——即使没人登录也在运行且很难被发现、</div>`, cls: 'slide' },
@@ -92,10 +92,10 @@
                 <h2>总结</h2>
                 <ul>
                     <li>安装软件 = 解压文件 + 注册表配网+ 文件关联 + 服务/自启</li>
-                    <li>注册表是树状配置数据库，regedit 可查看修支/li>
+                    <li>注册表是树状配置数据库，regedit 可查看修支</li>
                     <li>文件关联告诉系统双击某后缀用什么程序打开</li>
-                    <li>服务是后台无界面进程，有高权际/li>
-                    <li>自启有启动项、注册表 Run、计划任务、服务、驱动多种方开/li>
+                    <li>服务是后台无界面进程，有高权际</li>
+                    <li>自启有启动项、注册表 Run、计划任务、服务、驱动多种方开</li>
                     <li>卸载不只是删文件，还要清理注册表</li>
                 </ul>
             `, cls: 'slide' }

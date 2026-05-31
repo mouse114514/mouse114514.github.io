@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html><head><meta charset="UTF-8">
-    <link rel="icon" type="image/png" href="/favicon.png"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>JavaScript 入门</title><style>
+    <link rel="icon" type="image/png" href="/favicon.png"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>HTML 表单与JavaScript验证</title><style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',sans-serif;background:#0a0f1e;color:#e0e8f0;height:100vh;overflow:hidden}
 .presentation { width: 100%; height: 100vh; display: flex; align-items: center; justify-content: center; padding: 60px; }
@@ -32,31 +32,27 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',s
             .slide h2 { font-size: 20px; }
             .slide-title h1 { font-size: 28px; }
             .slide-title .sub { font-size: 14px; }
-            .flex-row { flex-direction: column; gap: 12px; }
-            .flex-row img { max-width: 120px; }
-            .nav-controls { padding: 6px 10px; gap: 4px; flex-wrap: wrap; justify-content: center; }
-            .nav-controls button { font-size: 20px; padding: 6px 14px; min-width: 44px; min-height: 44px; }
-            .nav-controls .page-indicator { font-size: 12px; min-width: 60px; }
-            .slide-inner::-webkit-scrollbar { width: 3px; }
         }
     </style></head>
 
 <body>
     <div class="presentation" id="presentation">
         <div class="slide slide-title" id="slideContainer">
-            <div class="lesson-num">Web 前端 · 第试</div><h1>JavaScript 入门</h1><div class="sub">让网页动起来</div>
+            <div class="lesson-num">Web 前端 · 第试</div><h1>表单与验证</h1><div class="sub">收集用户输入，前端校验</div>
         </div>
-    </div>
 
     <div class="nav-bar"><a class="back-link" href="index.html">ↀ目录</a><button id="prevBtn">◀</button><span class="counter" id="counter">1 / 8</span><button id="nextBtn">▶</button></div>
 
     <script>
     const slidesData = [
-        { html: `<div class="lesson-num">Web 前端 · 第试</div><h1>JavaScript 入门</h1><div class="sub">让网页动起来</div>`, cls: 'slide slide-title active' },
-        { html: `<h2>引入 JS</h2><p>在HTML 里写 JS！</p><p><code>&lt;script&gt;</code></p><p><code>&nbsp;&nbsp;alert("你好！);</code></p><p><code>&lt;/script&gt;</code></p><p>或者引用外部文件：</p><p><code>&lt;script src="script.js"&gt;&lt;/script&gt;</code></p><div class="tip-box">&lt;script&gt; 标签通常放在 &lt;/body&gt; 之前，这校HTML 先加载完再执行JS、</div>`, cls: 'slide' },
-        { html: `<h2>操作 DOM</h2><p>DOM = 浏览器把 HTML 转换成的"对象校、</p><p>选中元素！</p><p><code>let btn = document.querySelector("#myButton")</code></p><p><code>let title = document.querySelector("h1")</code></p><p>修改内容！</p><p><code>title.textContent = "新标题</code></p><p><code>title.style.color = "red"</code></p>`, cls: 'slide' },
-        { html: `<h2>事件监听</h2><p>让按钮点击后执行代码！</p><p><code>let btn = document.querySelector("button")</code></p><p><code>btn.addEventListener("click", function() {</code></p><p><code>&nbsp;&nbsp;alert("按钮被点了！")</code></p><p><code>})</code></p><p>常见事件：click（点击）、mouseover（悬停）、keydown（按键）、submit（提交）</p>`, cls: 'slide' },
-        { html: `<h2>函数</h2><p>把代码打包复用：</p><p><code>function add(a, b) {</code></p><p><code>&nbsp;&nbsp;return a + b</code></p><p><code>}</code></p><p><code>let result = add(3, 5)</code> ↀresult = 8</p><div class="highlight-box">函数是JS 最基础的组织代码方式。一个函数做一件事，名字要清楚、</div>`, cls: 'slide' }
+        { html: `<div class="lesson-num">Web 前端 · 第试</div><h1>表单与验证</h1><div class="sub">收集用户输入，前端校验`, cls: 'slide slide-title active' },
+        { html: `<h2>HTML 表单标签</h2><p>表单用 <code>&lt;form&gt;</code> 包起来：</p><p><code>&lt;form id="login"&gt;</code></p><p><code>&nbsp;&nbsp;&lt;input type="text" placeholder="用户名"&gt;</code></p><p><code>&nbsp;&nbsp;&lt;input type="password" placeholder="密码"&gt;</code></p><p><code>&nbsp;&nbsp;&lt;button&gt;登录&lt;/button&gt;</code></p><p><code>&lt;/form&gt;</code></p><p>type 决定输入框的样子：text、password、email、number 等</p>`, cls: 'slide' },
+        { html: `<h2>常用 input 类型</h2><ul><li><strong>text</strong> —普通文本</li><li><strong>password</strong> —密码（内容隐蓀</li><li><strong>email</strong> —邮箱（手机键盘代@</li><li><strong>number</strong> —数字（有上下按键</li><li><strong>checkbox</strong> —复选框（多通</li><li><strong>radio</strong> —单选框</li><li><strong>file</strong> —文件上仿</li><li><strong>range</strong> —滑块</li></ul>`, cls: 'slide' },
+        { html: `<h2>下拉框与文本域</h2><p>下拉框使用 <code>&lt;select&gt;</code>：</p><p><code>&lt;select id="level"&gt;</code></p><p><code>&nbsp;&nbsp;&lt;option value="easy"&gt;简单&lt;/option&gt;</code></p><p><code>&nbsp;&nbsp;&lt;option value="hard"&gt;困难&lt;/option&gt;</code></p><p><code>&lt;/select&gt;</code></p><p>多行文本用 <code>&lt;textarea&gt;</code>：</p><p><code>&lt;textarea rows="4"&gt;写点什么...&lt;/textarea&gt;</code></p>`, cls: 'slide' },
+        { html: `<h2>label 标签</h2><p>点标签文字就能选中对应的输入框：</p><p><code>&lt;label for="username"&gt;用户名：&lt;/label&gt;</code></p><p><code>&lt;input id="username" type="text"&gt;</code></p><p>for 属性值必须和 input 的 id 一致。</p><p>还可以把 input 包在 label 里面：</p><p><code>&lt;label&gt;用户名 &lt;input type="text"&gt;&lt;/label&gt;</code></p>`, cls: 'slide' },
+        { html: `<h2>JavaScript 获取表单值</h2><p><code>&lt;input id="name" type="text"&gt;</code></p><p><code>&lt;button id="btn"&gt;提交&lt;/button&gt;</code></p><p><code>document.getElementById("btn")</code></p><p><code>&nbsp;&nbsp;.addEventListener("click", function() {</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;let val = document.getElementById("name").value;</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;alert("你好, " + val);</code></p><p><code>});</code></p>`, cls: 'slide' },
+        { html: `<h2>JS 验证表单</h2><p>点提交时检查输入是否合法：</p><p><code>let email = document.getElementById("email").value;</code></p><p><code>if (email === "") {</code></p><p><code>&nbsp;&nbsp;alert("邮箱不能为空");</code></p><p><code>&nbsp;&nbsp;return;</code></p><p><code>}</code></p><p><code>if (!email.includes("@")) {</code></p><p><code>&nbsp;&nbsp;alert("邮箱格式不对");</code></p><p><code>&nbsp;&nbsp;return;</code></p><p><code>}</code></p>`, cls: 'slide' },
+        { html: `<h2>总结</h2><ul><li>form、input、select、textarea 构建表单</li><li>label 提升点击体验</li><li>.value 获取输入内容</li><li>提交前用 JS 做验证（空值、格式）</li><li>真正上线要把验证做后端也做一份，前端只是防手贱</li></ul>`, cls: 'slide' }
     ];
     let current = 0;
     const container = document.getElementById('slideContainer');

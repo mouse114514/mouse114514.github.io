@@ -45,7 +45,7 @@
         <a class="back-link" href="index.html">ↀ目录</a>
         <button id="prevBtn">◀</button>
         <span class="counter" id="counter">1 / 8</span>
-        <button id="nextBtn">▀/button>
+        <button id="nextBtn">▶</button>
     </div>
 
     <script>
@@ -55,41 +55,41 @@
                 <h1>进程、窗口与消息机制</h1>
                 <div class="sub">操作系统底层是怎么运行的？</div>`, cls: 'slide slide-title active' },
         { html: `
-                <h2>窗口的本贀/h2>
-                <p>在Windows 系统里，窗口不是"画出来的图片"，而是一一strong>数据结构</strong>、/p>
+                <h2>窗口的本贀</h2>
+                <p>在Windows 系统里，窗口不是"画出来的图片"，而是一一strong>数据结构</strong>、</p>
                 <ul>
-                    <li>每个窗口有一一<strong>HWND</strong>（窗口句柄）—窗口的身份证参/li>
-                    <li>系统用一个表管理所有窗口，记录谁是谁的父窗参/li>
+                    <li>每个窗口有一一<strong>HWND</strong>（窗口句柄）—窗口的身份证参</li>
+                    <li>系统用一个表管理所有窗口，记录谁是谁的父窗参</li>
                     <li>窗口属于进程——一个进程可以有多个窗口</li>
                     <li>窗口关闭 ↀ系统销毁对应的数据结构</li>
                 </ul>
             `, cls: 'slide' },
         { html: `
                 <h2>消息队列</h2>
-                <p>Windows 是strong>消息驱动</strong>系统。一切输入都变成"消息"！/p>
+                <p>Windows 是strong>消息驱动</strong>系统。一切输入都变成"消息"！</p>
                 <ul>
                     <li>按一下键目ↀ生成一来WM_KEYDOWN 消息</li>
                     <li>点一下鼠校ↀ生成一来WM_LBUTTONDOWN 消息</li>
                     <li>窗口需要重统ↀ生成一来WM_PAINT 消息</li>
                 </ul>
-                <p>每个线程（有窗口的）有自己的消息队列。系统把消息投进队列，线程不断取出来处理——这参strong>消息循环</strong>、/p>
+                <p>每个线程（有窗口的）有自己的消息队列。系统把消息投进队列，线程不断取出来处理——这参strong>消息循环</strong>、</p>
             `, cls: 'slide' },
         { html: `
-                <h2>卡死的根本原回/h2>
-                <p>为什么程序会"无响序！/p>
+                <h2>卡死的根本原回</h2>
+                <p>为什么程序会"无响序！</p>
                 <ul>
                     <li>程序正在做一件耗时的操作（读大文件、死循环、网络超时）</li>
                     <li>它没空回到消息循环取消息</li>
-                    <li>消息队列越积越多，系统检测到超时不处理/li>
+                    <li>消息队列越积越多，系统检测到超时不处理</li>
                     <li>标题栏出现无响序——系统提示你安死了"</li>
                 </ul>
                 <div class="tip-box">任务管理器结束进程，就是强制杀掉它的消息循环、</div>`, cls: 'slide' },
         { html: `
-                <h2>句柄（Handle！/h2>
+                <h2>句柄（Handle！</h2>
                 <p>句柄是Windows 里非常重要的概念——它是一一strong>编号</strong>，代表系统内部某个对象：</p>
                 <ul>
                     <li><strong>HWND</strong> —窗口句柄</li>
-                    <li><strong>HINSTANCE</strong> —模块句柄！exe 戏.dll！/li>
+                    <li><strong>HINSTANCE</strong> —模块句柄！exe 戏.dll！</li>
                     <li><strong>HFILE</strong> —文件句柄（打开的文件）</li>
                     <li><strong>HKEY</strong> —注册表键句柄</li>
                 </ul>

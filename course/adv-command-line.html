@@ -39,7 +39,7 @@
             
                 <img src="images/terminal.png" alt="终端" style="width:180px;margin-bottom:16px;opacity:0.8">
                 <div class="lesson-num">进阶 · 第五试</div>
-                <h1>命令行入问/h1>
+                <h1>命令行入问</h1>
                 <div class="sub">不用鼠标也能操控电脑</div>
         </div>
     </div>
@@ -48,7 +48,7 @@
         <a class="back-link" href="index.html">ↀ目录</a>
         <button id="prevBtn">◀</button>
         <span class="counter" id="counter">1 / 8</span>
-        <button id="nextBtn">▀/button>
+        <button id="nextBtn">▶</button>
     </div>
 
     <script>
@@ -56,48 +56,48 @@
         { html: `
                 <img src="images/terminal.png" alt="终端" style="width:180px;margin-bottom:16px;opacity:0.8">
                 <div class="lesson-num">进阶 · 第五试</div>
-                <h1>命令行入问/h1>
+                <h1>命令行入问</h1>
                 <div class="sub">不用鼠标也能操控电脑</div>`, cls: 'slide slide-title active' },
         { html: `
-                <h2>最常用的命代/h2>
+                <h2>最常用的命代</h2>
                 <ul>
                     <li><code>dir</code> —列出当前目录下的文件和文件夹</li>
-                    <li><code>cd 文件夹名</code> —进入文件备/li>
+                    <li><code>cd 文件夹名</code> —进入文件备</li>
                     <li><code>cd ..</code> —返回上级目录</li>
-                    <li><code>mkdir 文件夹名</code> —新建文件备/li>
-                    <li><code>type 文件名/code> —显示文件内容（文本文件）</li>
+                    <li><code>mkdir 文件夹名</code> —新建文件备</li>
+                    <li><code>type 文件名</code> —显示文件内容（文本文件）</li>
                     <li><code>cls</code> —清屏</li>
-                    <li><code>exit</code> —关闭命令行/li>
+                    <li><code>exit</code> —关闭命令行</li>
                 </ul>
             `, cls: 'slide' },
         { html: `
-                <h2>文件和目录操但/h2>
+                <h2>文件和目录操但</h2>
                 <ul>
                     <li><code>copy 源文代目标位置</code> —复制文件</li>
                     <li><code>move 源文代目标位置</code> —移动文件</li>
-                    <li><code>del 文件名/code> —删除文件</li>
-                    <li><code>ren 旧名 新名</code> —重命名/li>
-                    <li><code>tree</code> —以树形显示目录结析/li>
+                    <li><code>del 文件名</code> —删除文件</li>
+                    <li><code>ren 旧名 新名</code> —重命名</li>
+                    <li><code>tree</code> —以树形显示目录结析</li>
                 </ul>
                 <div class="tip-box">在命令行的路径里！code>.</code> 表示当前目录！code>..</code> 表示上一级目录、</div>`, cls: 'slide' },
         { html: `
                 <h2>系统信息命令</h2>
                 <ul>
                     <li><code>systeminfo</code> —详细系统信息（OS 版本、内存、网卡）</li>
-                    <li><code>tasklist</code> —列出所有运行中的进程（PID！/li>
+                    <li><code>tasklist</code> —列出所有运行中的进程（PID！</li>
                     <li><code>taskkill /PID 1234</code> —根据 PID 结束进程</li>
-                    <li><code>sfc /scannow</code> —扫描和修复系统文代/li>
+                    <li><code>sfc /scannow</code> —扫描和修复系统文代</li>
                     <li><code>shutdown /r /t 0</code> —立即重启</li>
                 </ul>
             `, cls: 'slide' },
         { html: `
                 <h2>管道和重定向</h2>
-                <p>命令行的强大在于组合！/p>
+                <p>命令行的强大在于组合！</p>
                 <ul>
                     <li><code>dir > list.txt</code> —把目录列表输出到文件</li>
-                    <li><code>tasklist | find "chrome"</code> —只显示包名chrome 的进程/li>
+                    <li><code>tasklist | find "chrome"</code> —只显示包名chrome 的进程</li>
                     <li><code>ipconfig | find "IPv4"</code> —只显示IPv4 地址</li>
-                    <li><code>ping baidu.com >> log.txt</code> —追加输出到文代/li>
+                    <li><code>ping baidu.com >> log.txt</code> —追加输出到文代</li>
                 </ul>
                 <div class="highlight-box"><code>></code> 是输出到文件（覆盖）！code>>></code> 是追加，<code>|</code> 是管道（把前一个命令的结果传给后一个）、</div>`, cls: 'slide' }
     ];

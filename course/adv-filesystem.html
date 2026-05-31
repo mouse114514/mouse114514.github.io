@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <link rel="icon" type="image/png" href="/favicon.png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>进阶：文件系统原理/title>
+    <title>进阶：文件系统原理</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif; background: #0a0f1e; color: #e0e8f0; height: 100vh; overflow: hidden; }
@@ -46,7 +46,7 @@
         <a class="back-link" href="index.html">ↀ目录</a>
         <button id="prevBtn">◀</button>
         <span class="counter" id="counter">1 / 8</span>
-        <button id="nextBtn">▀/button>
+        <button id="nextBtn">▶</button>
     </div>
 
     <script>
@@ -58,43 +58,43 @@
                 <div class="sub">文件是怎么存在硬盘上的！`, cls: 'slide slide-title active' },
         { html: `
                 <h2>文件系统是什么？</h2>
-                <p>硬盘是一个巨大的"字节数组"——没有文件系统，你只知道这里有500GB 的0 和1，不知道哪些字节属于哪个文件、/p>
-                <p><strong>文件系统</strong>就是给硬盘建"目录索引"的规则。Windows 用<strong>NTFS</strong>、/p>
+                <p>硬盘是一个巨大的"字节数组"——没有文件系统，你只知道这里有500GB 的0 和1，不知道哪些字节属于哪个文件、</p>
+                <p><strong>文件系统</strong>就是给硬盘建"目录索引"的规则。Windows 用<strong>NTFS</strong>、</p>
                 <ul>
                     <li>FAT32 —旧版，U 盘常见，单文件不能超进4GB</li>
-                    <li><strong>NTFS</strong> —Windows 主力，支持大文件、权限、加密/li>
+                    <li><strong>NTFS</strong> —Windows 主力，支持大文件、权限、加密</li>
                     <li>exFAT —适合大容释U 盘，兼容性好</li>
                 </ul>
             `, cls: 'slide' },
         { html: `
                 <h2>NTFS 的核心：MFT</h2>
-                <p><strong>MFT</strong>（主文件表）是NTFS 的总账有。硬盘上的每一个文件（包括文件夹自己）都在 MFT 里有一条记录、/p>
-                <p>MFT 记录包含：文件名、大小、创建时间、修改时间、数据存在哪、/p>
+                <p><strong>MFT</strong>（主文件表）是NTFS 的总账有。硬盘上的每一个文件（包括文件夹自己）都在 MFT 里有一条记录、</p>
+                <p>MFT 记录包含：文件名、大小、创建时间、修改时间、数据存在哪、</p>
                 <div class="highlight-box">小文件的数据可能直接存在 MFT 记录里（resident），不用额外占空间。大文件的数据才分散存在硬盘上、`, cls: 'slide' },
         { html: `
-                <h2>文件不连续存支/h2>
-                <p>一个文件不是一整块存在硬盘上的。NTFS 把硬盘分戏strong>簀/strong>（Cluster，默设4KB），文件占用的簇可能不连续、/p>
+                <h2>文件不连续存支</h2>
+                <p>一个文件不是一整块存在硬盘上的。NTFS 把硬盘分戏strong>簀</strong>（Cluster，默设4KB），文件占用的簇可能不连续、</p>
                 <ul>
                     <li>文件写进去时，系统找空闲的簇来存</li>
                     <li>删了文件再写新的 ↀ新文件可能插空"存在不同位置</li>
-                    <li>这叫<strong>碎片包/strong>（Fragmentation！/li>
+                    <li>这叫<strong>碎片包</strong>（Fragmentation！</li>
                 </ul>
                 <div class="tip-box">机械硬盘碎片多了会变慢。固态硬盘（SSD）不受影响，也不要碎片整理、`, cls: 'slide' },
         { html: `
                 <h2>删除文件到底删了什么？</h2>
                 <p>很多人以为删除文件就是把数据"擦掉"了。其实不是：</p>
                 <ul>
-                    <li>删除 ↀ系统只是在MFT 记录上做一已删际的标设/li>
-                    <li>数据本身还完好无损地躺在硬盘一/li>
+                    <li>删除 ↀ系统只是在MFT 记录上做一已删际的标设</li>
+                    <li>数据本身还完好无损地躺在硬盘一</li>
                     <li>清空回收站ↀ标记一可用空间"，但数据还在</li>
-                    <li>直到新文件写进来覆盖了这些位置，数据才真正消备/li>
+                    <li>直到新文件写进来覆盖了这些位置，数据才真正消备</li>
                 </ul>
                 <div class="highlight-box">这就是为什么删除的文件能恢复——只要还没被覆盖。所以想彻底删除，要用专门的工具"覆写"、`, cls: 'slide' },
         { html: `
-                <h2>路径的解析过程/h2>
-                <p><code>C:\\Users\\Alice\\doc.txt</code> 不是简单的"字符串查所，而是一层层 MFT 引用！/p>
+                <h2>路径的解析过程</h2>
+                <p><code>C:\\Users\\Alice\\doc.txt</code> 不是简单的"字符串查所，而是一层层 MFT 引用！</p>
                 <ul>
-                    <li>从根目录 <code>$Root</code> 的MFT 记录开姀/li>
+                    <li>从根目录 <code>$Root</code> 的MFT 记录开姀</li>
                     <li>找到"Users"文件夹的 MFT 记录</li>
                     <li>在Users 里找分Alice"的MFT 记录</li>
                     <li>在Alice 里找分doc.txt 的MFT 记录</li>
@@ -102,23 +102,23 @@
                 </ul>
             `, cls: 'slide' },
         { html: `
-                <h2>NTFS 权限（ACL！/h2>
-                <p>NTFS 里的每个文件/文件夹都有一一strong>安全描述第/strong>，里面包含一开strong>ACL</strong>（访问控制列表）表：</p>
+                <h2>NTFS 权限（ACL！</h2>
+                <p>NTFS 里的每个文件/文件夹都有一一strong>安全描述第</strong>，里面包含一开strong>ACL</strong>（访问控制列表）表：</p>
                 <ul>
-                    <li>每条 ACE 规定了某个用戏组可以做什之/li>
-                    <li>读取、写入、修改、完全控分/li>
+                    <li>每条 ACE 规定了某个用戏组可以做什之</li>
+                    <li>读取、写入、修改、完全控分</li>
                     <li>权限会从父文件夹<strong>继承</strong>给子文件</li>
                 </ul>
                 <div class="tip-box">右键文件 ↀ属态ↀ安全，就能看到这个文件的 ACL、`, cls: 'slide' },
         { html: `
                 <h2>总结</h2>
                 <ul>
-                    <li>文件系统是硬盘的索引系统，NTFS 是Windows 的标出/li>
-                    <li>MFT 是NTFS 的总账有，每个文件一条记录/li>
-                    <li>文件数据不连续存放，可能碎片包/li>
+                    <li>文件系统是硬盘的索引系统，NTFS 是Windows 的标出</li>
+                    <li>MFT 是NTFS 的总账有，每个文件一条记录</li>
+                    <li>文件数据不连续存放，可能碎片包</li>
                     <li>删除只是标记，数据还在——覆盖后才真消失</li>
-                    <li>路径是一层层 MFT 引用链/li>
-                    <li>NTFS 权限基于 ACL，可以精细控分/li>
+                    <li>路径是一层层 MFT 引用链</li>
+                    <li>NTFS 权限基于 ACL，可以精细控分</li>
                 </ul>
             `, cls: 'slide' }
     ];

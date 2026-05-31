@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html><head><meta charset="UTF-8">
-    <link rel="icon" type="image/png" href="/favicon.png"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Godot 物理引擎与碰撞检测/title><style>
+    <link rel="icon" type="image/png" href="/favicon.png"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Godot 物理引擎与碰撞检测</title><style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',sans-serif;background:#0a0f1e;color:#e0e8f0;height:100vh;overflow:hidden}
 .presentation { width: 100%; height: 100vh; display: flex; align-items: center; justify-content: center; padding: 60px; }
@@ -44,20 +44,20 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',s
 <body>
     <div class="presentation" id="presentation">
         <div class="slide slide-title" id="slideContainer">
-            <div class="lesson-num">Godot · 进阶第试</div><h1>物理引擎与碰撞检测/h1><div class="sub">真实的物理模拀</div>
+            <div class="lesson-num">Godot · 进阶第试</div><h1>物理引擎与碰撞检测</h1><div class="sub">真实的物理模拀</div>
         </div>
 
-    <div class="nav-bar"><a class="back-link" href="index.html">ↀ目录</a><button id="prevBtn">◀</button><span class="counter" id="counter">1 / 8</span><button id="nextBtn">▀/button></div>
+    <div class="nav-bar"><a class="back-link" href="index.html">ↀ目录</a><button id="prevBtn">◀</button><span class="counter" id="counter">1 / 8</span><button id="nextBtn">▶</button></div>
 
     <script>
     const slidesData = [
-        { html: `<div class="lesson-num">Godot · 进阶第试</div><h1>物理引擎与碰撞检测/h1><div class="sub">真实的物理模拀`, cls: 'slide slide-title active' },
-        { html: `<h2>物理节点体系</h2><p>Godot 的2D 物理节点分三类：</p><ul><li><strong>StaticBody2D</strong> —不动的障碍物（墙壁、地面、平台）</li><li><strong>RigidBody2D</strong> —受物理影响的物体（重力、碰撞反弹）</li><li><strong>CharacterBody2D</strong> —玩家控制的角色（手动设置速度！/li><li><strong>Area2D</strong> —检测区域（进入/离开触发事件！/li></ul>`, cls: 'slide' },
-        { html: `<h2>碰撞层与掩码</h2><p>控制哪些物体之间能碰撞：</p><ul><li><strong>Collision Layer</strong> —这个物体在第几层</li><li><strong>Collision Mask</strong> —这个物体检测哪些层</li></ul><p>例如：玩家设 Layer=1, Mask=2 ↀ玩家只和 Layer=2 的物体碰撞、br>墙壁设Layer=2 ↀ玩家撞墙壁，但敌人不撞玩家、/p><div class="highlight-box">层和掩码是位运算。用 1/2/4/8/16/32 一6 个可用层。合理分层避免不必要的碰撞检测、`, cls: 'slide' },
-        { html: `<h2>RigidBody2D 物理属态/h2><ul><li><strong>Mass</strong> —质量（越重推越难！/li><li><strong>Gravity Scale</strong> —重力影响倍数！=漂浮！/li><li><strong>Linear Damp</strong> —线性阻力（空气阻力！/li><li><strong>Angular Damp</strong> —旋转阻力</li><li><strong>Bounce</strong> —弹性系数（0-1！/li><li><strong>Friction</strong> —摩擦力/li></ul>`, cls: 'slide' },
-        { html: `<h2>Area2D 检测信参/h2><p>Area2D 发出信号！/p><ul><li><strong>body_entered</strong> —有物理体进入区域</li><li><strong>body_exited</strong> —有物理体离开区域</li><li><strong>area_entered</strong> —有其代Area 进入</li></ul><p>应用：捡拾道具、进入危险区扣血、触发剧情、/p>`, cls: 'slide' },
-        { html: `<h2>碰撞检测代码/h2><p>在Area2D 的脚本里！/p><p><code>func _on_area_body_entered(body):</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;if body.is_in_group("player"):</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print("玩家进入区域！)</code></p><p>&nbsp;</p><p>用<strong>add_to_group("player")</strong> 给节点分组，然后用<strong>is_in_group()</strong> 判断类型、/p>`, cls: 'slide' },
-        { html: `<h2>子弹碰撞示例</h2><p>子弹用Area2D，开名<strong>Top Level</strong> 脱离父级独立存在！/p><p><code>var bullet = BulletScene.instantiate()</code></p><p><code>bullet.global_position = $Muzzle.global_position</code></p><p><code>add_child(bullet)</code></p><p>子弹自己往前飞，碰到敌人时 body_entered ↀ敌人扣血 ↀ子弹 queue_free() 销毁、/p>`, cls: 'slide' },
+        { html: `<div class="lesson-num">Godot · 进阶第试</div><h1>物理引擎与碰撞检测</h1><div class="sub">真实的物理模拀`, cls: 'slide slide-title active' },
+        { html: `<h2>物理节点体系</h2><p>Godot 的2D 物理节点分三类：</p><ul><li><strong>StaticBody2D</strong> —不动的障碍物（墙壁、地面、平台）</li><li><strong>RigidBody2D</strong> —受物理影响的物体（重力、碰撞反弹）</li><li><strong>CharacterBody2D</strong> —玩家控制的角色（手动设置速度！</li><li><strong>Area2D</strong> —检测区域（进入/离开触发事件！</li></ul>`, cls: 'slide' },
+        { html: `<h2>碰撞层与掩码</h2><p>控制哪些物体之间能碰撞：</p><ul><li><strong>Collision Layer</strong> —这个物体在第几层</li><li><strong>Collision Mask</strong> —这个物体检测哪些层</li></ul><p>例如：玩家设 Layer=1, Mask=2 ↀ玩家只和 Layer=2 的物体碰撞、br>墙壁设Layer=2 ↀ玩家撞墙壁，但敌人不撞玩家、</p><div class="highlight-box">层和掩码是位运算。用 1/2/4/8/16/32 一6 个可用层。合理分层避免不必要的碰撞检测、`, cls: 'slide' },
+        { html: `<h2>RigidBody2D 物理属态</h2><ul><li><strong>Mass</strong> —质量（越重推越难！</li><li><strong>Gravity Scale</strong> —重力影响倍数！=漂浮！</li><li><strong>Linear Damp</strong> —线性阻力（空气阻力！</li><li><strong>Angular Damp</strong> —旋转阻力</li><li><strong>Bounce</strong> —弹性系数（0-1！</li><li><strong>Friction</strong> —摩擦力</li></ul>`, cls: 'slide' },
+        { html: `<h2>Area2D 检测信参</h2><p>Area2D 发出信号！</p><ul><li><strong>body_entered</strong> —有物理体进入区域</li><li><strong>body_exited</strong> —有物理体离开区域</li><li><strong>area_entered</strong> —有其代Area 进入</li></ul><p>应用：捡拾道具、进入危险区扣血、触发剧情、</p>`, cls: 'slide' },
+        { html: `<h2>碰撞检测代码</h2><p>在Area2D 的脚本里！</p><p><code>func _on_area_body_entered(body):</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;if body.is_in_group("player"):</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print("玩家进入区域！)</code></p><p>&nbsp;</p><p>用<strong>add_to_group("player")</strong> 给节点分组，然后用<strong>is_in_group()</strong> 判断类型、</p>`, cls: 'slide' },
+        { html: `<h2>子弹碰撞示例</h2><p>子弹用Area2D，开名<strong>Top Level</strong> 脱离父级独立存在！</p><p><code>var bullet = BulletScene.instantiate()</code></p><p><code>bullet.global_position = $Muzzle.global_position</code></p><p><code>add_child(bullet)</code></p><p>子弹自己往前飞，碰到敌人时 body_entered ↀ敌人扣血 ↀ子弹 queue_free() 销毁、</p>`, cls: 'slide' },
         { html: `<h2>总结</h2><ul><li>StaticBody2D = 静止障碍，RigidBody2D = 物理模拟</li><li>Layer/Mask 控制碰撞层级</li><li>Area2D 的信参(body_entered/exited) 触发事件</li><li>add_to_group / is_in_group 管理对象分类</li><li>instantiate() 动态生成子弹等物体</li></ul>`, cls: 'slide' }
     ];
     let current = 0;

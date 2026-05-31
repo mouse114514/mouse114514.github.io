@@ -48,15 +48,15 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',s
         </div>
     </div>
 
-    <div class="nav-bar"><a class="back-link" href="index.html">ↀ目录</a><button id="prevBtn">◀</button><span class="counter" id="counter">1 / 8</span><button id="nextBtn">▀/button></div>
+    <div class="nav-bar"><a class="back-link" href="index.html">ↀ目录</a><button id="prevBtn">◀</button><span class="counter" id="counter">1 / 8</span><button id="nextBtn">▶</button></div>
 
     <script>
     const slidesData = [
         { html: `<div class="lesson-num">安卓逆向 · 第试</div><h1>Smali 基础</h1><div class="sub">安卓的汇编语言"</div>`, cls: 'slide slide-title active' },
-        { html: `<h2>Smali 文件结构</h2><p>一一.smali 文件对应一一Java 类：</p><p><code>.class public Lcom/example/app/MainActivity;</code></p><p><code>.super Landroid/app/Activity;</code></p><p><code>.source "MainActivity.java"</code></p><p>.class 定义类名！super 定义父类！source 注明原始文件名、/p>`, cls: 'slide' },
-        { html: `<h2>字段和寄存器</h2><p>成员变量（字段）！/p><p><code>.field private name:Ljava/lang/String;</code></p><p>寄存器（存放数据的地方）！/p><ul><li><code>v0, v1, v2...</code> 本地寄存器/li><li><code>p0, p1, p2...</code> 方法参数（p0 是this！/li></ul><div class="highlight-box">一个方法里有<code>.registers 5</code> 表示用了 5 个寄存器（v0-v4）、</div>`, cls: 'slide' },
-        { html: `<h2>Smali 示例对比</h2><p>Java 代码！/p><p><code>if (score >= 60) { showPass(); }</code></p><p>对应 Smali！/p><p><code>const/4 v0, 60</code></p><p><code>if-lt p1, v0, :fail</code>  ↀ如果 p1 < 60 跳到 fail</p><p><code>invoke-direct {p0}, L...;->showPass()V</code></p><p><code>:fail</code></p>`, cls: 'slide' },
-        { html: `<h2>修改 Smali 简单示例/h2><p>想跳过付费验证：</p><p>找到类似这样的代码：</p><p><code>invoke-virtual {...} L...;->isPaid()Z</code></p><p><code>move-result v0</code></p><p>把<code>if-eqz v0, :not_paid</code> 改成 <code>if-nez v0, :not_paid</code> 或直接改戏<code>const/4 v0, 1</code></p><div class="tip-box">支Smali ↀapktool b 重新打包 ↀjarsigner 签名 ↀ安装测试、</div>`, cls: 'slide' }
+        { html: `<h2>Smali 文件结构</h2><p>一一.smali 文件对应一一Java 类：</p><p><code>.class public Lcom/example/app/MainActivity;</code></p><p><code>.super Landroid/app/Activity;</code></p><p><code>.source "MainActivity.java"</code></p><p>.class 定义类名！super 定义父类！source 注明原始文件名、</p>`, cls: 'slide' },
+        { html: `<h2>字段和寄存器</h2><p>成员变量（字段）！</p><p><code>.field private name:Ljava/lang/String;</code></p><p>寄存器（存放数据的地方）！</p><ul><li><code>v0, v1, v2...</code> 本地寄存器</li><li><code>p0, p1, p2...</code> 方法参数（p0 是this！</li></ul><div class="highlight-box">一个方法里有<code>.registers 5</code> 表示用了 5 个寄存器（v0-v4）、</div>`, cls: 'slide' },
+        { html: `<h2>Smali 示例对比</h2><p>Java 代码！</p><p><code>if (score >= 60) { showPass(); }</code></p><p>对应 Smali！</p><p><code>const/4 v0, 60</code></p><p><code>if-lt p1, v0, :fail</code>  ↀ如果 p1 < 60 跳到 fail</p><p><code>invoke-direct {p0}, L...;->showPass()V</code></p><p><code>:fail</code></p>`, cls: 'slide' },
+        { html: `<h2>修改 Smali 简单示例</h2><p>想跳过付费验证：</p><p>找到类似这样的代码：</p><p><code>invoke-virtual {...} L...;->isPaid()Z</code></p><p><code>move-result v0</code></p><p>把<code>if-eqz v0, :not_paid</code> 改成 <code>if-nez v0, :not_paid</code> 或直接改戏<code>const/4 v0, 1</code></p><div class="tip-box">支Smali ↀapktool b 重新打包 ↀjarsigner 签名 ↀ安装测试、</div>`, cls: 'slide' }
     ];
     let current = 0;
     const container = document.getElementById('slideContainer');

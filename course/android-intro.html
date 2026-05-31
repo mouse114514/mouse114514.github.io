@@ -45,7 +45,7 @@
         <a class="back-link" href="index.html">ↀ目录</a>
         <button id="prevBtn">◀</button>
         <span class="counter" id="counter">1 / 8</span>
-        <button id="nextBtn">▀/button>
+        <button id="nextBtn">▶</button>
     </div>
 
     <script>
@@ -57,49 +57,49 @@
         { html: `
                 <h2>逆向能做什么？</h2>
                 <ul>
-                    <li><strong>学习优秀 App 的实现/strong> —看大神怎么写的</li>
-                    <li><strong>分析恶意软件</strong> —看病毒在做什之/li>
-                    <li><strong>修改 App 功能</strong> —如汉化、去广告、修改游戏数倀/li>
-                    <li><strong>安全研究</strong> —找漏洞、做渗透测试/li>
-                    <li><strong>恢复丢失的源码/strong> —用工具反编译 APK 看逻辑</li>
+                    <li><strong>学习优秀 App 的实现</strong> —看大神怎么写的</li>
+                    <li><strong>分析恶意软件</strong> —看病毒在做什之</li>
+                    <li><strong>修改 App 功能</strong> —如汉化、去广告、修改游戏数倀</li>
+                    <li><strong>安全研究</strong> —找漏洞、做渗透测试</li>
+                    <li><strong>恢复丢失的源码</strong> —用工具反编译 APK 看逻辑</li>
                 </ul>
             `, cls: 'slide' },
         { html: `
-                <h2>安卓 App 的打包格开/h2>
-                <p>安卓 App 的文件是 <strong>.apk</strong>（Android Package Kit）、/p>
-                <p>它其实就是一一strong>压缩包/strong>（ZIP 格式），里面包含！/p>
+                <h2>安卓 App 的打包格开</h2>
+                <p>安卓 App 的文件是 <strong>.apk</strong>（Android Package Kit）、</p>
+                <p>它其实就是一一strong>压缩包</strong>（ZIP 格式），里面包含！</p>
                 <ul>
                     <li><code>classes.dex</code> —编译后的代码（Dalvik 字节码）</li>
                     <li><code>AndroidManifest.xml</code> —配置信息</li>
-                    <li><code>res/</code> —资源（图片、布局文件！/li>
-                    <li><code>lib/</code> —原生库（C++ 写的代码！/li>
+                    <li><code>res/</code> —资源（图片、布局文件！</li>
+                    <li><code>lib/</code> —原生库（C++ 写的代码！</li>
                     <li><code>META-INF/</code> —签名信息</li>
                 </ul>
             `, cls: 'slide' },
         { html: `
                 <h2>反编译是什么？</h2>
-                <p>App 编译后变成了 <strong>.dex 字节码/strong>——人看不懂的二进制代码、/p>
-                <p><strong>反编试/strong>就是把字节码转回人能读懂的代码：</p>
+                <p>App 编译后变成了 <strong>.dex 字节码</strong>——人看不懂的二进制代码、</p>
+                <p><strong>反编试</strong>就是把字节码转回人能读懂的代码：</p>
                 <ul>
                     <li>把.dex ↀ转成 .jar ↀ转成 Java 代码（近似源码）</li>
                     <li>或者转戏Smali 汇编（一种比 Java 底层的人读代码）</li>
                 </ul>
                 <div class="highlight-box">常用工具！strong>jadx</strong>（把 APK 转成 Java 代码，图形界面）、strong>apktool</strong>（解包反编译资源）`, cls: 'slide' },
         { html: `
-                <h2>逆向需要什么基础！/h2>
+                <h2>逆向需要什么基础！</h2>
                 <ul>
-                    <li>至少会<strong>Java 戏Kotlin</strong>（安卓开发语言！/li>
-                    <li>了解 <strong>Smali 汇编</strong>（做修改时用得到！/li>
+                    <li>至少会<strong>Java 戏Kotlin</strong>（安卓开发语言！</li>
+                    <li>了解 <strong>Smali 汇编</strong>（做修改时用得到！</li>
                     <li>会用 <strong>jadx</strong>、strong>apktool</strong>、strong>Android Studio</strong></li>
-                    <li>懂一点strong>网络协议</strong>（抓包分析API 调用！/li>
+                    <li>懂一点strong>网络协议</strong>（抓包分析API 调用！</li>
                 </ul>
                 <div class="highlight-box">如果你完全没编程基础，建议先字Python 戏Java 基础再入门逆向、</div>`, cls: 'slide' },
         { html: `
                 <h2>总结</h2>
                 <ul>
                     <li>逆向工程 = 拆开 App 看它里面怎么做的</li>
-                    <li>.apk 本质是ZIP 包，包含 dex 代码和资満/li>
-                    <li>用jadx / apktool 反编译查看源码/li>
+                    <li>.apk 本质是ZIP 包，包含 dex 代码和资満</li>
+                    <li>用jadx / apktool 反编译查看源码</li>
                     <li>需要Java 基础 + 逆向工具使用</li>
                     <li>注意法律边界，不要用于破解或侵权</li>
                 </ul>

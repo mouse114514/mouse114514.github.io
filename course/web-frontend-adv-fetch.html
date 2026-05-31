@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html><head><meta charset="UTF-8">
-    <link rel="icon" type="image/png" href="/favicon.png"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>JavaScript 入门</title><style>
+    <link rel="icon" type="image/png" href="/favicon.png"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Fetch API 与网络请求</title><style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',sans-serif;background:#0a0f1e;color:#e0e8f0;height:100vh;overflow:hidden}
 .presentation { width: 100%; height: 100vh; display: flex; align-items: center; justify-content: center; padding: 60px; }
@@ -32,31 +32,26 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',s
             .slide h2 { font-size: 20px; }
             .slide-title h1 { font-size: 28px; }
             .slide-title .sub { font-size: 14px; }
-            .flex-row { flex-direction: column; gap: 12px; }
-            .flex-row img { max-width: 120px; }
-            .nav-controls { padding: 6px 10px; gap: 4px; flex-wrap: wrap; justify-content: center; }
-            .nav-controls button { font-size: 20px; padding: 6px 14px; min-width: 44px; min-height: 44px; }
-            .nav-controls .page-indicator { font-size: 12px; min-width: 60px; }
-            .slide-inner::-webkit-scrollbar { width: 3px; }
         }
     </style></head>
 
 <body>
     <div class="presentation" id="presentation">
         <div class="slide slide-title" id="slideContainer">
-            <div class="lesson-num">Web 前端 · 第试</div><h1>JavaScript 入门</h1><div class="sub">让网页动起来</div>
+            <div class="lesson-num">Web 前端 · 进阶第试</div><h1>Fetch API</h1><div class="sub">前端向后端要数据</div>
         </div>
-    </div>
 
-    <div class="nav-bar"><a class="back-link" href="index.html">ↀ目录</a><button id="prevBtn">◀</button><span class="counter" id="counter">1 / 8</span><button id="nextBtn">▶</button></div>
+    <div class="nav-bar"><a class="back-link" href="index.html">ↀ目录</a><button id="prevBtn">◀</button><span class="counter" id="counter">1 / 7</span><button id="nextBtn">▶</button></div>
 
     <script>
     const slidesData = [
-        { html: `<div class="lesson-num">Web 前端 · 第试</div><h1>JavaScript 入门</h1><div class="sub">让网页动起来</div>`, cls: 'slide slide-title active' },
-        { html: `<h2>引入 JS</h2><p>在HTML 里写 JS！</p><p><code>&lt;script&gt;</code></p><p><code>&nbsp;&nbsp;alert("你好！);</code></p><p><code>&lt;/script&gt;</code></p><p>或者引用外部文件：</p><p><code>&lt;script src="script.js"&gt;&lt;/script&gt;</code></p><div class="tip-box">&lt;script&gt; 标签通常放在 &lt;/body&gt; 之前，这校HTML 先加载完再执行JS、</div>`, cls: 'slide' },
-        { html: `<h2>操作 DOM</h2><p>DOM = 浏览器把 HTML 转换成的"对象校、</p><p>选中元素！</p><p><code>let btn = document.querySelector("#myButton")</code></p><p><code>let title = document.querySelector("h1")</code></p><p>修改内容！</p><p><code>title.textContent = "新标题</code></p><p><code>title.style.color = "red"</code></p>`, cls: 'slide' },
-        { html: `<h2>事件监听</h2><p>让按钮点击后执行代码！</p><p><code>let btn = document.querySelector("button")</code></p><p><code>btn.addEventListener("click", function() {</code></p><p><code>&nbsp;&nbsp;alert("按钮被点了！")</code></p><p><code>})</code></p><p>常见事件：click（点击）、mouseover（悬停）、keydown（按键）、submit（提交）</p>`, cls: 'slide' },
-        { html: `<h2>函数</h2><p>把代码打包复用：</p><p><code>function add(a, b) {</code></p><p><code>&nbsp;&nbsp;return a + b</code></p><p><code>}</code></p><p><code>let result = add(3, 5)</code> ↀresult = 8</p><div class="highlight-box">函数是JS 最基础的组织代码方式。一个函数做一件事，名字要清楚、</div>`, cls: 'slide' }
+        { html: `<div class="lesson-num">Web 前端 · 进阶第试</div><h1>Fetch API</h1><div class="sub">前端向后端要数据`, cls: 'slide slide-title active' },
+        { html: `<h2>什么是 Fetch</h2><p>浏览器内置的 HTTP 请求工具，不用装任何库：</p><p><code>fetch("https://api.example.com/data")</code></p><p><code>&nbsp;&nbsp;.then(response => response.json())</code></p><p><code>&nbsp;&nbsp;.then(data => console.log(data))</code></p><p>返回一个 <strong>Promise</strong>，用 .then() 处理结果。</p><p>Fetch 替代了老旧的 XMLHttpRequest，写法更简洁。</p>`, cls: 'slide' },
+        { html: `<h2>GET 请求</h2><p>从服务器拿数据：</p><p><code>fetch("https://api.github.com/users/octocat")</code></p><p><code>&nbsp;&nbsp;.then(res => res.json())</code></p><p><code>&nbsp;&nbsp;.then(user => {</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;document.getElementById("avatar").src = user.avatar_url;</code></p><p><code>&nbsp;&nbsp;})</code></p><p>response.json() 把 JSON 字符串转成 JavaScript 对象。</p><p>如果返回的是文本用 <code>res.text()</code>。</p>`, cls: 'slide' },
+        { html: `<h2>async / await 写法</h2><p>比 .then() 更易读：</p><p><code>async function loadData() {</code></p><p><code>&nbsp;&nbsp;let res = await fetch("https://...");</code></p><p><code>&nbsp;&nbsp;let data = await res.json();</code></p><p><code>&nbsp;&nbsp;console.log(data);</code></p><p><code>}</code></p><p><code>await</code> 只能在 <code>async</code> 函数里用。</p><p>try/catch 抓网络错误：</p><p><code>try { ... } catch (err) { alert("网络出错"); }</code></p>`, cls: 'slide' },
+        { html: `<h2>POST 请求</h2><p>向服务器发送数据：</p><p><code>fetch("/api/login", {</code></p><p><code>&nbsp;&nbsp;method: "POST",</code></p><p><code>&nbsp;&nbsp;headers: { "Content-Type": "application/json" },</code></p><p><code>&nbsp;&nbsp;body: JSON.stringify({ username: "admin", password: "123" })</code></p><p><code>}).then(res => res.json())</code></p><p><code>&nbsp;&nbsp;.then(data => { if (data.ok) alert("登录成功"); })</code></p>`, cls: 'slide' },
+        { html: `<h2>处理状态码</h2><p>Fetch 只在网络故障时 reject，4xx/5xx 不会！</p><p>需要自己检查状态：</p><p><code>if (!res.ok) {</code></p><p><code>&nbsp;&nbsp;throw new Error("HTTP " + res.status);</code></p><p><code>}</code></p><p>常用状态码：200（成功）、404（不存在）、500（服务器炸了）</p><p>用 <code>res.status</code> 拿数字，<code>res.ok</code> 判断是否 200~299</p>`, cls: 'slide' },
+        { html: `<h2>总结</h2><ul><li>fetch(url) 发 GET，fetch(url, {method, body}) 发 POST</li><li>res.json() 转 JSON，res.text() 转字符串</li><li>async/await 比 .then() 更清晰</li><li>检查 res.ok 处理 HTTP 错误</li><li>try/catch 处理网络断开、超时等异常</li></ul>`, cls: 'slide' }
     ];
     let current = 0;
     const container = document.getElementById('slideContainer');

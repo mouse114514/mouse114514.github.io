@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html><head><meta charset="UTF-8">
-    <link rel="icon" type="image/png" href="/favicon.png"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>JavaScript 入门</title><style>
+    <link rel="icon" type="image/png" href="/favicon.png"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>模板引擎与动态页面</title><style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',sans-serif;background:#0a0f1e;color:#e0e8f0;height:100vh;overflow:hidden}
 .presentation { width: 100%; height: 100vh; display: flex; align-items: center; justify-content: center; padding: 60px; }
@@ -32,31 +32,26 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',s
             .slide h2 { font-size: 20px; }
             .slide-title h1 { font-size: 28px; }
             .slide-title .sub { font-size: 14px; }
-            .flex-row { flex-direction: column; gap: 12px; }
-            .flex-row img { max-width: 120px; }
-            .nav-controls { padding: 6px 10px; gap: 4px; flex-wrap: wrap; justify-content: center; }
-            .nav-controls button { font-size: 20px; padding: 6px 14px; min-width: 44px; min-height: 44px; }
-            .nav-controls .page-indicator { font-size: 12px; min-width: 60px; }
-            .slide-inner::-webkit-scrollbar { width: 3px; }
         }
     </style></head>
 
 <body>
     <div class="presentation" id="presentation">
         <div class="slide slide-title" id="slideContainer">
-            <div class="lesson-num">Web 前端 · 第试</div><h1>JavaScript 入门</h1><div class="sub">让网页动起来</div>
+            <div class="lesson-num">Web 后端 · 第试</div><h1>模板引擎</h1><div class="sub">在 HTML 里写 Python</div>
         </div>
-    </div>
 
-    <div class="nav-bar"><a class="back-link" href="index.html">ↀ目录</a><button id="prevBtn">◀</button><span class="counter" id="counter">1 / 8</span><button id="nextBtn">▶</button></div>
+    <div class="nav-bar"><a class="back-link" href="index.html">ↀ目录</a><button id="prevBtn">◀</button><span class="counter" id="counter">1 / 7</span><button id="nextBtn">▶</button></div>
 
     <script>
     const slidesData = [
-        { html: `<div class="lesson-num">Web 前端 · 第试</div><h1>JavaScript 入门</h1><div class="sub">让网页动起来</div>`, cls: 'slide slide-title active' },
-        { html: `<h2>引入 JS</h2><p>在HTML 里写 JS！</p><p><code>&lt;script&gt;</code></p><p><code>&nbsp;&nbsp;alert("你好！);</code></p><p><code>&lt;/script&gt;</code></p><p>或者引用外部文件：</p><p><code>&lt;script src="script.js"&gt;&lt;/script&gt;</code></p><div class="tip-box">&lt;script&gt; 标签通常放在 &lt;/body&gt; 之前，这校HTML 先加载完再执行JS、</div>`, cls: 'slide' },
-        { html: `<h2>操作 DOM</h2><p>DOM = 浏览器把 HTML 转换成的"对象校、</p><p>选中元素！</p><p><code>let btn = document.querySelector("#myButton")</code></p><p><code>let title = document.querySelector("h1")</code></p><p>修改内容！</p><p><code>title.textContent = "新标题</code></p><p><code>title.style.color = "red"</code></p>`, cls: 'slide' },
-        { html: `<h2>事件监听</h2><p>让按钮点击后执行代码！</p><p><code>let btn = document.querySelector("button")</code></p><p><code>btn.addEventListener("click", function() {</code></p><p><code>&nbsp;&nbsp;alert("按钮被点了！")</code></p><p><code>})</code></p><p>常见事件：click（点击）、mouseover（悬停）、keydown（按键）、submit（提交）</p>`, cls: 'slide' },
-        { html: `<h2>函数</h2><p>把代码打包复用：</p><p><code>function add(a, b) {</code></p><p><code>&nbsp;&nbsp;return a + b</code></p><p><code>}</code></p><p><code>let result = add(3, 5)</code> ↀresult = 8</p><div class="highlight-box">函数是JS 最基础的组织代码方式。一个函数做一件事，名字要清楚、</div>`, cls: 'slide' }
+        { html: `<div class="lesson-num">Web 后端 · 第试</div><h1>模板引擎</h1><div class="sub">在 HTML 里写 Python</div>`, cls: 'slide slide-title active' },
+        { html: `<h2>为什么要通模板？</h2><p>之前用 Flask 直接 return "<h1>Hello</h1>"，字符串拼 HTML 很痛苦：</p><p><code>return f"&lt;h1&gt;你好, {name}&lt;/h1&gt;"</code></p><p>模板 = <strong>HTML 文件 + 占位符</strong>，Flask 自动替换：</p><p>render_template("index.html", name="小明")</p><p>Flask 默认用 <strong>Jinja2</strong> 模板引擎。</p>`, cls: 'slide' },
+        { html: `<h2>使用 render_template</h2><p>项目结构：</p><p><code>app.py</code></p><p><code>templates/</code></p><p><code>&nbsp;&nbsp;index.html</code></p><p><code>&nbsp;&nbsp;user.html</code></p><p>app.py：</p><p><code>from flask import render_template</code></p><p><code>@app.route("/")</code></p><p><code>def home():</code></p><p><code>&nbsp;&nbsp;return render_template("index.html", title="首页")</code></p>`, cls: 'slide' },
+        { html: `<h2>模板语法：变量</h2><p>在 HTML 里用双花括号输出变量：</p><p><code>&lt;h1&gt;{{ title }}&lt;/h1&gt;</code></p><p><code>&lt;p&gt;欢迎, {{ username }}！&lt;/p&gt;</code></p><p>支持列表和字典：</p><p><code>{{ users.0.name }}</code> 取列表第一个的 name</p><p><code>{{ user.age }}</code> 取字典/对象的 age 属性</p><p><code>{{ 3 + 5 }}</code> 里面可以写简单表达式</p>`, cls: 'slide' },
+        { html: `<h2>模板语法：判断与循环</h2><p>用 {% %} 写控制语句：</p><p><code>{% if logged_in %}</code></p><p><code>&nbsp;&nbsp;&lt;p&gt;你好, {{ user }}&lt;/p&gt;</code></p><p><code>{% else %}</code></p><p><code>&nbsp;&nbsp;&lt;a href="/login"&gt;登录&lt;/a&gt;</code></p><p><code>{% endif %}</code></p><p>循环：</p><p><code>{% for item in items %}</code></p><p><code>&nbsp;&nbsp;&lt;li&gt;{{ item }}&lt;/li&gt;</code></p><p><code>{% endfor %}</code></p>`, cls: 'slide' },
+        { html: `<h2>模板继承</h2><p>避免每个页面重复写 &lt;head&gt; 和导航栏：</p><p>base.html：</p><p><code>&lt;html&gt;&lt;head&gt;&lt;title&gt;{% block title %}{% endblock %}&lt;/title&gt;</code></p><p><code>&lt;body&gt;{% block content %}{% endblock %}&lt;/body&gt;</code></p><p>子模板：</p><p><code>{% extends "base.html" %}</code></p><p><code>{% block title %}首页{% endblock %}</code></p><p><code>{% block content %}&lt;h1&gt;欢迎&lt;/h1&gt;{% endblock %}</code></p>`, cls: 'slide' },
+        { html: `<h2>总结</h2><ul><li>模板把 HTML 和数据分开，维护更方便</li><li>{{ }} 输出变量，{% %} 控制逻辑</li><li>render_template() 传入变量给模板</li><li>模板继承避免重复布局代码</li><li>Jinja2 还有过滤器（|upper、|length）等高级功能</li></ul>`, cls: 'slide' }
     ];
     let current = 0;
     const container = document.getElementById('slideContainer');

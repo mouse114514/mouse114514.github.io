@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html><head><meta charset="UTF-8">
-    <link rel="icon" type="image/png" href="/favicon.png"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>JavaScript 入门</title><style>
+    <link rel="icon" type="image/png" href="/favicon.png"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>日志分析与调试</title><style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',sans-serif;background:#0a0f1e;color:#e0e8f0;height:100vh;overflow:hidden}
 .presentation { width: 100%; height: 100vh; display: flex; align-items: center; justify-content: center; padding: 60px; }
@@ -32,31 +32,26 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',s
             .slide h2 { font-size: 20px; }
             .slide-title h1 { font-size: 28px; }
             .slide-title .sub { font-size: 14px; }
-            .flex-row { flex-direction: column; gap: 12px; }
-            .flex-row img { max-width: 120px; }
-            .nav-controls { padding: 6px 10px; gap: 4px; flex-wrap: wrap; justify-content: center; }
-            .nav-controls button { font-size: 20px; padding: 6px 14px; min-width: 44px; min-height: 44px; }
-            .nav-controls .page-indicator { font-size: 12px; min-width: 60px; }
-            .slide-inner::-webkit-scrollbar { width: 3px; }
         }
     </style></head>
 
 <body>
     <div class="presentation" id="presentation">
         <div class="slide slide-title" id="slideContainer">
-            <div class="lesson-num">Web 前端 · 第试</div><h1>JavaScript 入门</h1><div class="sub">让网页动起来</div>
+            <div class="lesson-num">安卓逆向 · 第试</div><h1>日志分析与调试</h1><div class="sub">看日志找线索</div>
         </div>
-    </div>
 
-    <div class="nav-bar"><a class="back-link" href="index.html">ↀ目录</a><button id="prevBtn">◀</button><span class="counter" id="counter">1 / 8</span><button id="nextBtn">▶</button></div>
+    <div class="nav-bar"><a class="back-link" href="index.html">ↀ目录</a><button id="prevBtn">◀</button><span class="counter" id="counter">1 / 7</span><button id="nextBtn">▶</button></div>
 
     <script>
     const slidesData = [
-        { html: `<div class="lesson-num">Web 前端 · 第试</div><h1>JavaScript 入门</h1><div class="sub">让网页动起来</div>`, cls: 'slide slide-title active' },
-        { html: `<h2>引入 JS</h2><p>在HTML 里写 JS！</p><p><code>&lt;script&gt;</code></p><p><code>&nbsp;&nbsp;alert("你好！);</code></p><p><code>&lt;/script&gt;</code></p><p>或者引用外部文件：</p><p><code>&lt;script src="script.js"&gt;&lt;/script&gt;</code></p><div class="tip-box">&lt;script&gt; 标签通常放在 &lt;/body&gt; 之前，这校HTML 先加载完再执行JS、</div>`, cls: 'slide' },
-        { html: `<h2>操作 DOM</h2><p>DOM = 浏览器把 HTML 转换成的"对象校、</p><p>选中元素！</p><p><code>let btn = document.querySelector("#myButton")</code></p><p><code>let title = document.querySelector("h1")</code></p><p>修改内容！</p><p><code>title.textContent = "新标题</code></p><p><code>title.style.color = "red"</code></p>`, cls: 'slide' },
-        { html: `<h2>事件监听</h2><p>让按钮点击后执行代码！</p><p><code>let btn = document.querySelector("button")</code></p><p><code>btn.addEventListener("click", function() {</code></p><p><code>&nbsp;&nbsp;alert("按钮被点了！")</code></p><p><code>})</code></p><p>常见事件：click（点击）、mouseover（悬停）、keydown（按键）、submit（提交）</p>`, cls: 'slide' },
-        { html: `<h2>函数</h2><p>把代码打包复用：</p><p><code>function add(a, b) {</code></p><p><code>&nbsp;&nbsp;return a + b</code></p><p><code>}</code></p><p><code>let result = add(3, 5)</code> ↀresult = 8</p><div class="highlight-box">函数是JS 最基础的组织代码方式。一个函数做一件事，名字要清楚、</div>`, cls: 'slide' }
+        { html: `<div class="lesson-num">安卓逆向 · 第试</div><h1>日志分析与调试</h1><div class="sub">看日志找线索</div>`, cls: 'slide slide-title active' },
+        { html: `<h2>logcat 是什么</h2><p>安卓系统的日志系统，所有 App 的输出都会打到 logcat 里：</p><p><code>adb logcat</code> ↀ实时看所有日志（内容非常多！）</p><p>日志等级：V(详细) &lt; D(调试) &lt; I(信息) &lt; W(警告) &lt; E(错误) &lt; F(致命)</p><p>逆向时重点关注 <strong>E</strong> 和 <strong>F</strong> 级别，往往是崩溃线索。</p>`, cls: 'slide' },
+        { html: `<h2>过滤 logcat</h2><p>不加过滤的话日志刷屏，根本看不完：</p><p><code>adb logcat -s "TAG"</code> ↀ只显示指定 TAG</p><p><code>adb logcat *:E</code> ↀ只看 Error 及以上</p><p><code>adb logcat | grep "关键词"</code> ↀWindows 用 findstr</p><p><code>adb logcat -c</code> ↀ清空日志缓冲区</p><p>实战中先清空，再操作 App，然后抓日志。</p>`, cls: 'slide' },
+        { html: `<h2>从日志反推代码</h2><p>APP 崩溃时会打印堆栈：</p><p><code>FATAL EXCEPTION: main</code></p><p><code>java.lang.NullPointerException</code></p><p><code>&nbsp;&nbsp;at com.example.app.LoginActivity.checkPassword(LoginActivity.java:42)</code></p><p>这说明 LoginActivity.java 第 42 行空指针了。</p><p>用 jadx 打开这个类，找到对应行，就知道它在做什么处理。</p>`, cls: 'slide' },
+        { html: `<h2>自己插日志</h2><p>如果能把修改后的 APK 装回去，可以在 smali 里加日志：</p><p>在关键方法前加：</p><p><code>const-string v0, "MY_DEBUG"</code></p><p><code>invoke-static {v0, v1}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I</code></p><p>然后过滤：<code>adb logcat -s "MY_DEBUG"</code></p><p>适合观察某个方法的参数值、执行路径。</p>`, cls: 'slide' },
+        { html: `<h2>调试模式</h2><p>用 <code>android:debuggable="true"</code> 的 APK：</p><p>1. 解包修改 AndroidManifest.xml，加上 debuggable</li><li>2. 重打包签名安装</li><li>3. <code>adb shell am start -D -n 包名/活动名</code> 启动等待调试</li><li>4. jadx 或 Android Studio 附加进程，断点调试</li></ul><div class="tip-box">加了 debuggable 的系统会多很多日志，部分 App 检测 debuggable 后会自动退出。`, cls: 'slide' },
+        { html: `<h2>总结</h2><ul><li>adb logcat 看系统日志，过滤器必须学会</li><li>崩溃堆栈直接告诉你错在哪里</li><li>在 smali 加 Log.d 主动输出变量值</li><li>开启 debuggable + 断点可以实现动态调试</li><li>日志分析是逆向最基础也是最常用的手段</li></ul>`, cls: 'slide' }
     ];
     let current = 0;
     const container = document.getElementById('slideContainer');

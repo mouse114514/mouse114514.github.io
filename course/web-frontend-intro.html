@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <link rel="icon" type="image/png" href="/favicon.png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>网页是怎么工作的/title>
+    <title>网页是怎么工作的</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif; background: #0a0f1e; color: #e0e8f0; height: 100vh; overflow: hidden; }
@@ -35,7 +35,7 @@
         <div class="slide slide-title" id="slideContainer">
             
                 <div class="lesson-num">Web 前端 · 第试</div>
-                <h1>网页是怎么工作的/h1>
+                <h1>网页是怎么工作的</h1>
                 <div class="sub">HTML、CSS、JavaScript 是什之</div>
         </div>
 
@@ -43,27 +43,27 @@
         <a class="back-link" href="index.html">ↀ目录</a>
         <button id="prevBtn">◀</button>
         <span class="counter" id="counter">1 / 8</span>
-        <button id="nextBtn">▀/button>
+        <button id="nextBtn">▶</button>
     </div>
 
     <script>
     const slidesData = [
         { html: `
                 <div class="lesson-num">Web 前端 · 第试</div>
-                <h1>网页是怎么工作的/h1>
+                <h1>网页是怎么工作的</h1>
                 <div class="sub">HTML、CSS、JavaScript 是什之`, cls: 'slide slide-title active' },
         { html: `
                 <h2>你每次打开网页发生了什么？</h2>
                 <ul>
-                    <li>你在浏览器地址栏输入一个网址（如 baidu.com！/li>
+                    <li>你在浏览器地址栏输入一个网址（如 baidu.com！</li>
                     <li>浏览器向服务器请求"这个网页</li>
-                    <li>服务器返回一堆代码（HTML + CSS + JS！/li>
-                    <li>浏览器把这些代码"渲染"成你看到的页静/li>
+                    <li>服务器返回一堆代码（HTML + CSS + JS！</li>
+                    <li>浏览器把这些代码"渲染"成你看到的页静</li>
                 </ul>
                 <div class="highlight-box">这段代码就是"前端"要做的事情——你看到的页面效果，都是前端代码决定的、`, cls: 'slide' },
         { html: `
-                <h2>HTML：骨析/h2>
-                <p>HTML（超文本标记语言）是网页的strong>结构</strong>，就像房子的框架！/p>
+                <h2>HTML：骨析</h2>
+                <p>HTML（超文本标记语言）是网页的strong>结构</strong>，就像房子的框架！</p>
                 <ul>
                     <li><code>&lt;h1&gt;</code> —标题</li>
                     <li><code>&lt;p&gt;</code> —段落</li>
@@ -71,11 +71,11 @@
                     <li><code>&lt;a&gt;</code> —链接</li>
                     <li><code>&lt;button&gt;</code> —按钮</li>
                 </ul>
-                <p>HTML 只是决定了有什之，不决定"长什么样"、/p>
+                <p>HTML 只是决定了有什之，不决定"长什么样"、</p>
             `, cls: 'slide' },
         { html: `
-                <h2>CSS：衣服和化妆哀/h2>
-                <p>CSS（层叠样式表）控制网页的<strong>外观</strong>！/p>
+                <h2>CSS：衣服和化妆哀</h2>
+                <p>CSS（层叠样式表）控制网页的<strong>外观</strong>！</p>
                 <ul>
                     <li>颜色 —<code>color: red;</code></li>
                     <li>大小 —<code>font-size: 24px;</code></li>
@@ -86,12 +86,12 @@
                 <div class="highlight-box">同一一HTML，用不同的CSS 就能长得完全不一样、`, cls: 'slide' },
         { html: `
                 <h2>JavaScript：大脑和行为</h2>
-                <p>JavaScript 让网页strong>动起来/strong>，能干各种事！/p>
+                <p>JavaScript 让网页strong>动起来</strong>，能干各种事！</p>
                 <ul>
-                    <li>点击按钮弹出提示桀/li>
-                    <li>输入框实时搜紀/li>
+                    <li>点击按钮弹出提示桀</li>
+                    <li>输入框实时搜紀</li>
                     <li>页面滚动加载更多内容</li>
-                    <li>发请求获取数据（不用刷新页面！/li>
+                    <li>发请求获取数据（不用刷新页面！</li>
                     <li>做游戏、处理图片、操作音视频</li>
                 </ul>
             `, cls: 'slide' },
@@ -103,21 +103,21 @@
                     <li><strong>CSS</strong> = 装修（墙壁颜色、窗帘样式、地板材质）</li>
                     <li><strong>JavaScript</strong> = 家电设施（开灯、关门、按门铃有反应）</li>
                 </ul>
-                <p>这三个合在一起，才是一个完整的网页、/p>
+                <p>这三个合在一起，才是一个完整的网页、</p>
             `, cls: 'slide' },
         { html: `
-                <h2>前端开发工入/h2>
+                <h2>前端开发工入</h2>
                 <ul>
-                    <li><strong>浏览器/strong> —Chrome / Edge（按 F12 打开开发者工具）</li>
-                    <li><strong>编辑器/strong> —VS Code（最热门，免费）</li>
-                    <li><strong>内HTML 就够了/strong> —新建一一.html 文件，用记事本就能写</li>
+                    <li><strong>浏览器</strong> —Chrome / Edge（按 F12 打开开发者工具）</li>
+                    <li><strong>编辑器</strong> —VS Code（最热门，免费）</li>
+                    <li><strong>内HTML 就够了</strong> —新建一一.html 文件，用记事本就能写</li>
                 </ul>
                 <div class="highlight-box">你可以现在就用记事本写一个网页：写几行HTML，保存为 .html，双击用浏览器打开、`, cls: 'slide' },
         { html: `
                 <h2>总结</h2>
                 <ul>
                     <li>网页用HTML（结构）+ CSS（样式）+ JS（行为）组成</li>
-                    <li>HTML 决定有什么，CSS 决定长什么样，JS 决定能干什之/li>
+                    <li>HTML 决定有什么，CSS 决定长什么样，JS 决定能干什之</li>
                     <li>持F12 可以看任何网页的 HTML 和CSS</li>
                     <li>用记事本就能写第一个网页，保存一.html 即可</li>
                 </ul>

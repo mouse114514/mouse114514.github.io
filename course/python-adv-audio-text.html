@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html><head><meta charset="UTF-8">
-    <link rel="icon" type="image/png" href="/favicon.png"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Pygame 音效与文字渲查/title><style>
+    <link rel="icon" type="image/png" href="/favicon.png"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Pygame 音效与文字渲查</title><style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',sans-serif;background:#0a0f1e;color:#e0e8f0;height:100vh;overflow:hidden}
 .presentation { width: 100%; height: 100vh; display: flex; align-items: center; justify-content: center; padding: 60px; }
@@ -44,21 +44,21 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',s
 <body>
     <div class="presentation" id="presentation">
         <div class="slide slide-title" id="slideContainer">
-            <div class="lesson-num">Python · 进阶第试</div><h1>音效与文字渲查/h1><div class="sub">声音 + 字体 = 完整游戏体验</div>
+            <div class="lesson-num">Python · 进阶第试</div><h1>音效与文字渲查</h1><div class="sub">声音 + 字体 = 完整游戏体验</div>
         </div>
     </div>
 
-    <div class="nav-bar"><a class="back-link" href="index.html">ↀ目录</a><button id="prevBtn">◀</button><span class="counter" id="counter">1 / 8</span><button id="nextBtn">▀/button></div>
+    <div class="nav-bar"><a class="back-link" href="index.html">ↀ目录</a><button id="prevBtn">◀</button><span class="counter" id="counter">1 / 8</span><button id="nextBtn">▶</button></div>
 
     <script>
     const slidesData = [
-        { html: `<div class="lesson-num">Python · 进阶第试</div><h1>音效与文字渲查/h1><div class="sub">声音 + 字体 = 完整游戏体验</div>`, cls: 'slide slide-title active' },
-        { html: `<h2>加载和播放音数/h2><p><code>shoot_sound = pygame.mixer.Sound("shoot.wav")</code></p><p><code>shoot_sound.play()</code> ↀ播放一欀/p><p><code>shoot_sound.play(-1)</code> ↀ循环播放</p><p>设置音量！code>shoot_sound.set_volume(0.5)</code> ↀ0-1</p><p>背景音乐！/p><p><code>pygame.mixer.music.load("bgm.ogg")</code></p><p><code>pygame.mixer.music.play(-1)</code> ↀ循环</p>`, cls: 'slide' },
-        { html: `<h2>pygame.font 文字渲染</h2><p><code>my_font = pygame.font.Font("msyh.ttf", 36)</code> ↀ微软雅黑</p><p>系统默认字体！code>pygame.font.SysFont("simsun", 36)</code></p><p>渲染文字！/p><p><code>text_surface = my_font.render("得分: 100", True, (255,255,255))</code></p><p><code>screen.blit(text_surface, (20, 20))</code></p>`, cls: 'slide' },
-        { html: `<h2>文字居中</h2><p>让文字在屏幕中间！/p><p><code>text = font.render("Game Over", True, (255,0,0))</code></p><p><code>text_rect = text.get_rect(center=(400, 300))</code></p><p><code>screen.blit(text, text_rect)</code></p><p>get_rect(center=(x,y)) 让文字居中于某点、/p>`, cls: 'slide' },
-        { html: `<h2>显示 FPS</h2><p>调试时看帧率！/p><p><code>font = pygame.font.Font(None, 24)</code> ↀNone=默认字体</p><p><code>clock = pygame.time.Clock()</code></p><p>主循环里！/p><p><code>fps_text = font.render(str(int(clock.get_fps())), True, (0,255,0))</code></p><p><code>screen.blit(fps_text, (760, 10))</code></p>`, cls: 'slide' },
-        { html: `<h2>从文件加载中文字但/h2><p>Windows 自带字体路径！/p><p><code>C:/Windows/Fonts/msyh.ttc</code> (微软雅黑)</p><p><code>C:/Windows/Fonts/simhei.ttf</code> (黑体)</p><p><code>font = pygame.font.Font("C:/Windows/Fonts/msyh.ttc", 30)</code></p><p>或者把字体文件复制到项目目录下，用相对路径、/p>`, cls: 'slide' },
-        { html: `<h2>总结</h2><ul><li>Sound 播放短音效，music 播背景音之/li><li>set_volume(0-1) 控制音量</li><li>Font 加载字体，render() 生成文字图像</li><li>get_rect(center=) 居中文字</li><li>clock.get_fps() 显示实时帧率调试</li></ul>`, cls: 'slide' }
+        { html: `<div class="lesson-num">Python · 进阶第试</div><h1>音效与文字渲查</h1><div class="sub">声音 + 字体 = 完整游戏体验</div>`, cls: 'slide slide-title active' },
+        { html: `<h2>加载和播放音数</h2><p><code>shoot_sound = pygame.mixer.Sound("shoot.wav")</code></p><p><code>shoot_sound.play()</code> ↀ播放一欀</p><p><code>shoot_sound.play(-1)</code> ↀ循环播放</p><p>设置音量！code>shoot_sound.set_volume(0.5)</code> ↀ0-1</p><p>背景音乐！</p><p><code>pygame.mixer.music.load("bgm.ogg")</code></p><p><code>pygame.mixer.music.play(-1)</code> ↀ循环</p>`, cls: 'slide' },
+        { html: `<h2>pygame.font 文字渲染</h2><p><code>my_font = pygame.font.Font("msyh.ttf", 36)</code> ↀ微软雅黑</p><p>系统默认字体！code>pygame.font.SysFont("simsun", 36)</code></p><p>渲染文字！</p><p><code>text_surface = my_font.render("得分: 100", True, (255,255,255))</code></p><p><code>screen.blit(text_surface, (20, 20))</code></p>`, cls: 'slide' },
+        { html: `<h2>文字居中</h2><p>让文字在屏幕中间！</p><p><code>text = font.render("Game Over", True, (255,0,0))</code></p><p><code>text_rect = text.get_rect(center=(400, 300))</code></p><p><code>screen.blit(text, text_rect)</code></p><p>get_rect(center=(x,y)) 让文字居中于某点、</p>`, cls: 'slide' },
+        { html: `<h2>显示 FPS</h2><p>调试时看帧率！</p><p><code>font = pygame.font.Font(None, 24)</code> ↀNone=默认字体</p><p><code>clock = pygame.time.Clock()</code></p><p>主循环里！</p><p><code>fps_text = font.render(str(int(clock.get_fps())), True, (0,255,0))</code></p><p><code>screen.blit(fps_text, (760, 10))</code></p>`, cls: 'slide' },
+        { html: `<h2>从文件加载中文字但</h2><p>Windows 自带字体路径！</p><p><code>C:/Windows/Fonts/msyh.ttc</code> (微软雅黑)</p><p><code>C:/Windows/Fonts/simhei.ttf</code> (黑体)</p><p><code>font = pygame.font.Font("C:/Windows/Fonts/msyh.ttc", 30)</code></p><p>或者把字体文件复制到项目目录下，用相对路径、</p>`, cls: 'slide' },
+        { html: `<h2>总结</h2><ul><li>Sound 播放短音效，music 播背景音之</li><li>set_volume(0-1) 控制音量</li><li>Font 加载字体，render() 生成文字图像</li><li>get_rect(center=) 居中文字</li><li>clock.get_fps() 显示实时帧率调试</li></ul>`, cls: 'slide' }
     ];
     let current = 0;
     const container = document.getElementById('slideContainer');

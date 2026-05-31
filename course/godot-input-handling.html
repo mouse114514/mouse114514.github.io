@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html><head><meta charset="UTF-8">
-    <link rel="icon" type="image/png" href="/favicon.png"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>JavaScript 入门</title><style>
+    <link rel="icon" type="image/png" href="/favicon.png"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Godot 输入处理</title><style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',sans-serif;background:#0a0f1e;color:#e0e8f0;height:100vh;overflow:hidden}
 .presentation { width: 100%; height: 100vh; display: flex; align-items: center; justify-content: center; padding: 60px; }
@@ -32,31 +32,26 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',s
             .slide h2 { font-size: 20px; }
             .slide-title h1 { font-size: 28px; }
             .slide-title .sub { font-size: 14px; }
-            .flex-row { flex-direction: column; gap: 12px; }
-            .flex-row img { max-width: 120px; }
-            .nav-controls { padding: 6px 10px; gap: 4px; flex-wrap: wrap; justify-content: center; }
-            .nav-controls button { font-size: 20px; padding: 6px 14px; min-width: 44px; min-height: 44px; }
-            .nav-controls .page-indicator { font-size: 12px; min-width: 60px; }
-            .slide-inner::-webkit-scrollbar { width: 3px; }
         }
     </style></head>
 
 <body>
     <div class="presentation" id="presentation">
         <div class="slide slide-title" id="slideContainer">
-            <div class="lesson-num">Web 前端 · 第试</div><h1>JavaScript 入门</h1><div class="sub">让网页动起来</div>
+            <div class="lesson-num">Godot · 第试</div><h1>输入处理</h1><div class="sub">键盘 / 鼠标 / 触摸屏</div>
         </div>
-    </div>
 
-    <div class="nav-bar"><a class="back-link" href="index.html">ↀ目录</a><button id="prevBtn">◀</button><span class="counter" id="counter">1 / 8</span><button id="nextBtn">▶</button></div>
+    <div class="nav-bar"><a class="back-link" href="index.html">ↀ目录</a><button id="prevBtn">◀</button><span class="counter" id="counter">1 / 7</span><button id="nextBtn">▶</button></div>
 
     <script>
     const slidesData = [
-        { html: `<div class="lesson-num">Web 前端 · 第试</div><h1>JavaScript 入门</h1><div class="sub">让网页动起来</div>`, cls: 'slide slide-title active' },
-        { html: `<h2>引入 JS</h2><p>在HTML 里写 JS！</p><p><code>&lt;script&gt;</code></p><p><code>&nbsp;&nbsp;alert("你好！);</code></p><p><code>&lt;/script&gt;</code></p><p>或者引用外部文件：</p><p><code>&lt;script src="script.js"&gt;&lt;/script&gt;</code></p><div class="tip-box">&lt;script&gt; 标签通常放在 &lt;/body&gt; 之前，这校HTML 先加载完再执行JS、</div>`, cls: 'slide' },
-        { html: `<h2>操作 DOM</h2><p>DOM = 浏览器把 HTML 转换成的"对象校、</p><p>选中元素！</p><p><code>let btn = document.querySelector("#myButton")</code></p><p><code>let title = document.querySelector("h1")</code></p><p>修改内容！</p><p><code>title.textContent = "新标题</code></p><p><code>title.style.color = "red"</code></p>`, cls: 'slide' },
-        { html: `<h2>事件监听</h2><p>让按钮点击后执行代码！</p><p><code>let btn = document.querySelector("button")</code></p><p><code>btn.addEventListener("click", function() {</code></p><p><code>&nbsp;&nbsp;alert("按钮被点了！")</code></p><p><code>})</code></p><p>常见事件：click（点击）、mouseover（悬停）、keydown（按键）、submit（提交）</p>`, cls: 'slide' },
-        { html: `<h2>函数</h2><p>把代码打包复用：</p><p><code>function add(a, b) {</code></p><p><code>&nbsp;&nbsp;return a + b</code></p><p><code>}</code></p><p><code>let result = add(3, 5)</code> ↀresult = 8</p><div class="highlight-box">函数是JS 最基础的组织代码方式。一个函数做一件事，名字要清楚、</div>`, cls: 'slide' }
+        { html: `<div class="lesson-num">Godot · 第试</div><h1>输入处理</h1><div class="sub">键盘 / 鼠标 / 触摸屏`, cls: 'slide slide-title active' },
+        { html: `<h2>键盘输入</h2><p>在 _process(delta) 或 _physics_process(delta) 里检测：</p><p><code>func _process(delta):</code></p><p><code>&nbsp;&nbsp;if Input.is_key_pressed(KEY_LEFT):</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;position.x -= 200 * delta</code></p><p><code>&nbsp;&nbsp;if Input.is_key_pressed(KEY_SPACE):</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;jump()</code></p><p>注意！is_key_pressed 判断<strong>是否按住</strong>，每帧都触发。</p><p>用 KEY_A ~ KEY_Z、KEY_0 ~ KEY_9、KEY_LEFT 等常量。</p>`, cls: 'slide' },
+        { html: `<h2>键盘单次事件</h2><p>想检测"按下的那一瞬间"用 <strong>_input()</strong>：</p><p><code>func _input(event):</code></p><p><code>&nbsp;&nbsp;if event is InputEventKey and event.pressed:</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;if event.keycode == KEY_ESCAPE:</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;get_tree().quit()&nbsp;&nbsp;# 按 ESC 退出</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;if event.keycode == KEY_R:</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;restart_game()&nbsp;&nbsp;# 按 R 重开</code></p>`, cls: 'slide' },
+        { html: `<h2>鼠标输入</h2><p>检测鼠标点击：</p><p><code>func _input(event):</code></p><p><code>&nbsp;&nbsp;if event is InputEventMouseButton:</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print("点击了！位置：", event.position)</code></p><p>鼠标位置：<code>event.position</code>（相对于当前控件/场景）</p><p>全局位置：<code>event.global_position</code></p>`, cls: 'slide' },
+        { html: `<h2>鼠标移动</h2><p>获取鼠标移动量：</p><p><code>func _input(event):</code></p><p><code>&nbsp;&nbsp;if event is InputEventMouseMotion:</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;print("移动了：", event.relative)</code></p><p>event.relative 是"这一帧移动了多少像素"，适合做鼠标视角旋转。</p><p>捕获鼠标（第一人称游戏用）：</p><p><code>Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)</code></p>`, cls: 'slide' },
+        { html: `<h2>触摸屏</h2><p>Godot 自动把触摸转成鼠标事件，大部分情况不用改。</p><p>但可以单独处理触摸：</p><p><code>func _input(event):</code></p><p><code>&nbsp;&nbsp;if event is InputEventScreenTouch:</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;if event.pressed:</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print("触摸位置：", event.position)</code></p><p><code>&nbsp;&nbsp;if event is InputEventScreenDrag:</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;print("拖动偏移：", event.relative)</code></p><p>多点触摸用 event.index 区分是哪根手指。</p>`, cls: 'slide' },
+        { html: `<h2>总结</h2><ul><li>_process 里 is_key_pressed 检测持续按住</li><li>_input(event) 检测单次按下/松开</li><li>InputEventMouseButton 检测鼠标点击</li><li>InputEventMouseMotion 检测鼠标移动</li><li>触摸屏自动转为鼠标事件，也可单独处理</li></ul>`, cls: 'slide' }
     ];
     let current = 0;
     const container = document.getElementById('slideContainer');

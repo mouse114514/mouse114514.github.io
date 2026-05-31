@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <link rel="icon" type="image/png" href="/favicon.png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>第课：文件与文件夹的那些事儀/title>
+    <title>第课：文件与文件夹的那些事儀</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif; background: #0a0f1e; color: #e0e8f0; height: 100vh; overflow: hidden; }
@@ -41,7 +41,7 @@
             
                 <img src="images/folder-icon.png" alt="文件" style="width:100px;margin-bottom:16px;opacity:0.8">
                 <div class="lesson-num">第四试</div>
-                <h1>文件与文件夹的那些事儀/h1>
+                <h1>文件与文件夹的那些事儀</h1>
                 <div class="sub">整理文件、找回误删、看懂后缀</div>
         </div>
     </div>
@@ -50,7 +50,7 @@
         <a class="back-link" href="index.html">ↀ目录</a>
         <button id="prevBtn">◀</button>
         <span class="counter" id="counter">1 / 8</span>
-        <button id="nextBtn">▀/button>
+        <button id="nextBtn">▶</button>
     </div>
 
     <script>
@@ -58,37 +58,37 @@
         { html: `
                 <img src="images/folder-icon.png" alt="文件" style="width:100px;margin-bottom:16px;opacity:0.8">
                 <div class="lesson-num">第四试</div>
-                <h1>文件与文件夹的那些事儀/h1>
+                <h1>文件与文件夹的那些事儀</h1>
                 <div class="sub">整理文件、找回误删、看懂后缀</div>`, cls: 'slide slide-title active' },
         { html: `
                 <h2>文件的身份试：扩展名</h2>
-                <p>每个文件名后面有 <code>.</code> + 字母，这参strong>扩展名/strong>，告诉系统这个文件是什么类型：</p>
+                <p>每个文件名后面有 <code>.</code> + 字母，这参strong>扩展名</strong>，告诉系统这个文件是什么类型：</p>
                 <ul>
-                    <li><code>.txt</code> —文本文件（记事本打开！/li>
+                    <li><code>.txt</code> —文本文件（记事本打开！</li>
                     <li><code>.jpg</code> / <code>.png</code> —图片</li>
                     <li><code>.mp3</code> —音乐</li>
                     <li><code>.mp4</code> —视频</li>
                     <li><code>.docx</code> / <code>.xlsx</code> —Office 文档</li>
-                    <li><code>.exe</code> —可执行程序（安装软件就是这个！/li>
-                    <li><code>.pdf</code> —电子文档（跨平台通用！/li>
+                    <li><code>.exe</code> —可执行程序（安装软件就是这个！</li>
+                    <li><code>.pdf</code> —电子文档（跨平台通用！</li>
                 </ul>
             `, cls: 'slide' },
         { html: `
                 <h2>怎么打开一个文件？</h2>
-                <p>Windows 根据扩展名判断用什么程序打开！/p>
+                <p>Windows 根据扩展名判断用什么程序打开！</p>
                 <ul>
                     <li>双击 <code>.txt</code> ↀ用记事本打开</li>
                     <li>双击 <code>.jpg</code> ↀ用照片查看器打开</li>
                     <li>双击 <code>.mp3</code> ↀ用播放器打开</li>
                 </ul>
-                <p>如果惀strong>换一个程序/strong>打开：右键文代ↀ<strong>打开方式</strong> ↀ选择其他应用</p>
+                <p>如果惀strong>换一个程序</strong>打开：右键文代ↀ<strong>打开方式</strong> ↀ选择其他应用</p>
                 <div class="tip-box">
                     💡 比如：一一.txt 文件也可以用 Word 打开。右键ↀ打开方式 ↀ选择 Word、`, cls: 'slide' },
         { html: `
-                <h2>文件的操作：复制、移动、删际/h2>
+                <h2>文件的操作：复制、移动、删际</h2>
                 <p>选中文件后：</p>
                 <ul>
-                    <li><strong>复制</strong> <span class="key">Ctrl</span> + <span class="key">C</span> —原地留一份，另一份贴到别备/li>
+                    <li><strong>复制</strong> <span class="key">Ctrl</span> + <span class="key">C</span> —原地留一份，另一份贴到别备</li>
                     <li><strong>剪切</strong> <span class="key">Ctrl</span> + <span class="key">X</span> —原位置消失，移到别处</li>
                     <li><strong>粘贴</strong> <span class="key">Ctrl</span> + <span class="key">V</span> —把复分剪切的内容放到当前文件夹</li>
                     <li><strong>删除</strong> <span class="key">Delete</span> —文件进回收站</li>
@@ -98,20 +98,20 @@
                     💡 也可以拖拽移动文件：按住左键拖到另一个文件夹。按但<span class="key">Ctrl</span> 再拖 = 复制、`, cls: 'slide' },
         { html: `
                 <h2>回收站的秘密</h2>
-                <p>删除文件 ↀ进回收站 ↀ以为删掉了？其实没有！/p>
+                <p>删除文件 ↀ进回收站 ↀ以为删掉了？其实没有！</p>
                 <ul>
                     <li>文件只是被strong>标记一已删际</strong>，实际数据还在硬盘上</li>
                     <li>回收站里可以看到所有删除的文件！strong>右键 ↀ还原</strong>就能找回</li>
-                    <li>只有但strong>清空回收站/strong>，系统才会把空间标记一可用"</li>
+                    <li>只有但strong>清空回收站</strong>，系统才会把空间标记一可用"</li>
                 </ul>
                 <div class="highlight-box">
                     💡 即使清空了回收站，用数据恢复软件也能找回（只要没被新数据覆盖）。所以别以为删了就没了！`, cls: 'slide' },
         { html: `
                 <h2>文件找不到了？用搜索</h2>
-                <p>文件太多找不到？不用一个一个翻！/p>
+                <p>文件太多找不到？不用一个一个翻！</p>
                 <ul>
                     <li>持<span class="key">Win</span> + <span class="key">S</span> ↀ输入文件名的一部分 ↀ系统自动搜索</li>
-                    <li>在文件资源管理器右上角也有搜索框，可以搜当前文件备/li>
+                    <li>在文件资源管理器右上角也有搜索框，可以搜当前文件备</li>
                     <li>搜索支持通配符：<code>*.jpg</code> 表示所有jpg 图片</li>
                 </ul>
                 <div class="tip-box">
@@ -119,10 +119,10 @@
         { html: `
                 <h2>总结</h2>
                 <ul>
-                    <li>文件有扩展名，告诉系统怎么打开安/li>
-                    <li>复制 = 留原样再复制一份，剪切 = 原位置消备/li>
+                    <li>文件有扩展名，告诉系统怎么打开安</li>
+                    <li>复制 = 留原样再复制一份，剪切 = 原位置消备</li>
                     <li>删除进回收站，不是真删了（清空才是）</li>
-                    <li>用<span class="key">Win</span> + <span class="key">S</span> 搜索文件，又快又出/li>
+                    <li>用<span class="key">Win</span> + <span class="key">S</span> 搜索文件，又快又出</li>
                     <li>文件分类整理，不乱丢桌面</li>
                 </ul>
             `, cls: 'slide' }

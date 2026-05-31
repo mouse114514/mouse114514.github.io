@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html><head><meta charset="UTF-8">
-    <link rel="icon" type="image/png" href="/favicon.png"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>JavaScript 入门</title><style>
+    <link rel="icon" type="image/png" href="/favicon.png"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>混淆与反混淆</title><style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',sans-serif;background:#0a0f1e;color:#e0e8f0;height:100vh;overflow:hidden}
 .presentation { width: 100%; height: 100vh; display: flex; align-items: center; justify-content: center; padding: 60px; }
@@ -32,31 +32,26 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',s
             .slide h2 { font-size: 20px; }
             .slide-title h1 { font-size: 28px; }
             .slide-title .sub { font-size: 14px; }
-            .flex-row { flex-direction: column; gap: 12px; }
-            .flex-row img { max-width: 120px; }
-            .nav-controls { padding: 6px 10px; gap: 4px; flex-wrap: wrap; justify-content: center; }
-            .nav-controls button { font-size: 20px; padding: 6px 14px; min-width: 44px; min-height: 44px; }
-            .nav-controls .page-indicator { font-size: 12px; min-width: 60px; }
-            .slide-inner::-webkit-scrollbar { width: 3px; }
         }
     </style></head>
 
 <body>
     <div class="presentation" id="presentation">
         <div class="slide slide-title" id="slideContainer">
-            <div class="lesson-num">Web 前端 · 第试</div><h1>JavaScript 入门</h1><div class="sub">让网页动起来</div>
+            <div class="lesson-num">安卓逆向 · 进阶第试</div><h1>混淆与反混淆</h1><div class="sub">解开代码的面纱</div>
         </div>
-    </div>
 
-    <div class="nav-bar"><a class="back-link" href="index.html">ↀ目录</a><button id="prevBtn">◀</button><span class="counter" id="counter">1 / 8</span><button id="nextBtn">▶</button></div>
+    <div class="nav-bar"><a class="back-link" href="index.html">ↀ目录</a><button id="prevBtn">◀</button><span class="counter" id="counter">1 / 7</span><button id="nextBtn">▶</button></div>
 
     <script>
     const slidesData = [
-        { html: `<div class="lesson-num">Web 前端 · 第试</div><h1>JavaScript 入门</h1><div class="sub">让网页动起来</div>`, cls: 'slide slide-title active' },
-        { html: `<h2>引入 JS</h2><p>在HTML 里写 JS！</p><p><code>&lt;script&gt;</code></p><p><code>&nbsp;&nbsp;alert("你好！);</code></p><p><code>&lt;/script&gt;</code></p><p>或者引用外部文件：</p><p><code>&lt;script src="script.js"&gt;&lt;/script&gt;</code></p><div class="tip-box">&lt;script&gt; 标签通常放在 &lt;/body&gt; 之前，这校HTML 先加载完再执行JS、</div>`, cls: 'slide' },
-        { html: `<h2>操作 DOM</h2><p>DOM = 浏览器把 HTML 转换成的"对象校、</p><p>选中元素！</p><p><code>let btn = document.querySelector("#myButton")</code></p><p><code>let title = document.querySelector("h1")</code></p><p>修改内容！</p><p><code>title.textContent = "新标题</code></p><p><code>title.style.color = "red"</code></p>`, cls: 'slide' },
-        { html: `<h2>事件监听</h2><p>让按钮点击后执行代码！</p><p><code>let btn = document.querySelector("button")</code></p><p><code>btn.addEventListener("click", function() {</code></p><p><code>&nbsp;&nbsp;alert("按钮被点了！")</code></p><p><code>})</code></p><p>常见事件：click（点击）、mouseover（悬停）、keydown（按键）、submit（提交）</p>`, cls: 'slide' },
-        { html: `<h2>函数</h2><p>把代码打包复用：</p><p><code>function add(a, b) {</code></p><p><code>&nbsp;&nbsp;return a + b</code></p><p><code>}</code></p><p><code>let result = add(3, 5)</code> ↀresult = 8</p><div class="highlight-box">函数是JS 最基础的组织代码方式。一个函数做一件事，名字要清楚、</div>`, cls: 'slide' }
+        { html: `<div class="lesson-num">安卓逆向 · 进阶第试</div><h1>混淆与反混淆</h1><div class="sub">解开代码的面纱</div>`, cls: 'slide slide-title active' },
+        { html: `<h2>什么是代码混淆</h2><p>发布 App 时把类名、方法名、变量名改成 <strong>无意义的短名</strong>：</p><p><code>LoginActivity</code> → <code>a</code></p><p><code>checkPassword</code> → <code>b</code></p><p><code>userName</code> → <code>c</code></p><p>代码逻辑不变，但人类阅读变得非常困难。</p><p>安卓常用混淆器：<strong>ProGuard</strong>（内置）、<strong>R8</strong>（新版默认）</p>`, cls: 'slide' },
+        { html: `<h2>混淆效果</h2><p>混淆前（jdax 反编译）：</p><p><code>public class LoginActivity {</code></p><p><code>&nbsp;&nbsp;private String userName;</code></p><p><code>&nbsp;&nbsp;public boolean checkPassword(String pwd) { ... }</code></p><p><code>}</code></p><p>混淆后：</p><p><code>public class a {</code></p><p><code>&nbsp;&nbsp;private String b;</code></p><p><code>&nbsp;&nbsp;public boolean c(String d) { ... }</code></p><p><code>}</code></p><p>还能看懂逻辑，但不知道每个变量/方法是干什么的了。</p>`, cls: 'slide' },
+        { html: `<h2>反混淆的方法</h2><p>1. <strong>看上下文</strong> — 结合字符串和 API 调用猜：</p><p>如果 a.c() 调用了 HttpURLConnection，那它大概率是网络请求。</p><p>2. <strong>看字符串</strong> — 混淆通常不改字符串：</p><p><code>const-string v0, "password_error"</code> ↔ 前面肯定是密码校验。</p><p>3. <strong>运行时日志</strong> — 触发功能后看 logcat 堆栈：</p><p>堆栈会显示真实类名（如果没混淆或没完全混淆）。</p>`, cls: 'slide' },
+        { html: `<h2>反混淆工具</h2><p><strong>deguard</strong> — 分析 APK 自动猜测原始命名</p><p><strong>Simplify</strong> — 执行 App 指令来去混淆</p><p><strong>UnCrack</strong> — 针对特定混淆器的脱混淆脚本</p><p>也可以手动作映射表：</p><p>打开 jadx 后，把混淆名改成可读名（菜单：重命名）。</p><p>慢慢标注，导出项目，下次直接看标注好的代码。</p>`, cls: 'slide' },
+        { html: `<h2>对抗混淆的技巧</h2><p>1. 先定位关键字符串（如 API URL、错误提示）</li><li>2. 从字符串反向追踪调用点</li><li>3. 关注 <strong>native 方法</strong> — 很多核心逻辑在 so 里</li><li>4. 不钻牛角尖 — 某些混淆（如 ollvm）会加入大量无意义分支</li></ul><p>如果<strong>时间有限</strong>，直接 Frida Hook 关键方法，不反混淆也能改。</p>`, cls: 'slide' },
+        { html: `<h2>总结</h2><ul><li>混淆 = 类/方法/变量名改短，逻辑不变</li><li>ProGuard/R8 是主流混淆方案</li><li>看字符串 + 看上下文 + 日志堆栈 = 反混淆三板斧</li><li>deguard 等工具辅助还原</li><li>复杂混淆不要硬解，Frida Hook 更高效</li></ul>`, cls: 'slide' }
     ];
     let current = 0;
     const container = document.getElementById('slideContainer');
