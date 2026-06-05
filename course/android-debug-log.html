@@ -17,41 +17,73 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',s
 .slide .highlight-box{background:rgba(77,168,255,.08);border-left:4px solid #4da8ff;padding:16px 20px;border-radius:0 12px 12px 0;margin:14px 0;font-size:15px}
 .slide .tip-box{background:rgba(255,200,0,.06);border-left:4px solid #ffc800;padding:14px 18px;border-radius:0 10px 10px 0;margin:14px 0;font-size:15px}
 .slide code{background:rgba(255,255,255,.1);padding:2px 8px;border-radius:4px;font-size:14px}
+.slide pre{background:rgba(0,0,0,.3);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:16px 20px;margin:12px 0;overflow-x:auto;font-size:14px;line-height:1.6;color:#b0e0ff}
 .nav-bar{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:16px;background:rgba(10,15,30,.7);border:1px solid rgba(255,255,255,.06);border-radius:30px;padding:10px 20px;z-index:10}
 .nav-bar button{background:0 0;border:none;color:rgba(255,255,255,.4);font-size:18px;cursor:pointer;padding:6px 12px;border-radius:8px;transition:all .2s}
 .nav-bar button:hover{color:#fff;background:rgba(255,255,255,.06)}
 .nav-bar .counter{font-size:14px;color:rgba(255,255,255,.35);min-width:60px;text-align:center}
 .nav-bar .back-link{color:rgba(255,255,255,.25);text-decoration:none;font-size:13px;padding:6px 12px;border-radius:8px;transition:all .2s}
 .nav-bar .back-link:hover{color:#fff;background:rgba(255,255,255,.06)}
-@media(max-width:640px){.slide-inner{padding:24px 18px}.nav-bar{padding:8px 12px;gap:8px;bottom:14px}}
-
-        @media (max-width: 640px) {
-            .slide-inner { padding: 24px 16px; max-height: 90vh; }
-            .slide p { font-size: 15px; }
-            .slide li { font-size: 14px; }
-            .slide h2 { font-size: 20px; }
-            .slide-title h1 { font-size: 28px; }
-            .slide-title .sub { font-size: 14px; }
-        }
+@media(max-width:640px){.slide-inner{padding:24px 16px;max-height:90vh}.slide p{font-size:15px}.slide li{font-size:14px}.slide h2{font-size:20px}.slide-title h1{font-size:28px}.nav-bar{padding:8px 12px;gap:8px;bottom:14px}.slide-inner::-webkit-scrollbar{width:3px}}
     </style></head>
 
 <body>
     <div class="presentation" id="presentation">
-        <div class="slide slide-title" id="slideContainer">
-            <div class="lesson-num">安卓逆向 · 第试</div><h1>日志分析与调试</h1><div class="sub">看日志找线索</div>
-        </div>
+        <div class="slide slide-title" id="slideContainer"></div>
+    </div>
 
-    <div class="nav-bar"><a class="back-link" href="index.html">ↀ目录</a><button id="prevBtn">◀</button><span class="counter" id="counter">1 / 7</span><button id="nextBtn">▶</button></div>
+    <div class="nav-bar"><a class="back-link" href="index.html">目录</a><button id="prevBtn">◀</button><span class="counter" id="counter">1 / 7</span><button id="nextBtn">▶</button></div>
 
     <script>
     const slidesData = [
         { html: `<div class="lesson-num">安卓逆向 · 第试</div><h1>日志分析与调试</h1><div class="sub">看日志找线索</div>`, cls: 'slide slide-title active' },
-        { html: `<h2>logcat 是什么</h2><p>安卓系统的日志系统，所有 App 的输出都会打到 logcat 里：</p><p><code>adb logcat</code> ↀ实时看所有日志（内容非常多！）</p><p>日志等级：V(详细) &lt; D(调试) &lt; I(信息) &lt; W(警告) &lt; E(错误) &lt; F(致命)</p><p>逆向时重点关注 <strong>E</strong> 和 <strong>F</strong> 级别，往往是崩溃线索。</p>`, cls: 'slide' },
-        { html: `<h2>过滤 logcat</h2><p>不加过滤的话日志刷屏，根本看不完：</p><p><code>adb logcat -s "TAG"</code> ↀ只显示指定 TAG</p><p><code>adb logcat *:E</code> ↀ只看 Error 及以上</p><p><code>adb logcat | grep "关键词"</code> ↀWindows 用 findstr</p><p><code>adb logcat -c</code> ↀ清空日志缓冲区</p><p>实战中先清空，再操作 App，然后抓日志。</p>`, cls: 'slide' },
-        { html: `<h2>从日志反推代码</h2><p>APP 崩溃时会打印堆栈：</p><p><code>FATAL EXCEPTION: main</code></p><p><code>java.lang.NullPointerException</code></p><p><code>&nbsp;&nbsp;at com.example.app.LoginActivity.checkPassword(LoginActivity.java:42)</code></p><p>这说明 LoginActivity.java 第 42 行空指针了。</p><p>用 jadx 打开这个类，找到对应行，就知道它在做什么处理。</p>`, cls: 'slide' },
-        { html: `<h2>自己插日志</h2><p>如果能把修改后的 APK 装回去，可以在 smali 里加日志：</p><p>在关键方法前加：</p><p><code>const-string v0, "MY_DEBUG"</code></p><p><code>invoke-static {v0, v1}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I</code></p><p>然后过滤：<code>adb logcat -s "MY_DEBUG"</code></p><p>适合观察某个方法的参数值、执行路径。</p>`, cls: 'slide' },
-        { html: `<h2>调试模式</h2><p>用 <code>android:debuggable="true"</code> 的 APK：</p><p>1. 解包修改 AndroidManifest.xml，加上 debuggable</li><li>2. 重打包签名安装</li><li>3. <code>adb shell am start -D -n 包名/活动名</code> 启动等待调试</li><li>4. jadx 或 Android Studio 附加进程，断点调试</li></ul><div class="tip-box">加了 debuggable 的系统会多很多日志，部分 App 检测 debuggable 后会自动退出。`, cls: 'slide' },
-        { html: `<h2>总结</h2><ul><li>adb logcat 看系统日志，过滤器必须学会</li><li>崩溃堆栈直接告诉你错在哪里</li><li>在 smali 加 Log.d 主动输出变量值</li><li>开启 debuggable + 断点可以实现动态调试</li><li>日志分析是逆向最基础也是最常用的手段</li></ul>`, cls: 'slide' }
+
+        { html: `<h2>logcat 是什么</h2><p>安卓系统的日志系统，所有 App 的输出都会打到 logcat 里：</p><pre>adb logcat              # 实时看所有日志（非常多）
+adb logcat -s "MyTag"   # 只显示指定 TAG
+adb logcat *:E           # 只看 Error 及以上
+adb logcat -c            # 清空日志缓冲区</pre><p>日志等级：<code>V</code>(详细) &lt; <code>D</code>(调试) &lt; <code>I</code>(信息) &lt; <code>W</code>(警告) &lt; <code>E</code>(错误) &lt; <code>F</code>(致命)</p><div class="highlight-box">逆向时重点关注 <strong>E</strong> 和 <strong>F</strong> 级别，往往是崩溃线索。</div>`, cls: 'slide' },
+
+        { html: `<h2>过滤日志</h2><pre># Windows 用 findstr
+adb logcat | findstr "关键词"
+
+# Linux/Mac 用 grep
+adb logcat | grep "关键词"
+
+# 按包名过滤
+adb logcat --pid=$(adb shell pidof com.example.app)
+
+# 按多个 TAG 过滤
+adb logcat -s "TAG1:*" "TAG2:*" "*:S"</pre><div class="tip-box"><strong>实战流程：</strong>先 <code>adb logcat -c</code> 清空 → 操作 App → 再抓日志。这样只看到你操作产生的日志。</div>`, cls: 'slide' },
+
+        { html: `<h2>从崩溃堆栈反推代码</h2><pre>FATAL EXCEPTION: main
+Process: com.example.app, PID: 12345
+java.lang.NullPointerException: Attempt to invoke virtual method
+    'boolean java.lang.String.equals(java.lang.Object)' on a null reference
+    at com.example.app.LoginActivity.checkPassword(LoginActivity.java:42)
+    at com.example.app.LoginActivity.onClick(LoginActivity.java:28)
+    at android.view.View.performClick(View.java:7448)</pre><p><strong>分析：</strong></p><ul><li><code>LoginActivity.java:42</code> → 第 42 行空指针</li><li>用 jadx 打开这个类，找到第 42 行</li><li>看到是 <code>pwd.equals(target)</code> → pwd 是 null</li></ul>`, cls: 'slide' },
+
+        { html: `<h2>在 Smali 中插入日志</h2><pre># 在关键方法入口加日志
+.method public checkPassword(Ljava/lang/String;)Z
+    .locals 3
+
+    # === 插入日志 START ===
+    const-string v0, "MY_DEBUG"
+    invoke-static {v0, p1}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
+    # === 插入日志 END ===
+
+    # ... 原有代码 ...
+.end method</pre><pre># 过滤查看
+adb logcat -s "MY_DEBUG"</pre><div class="highlight-box">参数寄存器：<code>p1</code> 是第一个参数（String pwd），直接打出来就能看到用户输入了什么。</div>`, cls: 'slide' },
+
+        { html: `<h2>开启 Debug 模式</h2><pre># 解包后修改 AndroidManifest.xml
+# 找到 application 标签，加上：
+android:debuggable="true"
+
+# 回编译安装后，用 jadx 或 Android Studio 附加调试
+adb shell am start -D -n com.example.app/.MainActivity</pre><div class="tip-box"><strong>注意：</strong>部分 App 检测 <code>isDebuggerConnected()</code> 后会自动退出。需要先用 Frida Hook 掉这个检测。</div>`, cls: 'slide' },
+
+        { html: `<h2>总结</h2><ul><li><code>adb logcat</code> 看系统日志，过滤器必须学会</li><li>崩溃堆栈直接告诉你哪一行出了什么错</li><li>在 Smali 加 <code>Log.d</code> 主动输出变量值</li><li>开启 debuggable + 断点可以实现动态调试</li><li>日志分析是逆向最基础也是最常用的手段</li></ul>`, cls: 'slide' }
     ];
     let current = 0;
     const container = document.getElementById('slideContainer');
@@ -63,6 +95,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',s
         container.innerHTML = slidesData[current].html;
         counter.textContent = (current + 1) + ' / ' + slidesData.length;
     }
+    goTo(0);
 
     document.getElementById('prevBtn').addEventListener('click', () => goTo(current - 1));
     document.getElementById('nextBtn').addEventListener('click', () => goTo(current + 1));

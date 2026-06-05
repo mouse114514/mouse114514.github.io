@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html><head><meta charset="UTF-8">
-    <link rel="icon" type="image/png" href="/favicon.png"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>jadx 反编译入问</title><style>
+    <link rel="icon" type="image/png" href="/favicon.png"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>jadx 反编译入门</title><style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',sans-serif;background:#0a0f1e;color:#e0e8f0;height:100vh;overflow:hidden}
 .presentation { width: 100%; height: 100vh; display: flex; align-items: center; justify-content: center; padding: 60px; }
@@ -17,46 +17,50 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',s
 .slide .highlight-box{background:rgba(77,168,255,.08);border-left:4px solid #4da8ff;padding:16px 20px;border-radius:0 12px 12px 0;margin:14px 0;font-size:15px}
 .slide .tip-box{background:rgba(255,200,0,.06);border-left:4px solid #ffc800;padding:14px 18px;border-radius:0 10px 10px 0;margin:14px 0;font-size:15px}
 .slide code{background:rgba(255,255,255,.1);padding:2px 8px;border-radius:4px;font-size:14px}
+.slide pre{background:rgba(0,0,0,.3);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:16px 20px;margin:12px 0;overflow-x:auto;font-size:14px;line-height:1.6;color:#b0e0ff}
 .nav-bar{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:16px;background:rgba(10,15,30,.7);border:1px solid rgba(255,255,255,.06);border-radius:30px;padding:10px 20px;z-index:10}
 .nav-bar button{background:0 0;border:none;color:rgba(255,255,255,.4);font-size:18px;cursor:pointer;padding:6px 12px;border-radius:8px;transition:all .2s}
 .nav-bar button:hover{color:#fff;background:rgba(255,255,255,.06)}
 .nav-bar .counter{font-size:14px;color:rgba(255,255,255,.35);min-width:60px;text-align:center}
 .nav-bar .back-link{color:rgba(255,255,255,.25);text-decoration:none;font-size:13px;padding:6px 12px;border-radius:8px;transition:all .2s}
 .nav-bar .back-link:hover{color:#fff;background:rgba(255,255,255,.06)}
-@media(max-width:640px){.slide-inner{padding:24px 18px}.nav-bar{padding:8px 12px;gap:8px;bottom:14px}}
-
-        @media (max-width: 640px) {
-            .slide-inner { padding: 24px 16px; max-height: 90vh; }
-            .slide p { font-size: 15px; }
-            .slide li { font-size: 14px; }
-            .slide h2 { font-size: 20px; }
-            .slide-title h1 { font-size: 28px; }
-            .slide-title .sub { font-size: 14px; }
-            .flex-row { flex-direction: column; gap: 12px; }
-            .flex-row img { max-width: 120px; }
-            .nav-controls { padding: 6px 10px; gap: 4px; flex-wrap: wrap; justify-content: center; }
-            .nav-controls button { font-size: 20px; padding: 6px 14px; min-width: 44px; min-height: 44px; }
-            .nav-controls .page-indicator { font-size: 12px; min-width: 60px; }
-            .slide-inner::-webkit-scrollbar { width: 3px; }
-        }
+@media(max-width:640px){.slide-inner{padding:24px 16px;max-height:90vh}.slide p{font-size:15px}.slide li{font-size:14px}.slide h2{font-size:20px}.slide-title h1{font-size:28px}.nav-bar{padding:8px 12px;gap:8px;bottom:14px}.slide-inner::-webkit-scrollbar{width:3px}}
     </style></head>
 
 <body>
     <div class="presentation" id="presentation">
-        <div class="slide slide-title" id="slideContainer">
-            <div class="lesson-num">安卓逆向 · 第试</div><h1>jadx 反编译入问</h1><div class="sub">把DEX 变回可读代码</div>
-        </div>
+        <div class="slide slide-title" id="slideContainer"></div>
     </div>
 
-    <div class="nav-bar"><a class="back-link" href="index.html">ↀ目录</a><button id="prevBtn">◀</button><span class="counter" id="counter">1 / 8</span><button id="nextBtn">▶</button></div>
+    <div class="nav-bar"><a class="back-link" href="index.html">目录</a><button id="prevBtn">◀</button><span class="counter" id="counter">1 / 7</span><button id="nextBtn">▶</button></div>
 
     <script>
     const slidesData = [
-        { html: `<div class="lesson-num">安卓逆向 · 第试</div><h1>jadx 反编译入问</h1><div class="sub">把DEX 变回可读代码</div>`, cls: 'slide slide-title active' },
-        { html: `<h2>jadx 工具介绍</h2><p><strong>jadx</strong> 是目前最好用的安卓反编译工具！</p><ul><li>免费开満</li><li>支持命令行和 GUI 两种模式</li><li>直接把APK 戏DEX 拖进去就反编试</li><li>输出可读的Java 代码 ↀ不需要看懀Smali</li></ul>`, cls: 'slide' },
-        { html: `<h2>下载和安装</h2><ul><li>GitHub 搜索 jadx ↀReleases ↀ下载 jadx-gui-版本参zip</li><li>解压到任意目录</li><li>双击运行 <strong>jadx-gui.bat</strong>（Windows！</li><li>打开 APK 文件开始浏解</li></ul><div class="highlight-box">也支持命令行：java -jar jadx-cli.jar app.apk -d output/ 导出所有Java 源码、</div>`, cls: 'slide' },
-        { html: `<h2>常见分析目标</h2><ul><li><strong>找网络请汀</strong> ↀ搜索 "http" / "url" / "connection"</li><li><strong>找加密逻辑</strong> ↀ搜索 "AES" / "RSA" / "MD5"</li><li><strong>找广命SDK</strong> ↀ搜索 "ad" / "advertising"</li><li><strong>找付费验试</strong> ↀ搜索 "pay" / "premium" / "vip"</li><li><strong>找字符串</strong> ↀ搜索界面上出现的文字</li></ul>`, cls: 'slide' },
-        { html: `<h2>保存源码项目</h2><ul><li>jadx 查看源码后，可以导出为完整的 Gradle 项目</li><li>File ↀSave as Gradle project</li><li>导出的项目可用Android Studio 打开</li><li>能直接在里面搜索、跳转、重析</li></ul><div class="highlight-box">但导出的项目<strong>不能直接编译</strong>——里面可能有混淆代码和缺失的库、</div>`, cls: 'slide' }
+        { html: `<div class="lesson-num">安卓逆向 · 第试</div><h1>jadx 反编译入门</h1><div class="sub">把 DEX 变回可读代码</div>`, cls: 'slide slide-title active' },
+
+        { html: `<h2>jadx 工具介绍</h2><p><strong>jadx</strong> 是目前最好用的安卓反编译工具：</p><ul><li>免费开源</li><li>支持命令行和 GUI 两种模式</li><li>直接把 APK 或 DEX 拖进去就反编译</li><li>输出可读的 Java 代码，不需要看 Smali</li></ul><div class="highlight-box">GitHub 搜索 <code>jadx</code> → Releases → 下载 <code>jadx-gui-x.x.x.zip</code></div>`, cls: 'slide' },
+
+        { html: `<h2>命令行用法</h2><pre># 反编译整个 APK，输出到 output/ 目录
+java -jar jadx-cli.jar app.apk -d output/
+
+# 只反编译 classes.dex
+java -jar jadx-cli.jar classes.dex -d output/
+
+# 显示更多信息
+java -jar jadx-cli.jar app.apk -d output/ --show-bad-code</pre><div class="tip-box"><code>--show-bad-code</code> 会显示反编译失败的部分（如混淆后的垃圾代码），对分析有帮助。</div>`, cls: 'slide' },
+
+        { html: `<h2>GUI 使用技巧</h2><ul><li>拖拽 APK 到窗口即可打开</li><li>左侧<strong>类树</strong>浏览所有类和方法</li><li><strong>Ctrl+F</strong> 全局搜索关键字（字符串、方法名）</li><li>点击方法名 → 右键 → <strong>Go to usage</strong> 查看谁调用了它</li><li><strong>Ctrl+Shift+F</strong> 在整个项目中搜索</li></ul>`, cls: 'slide' },
+
+        { html: `<h2>常见分析目标</h2><ul><li><strong>找网络请求</strong> — 搜索 <code>http</code>、<code>url</code>、<code>connection</code>、<code>Retrofit</code></li><li><strong>找加密逻辑</strong> — 搜索 <code>AES</code>、<code>RSA</code>、<code>MD5</code>、<code>SecretKey</code></li><li><strong>找广告 SDK</strong> — 搜索 <code>ad</code>、<code>advertising</code>、<code>AdView</code></li><li><strong>找付费验证</strong> — 搜索 <code>pay</code>、<code>premium</code>、<code>vip</code>、<code>isPaid</code></li><li><strong>找字符串</strong> — 搜索界面上出现的文字（错误提示、按钮文字等）</li></ul>`, cls: 'slide' },
+
+        { html: `<h2>交叉引用分析</h2><p>jadx 最强大的功能是<strong>交叉引用</strong>——追踪数据和方法的调用链：</p><pre>// 找到这个字符串被谁使用
+const-string v0, "https://api.example.com/v2/pay"
+
+// 右键 → Find Usage → 看到它在 a.b.c.a() 中使用
+// 点进去 → 看到 a() 被 MainActivity.onCreate() 调用
+// 这就找到了网络请求的入口</pre><div class="highlight-box"><strong>分析流程：</strong>关键字搜索 → 定位到方法 → 查看调用者 → 逐步还原完整逻辑链</div>`, cls: 'slide' },
+
+        { html: `<h2>导出与局限</h2><ul><li>File → Save as Gradle project 可导出为 Android Studio 项目</li><li>导出的项目<strong>不能直接编译</strong>（缺少资源、有混淆代码）</li><li>主要用于搜索和阅读，不是修改工具</li></ul><div class="highlight-box"><strong>分工：</strong><br>jadx → 分析代码逻辑<br>apktool → 修改 Smali 后重打包<br>配合使用效果最佳</div>`, cls: 'slide' }
     ];
     let current = 0;
     const container = document.getElementById('slideContainer');
@@ -68,6 +72,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',s
         container.innerHTML = slidesData[current].html;
         counter.textContent = (current + 1) + ' / ' + slidesData.length;
     }
+    goTo(0);
 
     document.getElementById('prevBtn').addEventListener('click', () => goTo(current - 1));
     document.getElementById('nextBtn').addEventListener('click', () => goTo(current + 1));

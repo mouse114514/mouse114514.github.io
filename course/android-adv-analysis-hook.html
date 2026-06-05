@@ -17,47 +17,70 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',s
 .slide .highlight-box{background:rgba(255,180,50,.08);border-left:4px solid #ffb432;padding:16px 20px;border-radius:0 12px 12px 0;margin:14px 0;font-size:15px}
 .slide .tip-box{background:rgba(255,200,0,.06);border-left:4px solid #ffc800;padding:14px 18px;border-radius:0 10px 10px 0;margin:14px 0;font-size:15px}
 .slide code{background:rgba(255,255,255,.1);padding:2px 8px;border-radius:4px;font-size:14px}
+.slide pre{background:rgba(0,0,0,.3);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:16px 20px;margin:12px 0;overflow-x:auto;font-size:14px;line-height:1.6;color:#ffd580}
 .nav-bar{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:16px;background:rgba(10,15,30,.7);border:1px solid rgba(255,255,255,.06);border-radius:30px;padding:10px 20px;z-index:10}
 .nav-bar button{background:0 0;border:none;color:rgba(255,255,255,.4);font-size:18px;cursor:pointer;padding:6px 12px;border-radius:8px;transition:all .2s}
 .nav-bar button:hover{color:#fff;background:rgba(255,255,255,.06)}
 .nav-bar .counter{font-size:14px;color:rgba(255,255,255,.35);min-width:60px;text-align:center}
 .nav-bar .back-link{color:rgba(255,255,255,.25);text-decoration:none;font-size:13px;padding:6px 12px;border-radius:8px;transition:all .2s}
 .nav-bar .back-link:hover{color:#fff;background:rgba(255,255,255,.06)}
-@media(max-width:640px){.slide-inner{padding:24px 18px}.nav-bar{padding:8px 12px;gap:8px;bottom:14px}}
-
-        @media (max-width: 640px) {
-            .slide-inner { padding: 24px 16px; max-height: 90vh; }
-            .slide p { font-size: 15px; }
-            .slide li { font-size: 14px; }
-            .slide h2 { font-size: 20px; }
-            .slide-title h1 { font-size: 28px; }
-            .slide-title .sub { font-size: 14px; }
-            .flex-row { flex-direction: column; gap: 12px; }
-            .flex-row img { max-width: 120px; }
-            .nav-controls { padding: 6px 10px; gap: 4px; flex-wrap: wrap; justify-content: center; }
-            .nav-controls button { font-size: 20px; padding: 6px 14px; min-width: 44px; min-height: 44px; }
-            .nav-controls .page-indicator { font-size: 12px; min-width: 60px; }
-            .slide-inner::-webkit-scrollbar { width: 3px; }
-        }
+@media(max-width:640px){.slide-inner{padding:24px 16px;max-height:90vh}.slide p{font-size:15px}.slide li{font-size:14px}.slide h2{font-size:20px}.slide-title h1{font-size:28px}.nav-bar{padding:8px 12px;gap:8px;bottom:14px}.slide-inner::-webkit-scrollbar{width:3px}}
     </style></head>
 
 <body>
     <div class="presentation" id="presentation">
-        <div class="slide slide-title" id="slideContainer">
-            <div class="lesson-num">安卓逆向 · 进阶第试</div><h1>静态分析与 Hook 框架</h1><div class="sub">不运行代码分析，和运行时拦截</div>
-        </div>
+        <div class="slide slide-title" id="slideContainer"></div>
     </div>
 
-    <div class="nav-bar"><a class="back-link" href="index.html">ↀ目录</a><button id="prevBtn">◀</button><span class="counter" id="counter">1 / 8</span><button id="nextBtn">▶</button></div>
+    <div class="nav-bar"><a class="back-link" href="index.html">目录</a><button id="prevBtn">◀</button><span class="counter" id="counter">1 / 7</span><button id="nextBtn">▶</button></div>
 
     <script>
     const slidesData = [
-        { html: `<div class="lesson-num">安卓逆向 · 进阶第试</div><h1>静态分析与 Hook 框架</h1><div class="sub">不运行代码分析，和运行时拦截</div>`, cls: 'slide slide-title active' },
-        { html: `<h2>静态分析流程</h2><ol><li>jadx-gui 打开 APK，浏览反编译代码</li><li>搜索关键词找关键代码！http"、password"、AES"、pay"！</li><li>查看 AndroidManifest.xml 了解权限和入参</li><li>分析 res/values/strings.xml 找硬编码字符一</li><li>搜索 "native" 找到 Native 层方法</li></ol>`, cls: 'slide' },
-        { html: `<h2>常见的代码混淀</h2><p>很多 App 会混淆代码增加逆向难度！</p><ul><li><strong>ProGuard</strong> —把类名方法名变戏a、b、c</li><li><strong>字符串加密</strong> —关键字符串运行时才解密</li><li><strong>反射调用</strong> —通过字符串动态调用方法（不直接出现在代码里）</li></ul>`, cls: 'slide' },
-        { html: `<h2>Hook 框架是什么？</h2><p>Hook 就是"拦截函数调用"——在函数执行前后插入自己的代码、</p><ul><li>截获函数参数和返回倀</li><li>修改返回值（妀isPaid ↀtrue！</li><li>在函数执行前后执行自定义逻辑</li></ul><p>常见 Hook 框架！strong>Xposed</strong>、strong>Frida</strong>、strong>LSPosed</strong></p>`, cls: 'slide' },
-        { html: `<h2>Xposed 框架</h2><ul><li>需要Root 手机</li><li>安装 Xposed Installer</li><li>写模块（Module）Hook 特定方法</li><li>优点：稳定成熟，覆盖面广</li><li>缺点：需要刷框架，不支持 Android 8+（LSPosed 替代！</li></ul>`, cls: 'slide' },
-        { html: `<h2>LSPosed (Xposed 替代)</h2><p>基于 <strong>Magisk</strong> 的新一代Xposed 框架！</p><ul><li>支持 Android 8.0 ~ 14</li><li>每个模块可以仅作用到指定的App</li><li>不修改系统分包</li><li>更稳定、效率更髀</li></ul><div class="tip-box">安装：Magisk ↀ刷入 LSPosed 模块 ↀ重启 ↀLSPosed 管理器里启用模块、</div>`, cls: 'slide' }
+        { html: `<div class="lesson-num">安卓逆向 · 进阶第试</div><h1>静态分析与 Hook 框架</h1><div class="sub">不运行代码分析 + 运行时拦截</div>`, cls: 'slide slide-title active' },
+
+        { html: `<h2>静态分析流程</h2><ol><li>jadx-gui 打开 APK，浏览反编译代码</li><li>搜索关键词找关键代码：<code>http</code>、<code>password</code>、<code>AES</code>、<code>pay</code></li><li>查看 AndroidManifest.xml 了解权限和入口</li><li>分析 <code>res/values/strings.xml</code> 找硬编码字符串</li><li>搜索 <code>native</code> 找到 Native 层方法</li></ol><div class="highlight-box"><strong>核心思路：</strong>从字符串和 API 调用入手，逆向追踪调用链，还原业务逻辑。</div>`, cls: 'slide' },
+
+        { html: `<h2>常见代码混淆</h2><ul><li><strong>ProGuard/R8</strong> — 类名方法名变成 a、b、c</li><li><strong>字符串加密</strong> — 关键字符串运行时才解密</li><li><strong>反射调用</strong> — 通过字符串动态调用方法（不直接出现在代码里）</li><li><strong>OLLVM</strong> — 控制流平坦化，插入大量无意义分支</li></ul><div class="tip-box">混淆不改逻辑，只改可读性。从字符串和 API 调用入手是突破口。</div>`, cls: 'slide' },
+
+        { html: `<h2>Hook 框架是什么</h2><p>Hook = "拦截函数调用"——在函数执行前后插入自己的代码：</p><ul><li>截获函数参数和返回值</li><li>修改返回值（如 <code>isPaid()</code> → <code>true</code>）</li><li>在函数执行前后执行自定义逻辑</li></ul><div class="highlight-box"><strong>三大框架：</strong><br><strong>Xposed</strong> — 老牌，需要刷框架<br><strong>LSPosed</strong> — 新一代，基于 Magisk，支持 Android 8~14<br><strong>Frida</strong> — 无需框架，JS 脚本即时生效</div>`, cls: 'slide' },
+
+        { html: `<h2>LSPosed 使用</h2><pre># 前置条件
+手机已刷 Magisk
+
+# 安装步骤
+1. Magisk Manager → 模块 → 从本地安装 → 选 LSPosed zip
+2. 重启
+3. 打开 LSPosed 管理器
+4. 启用目标 App 的作用域
+5. 安装 Xposed 模块（如 EdXposed Manager）
+
+# 编写模块示例（Java）
+IXposedHookLoadPackage {
+    handleLoadPackage(loadPackageParam) {
+        if (loadPackageParam.packageName == "com.example.app") {
+            // Hook 逻辑
+        }
+    }
+}</pre>`, cls: 'slide' },
+
+        { html: `<h2>Xposed vs Frida 选择</h2><ul><li><strong>LSPosed/Xposed</strong> → 长期生效，每次启动 App 自动 Hook</li><li><strong>Frida</strong> → 临时测试，改完重启就没了</li></ul><div class="highlight-box"><strong>推荐流程：</strong><br>1. 先用 Frida 快速验证 Hook 是否有效<br>2. 确认方案后，写成 LSPosed 模块长期使用<br>3. 需要 Hook Native 方法时，Frida 是唯一选择</div>`, cls: 'slide' },
+
+        { html: `<h2>实战：Hook SharedPreferences</h2><pre>// 读取 App 保存的配置（如 token、密码）
+Java.perform(function() {
+    var SP = Java.use("android.app.SharedPreferencesImpl");
+
+    SP.getString.overload("java.lang.String", "java.lang.String").implementation = function(key, defValue) {
+        var value = this.getString(key, defValue);
+        console.log("[SP] getString: " + key + " = " + value);
+        return value;
+    };
+
+    SP.getStringSet.overload("java.lang.String", "java.util.Set").implementation = function(key, defValues) {
+        var value = this.getStringSet(key, defValues);
+        console.log("[SP] getStringSet: " + key + " = " + JSON.stringify(value.toArray()));
+        return value;
+    };
+});</pre><div class="tip-box">App 存的 token、登录状态、用户配置都在 SharedPreferences 里，Hook 这个类能拿到几乎所有本地数据。</div>`, cls: 'slide' }
     ];
     let current = 0;
     const container = document.getElementById('slideContainer');
@@ -69,6 +92,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',s
         container.innerHTML = slidesData[current].html;
         counter.textContent = (current + 1) + ' / ' + slidesData.length;
     }
+    goTo(0);
 
     document.getElementById('prevBtn').addEventListener('click', () => goTo(current - 1));
     document.getElementById('nextBtn').addEventListener('click', () => goTo(current + 1));
