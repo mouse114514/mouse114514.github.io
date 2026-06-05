@@ -11,7 +11,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',s
 .slide-title .lesson-num{font-size:14px;color:rgba(255,255,255,.25);margin-bottom:18px;letter-spacing:3px}
 .slide h2{font-size:clamp(22px,3vw,32px);font-weight:700;color:#4da8ff;margin-bottom:18px;border-bottom:1px solid rgba(77,168,255,.15);padding-bottom:10px}
 .slide p{font-size:17px;line-height:1.8;margin-bottom:12px;color:rgba(255,255,255,.85)}
-.slide ul{margin:8px 0 12px 20px}
+.slide ul,.slide ol{margin:8px 0 12px 20px}
 .slide li{font-size:16px;line-height:1.7;margin-bottom:5px;color:rgba(255,255,255,.8)}
 .slide li strong{color:#b0e0ff}
 .slide .highlight-box{background:rgba(77,168,255,.08);border-left:4px solid #4da8ff;padding:16px 20px;border-radius:0 12px 12px 0;margin:14px 0;font-size:15px}
@@ -26,54 +26,91 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',s
 .nav-bar .back-link:hover{color:#fff;background:rgba(255,255,255,.06)}
 @media(max-width:640px){.slide-inner{padding:24px 16px;max-height:90vh}.slide p{font-size:15px}.slide li{font-size:14px}.slide h2{font-size:20px}.slide-title h1{font-size:28px}.nav-bar{padding:8px 12px;gap:8px;bottom:14px}.slide-inner::-webkit-scrollbar{width:3px}}
     </style></head>
-
 <body>
-    <div class="presentation" id="presentation">
-        <div class="slide slide-title" id="slideContainer"></div>
-    </div>
-
-    <div class="nav-bar"><a class="back-link" href="index.html">目录</a><button id="prevBtn">◀</button><span class="counter" id="counter">1 / 7</span><button id="nextBtn">▶</button></div>
-
+    <div class="presentation" id="presentation"><div class="slide slide-title" id="slideContainer"></div></div>
+    <div class="nav-bar"><a class="back-link" href="index.html">目录</a><button id="prevBtn">◀</button><span class="counter" id="counter"></span><button id="nextBtn">▶</button></div>
     <script>
     const slidesData = [
         { html: `<div class="lesson-num">安卓逆向 · 第试</div><h1>APK 解包与文件结构</h1><div class="sub">拆开看看 APK 里面有什么</div>`, cls: 'slide slide-title active' },
-
-        { html: `<h2>APK 是什么</h2><p>APK（Android Package）是安卓应用的安装包，本质上是一个 <strong>ZIP 压缩包</strong>：</p><ul><li>把 <code>app.apk</code> 改成 <code>app.zip</code>，右键解压就能打开</li><li>包含代码、资源、签名等所有内容</li><li>安装时系统自动解包</li></ul><div class="highlight-box">快速验证：改后缀 → 解压 → 看看有没有 classes.dex，就能确认这是真 APK。</div>`, cls: 'slide' },
-
+        { html: `<h2>APK 是什么</h2><p>APK（Android Package）是安卓应用的安装包，本质上是一个 <strong>ZIP 压缩包</strong>：</p><ul><li>把 <code>app.apk</code> 改成 <code>app.zip</code>，右键解压就能打开</li><li>包含代码、资源、签名等所有内容</li><li>安装时系统自动解包到 <code>/data/app/</code> 目录</li></ul><pre># 快速验证：改后缀解压
+copy app.apk app.zip
+# 右键解压 → 看看有没有 classes.dex</pre><div class="highlight-box">能确认有 classes.dex 就是真 APK。有些壳会把 dex 加密，文件名可能变成其他。</div>`, cls: 'slide' },
         { html: `<h2>目录结构详解</h2><pre>app.apk (ZIP)
-├── classes.dex          # 代码（Dalvik 字节码）
-├── classes2.dex         # 多 dex 情况
-├── AndroidManifest.xml  # 配置（权限、组件声明）
-├── res/                 # 资源文件
-│   ├── layout/          #   布局 XML
-│   ├── drawable/        #   图片
-│   └── values/          #   字符串/颜色/样式
-├── lib/                 # Native 库
-│   ├── armeabi-v7a/     #   32位 ARM
-│   └── arm64-v8a/       #   64位 ARM
-├── assets/              # 原始资源（游戏素材等）
-└── META-INF/            # 签名信息
-    ├── MANIFEST.MF
-    ├── CERT.SF
-    └── CERT.RSA</pre>`, cls: 'slide' },
+├── classes.dex              # 代码（Dalvik 字节码）
+├── classes2.dex             # 多 dex 情况
+├── AndroidManifest.xml      # 配置（权限、组件声明）
+├── res/                     # 资源文件
+│   ├── layout/              #   界面布局 XML
+│   ├── drawable-xxhdpi/     #   图片（按分辨率分目录）
+│   ├── values/              #   字符串/颜色/样式
+│   ├── values-zh/           #   中文字符串（多语言）
+│   ├── mipmap-xxhdpi/       #   应用图标
+│   └── anim/                #   动画
+├── lib/                     # Native 库
+│   ├── armeabi-v7a/         #   32位 ARM
+│   └── arm64-v8a/           #   64位 ARM
+├── assets/                  # 原始资源（游戏素材等）
+├── META-INF/                # 签名信息
+│   ├── MANIFEST.MF
+│   ├── CERT.SF
+│   └── CERT.RSA
+└── kotlin/                  # Kotlin 元数据（如果有）</pre>`, cls: 'slide' },
+        { html: `<h2>AndroidManifest.xml 详解</h2><p>这是 APK 的"身份证"，二进制格式需要用 apktool 还原：</p><pre>&lt;manifest package="com.example.app"
+    versionCode="1" versionName="1.0"&gt;
 
-        { html: `<h2>AndroidManifest.xml</h2><p>这是 APK 的"身份证"，包含：</p><ul><li><strong>包名</strong> — <code>com.example.app</code>（唯一标识）</li><li><strong>权限</strong> — <code>INTERNET</code>、<code>CAMERA</code>、<code>READ_EXTERNAL_STORAGE</code></li><li><strong>入口 Activity</strong> — 启动时显示哪个界面</li><li><strong>版本号</strong> — versionCode 和 versionName</li><li><strong>Service / Receiver</strong> — 后台服务和广播接收器</li></ul><div class="tip-box">直接解压得到的 AndroidManifest.xml 是<strong>二进制格式</strong>，需要用 <code>apktool d</code> 还原成可读 XML。</div>`, cls: 'slide' },
+    &lt;uses-permission android:name="android.permission.INTERNET"/&gt;
+    &lt;uses-permission android:name="android.permission.CAMERA"/&gt;
 
-        { html: `<h2>classes.dex 核心</h2><p>这是 APK 里最关键的文件——Java/Kotlin 代码编译后的产物：</p><ul><li>一个 APK 可以有多个 dex（classes.dex、classes2.dex...）</li><li>64K 方法限制 → 多 dex 是常态</li><li>不能直接阅读，需要反编译（jadx 或 apktool）</li></ul><div class="highlight-box"><strong>重要：</strong>所有你能在 jadx 里看到的 Java 代码，都来自 classes.dex。这是逆向分析的主要目标。</div>`, cls: 'slide' },
+    &lt;application android:label="MyApp"
+        android:debuggable="false"&gt;
+        &lt;activity android:name=".MainActivity"
+            android:exported="true"&gt;
+            &lt;intent-filter&gt;
+                &lt;action android:name="android.intent.action.MAIN"/&gt;
+                &lt;category android:name="android.intent.category.LAUNCHER"/&gt;
+            &lt;/intent-filter&gt;
+        &lt;/activity&gt;
+        &lt;service android:name=".MyService"/&gt;
+    &lt;/application&gt;
+&lt;/manifest&gt;</pre>`, cls: 'slide' },
+        { html: `<h2>classes.dex 深入</h2><p>这是 APK 里最关键的文件——Java/Kotlin 代码编译后的产物：</p><ul><li>用 <code>dexdump -d classes.dex</code> 可以看字节码（但很难读）</li><li>用 jadx 直接转成 Java 源码（最实用）</li><li>用 apktool 转成 Smali 汇编（可修改）</li></ul><pre># 查看 dex 文件信息
+dexdump -h classes.dex
 
-        { html: `<h2>apktool 完整用法</h2><pre># 解包（反编译资源 + Smali）
+# 查看类列表
+dexdump classes.dex | grep "Class descriptor"
+
+# dex 文件头： magic number 是 "dex\n035\0"</pre><div class="highlight-box"><strong>多 DEX 情况：</strong>超过 64K 方法限制时自动拆分。每个 dex 独立，分析时需要逐个查看。</div>`, cls: 'slide' },
+        { html: `<h2>res/ 资源目录</h2><p>资源文件按类型分目录：</p><ul><li><strong>res/layout/</strong> — 界面布局 XML（UI 结构）</li><li><strong>res/drawable-xxhdpi/</strong> — 图片（按分辨率分：mdpi/hdpi/xhdpi/xxhdpi）</li><li><strong>res/values/</strong> — <code>strings.xml</code>（字符串）、<code>colors.xml</code>、<code>styles.xml</code></li><li><strong>res/values-zh/</strong> — 中文翻译字符串</li><li><strong>res/mipmap-xxhdpi/</strong> — 应用图标（ic_launcher.png）</li></ul><div class="tip-box"><strong>逆向技巧：</strong>直接解压能看到图片，但布局 XML 是二进制格式，需要用 <code>apktool d</code> 还原成可读 XML。</div>`, cls: 'slide' },
+        { html: `<h2>lib/ Native 库</h2><p>用 C/C++ 写的原生库，逆向难度比 Java 高得多：</p><pre>lib/
+├── armeabi-v7a/       # 32位 ARM（老设备）
+│   ├── libnative.so   # 核心逻辑库
+│   └── libmylib.so    # 第三方库
+├── arm64-v8a/         # 64位 ARM（主流）
+│   ├── libnative.so
+│   └── libmylib.so
+└── x86_64/            # 模拟器/ChromeOS
+    └── libnative.so</pre><ul><li><code>.so</code> 是 ELF 格式的二进制文件</li><li>需要用 IDA Pro / Ghidra 反汇编分析</li><li>很多加密/反调试逻辑在 native 层</li></ul>`, cls: 'slide' },
+        { html: `<h2>assets/ 目录</h2><p>原始资源文件，系统不会处理（和 res/ 不同）：</p><ul><li>游戏素材（图片、音效、关卡数据）</li><li>内嵌的 HTML/JS 文件（WebView 加载）</li><li>字体文件（.ttf/.otf）</li><li>配置文件（.json、.xml）</li></ul><pre># assets 目录可以直接用解压工具查看
+# 用代码访问：
+AssetManager am = context.getAssets();
+InputStream is = am.open("config.json");</pre><div class="highlight-box">assets 里的文件<strong>没有资源 ID</strong>，通过文件名访问。适合存放大量非编译资源。</div>`, cls: 'slide' },
+        { html: `<h2>META-INF/ 签名信息</h2><p>APK 签名保证完整性和来源可信：</p><pre>META-INF/
+├── MANIFEST.MF        # 每个文件的 SHA-256 摘要
+├── CERT.SF            # MANIFEST.MF 的签名
+└── CERT.RSA           # 证书（包含公钥）</pre><ul><li>安装时系统校验签名，篡改后签名失效 → 安装失败</li><li>系统更新需要相同签名（覆盖安装）</li><li>Google Play 要求使用 V2/V3 签名方案</li></ul><div class="tip-box">修改 APK 后必须重新签名才能安装。用 <code>jarsigner</code> 或 <code>apksigner</code>。</div>`, cls: 'slide' },
+        { html: `<h2>apktool 完整用法</h2><pre># 解包（反编译资源 + 生成 Smali）
 apktool d app.apk -o output/
+
+# 只解包资源（不生成 Smali，速度快）
+apktool d app.apk -o output/ -s
 
 # 回编译（修改后重新打包）
 apktool b output/ -o modified.apk
 
-# 只解包资源（不生成 Smali）
-apktool d app.apk -o output/ -s
-
-# 指定框架（某些 App 依赖系统框架）
-apktool if framework-res.apk</pre><div class="highlight-box"><strong>完整修改流程：</strong><br>apktool d → 编辑 smali/xml → apktool b → jarsigner 签名 → 安装</div>`, cls: 'slide' },
-
-        { html: `<h2>签名工具</h2><p>修改 APK 后必须重新签名才能安装：</p><pre># jarsigner（JDK 自带）
+# 指定框架（某些 App 依赖系统框架资源）
+apktool if framework-res.apk
+apktool if /path/to/framework.apk 1</pre><div class="highlight-box"><strong>完整修改流程：</strong><br><code>apktool d app.apk</code> → 编辑 smali/xml → <code>apktool b output/</code> → <code>jarsigner</code> 签名 → 安装</div>`, cls: 'slide' },
+        { html: `<h2>签名工具</h2><pre># jarsigner（JDK 自带）
 jarsigner -keystore my.keystore -storepass 123456 modified.apk mykey
 
 # apksigner（推荐，Android SDK 自带）
@@ -81,30 +118,33 @@ apksigner sign --ks my.keystore modified.apk
 
 # 生成调试签名（用于测试）
 keytool -genkeypair -v -keystore debug.keystore \
-  -alias androiddebugkey -keyalg RSA -keysize 2048 -validity 10000</pre><div class="tip-box">debug.keystore 的默认密码是 <code>android</code>，别名是 <code>androiddebugkey</code>。</div>`, cls: 'slide' }
+  -alias androiddebugkey -keyalg RSA -keysize 2048 -validity 10000
+
+# debug.keystore 默认密码：android
+# 默认别名：androiddebugkey</pre><div class="tip-box">V1 签名（jarsigner）兼容性最好，V2/V3 签名安全性更高。测试用 V1 就够了。</div>`, cls: 'slide' },
+        { html: `<h2>实战：快速查看 APK 信息</h2><pre># 用 aapt 查看 APK 详情
+aapt dump badging app.apk
+
+# 输出包含：
+# package: name='com.example.app' versionCode='1' versionName='1.0'
+# application-label: 'MyApp'
+# launchable-activity: name='.MainActivity'
+# uses-permission: name='android.permission.INTERNET'
+
+# 用 apktool 查看（更详细）
+apktool d app.apk -o /tmp/check
+cat /tmp/check/AndroidManifest.xml</pre>`, cls: 'slide' },
+        { html: `<h2>总结</h2><ul><li>APK = ZIP 压缩包，改后缀就能解压</li><li>核心：classes.dex（代码）+ AndroidManifest.xml（配置）</li><li>res/ 存资源和布局，lib/ 存 Native 库</li><li>直接解压看不了 XML/DEX，需要 apktool 还原</li><li>修改后必须重新签名才能安装</li><li>aapt 快速查看 APK 基本信息</li></ul>`, cls: 'slide' }
     ];
     let current = 0;
     const container = document.getElementById('slideContainer');
     const counter = document.getElementById('counter');
-
-    function goTo(n) {
-        current = (n + slidesData.length) % slidesData.length;
-        container.className = slidesData[current].cls;
-        container.innerHTML = slidesData[current].html;
-        counter.textContent = (current + 1) + ' / ' + slidesData.length;
-    }
+    function goTo(n) { current = (n + slidesData.length) % slidesData.length; container.className = slidesData[current].cls; container.innerHTML = slidesData[current].html; counter.textContent = (current + 1) + ' / ' + slidesData.length; }
     goTo(0);
-
     document.getElementById('prevBtn').addEventListener('click', () => goTo(current - 1));
     document.getElementById('nextBtn').addEventListener('click', () => goTo(current + 1));
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); goTo(current + 1); }
-        if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); goTo(current - 1); }
-    });
-    document.getElementById('presentation').addEventListener('click', (e) => {
-        if (e.target.closest('.nav-bar') || e.target.closest('.slide-inner')) return;
-        goTo(current + 1);
-    });
+    document.addEventListener('keydown', (e) => { if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); goTo(current + 1); } if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); goTo(current - 1); } });
+    document.getElementById('presentation').addEventListener('click', (e) => { if (e.target.closest('.nav-bar') || e.target.closest('.slide-inner')) return; goTo(current + 1); });
     </script>
 </body>
 </html>

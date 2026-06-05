@@ -11,7 +11,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',s
 .slide-title .lesson-num{font-size:14px;color:rgba(255,255,255,.25);margin-bottom:18px;letter-spacing:3px}
 .slide h2{font-size:clamp(22px,3vw,32px);font-weight:700;color:#4da8ff;margin-bottom:18px;border-bottom:1px solid rgba(77,168,255,.15);padding-bottom:10px}
 .slide p{font-size:17px;line-height:1.8;margin-bottom:12px;color:rgba(255,255,255,.85)}
-.slide ul{margin:8px 0 12px 20px}
+.slide ul,.slide ol{margin:8px 0 12px 20px}
 .slide li{font-size:16px;line-height:1.7;margin-bottom:5px;color:rgba(255,255,255,.8)}
 .slide li strong{color:#b0e0ff}
 .slide .highlight-box{background:rgba(77,168,255,.08);border-left:4px solid #4da8ff;padding:16px 20px;border-radius:0 12px 12px 0;margin:14px 0;font-size:15px}
@@ -26,18 +26,12 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',s
 .nav-bar .back-link:hover{color:#fff;background:rgba(255,255,255,.06)}
 @media(max-width:640px){.slide-inner{padding:24px 16px;max-height:90vh}.slide p{font-size:15px}.slide li{font-size:14px}.slide h2{font-size:20px}.slide-title h1{font-size:28px}.nav-bar{padding:8px 12px;gap:8px;bottom:14px}.slide-inner::-webkit-scrollbar{width:3px}}
     </style></head>
-
 <body>
-    <div class="presentation" id="presentation">
-        <div class="slide slide-title" id="slideContainer"></div>
-    </div>
-
-    <div class="nav-bar"><a class="back-link" href="index.html">目录</a><button id="prevBtn">◀</button><span class="counter" id="counter">1 / 8</span><button id="nextBtn">▶</button></div>
-
+    <div class="presentation" id="presentation"><div class="slide slide-title" id="slideContainer"></div></div>
+    <div class="nav-bar"><a class="back-link" href="index.html">目录</a><button id="prevBtn">◀</button><span class="counter" id="counter"></span><button id="nextBtn">▶</button></div>
     <script>
     const slidesData = [
         { html: `<div class="lesson-num">安卓逆向 · 进阶第试</div><h1>混淆与反混淆</h1><div class="sub">看懂混淆后的代码</div>`, cls: 'slide slide-title active' },
-
         { html: `<h2>什么是代码混淆</h2><p>发布 App 时把类名、方法名、变量名改成<strong>无意义的短名</strong>：</p><pre>// 混淆前
 public class LoginActivity {
     private String userName;
@@ -49,8 +43,8 @@ public class a {
     private String b;
     public boolean c(String d) { ... }
 }</pre><p>代码逻辑不变，但人类阅读变得困难。安卓主流工具：<strong>ProGuard</strong>（内置）、<strong>R8</strong>（AGP 默认）。</p>`, cls: 'slide' },
-
-        { html: `<h2>混淆级别</h2><ul><li><strong>-optimizations</strong> → 代码优化（移除死代码、内联简单方法）</li><li><strong>-assumenosideeffects</strong> → 删除指定方法调用（如 Log.d）</li><li><strong>-keep</strong> → 保留指定类/方法不被混淆</li></ul><div class="highlight-box"><strong>proguard-rules.pro 示例：</strong><pre># 保留所有 Activity 子类
+        { html: `<h2>混淆的三个级别</h2><ul><li><strong>轻度混淆</strong> — 只改类名方法名（a, b, c），字符串保留</li><li><strong>中度混淆</strong> — 加上字符串加密、控制流混淆</li><li><strong>重度混淆</strong> — OLLVM 控制流平坦化、花指令、反调试</li></ul><div class="highlight-box"><strong>大多数 App 是轻度到中度混淆。</strong>重度混淆（OLLVM）比较少见，因为会影响性能和稳定性。</div>`, cls: 'slide' },
+        { html: `<h2>proguard-rules.pro 配置</h2><pre># 保留所有 Activity 子类
 -keep public class * extends android.app.Activity
 
 # 保留序列化对象
@@ -59,12 +53,22 @@ public class a {
 # 保留 native 方法
 -keepclasseswithmembernames class * {
     native &lt;methods&gt;;
-}</pre></div>`, cls: 'slide' },
+}
 
-        { html: `<h2>反混淆：字符串定位法</h2><p>混淆<strong>不改字符串常量</strong>，这是突破口。</p><pre>const-string v0, "password_error"
+# 保留枚举
+-keepclassmembers enum * {
+    public static **[] values();
+    public static ** valueOf(java.lang.String);
+}
+
+# 删除 Log 输出（发布时）
+-assumenosideeffects class android.util.Log {
+    public static int d(...);
+    public static int v(...);
+}</pre>`, cls: 'slide' },
+        { html: `<h2>反混淆：字符串定位法</h2><p>混淆<strong>不改字符串常量</strong>，这是突破口：</p><pre>const-string v0, "password_error"
 const-string v1, "login_failed"
-const-string v2, "https://api.example.com/v2/pay"</pre><p><strong>操作步骤：</strong></p><ul><li>用 jadx 打开 APK，全局搜索关键字符串</li><li>从字符串所在位置向上追溯，找到使用它的方法</li><li>给混淆名重命名（右键 → Rename）</li><li>逐步标注，最终还原出完整逻辑链</li></ul>`, cls: 'slide' },
-
+const-string v2, "https://api.example.com/v2/pay"</pre><p><strong>操作步骤：</strong></p><ol><li>用 jadx 打开 APK，<code>Ctrl+F</code> 搜索关键字符串</li><li>从字符串所在位置向上追溯，找到使用它的方法</li><li>给混淆名重命名（右键 → Rename）</li><li>逐步标注，最终还原出完整逻辑链</li></ol>`, cls: 'slide' },
         { html: `<h2>反混淆：上下文推断法</h2><p>看 API 调用推断方法功能：</p><pre>// 方法 a 调用了这些 → 它是网络请求方法
 a.openConnection("https://...");
 a.setMethod("POST");
@@ -72,20 +76,43 @@ a.addHeader("Authorization", token);
 
 // 方法 b 调用了这些 → 它是 JSON 解析
 b.getJSONObject("data");
-b.getString("token");</pre><div class="highlight-box"><strong>规律：</strong>即使类名变成 a.b.c，API 调用（HttpURLConnection、SharedPreferences、SQLiteDatabase 等）是固定的，从这些调用反推功能。</div>`, cls: 'slide' },
+b.getString("token");
 
-        { html: `<h2>实战：重命名映射表</h2><p>手动建立混淆名→原始名 的映射：</p><pre># mapping.txt (手写或 ProGuard 生成)
+// 方法 c 调用了这些 → 它是数据库操作
+c.execSQL("INSERT INTO users ...");
+c.rawQuery("SELECT * FROM ...", null);</pre><div class="highlight-box"><strong>规律：</strong>即使类名变成 a.b.c，API 调用（HttpURLConnection、SharedPreferences、SQLiteDatabase 等）是固定的。</div>`, cls: 'slide' },
+        { html: `<h2>反混淆：字符串引用追踪</h2><pre># jadx 中搜索 "https://api.example.com"
+# 找到它在 a.a(String, String) 方法中
+# 右键 → Find Usage → 看到它被以下方法调用：
+#   a.a(String, String)
+#   b.a(String, String, int)
+#   c.a(String)
+
+# 进一步分析：
+# a.a() 是网络请求构建
+# b.a() 是 API 调用
+# c.a() 是响应解析
+
+# 重命名后：
+# a → NetworkRequest
+# b → ApiClient
+# c → ResponseParser</pre>`, cls: 'slide' },
+        { html: `<h2>重命名映射表</h2><pre># mapping.txt (ProGuard 生成或手写)
 a -> LoginActivity
 b -> LoginPresenter
 c -> userName
 a.a() -> onCreate()
 a.b() -> initView()
 b.a(String) -> login(String)
-b.a(String, String) -> login(String, String) [原: loginWithPassword]</pre><div class="tip-box"><strong>JADX 支持直接重命名：</strong>右键类/方法 → Rename → 输入新名 → 所有引用同步更新。标注完整后可以导出项目。</div>`, cls: 'slide' },
+b.a(String, String) -> loginWithPassword(String, String)
 
-        { html: `<h2>工具辅助反混淆</h2><ul><li><strong>deguard.io</strong> → 上传 APK，自动分析猜测原始命名（基于大量 APK 训练）</li><li><strong>Simplify</strong> → 通过执行指令去除无用分支（针对控制流混淆）</li><li><strong>Frida 动态分析</strong> → 不管混淆，直接 Hook 运行时行为</li></ul><div class="highlight-box"><strong>效率优先原则：</strong><br>简单混淆 → 手动重命名即可<br>中度混淆 → deguard + 手动补充<br>重度混淆（OLLVM 控制流平坦化）→ 放弃静态分析，直接 Frida Hook</div>`, cls: 'slide' },
+# 手动重命名（jadx）
+# 右键类/方法 → Rename → 输入新名 → 所有引用同步更新
 
-        { html: `<h2>实战：混淆后的 Smali 修改</h2><p>混淆后 Smali 里类名变成短名，但<strong>字符串和 API 调用不变</strong>：</p><pre># 在混淆后的 Smali 中搜索 "isPaid"
+# 导出标注后的项目
+# File → Save as Gradle project</pre><div class="tip-box"><strong>ProGuard mapping.txt：</strong>混淆器会生成这个文件，记录了混淆前后的映射关系。如果能拿到这个文件，反混淆就完成了。</div>`, cls: 'slide' },
+        { html: `<h2>工具辅助反混淆</h2><ul><li><strong>deguard.io</strong> — 上传 APK，自动分析猜测原始命名（基于大量 APK 训练）</li><li><strong>Simplify</strong> — 通过执行指令去除无用分支（针对控制流混淆）</li><li><strong>Frida 动态分析</strong> — 不管混淆，直接 Hook 运行时行为</li><li><strong>JEB Decompiler</strong> — 付费工具，反编译质量最高，支持重命名</li></ul><div class="highlight-box"><strong>效率优先原则：</strong><br>简单混淆 → 手动重命名即可<br>中度混淆 → deguard + 手动补充<br>重度混淆 → 放弃静态分析，直接 Frida Hook</div>`, cls: 'slide' },
+        { html: `<h2>混淆后的 Smali 修改</h2><pre># 在混淆后的 Smali 中搜索关键字符串
 grep -r "isPaid" smali/
 
 # 找到：
@@ -95,30 +122,37 @@ if-eqz v0, :not_paid
 
 # a.a() 就是 isPaid()，现在可以修改返回值了
 # 在 move-result v0 后加：
-const/4 v0, 0x1</pre><div class="highlight-box"><strong>关键：</strong>混淆只改名不改逻辑。找到关键字符串 → 定位方法 → 修改 Smali → 回编译签名。</div>`, cls: 'slide' }
+const/4 v0, 0x1</pre><div class="highlight-box"><strong>关键：</strong>混淆只改名不改逻辑。找到关键字符串 → 定位方法 → 修改 Smali → 回编译签名。</div>`, cls: 'slide' },
+        { html: `<h2>实战：字符串加密对抗</h2><p>有些 App 会加密字符串，运行时才解密：</p><pre># 混淆前
+String url = "https://api.example.com/v2/pay";
+
+# 混淆后（字符串加密）
+String url = Decryptor.decrypt("a3f8b2c1d4e5...");
+
+# 解密方法通常在：
+# - static initializer (clinit)
+# - 或者被混淆成工具类（如 a.a(String)）</pre><p><strong>对抗方法：</strong></p><ul><li>Hook <code>Decryptor.decrypt()</code> 打印所有解密结果</li><li>在 Smali 中直接替换为明文字符串</li><li>Hook <code>String.toCharArray()</code> 看运行时字符串</li></ul>`, cls: 'slide' },
+        { html: `<h2>实战：控制流混淆对抗</h2><p>OLLVM 会把简单的 if-else 变成复杂的 switch-case 状态机：</p><pre># 原始代码
+if (a > b) { doX(); } else { doY(); }
+
+# OLLVM 混淆后
+switch(state) {
+    case 0x1A2B: state = (a > b) ? 0x3C4D : 0x5E6F; break;
+    case 0x3C4D: doX(); state = 0x7A8B; break;
+    case 0x5E6F: doY(); state = 0x7A8B; break;
+}</pre><p><strong>对抗方法：</strong></p><ul><li>不要硬读，用 Frida Hook 跳过混淆逻辑</li><li>或用符号执行工具（如 angr）自动分析</li></ul>`, cls: 'slide' },
+        { html: `<h2>反混淆最佳实践</h2><ol><li><strong>先搜字符串</strong> — 这是最可靠的突破口</li><li><strong>再看 API 调用</strong> — 从 HTTP/SP/DB 调用推断功能</li><li><strong>不要死磕</strong> — 混淆太深直接 Frida Hook</li><li><strong>记录映射</strong> — 每标注一个就记下来，避免重复劳动</li><li><strong>拿 mapping.txt</strong> — 如果能从开发团队拿到，直接反混淆完成</li></ol>`, cls: 'slide' },
+        { html: `<h2>总结</h2><ul><li>混淆 = 类/方法/变量名改短，逻辑不变</li><li>ProGuard/R8 是主流混淆方案</li><li>字符串定位 + API 推断 + 交叉引用 = 反混淆三板斧</li><li>deguard 等工具辅助自动还原</li><li>复杂混淆不要硬解，Frida Hook 更高效</li></ul>`, cls: 'slide' }
     ];
     let current = 0;
     const container = document.getElementById('slideContainer');
     const counter = document.getElementById('counter');
-
-    function goTo(n) {
-        current = (n + slidesData.length) % slidesData.length;
-        container.className = slidesData[current].cls;
-        container.innerHTML = slidesData[current].html;
-        counter.textContent = (current + 1) + ' / ' + slidesData.length;
-    }
+    function goTo(n) { current = (n + slidesData.length) % slidesData.length; container.className = slidesData[current].cls; container.innerHTML = slidesData[current].html; counter.textContent = (current + 1) + ' / ' + slidesData.length; }
     goTo(0);
-
     document.getElementById('prevBtn').addEventListener('click', () => goTo(current - 1));
     document.getElementById('nextBtn').addEventListener('click', () => goTo(current + 1));
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); goTo(current + 1); }
-        if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); goTo(current - 1); }
-    });
-    document.getElementById('presentation').addEventListener('click', (e) => {
-        if (e.target.closest('.nav-bar') || e.target.closest('.slide-inner')) return;
-        goTo(current + 1);
-    });
+    document.addEventListener('keydown', (e) => { if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); goTo(current + 1); } if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); goTo(current - 1); } });
+    document.getElementById('presentation').addEventListener('click', (e) => { if (e.target.closest('.nav-bar') || e.target.closest('.slide-inner')) return; goTo(current + 1); });
     </script>
 </body>
 </html>

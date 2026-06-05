@@ -11,7 +11,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',s
 .slide-title .lesson-num{font-size:14px;color:rgba(255,255,255,.25);margin-bottom:18px;letter-spacing:3px}
 .slide h2{font-size:clamp(22px,3vw,32px);font-weight:700;color:#ffb432;margin-bottom:18px;border-bottom:1px solid rgba(255,180,50,.15);padding-bottom:10px}
 .slide p{font-size:17px;line-height:1.8;margin-bottom:12px;color:rgba(255,255,255,.85)}
-.slide ul{margin:8px 0 12px 20px}
+.slide ul,.slide ol{margin:8px 0 12px 20px}
 .slide li{font-size:16px;line-height:1.7;margin-bottom:5px;color:rgba(255,255,255,.8)}
 .slide li strong{color:#ffd580}
 .slide .highlight-box{background:rgba(255,180,50,.08);border-left:4px solid #ffb432;padding:16px 20px;border-radius:0 12px 12px 0;margin:14px 0;font-size:15px}
@@ -26,24 +26,16 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',s
 .nav-bar .back-link:hover{color:#fff;background:rgba(255,255,255,.06)}
 @media(max-width:640px){.slide-inner{padding:24px 16px;max-height:90vh}.slide p{font-size:15px}.slide li{font-size:14px}.slide h2{font-size:20px}.slide-title h1{font-size:28px}.nav-bar{padding:8px 12px;gap:8px;bottom:14px}.slide-inner::-webkit-scrollbar{width:3px}}
     </style></head>
-
 <body>
-    <div class="presentation" id="presentation">
-        <div class="slide slide-title" id="slideContainer"></div>
-    </div>
-
-    <div class="nav-bar"><a class="back-link" href="index.html">目录</a><button id="prevBtn">◀</button><span class="counter" id="counter">1 / 7</span><button id="nextBtn">▶</button></div>
-
+    <div class="presentation" id="presentation"><div class="slide slide-title" id="slideContainer"></div></div>
+    <div class="nav-bar"><a class="back-link" href="index.html">目录</a><button id="prevBtn">◀</button><span class="counter" id="counter"></span><button id="nextBtn">▶</button></div>
     <script>
     const slidesData = [
         { html: `<div class="lesson-num">安卓逆向 · 进阶第试</div><h1>脱壳基础</h1><div class="sub">撕掉 App 的保护壳</div>`, cls: 'slide slide-title active' },
-
         { html: `<h2>什么是加壳</h2><p>加壳 = 把真正的 classes.dex <strong>加密隐藏</strong>，外面包一层壳代码。App 启动时壳先运行，解密出真正的 DEX 再加载。</p><div class="highlight-box"><strong>效果：</strong>直接用 jadx 打开加壳的 APK，只能看到壳的代码，看不到真正的业务逻辑。</div>`, cls: 'slide' },
-
-        { html: `<h2>常见壳</h2><ul><li><strong>360 加固</strong> — 国内最流行</li><li><strong>腾讯乐固</strong> — 应用宝上架常用</li><li><strong>梆梆安全</strong> — 银行/金融类 App</li><li><strong>爱加密</strong> — 游戏类 App</li><li><strong>DexGuard</strong> — 国外商业壳</li><li><strong>自行实现</strong> — 用 DexClassLoader 动态加载</li></ul>`, cls: 'slide' },
-
+        { html: `<h2>常见壳</h2><ul><li><strong>360 加固</strong> — 国内最流行，免费版壳比较弱</li><li><strong>腾讯乐固</strong> — 应用宝上架常用</li><li><strong>梆梆安全</strong> — 银行/金融类 App</li><li><strong>爱加密</strong> — 游戏类 App</li><li><strong>DexGuard</strong> — 国外商业壳，比较强</li><li><strong>自行实现</strong> — 用 DexClassLoader 动态加载</li></ul>`, cls: 'slide' },
+        { html: `<h2>壳的分类</h2><ul><li><strong>整体加固</strong> — 整个 DEX 加密，启动时整体解密</li><li><strong>函数抽取</strong> — DEX 保留但函数体为空，运行时动态填充</li><li><strong>指令抽取</strong> — 更细粒度，指令在运行时动态还原</li><li><strong>虚拟机保护</strong> — 把关键代码放到自定义虚拟机执行</li></ul><div class="highlight-box"><strong>难度递增：</strong>整体加固 → 函数抽取 → 指令抽取 → 虚拟机保护<br>前两种可以 dump，后两种需要更高级的对抗。</div>`, cls: 'slide' },
         { html: `<h2>脱壳原理</h2><p>无论壳怎么加密，最终必须把原始 DEX 加载到内存才能执行：</p><ol><li>App 启动 → 壳加载并解密 DEX</li><li>壳调用 <code>DexClassLoader</code> 或反射加载 DEX</li><li>原始 DEX 出现在内存中</li><li>在内存中找到 DEX → dump 到文件</li></ol><div class="highlight-box"><strong>关键：</strong>脱壳时机是 App 启动后、业务代码执行前。此时 DEX 已解密但还未被保护。</div>`, cls: 'slide' },
-
         { html: `<h2>工具一：Frida-DexDump</h2><pre># 安装
 pip install frida-dexdump
 
@@ -51,10 +43,22 @@ pip install frida-dexdump
 frida-dexdump -U -f com.example.app
 
 # 指定输出目录
-frida-dexdump -U -f com.example.app -o dump/</pre><div class="tip-box"><strong>原理：</strong>遍历 App 加载的所有 ClassLoader，找到 DEX 文件头，dump 到磁盘。</div>`, cls: 'slide' },
+frida-dexdump -U -f com.example.app -o dump/
 
+# 指定超时时间（某些 App 启动慢）
+frida-dexdump -U -f com.example.app --timeout 30</pre><div class="tip-box"><strong>原理：</strong>遍历 App 加载的所有 ClassLoader，找到 DEX 文件头，dump 到磁盘。</div>`, cls: 'slide' },
         { html: `<h2>工具二：BlackDex</h2><p>手机端脱壳工具，无需电脑：</p><ul><li>GitHub 下载 BlackDex APK</li><li>需要 Root 权限</li><li>打开 BlackDex → 选择目标 App → 一键脱壳</li><li>脱壳后的 DEX 保存在 <code>/sdcard/BlackDex/</code></li></ul><div class="highlight-box"><strong>优点：</strong>不需要 USB 连接，不需要 frida-server，手机上直接操作。<br><strong>缺点：</strong>只支持部分壳，对加固比较强的 App 可能失败。</div>`, cls: 'slide' },
+        { html: `<h2>工具三：FART</h2><pre># FART (ART Runtime Tool)
+# 需要刷入 Magisk 模块
 
+# 安装
+# 1. 下载 FART 模块 zip
+# 2. Magisk → 模块 → 从本地安装
+# 3. 重启
+
+# 使用
+# 自动脱壳：启动目标 App → FART 自动 dump
+# 手动脱壳：adb shell am broadcast -a org.meowcat.edxposed.manager.art.DUMP -n org.meowcat.edxposed.manager.art/.Receiver</pre><div class="tip-box"><strong>FART 优势：</strong>基于 ART 运行时，可以在函数执行时 dump，对函数抽取型壳有效。</div>`, cls: 'slide' },
         { html: `<h2>脱壳后怎么用</h2><pre># 1. 用 jadx 打开 dump 出来的 .dex 文件
 jadx -d output/ dumped_classes.dex
 
@@ -65,30 +69,45 @@ jadx -d output/ dumped_classes.dex
 #    搜索字符串 → 定位方法 → 修改 Smali
 
 # 4. 重打包（可选）
-#    apktool d app.apk → 替换 dex → apktool b → 签名</pre><div class="tip-box">很多情况下不需要重打包，直接用 Frida Hook 修改运行时行为即可。</div>`, cls: 'slide' }
+#    apktool d app.apk → 替换 dex → apktool b → 签名</pre><div class="tip-box">很多情况下不需要重打包，直接用 Frida Hook 修改运行时行为即可。</div>`, cls: 'slide' },
+        { html: `<h2>壳的对抗手段</h2><ul><li><strong>完整性校验</strong> — 检查 DEX 文件是否被修改</li><li><strong>反调试</strong> — 检测是否附加了调试器</li><li><strong>反 Frida</strong> — 检测 frida-server 端口和进程</li><li><strong>DexClassLoader 混淆</strong> — 动态加载路径被加密</li><li><strong>多层加密</strong> — 解密后还有二次加密</li></ul><div class="highlight-box"><strong>对策：</strong>先用 Frida Hook 掉反调试/反 Frida 检测，再脱壳。</div>`, cls: 'slide' },
+        { html: `<h2>实战：绕过反调试</h2><pre>// anti_debug_bypass.js
+Java.perform(function() {
+    // 绕过 ptrace 检测
+    var Thread = Java.use("java.lang.Thread");
+    Thread.currentThread.implementation = function() {
+        return null;  // 某些 App 用 currentThread 检测调试
+    };
+
+    // 绕过 /proc/self/status 检测
+    var File = Java.use("java.io.File");
+    File.exists.implementation = function() {
+        var path = this.getAbsolutePath();
+        if (path.indexOf("/proc/") !== -1 && path.indexOf("status") !== -1) {
+            return false;
+        }
+        return this.exists();
+    };
+
+    // 绕过 Debug.isDebuggerConnected()
+    var Debug = Java.use("android.os.Debug");
+    Debug.isDebuggerConnected.implementation = function() {
+        return false;
+    };
+});</pre>`, cls: 'slide' },
+        { html: `<h2>脱壳后的分析技巧</h2><ol><li><strong>看包名结构</strong> — 壳代码通常在 <code>com.qihoo</code>、<code>com.tencent.Stub</code> 等包下</li><li><strong>搜字符串</strong> — 业务代码会有功能相关的字符串</li><li><strong>看 Application</strong> — 真正的 Application 类在 Manifest 里</li><li><strong>对比大小</strong> — 壳代码通常很小，真正的代码量大</li></ol>`, cls: 'slide' },
+        { html: `<h2>常见问题</h2><ul><li><strong>脱壳后还是壳的代码</strong> → App 启动太慢，增加等待时间</li><li><strong>脱壳后 App 崩溃</strong> → DEX 文件不完整，尝试其他脱壳工具</li><li><strong>jadx 打不开 dump 的 dex</strong> → 用 <code>dexdump</code> 检查文件完整性</li><li><strong>脱壳后有多个 dex</strong> → 逐个查看，找业务代码最多的那个</li></ul>`, cls: 'slide' },
+        { html: `<h2>总结</h2><ul><li>加壳 = 加密 DEX 防止反编译</li><li>脱壳 = 运行时从内存 dump 原始 DEX</li><li>常见壳：360、腾讯、梆梆、爱加密</li><li>Frida-DexDump / BlackDex / FART 三大工具</li><li>先绕过反调试，再脱壳，最后 jadx 分析</li></ul>`, cls: 'slide' }
     ];
     let current = 0;
     const container = document.getElementById('slideContainer');
     const counter = document.getElementById('counter');
-
-    function goTo(n) {
-        current = (n + slidesData.length) % slidesData.length;
-        container.className = slidesData[current].cls;
-        container.innerHTML = slidesData[current].html;
-        counter.textContent = (current + 1) + ' / ' + slidesData.length;
-    }
+    function goTo(n) { current = (n + slidesData.length) % slidesData.length; container.className = slidesData[current].cls; container.innerHTML = slidesData[current].html; counter.textContent = (current + 1) + ' / ' + slidesData.length; }
     goTo(0);
-
     document.getElementById('prevBtn').addEventListener('click', () => goTo(current - 1));
     document.getElementById('nextBtn').addEventListener('click', () => goTo(current + 1));
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); goTo(current + 1); }
-        if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); goTo(current - 1); }
-    });
-    document.getElementById('presentation').addEventListener('click', (e) => {
-        if (e.target.closest('.nav-bar') || e.target.closest('.slide-inner')) return;
-        goTo(current + 1);
-    });
+    document.addEventListener('keydown', (e) => { if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); goTo(current + 1); } if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); goTo(current - 1); } });
+    document.getElementById('presentation').addEventListener('click', (e) => { if (e.target.closest('.nav-bar') || e.target.closest('.slide-inner')) return; goTo(current + 1); });
     </script>
 </body>
 </html>

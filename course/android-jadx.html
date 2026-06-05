@@ -11,7 +11,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',s
 .slide-title .lesson-num{font-size:14px;color:rgba(255,255,255,.25);margin-bottom:18px;letter-spacing:3px}
 .slide h2{font-size:clamp(22px,3vw,32px);font-weight:700;color:#4da8ff;margin-bottom:18px;border-bottom:1px solid rgba(77,168,255,.15);padding-bottom:10px}
 .slide p{font-size:17px;line-height:1.8;margin-bottom:12px;color:rgba(255,255,255,.85)}
-.slide ul{margin:8px 0 12px 20px}
+.slide ul,.slide ol{margin:8px 0 12px 20px}
 .slide li{font-size:16px;line-height:1.7;margin-bottom:5px;color:rgba(255,255,255,.8)}
 .slide li strong{color:#b0e0ff}
 .slide .highlight-box{background:rgba(77,168,255,.08);border-left:4px solid #4da8ff;padding:16px 20px;border-radius:0 12px 12px 0;margin:14px 0;font-size:15px}
@@ -26,64 +26,87 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',s
 .nav-bar .back-link:hover{color:#fff;background:rgba(255,255,255,.06)}
 @media(max-width:640px){.slide-inner{padding:24px 16px;max-height:90vh}.slide p{font-size:15px}.slide li{font-size:14px}.slide h2{font-size:20px}.slide-title h1{font-size:28px}.nav-bar{padding:8px 12px;gap:8px;bottom:14px}.slide-inner::-webkit-scrollbar{width:3px}}
     </style></head>
-
 <body>
-    <div class="presentation" id="presentation">
-        <div class="slide slide-title" id="slideContainer"></div>
-    </div>
-
-    <div class="nav-bar"><a class="back-link" href="index.html">目录</a><button id="prevBtn">◀</button><span class="counter" id="counter">1 / 7</span><button id="nextBtn">▶</button></div>
-
+    <div class="presentation" id="presentation"><div class="slide slide-title" id="slideContainer"></div></div>
+    <div class="nav-bar"><a class="back-link" href="index.html">目录</a><button id="prevBtn">◀</button><span class="counter" id="counter"></span><button id="nextBtn">▶</button></div>
     <script>
     const slidesData = [
         { html: `<div class="lesson-num">安卓逆向 · 第试</div><h1>jadx 反编译入门</h1><div class="sub">把 DEX 变回可读代码</div>`, cls: 'slide slide-title active' },
-
-        { html: `<h2>jadx 工具介绍</h2><p><strong>jadx</strong> 是目前最好用的安卓反编译工具：</p><ul><li>免费开源</li><li>支持命令行和 GUI 两种模式</li><li>直接把 APK 或 DEX 拖进去就反编译</li><li>输出可读的 Java 代码，不需要看 Smali</li></ul><div class="highlight-box">GitHub 搜索 <code>jadx</code> → Releases → 下载 <code>jadx-gui-x.x.x.zip</code></div>`, cls: 'slide' },
-
+        { html: `<h2>jadx 工具介绍</h2><p><strong>jadx</strong> 是目前最好用的安卓反编译工具：</p><ul><li>免费开源（GitHub: skylot/jadx）</li><li>支持命令行和 GUI 两种模式</li><li>直接把 APK 或 DEX 拖进去就反编译</li><li>输出可读的 Java 源码（不是 Smali）</li><li>支持搜索、跳转、交叉引用</li></ul><div class="highlight-box">GitHub 搜索 <code>jadx</code> → Releases → 下载 <code>jadx-gui-x.x.x.zip</code> → 解压即可使用。</div>`, cls: 'slide' },
         { html: `<h2>命令行用法</h2><pre># 反编译整个 APK，输出到 output/ 目录
 java -jar jadx-cli.jar app.apk -d output/
 
 # 只反编译 classes.dex
 java -jar jadx-cli.jar classes.dex -d output/
 
-# 显示更多信息
-java -jar jadx-cli.jar app.apk -d output/ --show-bad-code</pre><div class="tip-box"><code>--show-bad-code</code> 会显示反编译失败的部分（如混淆后的垃圾代码），对分析有帮助。</div>`, cls: 'slide' },
+# 显示更多信息（包括反编译失败的部分）
+java -jar jadx-cli.jar app.apk -d output/ --show-bad-code
 
-        { html: `<h2>GUI 使用技巧</h2><ul><li>拖拽 APK 到窗口即可打开</li><li>左侧<strong>类树</strong>浏览所有类和方法</li><li><strong>Ctrl+F</strong> 全局搜索关键字（字符串、方法名）</li><li>点击方法名 → 右键 → <strong>Go to usage</strong> 查看谁调用了它</li><li><strong>Ctrl+Shift+F</strong> 在整个项目中搜索</li></ul>`, cls: 'slide' },
+# 不处理注解（加快速度）
+java -jar jadx-cli.jar app.apk -d output/ --no-res
 
-        { html: `<h2>常见分析目标</h2><ul><li><strong>找网络请求</strong> — 搜索 <code>http</code>、<code>url</code>、<code>connection</code>、<code>Retrofit</code></li><li><strong>找加密逻辑</strong> — 搜索 <code>AES</code>、<code>RSA</code>、<code>MD5</code>、<code>SecretKey</code></li><li><strong>找广告 SDK</strong> — 搜索 <code>ad</code>、<code>advertising</code>、<code>AdView</code></li><li><strong>找付费验证</strong> — 搜索 <code>pay</code>、<code>premium</code>、<code>vip</code>、<code>isPaid</code></li><li><strong>找字符串</strong> — 搜索界面上出现的文字（错误提示、按钮文字等）</li></ul>`, cls: 'slide' },
+# 指定线程数（加速）
+java -jar jadx-cli.jar app.apk -d output/ --threads-count 4</pre>`, cls: 'slide' },
+        { html: `<h2>GUI 使用技巧</h2><ul><li>拖拽 APK 到窗口即可打开</li><li>左侧<strong>类树</strong>浏览所有类和方法（按包名分组）</li><li><strong>Ctrl+F</strong> 全局搜索关键字（字符串、方法名、类名）</li><li>点击方法名 → 右键 → <strong>Go to usage</strong> 查看谁调用了它</li><li><strong>Ctrl+左键</strong> 跳转到方法定义</li><li><strong>Alt+←</strong> 返回上一个位置</li><li><strong>Ctrl+Shift+F</code> 在整个项目中搜索（包括字符串）</li></ul>`, cls: 'slide' },
+        { html: `<h2>交叉引用分析</h2><p>jadx 最强大的功能是<strong>交叉引用</strong>——追踪数据和方法的调用链：</p><pre># 场景：找到一个可疑字符串 "https://api.example.com/v2/pay"
 
-        { html: `<h2>交叉引用分析</h2><p>jadx 最强大的功能是<strong>交叉引用</strong>——追踪数据和方法的调用链：</p><pre>// 找到这个字符串被谁使用
-const-string v0, "https://api.example.com/v2/pay"
+# 1. Ctrl+F 搜索这个字符串
+# 2. 找到它在 a.b.c.a() 方法中被使用
+# 3. 右键 → Find Usage → 看到 a() 被 MainActivity.onCreate() 调用
+# 4. 这就找到了网络请求的入口
 
-// 右键 → Find Usage → 看到它在 a.b.c.a() 中使用
-// 点进去 → 看到 a() 被 MainActivity.onCreate() 调用
-// 这就找到了网络请求的入口</pre><div class="highlight-box"><strong>分析流程：</strong>关键字搜索 → 定位到方法 → 查看调用者 → 逐步还原完整逻辑链</div>`, cls: 'slide' },
+# 进一步：看 a() 里怎么用这个 URL
+# → 发现它传给了 HttpURLConnection
+# → 确认这是一个 API 请求</pre><div class="highlight-box"><strong>分析流程：</strong>关键字搜索 → 定位方法 → 查看调用者 → 逐步还原完整逻辑链</div>`, cls: 'slide' },
+        { html: `<h2>常见分析目标</h2><ul><li><strong>找网络请求</strong> — 搜索 <code>http</code>、<code>url</code>、<code>connection</code>、<code>Retrofit</code>、<code>OkHttp</code></li><li><strong>找加密逻辑</strong> — 搜索 <code>AES</code>、<code>RSA</code>、<code>MD5</code>、<code>SecretKey</code>、<code>Cipher</code></li><li><strong>找广告 SDK</strong> — 搜索 <code>ad</code>、<code>advertising</code>、<code>AdView</code>、<code>interstitial</code></li><li><strong>找付费验证</strong> — 搜索 <code>pay</code>、<code>premium</code>、<code>vip</code>、<code>isPaid</code>、<code>purchase</code></li><li><strong>找字符串</strong> — 搜索界面上出现的文字（错误提示、按钮文字等）</li><li><strong>找 SharedPreference</strong> — 搜索 <code>getSharedPreferences</code>、<code>getString</code></li></ul>`, cls: 'slide' },
+        { html: `<h2>搜索技巧</h2><pre># 搜索所有字符串（最常用）
+搜索框输入内容 → 选择 Code search
 
-        { html: `<h2>导出与局限</h2><ul><li>File → Save as Gradle project 可导出为 Android Studio 项目</li><li>导出的项目<strong>不能直接编译</strong>（缺少资源、有混淆代码）</li><li>主要用于搜索和阅读，不是修改工具</li></ul><div class="highlight-box"><strong>分工：</strong><br>jadx → 分析代码逻辑<br>apktool → 修改 Smali 后重打包<br>配合使用效果最佳</div>`, cls: 'slide' }
+# 搜索方法名
+搜索 "checkPassword" → 找到定义和所有调用点
+
+# 搜索类名
+搜索 "LoginActivity" → 找到整个类
+
+# 正则搜索（jadx 支持）
+搜索 "http[s]?://" → 找到所有 HTTP/HTTPS URL
+
+# 搜索 native 方法
+搜索 "native" → 找到所有 JNI 方法定义</pre><div class="tip-box"><strong>效率技巧：</strong>先搜字符串（最有辨识度），再搜方法名，最后看类结构。</div>`, cls: 'slide' },
+        { html: `<h2>AndroidManifest.xml 分析</h2><p>用 jadx 打开 AndroidManifest.xml 可以看到：</p><ul><li><strong>包名</strong> — <code>com.example.app</code>（唯一标识）</li><li><strong>权限</strong> — App 需要哪些权限</li><li><strong>入口 Activity</strong> — 启动时显示哪个界面</li><li><strong>所有 Activity</strong> — App 有哪些页面</li><li><strong>Service</strong> — 后台服务</li><li><strong>Receiver</strong> — 广播接收器</li></ul><pre># 从 Manifest 找入口
+&lt;activity android:name=".MainActivity"
+    android:exported="true"&gt;
+    &lt;intent-filter&gt;
+        &lt;action android:name="android.intent.action.MAIN"/&gt;
+        &lt;category android:name="android.intent.category.LAUNCHER"/&gt;
+    &lt;/intent-filter&gt;
+&lt;/activity&gt;</pre>`, cls: 'slide' },
+        { html: `<h2>分析 Smali 代码</h2><p>jadx 默认显示 Java 源码，但有时需要看 Smali：</p><pre># 在 jadx 中查看 Smali
+右键类 → Show bytecode → 看到 Smali 指令
+
+# 或者用 apktool 单独生成 Smali
+apktool d app.apk -o smali_output/
+# Smali 文件在 smali_output/smali/com/example/ 目录下
+
+# Smali 关键指令速查
+invoke-virtual {p0}, Lcom/Foo;->bar()V   # 调用方法
+const-string v0, "hello"                   # 赋值字符串
+if-eqz v0, :label                          # if (v0 == 0) goto
+return v0                                  # return v0</pre>`, cls: 'slide' },
+        { html: `<h2>导出项目</h2><ul><li>File → Save as Gradle project → 导出为 Android Studio 项目</li><li>导出后可以用 Android Studio 打开，享受搜索和跳转功能</li></ul><div class="highlight-box"><strong>局限性：</strong><br>导出的项目<strong>不能直接编译</strong>（缺少资源、有混淆代码、有缺失的库）<br>主要用于搜索和阅读，不是修改工具</div><p><strong>分工原则：</strong></p><ul><li>jadx → 分析代码逻辑（看）</li><li>apktool → 修改 Smali 后重打包（改）</li><li>配合使用效果最佳</li></ul>`, cls: 'slide' },
+        { html: `<h2>实战：分析一个 App</h2><ol><li>拖入 APK → 看 AndroidManifest.xml → 找入口 Activity</li><li>搜索界面上的文字 → 定位到对应的 Activity/Fragment</li><li>搜索 "http" → 找到所有网络请求</li><li>搜索 "password" / "token" → 找到敏感数据处理</li><li>搜索 "pay" / "vip" → 找到付费验证逻辑</li><li>追踪关键方法的调用链 → 理解完整业务流程</li></ol><div class="tip-box"><strong>不要试图看懂每一行代码。</strong>聚焦关键路径：登录、支付、验证。其他代码（广告、统计）可以跳过。</div>`, cls: 'slide' },
+        { html: `<h2>常见问题</h2><ul><li><strong>反编译失败</strong> → 用 <code>--show-bad-code</code> 查看哪些类失败了</li><li><strong>代码被混淆</strong> → 类名变成 a.b.c，从字符串入手分析</li><li><strong>有壳保护</strong> → 先脱壳再用 jadx 分析</li><li><strong>Native 代码</strong> → jadx 只能看到 JNI 声明，需要用 IDA/Ghidra 分析 .so</li></ul>`, cls: 'slide' },
+        { html: `<h2>总结</h2><ul><li>jadx 是最常用的反编译工具，输出 Java 源码</li><li>Ctrl+F 搜索字符串是分析的起点</li><li>交叉引用追踪调用链是核心技能</li><li>AndroidManifest.xml 告诉你 App 的结构</li><li>jadx 看逻辑，apktool 改代码，分工合作</li></ul>`, cls: 'slide' }
     ];
     let current = 0;
     const container = document.getElementById('slideContainer');
     const counter = document.getElementById('counter');
-
-    function goTo(n) {
-        current = (n + slidesData.length) % slidesData.length;
-        container.className = slidesData[current].cls;
-        container.innerHTML = slidesData[current].html;
-        counter.textContent = (current + 1) + ' / ' + slidesData.length;
-    }
+    function goTo(n) { current = (n + slidesData.length) % slidesData.length; container.className = slidesData[current].cls; container.innerHTML = slidesData[current].html; counter.textContent = (current + 1) + ' / ' + slidesData.length; }
     goTo(0);
-
     document.getElementById('prevBtn').addEventListener('click', () => goTo(current - 1));
     document.getElementById('nextBtn').addEventListener('click', () => goTo(current + 1));
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); goTo(current + 1); }
-        if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); goTo(current - 1); }
-    });
-    document.getElementById('presentation').addEventListener('click', (e) => {
-        if (e.target.closest('.nav-bar') || e.target.closest('.slide-inner')) return;
-        goTo(current + 1);
-    });
+    document.addEventListener('keydown', (e) => { if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); goTo(current + 1); } if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); goTo(current - 1); } });
+    document.getElementById('presentation').addEventListener('click', (e) => { if (e.target.closest('.nav-bar') || e.target.closest('.slide-inner')) return; goTo(current + 1); });
     </script>
 </body>
 </html>

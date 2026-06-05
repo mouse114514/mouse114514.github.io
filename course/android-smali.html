@@ -11,7 +11,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',s
 .slide-title .lesson-num{font-size:14px;color:rgba(255,255,255,.25);margin-bottom:18px;letter-spacing:3px}
 .slide h2{font-size:clamp(22px,3vw,32px);font-weight:700;color:#4da8ff;margin-bottom:18px;border-bottom:1px solid rgba(77,168,255,.15);padding-bottom:10px}
 .slide p{font-size:17px;line-height:1.8;margin-bottom:12px;color:rgba(255,255,255,.85)}
-.slide ul{margin:8px 0 12px 20px}
+.slide ul,.slide ol{margin:8px 0 12px 20px}
 .slide li{font-size:16px;line-height:1.7;margin-bottom:5px;color:rgba(255,255,255,.8)}
 .slide li strong{color:#b0e0ff}
 .slide .highlight-box{background:rgba(77,168,255,.08);border-left:4px solid #4da8ff;padding:16px 20px;border-radius:0 12px 12px 0;margin:14px 0;font-size:15px}
@@ -26,76 +26,149 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',s
 .nav-bar .back-link:hover{color:#fff;background:rgba(255,255,255,.06)}
 @media(max-width:640px){.slide-inner{padding:24px 16px;max-height:90vh}.slide p{font-size:15px}.slide li{font-size:14px}.slide h2{font-size:20px}.slide-title h1{font-size:28px}.nav-bar{padding:8px 12px;gap:8px;bottom:14px}.slide-inner::-webkit-scrollbar{width:3px}}
     </style></head>
-
 <body>
-    <div class="presentation" id="presentation">
-        <div class="slide slide-title" id="slideContainer"></div>
-    </div>
-
-    <div class="nav-bar"><a class="back-link" href="index.html">目录</a><button id="prevBtn">◀</button><span class="counter" id="counter">1 / 10</span><button id="nextBtn">▶</button></div>
-
+    <div class="presentation" id="presentation"><div class="slide slide-title" id="slideContainer"></div></div>
+    <div class="nav-bar"><a class="back-link" href="index.html">目录</a><button id="prevBtn">◀</button><span class="counter" id="counter"></span><button id="nextBtn">▶</button></div>
     <script>
     const slidesData = [
-        { html: `<div class="lesson-num">安卓逆向 · 第试</div><h1>Smali 基础</h1><div class="sub">安卓的汇编语言 —— 从语法到实战</div>`, cls: 'slide slide-title active' },
-
-        { html: `<h2>什么是 Smali</h2><p>Smali 是 <strong>Android Dalvik/ART 虚拟机</strong>的汇编语言。你反编译 APK 后看到的 .smali 文件，就是机器码的文本表示。</p><div class="highlight-box"><strong>工具链：</strong>apktool 反编译 → 编辑 .smali → apktool 回编译 → jarsigner/apksigner 签名 → 安装</div><p>每一行 Smali 对应一条 Dalvik 指令，没有花括号、没有缩进陷阱——一切都很"机械"。</p>`, cls: 'slide' },
-
-        { html: `<h2>类声明：.class / .super / .source</h2><p>每个 .smali 文件开头声明类信息：</p><pre>.class public Lcom/example/app/MainActivity;
+        { html: `<div class="lesson-num">安卓逆向 · 第试</div><h1>Smali 基础</h1><div class="sub">安卓的汇编语言 — 从语法到实战</div>`, cls: 'slide slide-title active' },
+        { html: `<h2>什么是 Smali</h2><p>Smali 是 <strong>Dalvik/ART 虚拟机</strong>的汇编语言。你反编译 APK 后看到的 .smali 文件，就是字节码的文本表示。</p><div class="highlight-box"><strong>工具链：</strong>apktool 反编译 → 编辑 .smali → apktool 回编译 → jarsigner 签名 → 安装</div><p>每一行 Smali 对应一条 Dalvik 指令，没有花括号、没有缩进陷阱——一切都很"机械"。</p>`, cls: 'slide' },
+        { html: `<h2>类声明</h2><p>每个 .smali 文件开头声明类信息：</p><pre>.class public Lcom/example/app/MainActivity;
 .super Landroid/app/Activity;
-.source "MainActivity.java"</pre><ul><li><code>.class</code> → 类的完整路径，<code>L</code> 开头 + <code>;</code> 结尾</li><li><code>.super</code> → 父类（继承关系）</li><li><code>.source</code> → 原始 Java 文件名（可选）</li></ul><div class="tip-box"><strong>记住：</strong><code>L</code> 表示这是一个对象类型，<code>[</code> 表示数组。例如 <code>[I</code> = int[]，<code>[Ljava/lang/String;</code> = String[]</div>`, cls: 'slide' },
+.source "MainActivity.java"
 
-        { html: `<h2>字段（成员变量）</h2><p>声明字段用 <code>.field</code>：</p><pre>.field private name:Ljava/lang/String;
+# .class = 类的完整路径，L 开头 + ; 结尾
+# .super = 父类（继承关系）
+# .source = 原始 Java 文件名（可选）</pre><div class="tip-box"><strong>记住：</strong><code>L</code> 表示对象类型，<code>[</code> 表示数组。例如 <code>[I</code> = int[]，<code>[Ljava/lang/String;</code> = String[]</div>`, cls: 'slide' },
+        { html: `<h2>类型签名对照表</h2><pre># 基本类型
+I = int        F = float      Z = boolean    B = byte
+J = long       D = double     C = char       S = short
+V = void（仅用于方法返回值）
+
+# 对象类型
+Ljava/lang/String;       → String
+Landroid/content/Context; → Context
+
+# 数组
+[I              → int[]
+[Ljava/lang/String; → String[]
+[[I             → int[][]（二维数组）
+
+# 方法签名
+(参数列表)返回值类型
+(Ljava/lang/String;I)Z → 接收 String 和 int，返回 boolean
+()V                     → 无参数无返回值</pre>`, cls: 'slide' },
+        { html: `<h2>字段（成员变量）</h2><pre># 声明字段
+.field private name:Ljava/lang/String;
 .field public count:I
-.field static sInstance:Lcom/example/App;</pre><p>格式：<code>.field [修饰符] 字段名:类型签名</code></p><p><strong>类型签名对照表：</strong></p><ul><li><code>I</code> = int &nbsp; <code>F</code> = float &nbsp; <code>Z</code> = boolean &nbsp; <code>B</code> = byte</li><li><code>J</code> = long &nbsp; <code>D</code> = double &nbsp; <code>C</code> = char &nbsp; <code>S</code> = short</li><li><code>V</code> = void（仅用于方法返回值）</li><li><code>Lfully/qualified/Name;</code> = 对象类型</li></ul>`, cls: 'slide' },
+.field static sInstance:Lcom/example/App;
 
-        { html: `<h2>寄存器模型</h2><p>Smali 使用 <strong>虚拟寄存器</strong>，不是真 CPU 寄存器。每个方法有自己的寄存器空间。</p><pre>.locals 2    # 本地寄存器数量（v0, v1）
-.param p1    # 第1个参数（非 static 方法 p0 = this）
-.param p2    # 第2个参数</pre><div class="highlight-box"><strong>关键规则：</strong><br><code>v0, v1, v2...</code> → 本地寄存器，方法内部随便用<br><code>p0, p1, p2...</code> → 参数寄存器，p0 永远是 this（非 static 方法）</div><p><code>.registers N</code> = 本地 + 参数的总数。例如 <code>.locals 2</code> + 2个参数 = <code>.registers 4</code></p>`, cls: 'slide' },
+# 格式：.field [修饰符] 字段名:类型签名
 
-        { html: `<h2>方法声明</h2><p>每个方法（函数）的格式：</p><pre>.method public onClick(Landroid/view/View;)V
-    .locals 2
-    # ... 方法体 ...
-.end method</pre><p>格式：<code>.method [修饰符] 方法名(参数列表)返回值类型</code></p><div class="tip-box"><strong>返回值类型：</strong><code>V</code> = void，其他同字段签名。<br><strong>参数类型：</strong>连续写，无分隔。例如 <code>(Landroid/content/Context;Ljava/lang/String;I)Z</code> 表示接收 Context、String、int，返回 boolean。</div><p>无参数方法：<code>()V</code> 或 <code>()Z</code>（无参返回 boolean）</p>`, cls: 'slide' },
+# 访问字段
+iget v0, p0, Lcom/Foo;->count:I          # 读取字段
+iput v0, p0, Lcom/Foo;->count:I          # 写入字段
+iget-object v0, p0, Lcom/Foo;->name:Ljava/lang/String;  # 读取对象字段
+iput-object v0, p0, Lcom/Foo;->name:Ljava/lang/String;  # 写入对象字段</pre>`, cls: 'slide' },
+        { html: `<h2>寄存器模型</h2><p>Smali 使用<strong>虚拟寄存器</strong>，每个方法有自己的寄存器空间：</p><pre>.method public onClick(Landroid/view/View;)V
+    .locals 2        # 本地寄存器数量（v0, v1）
+    .param p1        # 第1个参数（非 static 方法 p0 = this）
+    .param p2        # 第2个参数
+    # ...
+.end method</pre><div class="highlight-box"><strong>关键规则：</strong><br><code>v0, v1, v2...</code> → 本地寄存器，方法内部随便用<br><code>p0, p1, p2...</code> → 参数寄存器，p0 永远是 this（非 static 方法）<br><code>.registers N</code> = 本地 + 参数的总数</div>`, cls: 'slide' },
+        { html: `<h2>方法声明</h2><pre># 格式：.method [修饰符] 方法名(参数列表)返回值类型
 
-        { html: `<h2>常用指令速查</h2><pre># 赋值
-const/4 v0, 0x1        # v0 = 1
-const-string v0, "hi"  # v0 = "hi"
+.method public onClick(Landroid/view/View;)V
+    # 接收 View 参数，无返回值（V = void）
+.end method
 
-# 数学
-add-int v0, v1, v2     # v0 = v1 + v2
-mul-int/2addr v0, v1   # v0 = v0 * v1
-neg-int v0, v1         # v0 = -v1
+.method public checkPassword(Ljava/lang/String;Ljava/lang/String;)Z
+    # 接收两个 String，返回 boolean（Z = boolean）
+.end method
+
+.method public static getVersion()Ljava/lang/String;
+    # 静态方法，无参数，返回 String
+.end method</pre><div class="tip-box">无参数方法：<code>()V</code> 或 <code>()Z</code>（无参返回 boolean）</div>`, cls: 'slide' },
+        { html: `<h2>赋值指令</h2><pre># 常量赋值
+const/4 v0, 0x1           # v0 = 1（4位常量，-8~7）
+const/16 v0, 0x100        # v0 = 256（16位常量）
+const v0, 0x12345678      # v0 = 大常量（32位）
+const-string v0, "hello"  # v0 = 字符串引用
+
+# 寄存器间赋值
+move v0, v1               # v0 = v1
+move-object v0, v1        # v0 = v1（对象引用）
+
+# 方法返回值
+move-result v0            # 获取上一个方法调用的返回值
+move-result-object v0     # 获取对象类型的返回值
+
+# 数组操作
+const/4 v0, 0x3
+new-array v0, v0, [I      # 创建 int[3]
+aput v1, v0, v2           # arr[v2] = v1
+aget v1, v0, v2           # v1 = arr[v2]</pre>`, cls: 'slide' },
+        { html: `<h2>数学运算</h2><pre># 二元运算
+add-int v0, v1, v2        # v0 = v1 + v2
+sub-int v0, v1, v2        # v0 = v1 - v2
+mul-int v0, v1, v2        # v0 = v1 * v2
+div-int v0, v1, v2        # v0 = v1 / v2
+rem-int v0, v1, v2        # v0 = v1 % v2
+
+# 一元运算
+neg-int v0, v1            # v0 = -v1
+
+# 地址运算（修改自身寄存器）
+add-int/2addr v0, v1      # v0 = v0 + v1
+mul-int/2addr v0, v1      # v0 = v0 * v1
 
 # 比较
-if-lt p1, v0, :fail    # if (p1 < v0) goto :fail
-if-eqz v0, :zero       # if (v0 == 0) goto :zero
+cmpg-float v0, v1, v2     # v0 = (v1 > v2) ? 1 : (v1 < v2) ? -1 : 0
+cmpl-double v0, v1, v2    # 同上，处理 NaN</pre>`, cls: 'slide' },
+        { html: `<h2>条件跳转</h2><pre># if 语句
+if-eq v0, v1, :label      # if (v0 == v1) goto :label
+if-ne v0, v1, :label      # if (v0 != v1) goto :label
+if-lt v0, v1, :label      # if (v0 < v1) goto :label
+if-ge v0, v1, :label      # if (v0 >= v1) goto :label
+if-gt v0, v1, :label      # if (v0 > v1) goto :label
+if-le v0, v1, :label      # if (v0 <= v1) goto :label
 
-# 跳转
-goto :label             # 无条件跳转
-:label                 # 标签（跳转目标）
+# 零值判断（更常用）
+if-eqz v0, :label         # if (v0 == 0) goto :label
+if-nez v0, :label         # if (v0 != 0) goto :label
+if-ltz v0, :label         # if (v0 < 0) goto :label
 
-# 方法调用
-invoke-virtual {}, Landroid/widget/Toast;->show()V
-invoke-static {}, Lcom/Util;->getVersion()Ljava/lang/String;
-invoke-direct {p0}, Lcom/Foo;->init()V</pre>`, cls: 'slide' },
+# goto
+goto :label                # 无条件跳转
 
-        { html: `<h2>方法调用：四种 invoke</h2><ul><li><strong>invoke-virtual</strong> → 普通虚方法调用（最常用）</li><li><strong>invoke-static</strong> → 静态方法调用</li><li><strong>invoke-direct</strong> → 构造函数、private 方法、super 调用</li><li><strong>invoke-interface</strong> → 接口方法调用</li></ul><pre># 传参：花括号里放寄存器，顺序与参数列表对应
-invoke-virtual {p0, p1, v0}, Lcom/Foo;->send(Ljava/lang/String;I)V
-#                        ^      ^  ^
-#                     this  param1 param2</pre><div class="highlight-box"><strong>move-result</strong>：调用有返回值的方法后，用 <code>move-result v0</code> 获取结果。</div>`, cls: 'slide' },
+# 标签
+:label
+    # 跳转目标</pre>`, cls: 'slide' },
+        { html: `<h2>方法调用：四种 invoke</h2><pre># invoke-virtual — 普通虚方法调用（最常用）
+invoke-virtual {p0, p1}, Lcom/Foo;->send(Ljava/lang/String;)V
 
+# invoke-static — 静态方法调用
+invoke-static {}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
+
+# invoke-direct — 构造函数、private 方法、super 调用
+invoke-direct {p0}, Lcom/Foo;->init()V
+
+# invoke-interface — 接口方法调用
+invoke-interface {v0}, Ljava/util/List;->size()I
+
+# 传参：花括号里放寄存器，顺序与参数列表对应
+# invoke-virtual {this, param1, param2}, Lcom/Foo;->method(Ljava/lang/String;I)V</pre><div class="highlight-box"><strong>move-result：</strong>调用有返回值的方法后，用 <code>move-result v0</code> 获取结果。</div>`, cls: 'slide' },
         { html: `<h2>实战：修改方法返回值</h2><p>场景：绕过 <code>isPaid()</code> 付费检测</p><pre># 原始 Smali
 invoke-virtual {p0}, Lcom/app/Checker;->isPaid()Z
 move-result v0
 if-eqz v0, :not_paid   # if (!isPaid) goto not_paid
 :paid
     # 正常逻辑...
-goto :end
+    goto :end
 :not_paid
     # 显示"请付费"...
-:end</pre><p><strong>改法一：</strong>把 <code>if-eqz</code> 改成 <code>if-nez</code>（条件反转）</p><p><strong>改法二：</strong>直接在 <code>move-result</code> 后加 <code>const/4 v0, 0x1</code>（强制返回 true）</p><div class="tip-box">改完后：apktool b → jarsigner 签名 → 安装测试</div>`, cls: 'slide' },
-
-        { html: `<h2>实战：跳过登录验证</h2><p>场景：登录函数里找到验证逻辑</p><pre>.method public checkLogin(Ljava/lang/String;Ljava/lang/String;)Z
+:end</pre><p><strong>改法一：</strong>把 <code>if-eqz</code> 改成 <code>if-nez</code>（条件反转）</p><p><strong>改法二：</strong>在 <code>move-result v0</code> 后加 <code>const/4 v0, 0x1</code>（强制返回 true）</p><div class="tip-box">改完后：apktool b → jarsigner 签名 → 安装测试</div>`, cls: 'slide' },
+        { html: `<h2>实战：跳过登录验证</h2><pre>.method public checkLogin(Ljava/lang/String;Ljava/lang/String;)Z
     .locals 3
     invoke-virtual {p1}, Lcom/app/Validator;->check(Ljava/lang/String;)Z
     move-result v0
@@ -106,32 +179,49 @@ goto :end
     const/4 v0, 0x0        # return false
     return v0
 .end method</pre><p><strong>改法：</strong>删掉 invoke + if-eqz，直接写：</p><pre>    const/4 v0, 0x1
-    return v0</pre><div class="highlight-box">原理：让方法永远返回 true，跳过真实验证</div>`, cls: 'slide' },
+    return v0</pre><div class="highlight-box">原理：让方法永远返回 true，跳过真实验证。</div>`, cls: 'slide' },
+        { html: `<h2>实战：修改字符串</h2><pre># 找到字符串位置
+const-string v0, "https://old-server.com/api"
 
-        { html: `<h2>实用技巧与工具</h2><ul><li><strong>smali 语法搜索：</strong>JADX 反编译后搜关键字符串（如 "isPaid"、"password"）</li><li><strong>JEB Decompiler：</strong>付费工具，反编译质量更高，支持交叉引用</li><li><strong>Frida hook：</strong>动态验证你的修改是否生效</li></ul><div class="highlight-box"><strong>调试流程：</strong><br>1. 反编译找目标方法（grep 关键字符串）<br>2. 定位关键 if/return<br>3. 修改逻辑<br>4. 回编译 + 签名<br>5. 安装测试<br>6. 用 Frida 验证运行时行为</div><div class="tip-box">常见陷阱：方法参数数量变多了要同步改 <code>.registers</code>，否则运行时 crash。</div>`, cls: 'slide' }
+# 修改为新地址
+const-string v0, "https://new-server.com/api"
+
+# 或者修改提示文字
+const-string v0, "请付费"
+# 改成
+const-string v0, "已解锁"</pre><div class="tip-box"><strong>注意：</strong>修改字符串时，新字符串的字节长度不能超过原字符串（否则可能溢出）。如果需要更长的字符串，需要重新分配寄存器。</div>`, cls: 'slide' },
+        { html: `<h2>实战：修改 Smali 完整流程</h2><pre># 1. 反编译
+apktool d app.apk -o output/
+
+# 2. 用文本编辑器打开目标 smali 文件
+# 搜索关键词（如 "isPaid"）
+
+# 3. 修改逻辑
+# 找到关键 if/return，修改跳转或返回值
+
+# 4. 检查 .registers 数量
+# 如果添加了新指令，可能需要增加寄存器数量
+
+# 5. 回编译
+apktool b output/ -o modified.apk
+
+# 6. 签名
+jarsigner -keystore my.keystore -storepass 123456 modified.apk mykey
+
+# 7. 安装测试
+adb install modified.apk</pre>`, cls: 'slide' },
+        { html: `<h2>常见陷阱</h2><ul><li><strong>寄存器数量不够</strong> — 添加指令后 <code>.registers</code> 要同步增加</li><li><strong>类型不匹配</strong> — move-object 只能用于对象，move 只能用于基本类型</li><li><strong>方法签名写错</strong> — 参数类型和顺序必须完全匹配</li><li><strong>标签跳转越界</strong> — goto 跳出方法范围会 crash</li><li><strong>缺少 return</strong> — 方法必须有 return 语句</li></ul><div class="tip-box"><strong>调试技巧：</strong>用 <code>adb logcat</code> 看崩溃堆栈，定位到具体哪一行 Smali 出了问题。</div>`, cls: 'slide' },
+        { html: `<h2>总结</h2><ul><li>Smali = 安卓虚拟机汇编，每行对应一条指令</li><li>类型签名：I=int, Z=boolean, L...;=对象, [=数组</li><li>寄存器：v0-v1 本地，p0=this，p1+ 参数</li><li>四种 invoke：virtual/static/direct/interface</li><li>修改核心：找到 if/return，改跳转或返回值</li><li>改完必须 apktool b + 签名才能安装</li></ul>`, cls: 'slide' }
     ];
     let current = 0;
     const container = document.getElementById('slideContainer');
     const counter = document.getElementById('counter');
-
-    function goTo(n) {
-        current = (n + slidesData.length) % slidesData.length;
-        container.className = slidesData[current].cls;
-        container.innerHTML = slidesData[current].html;
-        counter.textContent = (current + 1) + ' / ' + slidesData.length;
-    }
+    function goTo(n) { current = (n + slidesData.length) % slidesData.length; container.className = slidesData[current].cls; container.innerHTML = slidesData[current].html; counter.textContent = (current + 1) + ' / ' + slidesData.length; }
     goTo(0);
-
     document.getElementById('prevBtn').addEventListener('click', () => goTo(current - 1));
     document.getElementById('nextBtn').addEventListener('click', () => goTo(current + 1));
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); goTo(current + 1); }
-        if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); goTo(current - 1); }
-    });
-    document.getElementById('presentation').addEventListener('click', (e) => {
-        if (e.target.closest('.nav-bar') || e.target.closest('.slide-inner')) return;
-        goTo(current + 1);
-    });
+    document.addEventListener('keydown', (e) => { if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); goTo(current + 1); } if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); goTo(current - 1); } });
+    document.getElementById('presentation').addEventListener('click', (e) => { if (e.target.closest('.nav-bar') || e.target.closest('.slide-inner')) return; goTo(current + 1); });
     </script>
 </body>
 </html>

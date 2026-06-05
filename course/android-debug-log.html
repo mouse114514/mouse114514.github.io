@@ -11,7 +11,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',s
 .slide-title .lesson-num{font-size:14px;color:rgba(255,255,255,.25);margin-bottom:18px;letter-spacing:3px}
 .slide h2{font-size:clamp(22px,3vw,32px);font-weight:700;color:#4da8ff;margin-bottom:18px;border-bottom:1px solid rgba(77,168,255,.15);padding-bottom:10px}
 .slide p{font-size:17px;line-height:1.8;margin-bottom:12px;color:rgba(255,255,255,.85)}
-.slide ul{margin:8px 0 12px 20px}
+.slide ul,.slide ol{margin:8px 0 12px 20px}
 .slide li{font-size:16px;line-height:1.7;margin-bottom:5px;color:rgba(255,255,255,.8)}
 .slide li strong{color:#b0e0ff}
 .slide .highlight-box{background:rgba(77,168,255,.08);border-left:4px solid #4da8ff;padding:16px 20px;border-radius:0 12px 12px 0;margin:14px 0;font-size:15px}
@@ -26,43 +26,50 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',s
 .nav-bar .back-link:hover{color:#fff;background:rgba(255,255,255,.06)}
 @media(max-width:640px){.slide-inner{padding:24px 16px;max-height:90vh}.slide p{font-size:15px}.slide li{font-size:14px}.slide h2{font-size:20px}.slide-title h1{font-size:28px}.nav-bar{padding:8px 12px;gap:8px;bottom:14px}.slide-inner::-webkit-scrollbar{width:3px}}
     </style></head>
-
 <body>
-    <div class="presentation" id="presentation">
-        <div class="slide slide-title" id="slideContainer"></div>
-    </div>
-
-    <div class="nav-bar"><a class="back-link" href="index.html">目录</a><button id="prevBtn">◀</button><span class="counter" id="counter">1 / 7</span><button id="nextBtn">▶</button></div>
-
+    <div class="presentation" id="presentation"><div class="slide slide-title" id="slideContainer"></div></div>
+    <div class="nav-bar"><a class="back-link" href="index.html">目录</a><button id="prevBtn">◀</button><span class="counter" id="counter"></span><button id="nextBtn">▶</button></div>
     <script>
     const slidesData = [
         { html: `<div class="lesson-num">安卓逆向 · 第试</div><h1>日志分析与调试</h1><div class="sub">看日志找线索</div>`, cls: 'slide slide-title active' },
-
         { html: `<h2>logcat 是什么</h2><p>安卓系统的日志系统，所有 App 的输出都会打到 logcat 里：</p><pre>adb logcat              # 实时看所有日志（非常多）
 adb logcat -s "MyTag"   # 只显示指定 TAG
 adb logcat *:E           # 只看 Error 及以上
-adb logcat -c            # 清空日志缓冲区</pre><p>日志等级：<code>V</code>(详细) &lt; <code>D</code>(调试) &lt; <code>I</code>(信息) &lt; <code>W</code>(警告) &lt; <code>E</code>(错误) &lt; <code>F</code>(致命)</p><div class="highlight-box">逆向时重点关注 <strong>E</strong> 和 <strong>F</strong> 级别，往往是崩溃线索。</div>`, cls: 'slide' },
-
+adb logcat -c            # 清空日志缓冲区</pre><p>日志等级从低到高：<code>V</code>(Verbose) → <code>D</code>(Debug) → <code>I</code>(Info) → <code>W</code>(Warn) → <code>E</code>(Error) → <code>F</code>(Fatal)</p><div class="highlight-box">逆向时重点关注 <strong>E</strong> 和 <strong>F</strong> 级别，往往是崩溃线索。</div>`, cls: 'slide' },
         { html: `<h2>过滤日志</h2><pre># Windows 用 findstr
 adb logcat | findstr "关键词"
 
 # Linux/Mac 用 grep
 adb logcat | grep "关键词"
 
-# 按包名过滤
+# 按包名过滤（先找到 PID）
+adb shell pidof com.example.app
+adb logcat --pid=12345
+
+# 或一步到位
 adb logcat --pid=$(adb shell pidof com.example.app)
 
 # 按多个 TAG 过滤
-adb logcat -s "TAG1:*" "TAG2:*" "*:S"</pre><div class="tip-box"><strong>实战流程：</strong>先 <code>adb logcat -c</code> 清空 → 操作 App → 再抓日志。这样只看到你操作产生的日志。</div>`, cls: 'slide' },
+adb logcat -s "TAG1:*" "TAG2:*" "*:S"
 
+# 按时间段
+adb logcat -T "01-01 12:00:00.000"</pre><div class="tip-box"><strong>实战流程：</strong>先 <code>adb logcat -c</code> 清空 → 操作 App → 再抓日志。只看到你操作产生的日志。</div>`, cls: 'slide' },
+        { html: `<h2>日志格式解析</h2><pre># 典型日志格式
+06-15 14:30:25.123  1234  5678 E MyApp: Login failed: invalid password
+│           │         │     │    │ │       └─ 日志内容
+│           │         │     │    │ └─ TAG
+│           │         │     │    └─ 日志等级
+│           │         │     └─ 线程 ID
+│           │         └─ 进程 ID
+│           └─ 时间
+└─ 日期</pre><ul><li>PID（进程 ID）→ 确认是目标 App</li><li>TAG → App 自己定义的标签，用于过滤</li><li>等级 → E/W 是重点</li></ul>`, cls: 'slide' },
         { html: `<h2>从崩溃堆栈反推代码</h2><pre>FATAL EXCEPTION: main
 Process: com.example.app, PID: 12345
 java.lang.NullPointerException: Attempt to invoke virtual method
     'boolean java.lang.String.equals(java.lang.Object)' on a null reference
     at com.example.app.LoginActivity.checkPassword(LoginActivity.java:42)
     at com.example.app.LoginActivity.onClick(LoginActivity.java:28)
-    at android.view.View.performClick(View.java:7448)</pre><p><strong>分析：</strong></p><ul><li><code>LoginActivity.java:42</code> → 第 42 行空指针</li><li>用 jadx 打开这个类，找到第 42 行</li><li>看到是 <code>pwd.equals(target)</code> → pwd 是 null</li></ul>`, cls: 'slide' },
-
+    at android.view.View.performClick(View.java:7448)</pre><p><strong>分析步骤：</strong></p><ol><li>找到出错的类和行号：<code>LoginActivity.java:42</code></li><li>用 jadx 打开这个类</li><li>找到第 42 行代码</li><li>看到是 <code>pwd.equals(target)</code> → pwd 是 null</li><li>追踪 pwd 的来源 → 找到赋值逻辑</li></ol>`, cls: 'slide' },
         { html: `<h2>在 Smali 中插入日志</h2><pre># 在关键方法入口加日志
 .method public checkPassword(Ljava/lang/String;)Z
     .locals 3
@@ -73,40 +80,78 @@ java.lang.NullPointerException: Attempt to invoke virtual method
     # === 插入日志 END ===
 
     # ... 原有代码 ...
-.end method</pre><pre># 过滤查看
-adb logcat -s "MY_DEBUG"</pre><div class="highlight-box">参数寄存器：<code>p1</code> 是第一个参数（String pwd），直接打出来就能看到用户输入了什么。</div>`, cls: 'slide' },
+.end method</pre><pre># 查看日志
+adb logcat -s "MY_DEBUG"
 
-        { html: `<h2>开启 Debug 模式</h2><pre># 解包后修改 AndroidManifest.xml
+# 输出示例：
+# D/MY_DEBUG: mypassword123</pre><div class="highlight-box">参数寄存器：<code>p1</code> 是第一个参数（String pwd），直接打出来就能看到用户输入。</div>`, cls: 'slide' },
+        { html: `<h2>高级日志插入</h2><pre># 打印多个值
+const-string v0, "MY_DEBUG"
+new-instance v1, Ljava/lang/StringBuilder;
+invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+const-string v2, "pwd="
+invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+invoke-virtual {v1, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+const-string v2, " type="
+invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+invoke-virtual {v1, p2}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+move-result-object v1
+invoke-static {v0, v1}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I</pre><div class="tip-box">太麻烦？直接用 Frida Hook 打印更方便，不用改 Smali。</div>`, cls: 'slide' },
+        { html: `<h2>开启 Debug 模式</h2><pre># 1. 解包修改 AndroidManifest.xml
 # 找到 application 标签，加上：
 android:debuggable="true"
 
-# 回编译安装后，用 jadx 或 Android Studio 附加调试
-adb shell am start -D -n com.example.app/.MainActivity</pre><div class="tip-box"><strong>注意：</strong>部分 App 检测 <code>isDebuggerConnected()</code> 后会自动退出。需要先用 Frida Hook 掉这个检测。</div>`, cls: 'slide' },
+# 2. 回编译安装
+apktool b output/ -o modified.apk
+jarsigner -keystore debug.keystore modified.apk androiddebugkey
+adb install modified.apk
 
-        { html: `<h2>总结</h2><ul><li><code>adb logcat</code> 看系统日志，过滤器必须学会</li><li>崩溃堆栈直接告诉你哪一行出了什么错</li><li>在 Smali 加 <code>Log.d</code> 主动输出变量值</li><li>开启 debuggable + 断点可以实现动态调试</li><li>日志分析是逆向最基础也是最常用的手段</li></ul>`, cls: 'slide' }
+# 3. 用 jadx 附加调试
+# 或 Android Studio → Run → Attach to Process
+
+# 4. 启动等待调试器
+adb shell am start -D -n com.example.app/.MainActivity</pre><div class="tip-box"><strong>注意：</strong>部分 App 检测 <code>isDebuggerConnected()</code> 后会自动退出。需要先用 Frida Hook 掉这个检测。</div>`, cls: 'slide' },
+        { html: `<h2>adb shell 常用命令</h2><pre># 查看已安装包
+adb shell pm list packages | grep example
+
+# 启动 Activity
+adb shell am start -n com.example.app/.MainActivity
+
+# 停止 App
+adb shell am force-stop com.example.app
+
+# 查看 App 数据目录
+adb shell ls /data/data/com.example.app/
+
+# 查看 SharedPreference
+adb shell cat /data/data/com.example.app/shared_prefs/*.xml
+
+# 查看数据库
+adb shell sqlite3 /data/data/com.example.app/databases/app.db "SELECT * FROM users;"</pre>`, cls: 'slide' },
+        { html: `<h2>使用 Android Studio 调试</h2><ul><li>打开 jadx 导出的项目（File → Open）</li><li>设置断点（点击行号左边）</li><li>Run → Attach to Process → 选择目标进程</li><li>触发断点后可以看变量值、调用栈</li></ul><div class="highlight-box"><strong>优势：</strong>比看 Smali 日志直观得多，可以直接看变量的值、修改变量、单步执行。</div><p><strong>限制：</strong>需要 App 开启 debuggable，且混淆后的代码可读性差。</p>`, cls: 'slide' },
+        { html: `<h2>Frida 动态日志</h2><pre>// 比 Smali 插日志更方便
+Java.perform(function() {
+    var Activity = Java.use("com.example.app.LoginActivity");
+    Activity.checkPassword.implementation = function(pwd) {
+        console.log("[*] checkPassword called, pwd=" + pwd);
+        var result = this.checkPassword(pwd);
+        console.log("[*] checkPassword returned: " + result);
+        return result;
+    };
+});</pre><ul><li>不需要重打包，立即生效</li><li>可以打印任意 Java 对象</li><li>支持 Hook Native 函数</li><li>详见 Frida 入门课程</li></ul>`, cls: 'slide' },
+        { html: `<h2>日志分析实战技巧</h2><ul><li><strong>先清空再抓</strong> — <code>adb logcat -c</code> 减少噪音</li><li><strong>按 PID 过滤</strong> — 只看目标 App 的日志</li><li><strong>关注异常</strong> — <code>E</code>/<code>F</code> 级别是崩溃线索</li><li><strong>堆栈追踪</strong> — 从崩溃堆栈找到出错的类和行号</li><li><strong>主动输出</strong> — 在 Smali 加 Log.d 打印变量值</li><li><strong>组合使用</strong> — logcat + jadx + Frida 三管齐下</li></ul>`, cls: 'slide' },
+        { html: `<h2>总结</h2><ul><li><code>adb logcat</code> 看系统日志，过滤器必须学会</li><li>崩溃堆栈直接告诉你哪一行出了什么错</li><li>在 Smali 加 <code>Log.d</code> 主动输出变量值</li><li>开启 debuggable + 断点可以动态调试</li><li>Frida Hook 比 Smali 插日志更方便</li><li>日志分析是逆向最基础也是最常用的手段</li></ul>`, cls: 'slide' }
     ];
     let current = 0;
     const container = document.getElementById('slideContainer');
     const counter = document.getElementById('counter');
-
-    function goTo(n) {
-        current = (n + slidesData.length) % slidesData.length;
-        container.className = slidesData[current].cls;
-        container.innerHTML = slidesData[current].html;
-        counter.textContent = (current + 1) + ' / ' + slidesData.length;
-    }
+    function goTo(n) { current = (n + slidesData.length) % slidesData.length; container.className = slidesData[current].cls; container.innerHTML = slidesData[current].html; counter.textContent = (current + 1) + ' / ' + slidesData.length; }
     goTo(0);
-
     document.getElementById('prevBtn').addEventListener('click', () => goTo(current - 1));
     document.getElementById('nextBtn').addEventListener('click', () => goTo(current + 1));
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); goTo(current + 1); }
-        if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); goTo(current - 1); }
-    });
-    document.getElementById('presentation').addEventListener('click', (e) => {
-        if (e.target.closest('.nav-bar') || e.target.closest('.slide-inner')) return;
-        goTo(current + 1);
-    });
+    document.addEventListener('keydown', (e) => { if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); goTo(current + 1); } if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); goTo(current - 1); } });
+    document.getElementById('presentation').addEventListener('click', (e) => { if (e.target.closest('.nav-bar') || e.target.closest('.slide-inner')) return; goTo(current + 1); });
     </script>
 </body>
 </html>

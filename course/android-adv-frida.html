@@ -11,7 +11,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',s
 .slide-title .lesson-num{font-size:14px;color:rgba(255,255,255,.25);margin-bottom:18px;letter-spacing:3px}
 .slide h2{font-size:clamp(22px,3vw,32px);font-weight:700;color:#ffb432;margin-bottom:18px;border-bottom:1px solid rgba(255,180,50,.15);padding-bottom:10px}
 .slide p{font-size:17px;line-height:1.8;margin-bottom:12px;color:rgba(255,255,255,.85)}
-.slide ul{margin:8px 0 12px 20px}
+.slide ul,.slide ol{margin:8px 0 12px 20px}
 .slide li{font-size:16px;line-height:1.7;margin-bottom:5px;color:rgba(255,255,255,.8)}
 .slide li strong{color:#ffd580}
 .slide .highlight-box{background:rgba(255,180,50,.08);border-left:4px solid #ffb432;padding:16px 20px;border-radius:0 12px 12px 0;margin:14px 0;font-size:15px}
@@ -26,33 +26,43 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',s
 .nav-bar .back-link:hover{color:#fff;background:rgba(255,255,255,.06)}
 @media(max-width:640px){.slide-inner{padding:24px 16px;max-height:90vh}.slide p{font-size:15px}.slide li{font-size:14px}.slide h2{font-size:20px}.slide-title h1{font-size:28px}.nav-bar{padding:8px 12px;gap:8px;bottom:14px}.slide-inner::-webkit-scrollbar{width:3px}}
     </style></head>
-
 <body>
-    <div class="presentation" id="presentation">
-        <div class="slide slide-title" id="slideContainer"></div>
-    </div>
-
-    <div class="nav-bar"><a class="back-link" href="index.html">目录</a><button id="prevBtn">◀</button><span class="counter" id="counter">1 / 10</span><button id="nextBtn">▶</button></div>
-
+    <div class="presentation" id="presentation"><div class="slide slide-title" id="slideContainer"></div></div>
+    <div class="nav-bar"><a class="back-link" href="index.html">目录</a><button id="prevBtn">◀</button><span class="counter" id="counter"></span><button id="nextBtn">▶</button></div>
     <script>
     const slidesData = [
         { html: `<div class="lesson-num">安卓逆向 · 进阶第试</div><h1>Frida 入门</h1><div class="sub">动态插桩：不用重打包，运行时改行为</div>`, cls: 'slide slide-title active' },
-
-        { html: `<h2>Frida 是什么</h2><p>Frida 是一个<strong>动态插桩框架</strong>——不用反编译重打包，直接在 App 运行时注入 JS 脚本，修改任意 Java/Native 方法的行为。</p><div class="highlight-box"><strong>核心原理：</strong>Frida 在手机上跑一个服务端（frida-server），PC 通过 USB 连接，注入 JavaScript 到目标进程的内存空间执行。</div><p><strong>能做什么：</strong>改返回值、打印参数、调用任意方法、Hook Native 函数、绕过 Root 检测……</p>`, cls: 'slide' },
-
-        { html: `<h2>安装与启动</h2><pre># PC 端
+        { html: `<h2>Frida 是什么</h2><p>Frida 是一个<strong>动态插桩框架</strong>——不用反编译重打包，直接在 App 运行时注入 JS 脚本，修改任意 Java/Native 方法的行为。</p><div class="highlight-box"><strong>核心原理：</strong>Frida 在手机上跑一个服务端（frida-server），PC 通过 USB 连接，注入 JavaScript 到目标进程的内存空间执行。</div><p><strong>能做什么：</strong>改返回值、打印参数、调用任意方法、Hook Native 函数、绕过 Root 检测、绕过 SSL Pinning……</p>`, cls: 'slide' },
+        { html: `<h2>安装 frida-server</h2><pre># PC 端
 pip install frida-tools
 
-# 手机端（已 Root）
-# 1. 下载对应架构的 frida-server
-#    https://github.com/frida/frida/releases
-adb push frida-server-16.x.x-android-arm64 /data/local/tmp/fs
+# 手机端（需要 Root）
+# 1. 查看手机架构
+adb shell getprop ro.product.cpu.abi
+# 输出：arm64-v8a → 下载 arm64 版本
+
+# 2. 下载 frida-server
+# https://github.com/frida/frida/releases
+# 找 frida-server-xx.x.x-android-arm64.xz
+
+# 3. 推送到手机
+adb push frida-server /data/local/tmp/fs
 adb shell chmod 755 /data/local/tmp/fs
 adb shell /data/local/tmp/fs &
 
-# 验证连接
-frida-ps -U</pre><div class="tip-box"><strong>未 Root？</strong>用 frida-gadget 注入方式，把 frida-gadget.so 塞进 APK 的 lib/ 目录，重打包签名后启动即可，不需要 frida-server。</div>`, cls: 'slide' },
+# 4. 验证
+frida-ps -U</pre>`, cls: 'slide' },
+        { html: `<h2>未 Root 的替代方案</h2><p>用 <strong>frida-gadget</strong> 注入方式，不需要 frida-server：</p><pre># 1. 下载 frida-gadget.so（对应架构）
+# 2. 解压 APK，把 gadget.so 放到 lib/arm64-v8a/
 
+# 3. 修改 smali，在 Application.onCreate() 里加载：
+const-string v0, "frida-gadget"
+invoke-static {v0}, Ljava/lang/System;->loadLibrary(Ljava/lang/String;)V
+
+# 4. 重打包签名安装
+# 5. 启动 App 时会弹出端口选择框，选 Listen on localhost:27042
+# 6. PC 端连接
+frida -U Gadget -l script.js</pre><div class="tip-box">适合没有 Root 的设备，但需要重打包一次。</div>`, cls: 'slide' },
         { html: `<h2>第一个 Hook 脚本</h2><pre>// hook.js
 Java.perform(function() {
     // 获取目标类
@@ -64,8 +74,10 @@ Java.perform(function() {
         return true;  // 无论原逻辑是什么，都返回 true
     };
 });</pre><pre># 运行
-frida -U com.example.app -l hook.js</pre><div class="highlight-box"><strong>流程：</strong>Java.perform 确保在 Java VM 就绪后执行 → Java.use 获取类引用 → implementation = 替换方法体</div>`, cls: 'slide' },
+frida -U com.example.app -l hook.js
 
+# 输出
+[*] isPaid() called, forcing true</pre><div class="highlight-box"><strong>流程：</strong>Java.perform 确保在 Java VM 就绪后执行 → Java.use 获取类引用 → implementation = 替换方法体</div>`, cls: 'slide' },
         { html: `<h2>Hook 带参数的方法</h2><pre>var Checker = Java.use("com.example.Checker");
 
 // 同名方法可能有多个签名，用 overload 指定参数类型
@@ -82,7 +94,6 @@ Checker.verify.overload("java.lang.String", "int").implementation = function(pwd
     }
     return result;
 };</pre><div class="tip-box">不知道参数类型？用 <code>Checker.verify.overloads</code> 列出所有重载签名。</div>`, cls: 'slide' },
-
         { html: `<h2>常用 API 速查</h2><pre># 获取类
 var Cls = Java.use("com.example.Foo");
 
@@ -103,26 +114,37 @@ var obj = Cls.$new("arg1", 123);
 
 # 获取/设置字段
 var val = obj.fieldName.value;
-obj.fieldName.value = "new value";</pre>`, cls: 'slide' },
+obj.fieldName.value = "new value";
 
+# 打印 Java 对象
+console.log(obj.toString());</pre>`, cls: 'slide' },
         { html: `<h2>实战：绕过 SSL Pinning</h2><pre>// bypass_ssl.js
 Java.perform(function() {
+    // 绕过系统级证书验证
     var TrustManagerImpl = Java.use("com.android.org.conscrypt.TrustManagerImpl");
     TrustManagerImpl.verifyChain.implementation = function() {
         console.log("[*] SSL pinning bypassed");
         return arguments[0];  // 直接返回证书链，不验证
     };
 
-    // 也绕过 OkHttp 的 CertificatePinner
+    // 绕过 OkHttp CertificatePinner
     try {
         var CertPinner = Java.use("okhttp3.CertificatePinner");
         CertPinner.check.overload("java.lang.String", "java.util.List").implementation = function() {
             console.log("[*] OkHttp pinning bypassed");
         };
     } catch(e) {}
-});</pre><pre>frida -U -f com.example.app -l bypass_ssl.js --no-pause</pre>`, cls: 'slide' },
 
-        { html: `<h2>实战：打印所有 Log</h2><pre>// logcat_hook.js
+    // 绕过 WebViewClient 证书验证
+    try {
+        var WebViewClient = Java.use("android.webkit.WebViewClient");
+        WebViewClient.onReceivedSslError.implementation = function(view, handler, error) {
+            console.log("[*] WebView SSL bypassed");
+            handler.proceed();
+        };
+    } catch(e) {}
+});</pre>`, cls: 'slide' },
+        { html: `<h2>实战：Hook 所有 Log 输出</h2><pre>// log_hook.js
 Java.perform(function() {
     var Log = Java.use("android.util.Log");
 
@@ -140,8 +162,12 @@ Java.perform(function() {
         console.log("[I] " + tag + ": " + msg);
         return this.i(tag, msg);
     };
-});</pre>`, cls: 'slide' },
 
+    Log.w.overload("java.lang.String", "java.lang.String").implementation = function(tag, msg) {
+        console.log("[W] " + tag + ": " + msg);
+        return this.w(tag, msg);
+    };
+});</pre><div class="highlight-box">可以同时 Hook 多个日志等级，实时看到 App 的所有日志输出。</div>`, cls: 'slide' },
         { html: `<h2>实战：Hook Native 方法</h2><pre>// hook_native.js
 Interceptor.attach(Module.findExportByName("libnative.so", "Java_com_example_NativeLib_check"), {
     onEnter: function(args) {
@@ -153,8 +179,23 @@ Interceptor.attach(Module.findExportByName("libnative.so", "Java_com_example_Nat
         console.log("[*] Native check() returned: " + retval.toInt32());
         retval.replace(1);  // 修改返回值为 1 (true)
     }
-});</pre><div class="highlight-box"><strong>Native Hook 关键：</strong>Module.findExportByName(库名, 函数名) 找到函数地址，Interceptor.attach 挂钩。</div>`, cls: 'slide' },
+});</pre><div class="highlight-box"><strong>Native Hook 关键：</strong><code>Module.findExportByName(库名, 函数名)</code> 找到函数地址，<code>Interceptor.attach</code> 挂钩。</div>`, cls: 'slide' },
+        { html: `<h2>实战：读取 SharedPreferences</h2><pre>// read_sp.js
+Java.perform(function() {
+    var SP = Java.use("android.app.SharedPreferencesImpl");
 
+    SP.getString.overload("java.lang.String", "java.lang.String").implementation = function(key, defValue) {
+        var value = this.getString(key, defValue);
+        console.log("[SP] getString: " + key + " = " + value);
+        return value;
+    };
+
+    // Hook commit/apply 看写入
+    SP.putString.implementation = function(key, value) {
+        console.log("[SP] putString: " + key + " = " + value);
+        return this.putString(key, value);
+    };
+});</pre><div class="tip-box">App 存的 token、登录状态、用户配置都在 SharedPreferences 里。</div>`, cls: 'slide' },
         { html: `<h2>常用命令汇总</h2><pre># 列出设备进程
 frida-ps -U
 frida-ps -Uai   # 只看已安装的 App
@@ -167,30 +208,23 @@ frida -U -f com.example.app -l script.js --no-pause
 
 # REPL 交互模式
 frida -U com.example.app
-# 进入后可以直接写 JS 调用 Java 方法</pre><div class="tip-box"><strong>调试技巧：</strong>REPL 模式下用 <code>Java.perform(function(){ ... })</code> 包裹代码，可以实时测试 Hook 是否生效。</div>`, cls: 'slide' }
+# 进入后可以直接写 JS 调用 Java 方法
+
+# 指定端口（多设备时）
+frida -U -H 192.168.1.100:27042 com.example.app</pre>`, cls: 'slide' },
+        { html: `<h2>Frida vs Smali 修改</h2><ul><li><strong>Frida</strong> → 不用重打包，立即生效，适合快速验证</li><li><strong>Smali</strong> → 修改后持久化，适合做最终版本</li></ul><div class="highlight-box"><strong>推荐流程：</strong><br>1. 先用 Frida 快速测试 Hook 方案<br>2. 确认方案有效后，再改 Smali 做持久化<br>3. 需要 Hook Native 方法时，Frida 是唯一选择</div>`, cls: 'slide' },
+        { html: `<h2>常见问题</h2><ul><li><strong>frida-ps 连不上</strong> → 确认 frida-server 在手机上运行，USB 调试已开启</li><li><strong>Hook 不生效</strong> → 检查类名是否正确（混淆后类名变了）</li><li><strong>App 闪退</strong> → 可能有 Root 检测，先 Hook 掉检测逻辑</li><li><strong>方法重载报错</strong> → 用 <code>overload()</code> 指定参数类型</li></ul>`, cls: 'slide' },
+        { html: `<h2>总结</h2><ul><li>Frida = 动态插桩，JS 脚本控制 App 行为</li><li>frida-server 跑在手机上，frida-tools 跑在 PC</li><li><code>Java.use()</code> 获取类，<code>implementation =</code> 替换方法</li><li><code>overload()</code> 处理同名不同参数的方法</li><li>常用场景：修改返回值、打印参数、绕过验证、Hook Native</li></ul>`, cls: 'slide' }
     ];
     let current = 0;
     const container = document.getElementById('slideContainer');
     const counter = document.getElementById('counter');
-
-    function goTo(n) {
-        current = (n + slidesData.length) % slidesData.length;
-        container.className = slidesData[current].cls;
-        container.innerHTML = slidesData[current].html;
-        counter.textContent = (current + 1) + ' / ' + slidesData.length;
-    }
+    function goTo(n) { current = (n + slidesData.length) % slidesData.length; container.className = slidesData[current].cls; container.innerHTML = slidesData[current].html; counter.textContent = (current + 1) + ' / ' + slidesData.length; }
     goTo(0);
-
     document.getElementById('prevBtn').addEventListener('click', () => goTo(current - 1));
     document.getElementById('nextBtn').addEventListener('click', () => goTo(current + 1));
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); goTo(current + 1); }
-        if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); goTo(current - 1); }
-    });
-    document.getElementById('presentation').addEventListener('click', (e) => {
-        if (e.target.closest('.nav-bar') || e.target.closest('.slide-inner')) return;
-        goTo(current + 1);
-    });
+    document.addEventListener('keydown', (e) => { if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); goTo(current + 1); } if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); goTo(current - 1); } });
+    document.getElementById('presentation').addEventListener('click', (e) => { if (e.target.closest('.nav-bar') || e.target.closest('.slide-inner')) return; goTo(current + 1); });
     </script>
 </body>
 </html>
