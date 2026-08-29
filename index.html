@@ -71,7 +71,8 @@
 
         /* STATS */
         .stats { display: flex; justify-content: center; gap: clamp(32px, 6vw, 72px); padding: 48px 32px 0; opacity: 0; animation: fadeUp 0.8s 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-        .stat { text-align: center; }
+        .stat { text-align: center; cursor: default; transition: transform 0.3s; }
+        .stat:hover { transform: scale(1.05); }
         .stat-num { font-size: clamp(32px, 5vw, 48px); font-weight: 800; letter-spacing: -1px; background: linear-gradient(135deg, var(--blue), #7c3aed); -webkit-background-clip: text; background-clip: text; color: transparent; }
         .stat-label { font-size: 13px; color: var(--gray-400); font-weight: 500; margin-top: 4px; text-transform: uppercase; letter-spacing: 1px; }
 
@@ -85,8 +86,8 @@
         /* FILTER TABS */
         .filter-bar { display: flex; gap: 6px; margin-bottom: 32px; flex-wrap: wrap; }
         .filter-btn { padding: 8px 20px; font-size: 13px; font-weight: 600; border: 1px solid var(--gray-200); border-radius: 100px; background: var(--white); color: var(--gray-500); cursor: pointer; transition: all 0.2s; font-family: inherit; }
-        .filter-btn:hover { border-color: var(--gray-300); color: var(--gray-700); }
-        .filter-btn.active { background: var(--gray-900); color: var(--white); border-color: var(--gray-900); }
+        .filter-btn:hover { border-color: var(--gray-300); color: var(--gray-700); transform: translateY(-1px); }
+        .filter-btn.active { background: var(--gray-900); color: var(--white); border-color: var(--gray-900); transform: translateY(-1px); }
 
         /* ========== MOD CARD — FULL WIDTH, LARGE ========== */
         .card-list { display: flex; flex-direction: column; gap: 24px; }
@@ -98,13 +99,13 @@
             transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
             overflow: hidden;
         }
-        .mod-card:hover { border-color: var(--blue-100); box-shadow: var(--shadow-lg), 0 0 0 1px rgba(37,99,235,0.06); }
+        .mod-card:hover { border-color: var(--blue-100); box-shadow: var(--shadow-lg), 0 0 0 1px rgba(37,99,235,0.06); transition: border-color 0.3s, box-shadow 0.3s; }
+        .mod-card { transition: border-color 0.3s, box-shadow 0.3s, transform 0.15s ease-out; }
 
         .mod-header {
             display: flex;
             align-items: center;
             gap: 28px;
-            padding: 40px 44px 0;
         }
         .mod-icon-wrap {
             width: 100px; height: 100px; flex-shrink: 0;
@@ -114,7 +115,7 @@
         }
         .mod-card:hover .mod-icon-wrap { border-color: var(--blue-100); box-shadow: 0 0 0 4px var(--blue-50); }
         .mod-icon { width: 64px; height: 64px; object-fit: contain; image-rendering: pixelated; image-rendering: crisp-edges; transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1); }
-        .mod-card:hover .mod-icon { transform: scale(1.08); }
+        .mod-card:hover .mod-icon { transform: scale(1.08) rotate(3deg); }
 
         .mod-head-text { flex: 1; min-width: 0; }
         .mod-top-row { display: flex; align-items: center; gap: 14px; margin-bottom: 6px; flex-wrap: wrap; }
@@ -123,15 +124,19 @@
         .mod-version { font-size: 13px; color: var(--gray-300); font-weight: 500; }
         .mod-subtitle { font-size: 17px; color: var(--gray-600); font-weight: 500; line-height: 1.5; }
 
-        .mod-link-row { padding: 0 44px; margin-top: 16px; }
-        .mod-link { display: inline-flex; align-items: center; gap: 6px; font-size: 14px; color: var(--blue); font-weight: 600; text-decoration: none; transition: gap 0.3s; }
+        .mod-link-row { margin-top: 4px; }
+        .mod-link { display: inline-flex; align-items: center; gap: 6px; font-size: 14px; color: var(--blue); font-weight: 600; text-decoration: none; transition: gap 0.3s; position: relative; }
+        .mod-link::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 0; height: 2px; background: var(--blue); border-radius: 1px; transition: width 0.3s; }
+        .mod-link:hover::after { width: 100%; }
         .mod-link svg { width: 16px; height: 16px; transition: transform 0.3s; }
         .mod-link:hover { gap: 10px; }
         .mod-link:hover svg { transform: translateX(3px); }
 
         /* FEATURE CHIPS */
         .mod-chips { display: flex; flex-wrap: wrap; gap: 8px; padding: 20px 44px 0; }
-        .mod-chip { display: inline-flex; align-items: center; gap: 5px; font-size: 13px; font-weight: 500; color: var(--gray-600); background: var(--gray-50); border: 1px solid var(--gray-100); border-radius: 8px; padding: 6px 14px; }
+        .mod-chip { display: inline-flex; align-items: center; gap: 5px; font-size: 13px; font-weight: 500; color: var(--gray-600); background: var(--gray-50); border: 1px solid var(--gray-100); border-radius: 8px; padding: 6px 14px; opacity: 0; transform: translateY(10px); transition: opacity 0.4s, transform 0.4s, background 0.2s, border-color 0.2s; }
+        .mod-card.visible .mod-chip { opacity: 1; transform: translateY(0); }
+        .mod-chip:hover { background: var(--blue-50); border-color: var(--blue-100); color: var(--blue); }
         .mod-chip svg { width: 13px; height: 13px; color: var(--blue); flex-shrink: 0; }
 
         /* DETAIL BODY */
@@ -152,9 +157,6 @@
         .mod-table .yes { color: #16a34a; font-weight: 600; }
         .mod-table .no { color: #dc2626; font-weight: 600; }
 
-        /* SVG INVERT FILTER (hidden) */
-        .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
-
         /* FOOTER */
         footer { border-top: 1px solid var(--gray-100); padding: 48px clamp(20px, 4vw, 48px); }
         .footer-inner { max-width: 1100px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; }
@@ -174,54 +176,42 @@
         .reveal.visible.from-left { animation: slideInLeft 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
         .reveal.visible.from-right { animation: slideInRight 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
 
-        /* TITLE CURSOR INVERT EFFECT */
-        .mod-head-text { position: relative; }
-        .mod-name-wrap {
+        /* INVERT POST-PROCESS — entire card header area */
+        .mod-card-header {
             position: relative;
-            display: inline-block;
             overflow: hidden;
-            cursor: default;
-        }
-        .mod-name-text {
-            position: relative;
-            z-index: 1;
-            transition: filter 0.15s;
-        }
-        .mod-name-wrap .invert-circle {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            border-radius: 50%;
-            filter: url(#invert);
-            background: var(--gray-100);
-            transform: translate(-50%, -50%);
-            pointer-events: none;
-            z-index: 2;
-            transition: width 0.35s cubic-bezier(0.16, 1, 0.3, 1), height 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        .mod-name-wrap:hover .invert-circle {
-            width: 140px;
-            height: 60px;
-        }
-        .mod-name-wrap .invert-text {
-            position: absolute;
-            top: 0; left: 0;
-            z-index: 3;
+            padding: 40px 44px 20px;
+            background: var(--gray-900);
             color: var(--white);
-            pointer-events: none;
-            clip-path: circle(0px at 50% 50%);
-            transition: clip-path 0.35s cubic-bezier(0.16, 1, 0.3, 1);
         }
-        .mod-name-wrap:hover .invert-text {
-            clip-path: circle(70px at var(--mx, 50%) var(--my, 50%));
+        .mod-card-header .mod-name { color: var(--white); }
+        .mod-card-header .mod-subtitle { color: var(--gray-300); }
+        .mod-card-header .mod-version { color: var(--gray-500); }
+        .mod-card-header .mod-tag { background: rgba(255,255,255,0.1); color: var(--blue-light); }
+        .mod-card-header .mod-link { color: var(--blue-light); }
+        .mod-card-header .mod-icon-wrap { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.08); }
+        .mod-card-header::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: white;
+            mix-blend-mode: difference;
+            opacity: 0;
+            pointer-events: none;
+            -webkit-mask-image: radial-gradient(circle var(--r, 0px) at var(--ix, 50%) var(--iy, 50%), black calc(var(--r, 0px) - 1px), transparent var(--r, 0px));
+            mask-image: radial-gradient(circle var(--r, 0px) at var(--ix, 50%) var(--iy, 50%), black calc(var(--r, 0px) - 1px), transparent var(--r, 0px));
+            transition: opacity 0.2s;
+            z-index: 10;
+        }
+        .mod-card-header.inverting::after {
+            opacity: 1;
         }
 
         @media (max-width: 700px) {
             .hero { padding: 120px 16px 40px; }
             .stats { gap: 24px; flex-wrap: wrap; }
-            .mod-header { padding: 28px 24px 0; gap: 18px; }
+            .mod-card-header { padding: 28px 24px 16px; background: var(--gray-900); }
+            .mod-header { gap: 18px; }
             .mod-icon-wrap { width: 72px; height: 72px; }
             .mod-icon { width: 48px; height: 48px; }
             .mod-name { font-size: 22px; }
@@ -235,13 +225,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 </head>
 <body>
-    <svg class="sr-only" aria-hidden="true">
-        <defs>
-            <filter id="invert">
-                <feColorMatrix type="matrix" values="-1 0 0 0 1  0 -1 0 0 1  0 0 -1 0 1  0 0 0 1 0"/>
-            </filter>
-        </defs>
-    </svg>
 
     <nav id="nav">
         <a class="nav-brand" href="#"><span>Ouse</span></a>
@@ -297,6 +280,7 @@
             <div class="footer-brand"><span>Ouse</span></div>
             <div class="footer-links">
                 <a href="https://www.nexusmods.com/scavprototype" target="_blank" rel="noopener">Nexus Mods</a>
+                <a href="https://www.nexusmods.com/profile/ouse6767" target="_blank" rel="noopener">ouse6767</a>
                 <a href="https://github.com/mouse114514" target="_blank" rel="noopener">GitHub</a>
             </div>
             <div class="footer-copy">&copy; 2026 Ouse. All rights reserved.</div>
@@ -541,10 +525,10 @@
         {
             icon: 'icons/GlassN.png',
             name: 'GlassN',
-            tag: 'tag_net',
+            tag: 'tag_perf',
             version: 'v0.1.0',
             nexus: 'https://www.nexusmods.com/scavprototype/mods/593',
-            subtitle: { zh: '多人游戏网络优化', en: 'Multiplayer Network Optimization' },
+            subtitle: { zh: '多人游戏性能优化', en: 'Multiplayer Performance Optimization' },
             chips: { zh: ['哈希缓冲复用','快速压缩','距离裁剪同步','频率降低','空闲物理休眠','内存分配减少'], en: ['Hash Buffer Reuse','Fast Deflate','Distance Culling','Frequency Reduction','Idle Physics Sleep','Reduced Alloc'] },
             detail: {
                 zh: `<h3>概述</h3>
@@ -973,27 +957,25 @@
             const chips = mod.chips[currentLang].map(c => `<span class="mod-chip">${checkSvg}${c}</span>`).join('');
 
             card.innerHTML = `
-                <div class="mod-header">
-                    <div class="mod-icon-wrap">
-                        <img class="mod-icon" src="${mod.icon}" alt="${mod.name}" loading="lazy">
-                    </div>
-                    <div class="mod-head-text">
-                        <div class="mod-top-row">
-                            <div class="mod-name-wrap" data-mod="${mod.name}">
-                                <span class="mod-name-text mod-name">${mod.name}</span>
-                                <span class="invert-circle"></span>
-                                <span class="mod-name-text invert-text">${mod.name}</span>
-                            </div>
-                            <span class="mod-tag">${t(mod.tag)}</span>
-                            <span class="mod-version">${mod.version}</span>
+                <div class="mod-card-header">
+                    <div class="mod-header">
+                        <div class="mod-icon-wrap">
+                            <img class="mod-icon" src="${mod.icon}" alt="${mod.name}" loading="lazy">
                         </div>
-                        <div class="mod-subtitle">${mod.subtitle[currentLang]}</div>
+                        <div class="mod-head-text">
+                            <div class="mod-top-row">
+                                <div class="mod-name">${mod.name}</div>
+                                <span class="mod-tag">${t(mod.tag)}</span>
+                                <span class="mod-version">${mod.version}</span>
+                            </div>
+                            <div class="mod-subtitle">${mod.subtitle[currentLang]}</div>
+                        </div>
                     </div>
-                </div>
-                <div class="mod-link-row">
-                    <a class="mod-link" href="${mod.nexus}" target="_blank" rel="noopener">
-                        ${t('view_nexus')} ${arrowSvg}
-                    </a>
+                    <div class="mod-link-row">
+                        <a class="mod-link" href="${mod.nexus}" target="_blank" rel="noopener">
+                            ${t('view_nexus')} ${arrowSvg}
+                        </a>
+                    </div>
                 </div>
                 <div class="mod-chips">${chips}</div>
                 <div class="mod-detail">${mod.detail[currentLang]}</div>
@@ -1009,24 +991,53 @@
         });
         const observer = new IntersectionObserver(entries => {
             entries.forEach(entry => {
-                if (entry.isIntersecting) { entry.target.classList.add('visible'); observer.unobserve(entry.target); }
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    /* stagger chips */
+                    entry.target.querySelectorAll('.mod-chip').forEach((chip, j) => {
+                        chip.style.transitionDelay = `${j * 0.05}s`;
+                    });
+                    observer.unobserve(entry.target);
+                }
             });
         }, { threshold: 0.05, rootMargin: '0px 0px -20px 0px' });
         document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
+        /* Card tilt on mousemove */
+        document.querySelectorAll('.mod-card').forEach(card => {
+            card.addEventListener('mousemove', e => {
+                const r = card.getBoundingClientRect();
+                const x = (e.clientX - r.left) / r.width - 0.5;
+                const y = (e.clientY - r.top) / r.height - 0.5;
+                card.style.transform = `perspective(800px) rotateY(${x * 4}deg) rotateX(${-y * 4}deg) translateY(-3px)`;
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = '';
+            });
+        });
+
         /* Title cursor invert tracking */
-        document.querySelectorAll('.mod-name-wrap').forEach(wrap => {
-            const text = wrap.querySelector('.invert-text');
-            wrap.addEventListener('mousemove', e => {
-                const r = wrap.getBoundingClientRect();
+        document.querySelectorAll('.mod-card-header').forEach(header => {
+            let raf = null;
+            let targetR = 0, currentR = 0;
+            const animate = () => {
+                currentR += (targetR - currentR) * 0.15;
+                header.style.setProperty('--r', currentR + 'px');
+                if (Math.abs(targetR - currentR) > 0.5) raf = requestAnimationFrame(animate);
+            };
+            header.addEventListener('mouseenter', () => { targetR = 35; animate(); });
+            header.addEventListener('mouseleave', () => {
+                targetR = 0;
+                header.classList.remove('inverting');
+                animate();
+            });
+            header.addEventListener('mousemove', e => {
+                const r = header.getBoundingClientRect();
                 const x = ((e.clientX - r.left) / r.width * 100);
                 const y = ((e.clientY - r.top) / r.height * 100);
-                wrap.style.setProperty('--mx', x + '%');
-                wrap.style.setProperty('--my', y + '%');
-                text.style.clipPath = `circle(40px at ${x}% ${y}%)`;
-            });
-            wrap.addEventListener('mouseleave', () => {
-                text.style.clipPath = 'circle(0px at 50% 50%)';
+                header.classList.add('inverting');
+                header.style.setProperty('--ix', x + '%');
+                header.style.setProperty('--iy', y + '%');
             });
         });
     }
@@ -1034,10 +1045,13 @@
     function animateCounters() {
         document.querySelectorAll('.stat-num[data-count]').forEach(el => {
             const target = parseInt(el.dataset.count);
+            const duration = 1500;
             const start = performance.now();
             function step(now) {
-                const p = Math.min((now - start) / 1200, 1);
-                el.textContent = Math.round(target * (1 - Math.pow(1 - p, 3)));
+                const p = Math.min((now - start) / duration, 1);
+                const ease = 1 - Math.pow(1 - p, 4);
+                const val = Math.round(target * ease);
+                el.textContent = val.toLocaleString();
                 if (p < 1) requestAnimationFrame(step);
             }
             requestAnimationFrame(step);
