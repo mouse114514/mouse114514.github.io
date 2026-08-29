@@ -251,7 +251,7 @@
 
     <div class="stats">
         <div class="stat">
-            <div class="stat-num" data-count="6">0</div>
+            <div class="stat-num" data-count="7">0</div>
             <div class="stat-label" data-i18n="stat_mods">Mods</div>
         </div>
         <div class="stat">
@@ -269,7 +269,7 @@
     <section id="mods">
         <div class="section-header">
             <div class="section-title" data-i18n="section_mods">Mods</div>
-            <div class="section-count">6 <span data-i18n="section_projects">projects</span></div>
+            <div class="section-count">7 <span data-i18n="section_projects">projects</span></div>
         </div>
         <div class="filter-bar" id="filterBar"></div>
         <div class="card-list" id="modsGrid"></div>
@@ -913,6 +913,113 @@
 
 <h3>Installation</h3>
 <p>Copy <code>Cu-BloodBank.dll</code> to <code>&lt;Steam&gt;\steamapps\common\Casualties Unknown Demo\BepInEx\plugins\</code>. Requires BepInEx 5. To uninstall, delete the DLL.</p>`
+            }
+        },
+        {
+            icon: 'icons/CUMCPB.png.png',
+            name: 'CU-MCP-Bridge',
+            tag: 'tag_content',
+            version: 'v1.0.0',
+            nexus: 'https://www.nexusmods.com/scavprototype/mods/526',
+            subtitle: { zh: 'AI Agent 游戏控制桥接层', en: 'AI Agent Game Control Bridge' },
+            chips: { zh: ['移动控制','状态查询','应急规则','F6 GUI','AI 实时编排','召唤分身'], en: ['Move Control','State Query','Contingency Rules','F6 GUI','AI Orchestration','Spawn Clone'] },
+            detail: {
+                zh: `<h3>概述</h3>
+<p>让 AI 助手通过聊天直接操控《Casualties Unknown》游戏：AI 能读取角色状态、在世界里移动、使用物品、治疗自己，还能召唤一个 AI 分身一起行动。</p>
+<p><strong>这不是一个正式版本，仅供测试和体验，并不代表最终效果。</strong></p>
+
+<h3>移动与动作</h3>
+<ul>
+<li><code>move_to</code> — 移动到指定坐标</li>
+<li><code>move_to_player</code> — 让 AI 分身走向玩家</li>
+<li><code>follow</code> — 让 AI 分身持续跟着玩家</li>
+<li><code>jump</code> — 跳跃（可带水平方向）</li>
+<li><code>use_item</code> — 使用背包里的物品</li>
+<li><code>pick_up_item</code> / <code>drop_item</code> — 拾取 / 丢弃物品</li>
+<li><code>sleep</code> — 睡觉恢复体力</li>
+<li><code>heal_ai</code> — 用道具给 AI 分身治疗指定肢体</li>
+<li><code>create_ai_player</code> / <code>destroy_ai_player</code> — 召唤 / 移除 AI 分身</li>
+</ul>
+
+<h3>查询状态</h3>
+<ul>
+<li><code>get_game_state</code> — 查看当前玩家与周围环境</li>
+<li><code>get_map_info</code> — 查看附近地形和实体</li>
+<li><code>query_position</code> — 查看某个坐标处有什么</li>
+<li><code>search_blocks</code> — 按材质搜索地形块</li>
+</ul>
+
+<h3>应急规则</h3>
+<p><code>set_contingency</code> / <code>update_contingency</code> — 设定本地自动规则（例如「血量低于 30% 自动用绷带」），无需 AI 实时介入即可执行。</p>
+
+<h3>快速预览</h3>
+<p>按 F6 键打开 GUI 调试悬浮窗，可查看玩家状态、AI 分身状态、周围环境信息、地图信息，也可直接下达命令。</p>
+
+<h3>使用须知</h3>
+<ul>
+<li>默认操控人类玩家；召唤 AI 分身后移动/跳跃等指令作用到分身上</li>
+<li>一次只发一个动作指令，等完成再发下一个</li>
+<li>每条动作指令都会等到执行完才返回结果</li>
+<li>长距离移动建议把超时调到 120 秒以上</li>
+<li>关闭 Python 服务器进程即可临时关闭，DLL 留在游戏里不影响</li>
+</ul>
+
+<h3>安装</h3>
+<p>需要 Windows 10/11、游戏（Steam 版）、Python 3.10+、支持 MCP 的 AI 客户端。</p>
+<ol>
+<li>将 <code>CU-MCP-Mod.dll</code> 和 <code>Newtonsoft.Json.dll</code> 放入 <code>BepInEx\plugins\</code></li>
+<li>安装 Python 依赖：<code>pip install -r requirements.txt</code></li>
+<li>在 <code>server</code> 目录执行 <code>python server.py</code></li>
+<li>先启动游戏进入世界，再启动服务器</li>
+</ol>`,
+                en: `<h3>Overview</h3>
+<p>Lets AI assistants control Casualties Unknown directly through chat: AI can read character state, move in the world, use items, heal itself, and even spawn an AI clone to act alongside you.</p>
+<p><strong>This is not a release version — for testing and experience only.</strong></p>
+
+<h3>Movement & Actions</h3>
+<ul>
+<li><code>move_to</code> — Move to specified coordinates</li>
+<li><code>move_to_player</code> — AI clone walks toward the player</li>
+<li><code>follow</code> — AI clone continuously follows the player</li>
+<li><code>jump</code> — Jump (with optional horizontal direction)</li>
+<li><code>use_item</code> — Use an item from inventory</li>
+<li><code>pick_up_item</code> / <code>drop_item</code> — Pick up / drop items</li>
+<li><code>sleep</code> — Sleep to restore stamina</li>
+<li><code>heal_ai</code> — Heal AI clone's specific limb with items</li>
+<li><code>create_ai_player</code> / <code>destroy_ai_player</code> — Spawn / remove AI clone</li>
+</ul>
+
+<h3>State Queries</h3>
+<ul>
+<li><code>get_game_state</code> — View current player and surroundings</li>
+<li><code>get_map_info</code> — View nearby terrain and entities</li>
+<li><code>query_position</code> — Check what's at a specific coordinate</li>
+<li><code>search_blocks</code> — Search terrain blocks by material</li>
+</ul>
+
+<h3>Contingency Rules</h3>
+<p><code>set_contingency</code> / <code>update_contingency</code> — Set local auto-rules (e.g. "auto-use bandage when health below 30%") that execute without real-time AI involvement.</p>
+
+<h3>Quick Preview</h3>
+<p>Press F6 to open the GUI debug overlay — view player state, AI clone status, surroundings, map info, and issue commands directly.</p>
+
+<h3>Notes</h3>
+<ul>
+<li>Default controls the human player; after spawning an AI clone, movement/jump commands apply to the clone</li>
+<li>Send one action command at a time, wait for completion before the next</li>
+<li>Each action command blocks until execution completes (success/fail/timeout)</li>
+<li>For long-distance moves, set timeout to 120+ seconds</li>
+<li>Stop the Python server to temporarily disable; DLL in game doesn't affect normal play</li>
+</ul>
+
+<h3>Installation</h3>
+<p>Requires Windows 10/11, game (Steam), Python 3.10+, MCP-capable AI client.</p>
+<ol>
+<li>Place <code>CU-MCP-Mod.dll</code> and <code>Newtonsoft.Json.dll</code> into <code>BepInEx\plugins\</code></li>
+<li>Install Python deps: <code>pip install -r requirements.txt</code></li>
+<li>In <code>server</code> directory run <code>python server.py</code></li>
+<li>Start game first, then start the server</li>
+</ol>`
             }
         }
     ];
