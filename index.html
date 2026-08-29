@@ -1,256 +1,144 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="/favicon.png">
-    <title>X_studio</title>
+    <title>Ouse</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
-            background: #0a0f1e;
-            color: #e0e8f0;
-            height: 100vh;
-            overflow: hidden;
-            perspective: 1200px;
-            transform-style: preserve-3d;
+            background: #ffffff;
+            color: #1a1a2e;
+            min-height: 100vh;
         }
 
-        /* Background particles */
-        #bgCanvas {
+        /* Nav */
+        nav {
             position: fixed;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
-            pointer-events: none;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 56px;
+            background: rgba(255,255,255,0.9);
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 32px;
+            z-index: 100;
         }
-        .overlay { z-index: 50; }
-        .modal { z-index: 51; }
-        .detail-overlay { z-index: 100; }
-        .detail-panel { z-index: 101; }
+        .nav-brand {
+            font-size: 18px;
+            font-weight: 700;
+            color: #1a1a2e;
+            text-decoration: none;
+        }
+        .nav-links {
+            display: flex;
+            gap: 24px;
+        }
+        .nav-links a {
+            font-size: 14px;
+            color: #6b7280;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        .nav-links a:hover { color: #2563eb; }
 
         /* Hero */
         .hero {
-            position: absolute;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
+            padding: 160px 32px 80px;
             text-align: center;
-            pointer-events: none;
-            transform-style: preserve-3d;
         }
-        .hero-x {
-            font-size: clamp(100px, 25vw, 400px);
+        .hero-name {
+            font-size: clamp(64px, 15vw, 140px);
             font-weight: 900;
-            background: linear-gradient(to bottom, #4da8ff, #b0e0ff);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
+            letter-spacing: -2px;
             line-height: 1;
-            text-shadow: 0 0 40px rgba(77,168,255,0.3);
-            transform-style: preserve-3d;
-            user-select: none;
+            color: #1a1a2e;
         }
-        .hero-x.desktop { transition: transform 0.08s ease-out; }
-        .hero-studio {
-            font-size: clamp(28px, 4vw, 70px);
-            color: white;
+        .hero-sub {
+            margin-top: 12px;
+            font-size: clamp(16px, 2.5vw, 22px);
+            color: #6b7280;
             font-weight: 400;
-            letter-spacing: 4px;
-            text-shadow: 0 0 20px rgba(77,168,255,0.2);
-            margin-top: -10px;
-            transform-style: preserve-3d;
-            user-select: none;
         }
-        .hero-studio.desktop { transition: transform 0.08s ease-out; }
+        .hero-desc {
+            margin-top: 20px;
+            font-size: 16px;
+            color: #9ca3af;
+            max-width: 480px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.7;
+        }
 
-        /* Click hint */
-        .click-hint {
-            margin-top: 24px;
+        /* Section */
+        section {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 60px 32px;
+        }
+        .section-title {
             font-size: 13px;
-            color: rgba(255,255,255,0.25);
-            letter-spacing: 4px;
-            animation: hintPulse 2.5s ease-in-out infinite;
-            user-select: none;
-        }
-        @keyframes hintPulse {
-            0%, 100% { opacity: 0.25; transform: translateY(0); }
-            50% { opacity: 0.6; transform: translateY(4px); }
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #2563eb;
+            margin-bottom: 32px;
         }
 
-        /* News ticker */
-        .news-ticker {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 36px;
-            background: rgba(10, 15, 30, 0.75);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            border-top: 1px solid rgba(77, 168, 255, 0.08);
-            overflow: hidden;
-            z-index: 10;
-        }
-        .news-track {
-            display: flex;
-            gap: 0;
-            white-space: nowrap;
-            animation: scrollNews 28s linear infinite;
-            height: 36px;
-            align-items: center;
-        }
-        .news-item {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 0 30px;
-            font-size: 13px;
-            color: rgba(255,255,255,0.35);
-            flex-shrink: 0;
-        }
-        .news-item .dot {
-            width: 4px;
-            height: 4px;
-            border-radius: 50%;
-            background: #4da8ff;
-            flex-shrink: 0;
-        }
-        @keyframes scrollNews {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
-        }
-
-        @keyframes xRotate {
-            0% { transform: rotateY(0deg); }
-            100% { transform: rotateY(360deg); }
-        }
-        @keyframes studioRotate {
-            0% { transform: rotateY(0deg); }
-            100% { transform: rotateY(360deg); }
-        }
-
-        /* Overlay */
-        .overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.55);
-            z-index: 50;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s;
-        }
-        .overlay.active { opacity: 1; pointer-events: auto; }
-
-        /* Modal window */
-        .modal {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) scale(0.92);
-            width: 90%;
-            max-width: 680px;
-            max-height: 80vh;
-            background: rgba(16, 24, 44, 0.88);
-            backdrop-filter: blur(32px) saturate(180%);
-            -webkit-backdrop-filter: blur(32px) saturate(180%);
-            border: 1px solid rgba(77, 168, 255, 0.15);
-            border-radius: 24px;
-            z-index: 51;
-            opacity: 0;
-            pointer-events: none;
-            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-            box-shadow: 0 24px 80px rgba(0,0,0,0.7);
-            display: flex;
-            flex-direction: column;
-        }
-        .modal.active {
-            opacity: 1;
-            pointer-events: auto;
-            transform: translate(-50%, -50%) scale(1);
-        }
-
-        /* Traditional nav bar inside modal */
-        .modal-nav {
-            display: flex;
-            justify-content: flex-end;
-            gap: 4px;
-            padding: 20px 24px 0;
-            flex-shrink: 0;
-        }
-        .modal-nav a {
-            color: rgba(255,255,255,0.5);
-            text-decoration: none;
-            padding: 8px 18px;
-            border-radius: 8px;
-            font-size: 15px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        .modal-nav a:hover {
-            color: #fff;
-            background: rgba(255,255,255,0.06);
-        }
-        .modal-nav a.active {
-            color: #4da8ff;
-            background: rgba(77, 168, 255, 0.1);
-        }
-
-        /* Content area inside modal */
-        .modal-content {
-            flex: 1;
-            overflow-y: auto;
-            padding: 24px 24px 20px;
-        }
-        .modal-content .page {
-            display: none;
-        }
-        .modal-content .page.active {
-            display: block;
-        }
-        .modal-content .page h2 {
-            font-size: 22px;
-            font-weight: 700;
-            margin-bottom: 18px;
-            color: #fff;
-        }
-        .modal-content .page p {
-            font-size: 15px;
-            color: rgba(255,255,255,0.6);
-            margin-bottom: 20px;
-        }
-
-        /* Card grid inside modal */
+        /* Project cards */
         .card-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 12px;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 16px;
         }
         .card {
-            background: rgba(255,255,255,0.04);
-            border: 1px solid rgba(255,255,255,0.06);
+            border: 1px solid #e5e7eb;
             border-radius: 12px;
-            padding: 18px;
+            padding: 24px;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: border-color 0.2s, box-shadow 0.2s;
         }
         .card:hover {
-            border-color: rgba(77, 168, 255, 0.3);
-            background: rgba(77, 168, 255, 0.06);
+            border-color: #bfdbfe;
+            box-shadow: 0 4px 12px rgba(37,99,235,0.08);
         }
-        .card .icon { font-size: 24px; margin-bottom: 8px; }
-        .card h3 { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
-        .card p { font-size: 13px; color: rgba(255,255,255,0.4); margin-bottom: 0; }
+        .card-icon {
+            font-size: 28px;
+            margin-bottom: 12px;
+        }
+        .card h3 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: #1a1a2e;
+        }
+        .card p {
+            font-size: 14px;
+            color: #6b7280;
+            line-height: 1.6;
+        }
+        .card-tag {
+            display: inline-block;
+            margin-top: 12px;
+            font-size: 12px;
+            padding: 2px 10px;
+            border-radius: 20px;
+            background: #eff6ff;
+            color: #2563eb;
+        }
 
-        /* Detail panel (over the modal) */
+        /* Detail panel */
         .detail-overlay {
             display: none;
             position: fixed;
             inset: 0;
-            background: rgba(0,0,0,0.5);
-            z-index: 100;
+            background: rgba(0,0,0,0.3);
+            z-index: 200;
         }
         .detail-overlay.active { display: block; }
         .detail-panel {
@@ -259,31 +147,28 @@
             left: 50%;
             transform: translate(-50%, -50%);
             width: 90%;
-            max-width: 480px;
+            max-width: 520px;
             max-height: 70vh;
-            background: #141e32;
-            border: 1px solid rgba(77, 168, 255, 0.3);
-            border-radius: 20px;
-            padding: 28px;
-            z-index: 101;
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 16px;
+            padding: 32px;
+            z-index: 201;
             display: none;
             overflow-y: auto;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
         }
         .detail-panel.active { display: block; }
         .detail-panel h3 {
-            font-size: 22px;
+            font-size: 20px;
             font-weight: 700;
             margin-bottom: 12px;
-            background: linear-gradient(135deg, #fff, #b0e0ff);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
+            color: #1a1a2e;
         }
         .detail-panel .content {
             font-size: 15px;
             line-height: 1.8;
-            color: rgba(255,255,255,0.8);
+            color: #4b5563;
             white-space: pre-wrap;
             margin-bottom: 16px;
         }
@@ -291,300 +176,167 @@
             display: flex;
             gap: 14px;
             font-size: 13px;
-            color: rgba(255,255,255,0.4);
-            border-top: 1px solid rgba(255,255,255,0.06);
+            color: #9ca3af;
+            border-top: 1px solid #f3f4f6;
             padding-top: 12px;
         }
         .detail-panel .close {
             position: absolute;
-            top: 12px;
-            right: 16px;
+            top: 16px;
+            right: 20px;
             font-size: 20px;
-            color: rgba(255,255,255,0.3);
+            color: #9ca3af;
             cursor: pointer;
             background: none;
             border: none;
-            transition: 0.2s;
+            transition: color 0.2s;
         }
-        .detail-panel .close:hover { color: #fff; }
+        .detail-panel .close:hover { color: #1a1a2e; }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 40px 32px;
+            font-size: 13px;
+            color: #d1d5db;
+            border-top: 1px solid #f3f4f6;
+        }
 
         @media (max-width: 640px) {
-            .modal-nav { padding: 16px 16px 0; gap: 2px; }
-            .modal-nav a { padding: 6px 12px; font-size: 13px; }
-            .modal-content { padding: 16px; }
-            .modal-content .page h2 { font-size: 19px; }
-            .card-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
-            .detail-panel { padding: 20px; }
+            nav { padding: 0 16px; }
+            .hero { padding: 120px 16px 60px; }
+            section { padding: 40px 16px; }
+            .card-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
-    <!-- Background particles -->
-    <canvas id="bgCanvas"></canvas>
 
-    <!-- Hero -->
-    <div class="hero" id="hero">
-        <div class="hero-x" id="heroX">X</div>
-        <div class="hero-studio" id="heroStudio">Studio</div>
-        <div class="click-hint" id="clickHint">— 点击屏幕进入 —</div>
-    </div>
-
-    <!-- Overlay + Modal -->
-    <div class="overlay" id="overlay"></div>
-    <div class="modal" id="modal">
-        <div class="modal-nav">
-            <a class="active" data-page="projects">项目</a>
-            <a data-page="members">成员</a>
-            <a data-page="resources">资源</a>
-            <a href="course/" style="color:rgba(255,255,255,0.35)">课程</a>
+    <nav>
+        <a class="nav-brand" href="#">Ouse</a>
+        <div class="nav-links">
+            <a href="#projects">Projects</a>
+            <a href="MS/">Resources</a>
         </div>
-        <div class="modal-content" id="modalContent">
-            <div class="page active" id="page-projects">
-                <h2>项目</h2>
-                <p>我们正在做的东西</p>
-                <div class="card-grid" id="projectsGrid"></div>
-            </div>
-            <div class="page" id="page-members">
-                <h2>成员</h2>
-                <p>社团的小伙伴们</p>
-                <div class="card-grid" id="membersGrid"></div>
-            </div>
-            <div class="page" id="page-resources">
-                <h2>资源</h2>
-                <p>美术资源与素材</p>
-                <div class="card-grid">
-                    <a class="card" href="MS/" style="text-decoration:none;color:inherit;display:block">
-                        <div class="icon">🖼</div>
-                        <h3>资源库</h3>
-                        <p>前往浏览</p>
-                    </a>
-                </div>
-            </div>
-        </div>
+    </nav>
+
+    <div class="hero">
+        <div class="hero-name">Ouse</div>
+        <div class="hero-sub">Independent Developer</div>
+        <div class="hero-desc">Casualties Unknown mod developer. Building performance tools, anti-cheat systems, and gameplay enhancements.</div>
     </div>
 
-    <!-- News ticker -->
-    <div class="news-ticker" id="newsTicker">
-        <div class="news-track" id="newsTrack"></div>
-    </div>
+    <section id="projects">
+        <div class="section-title">Projects</div>
+        <div class="card-grid" id="projectsGrid"></div>
+    </section>
 
-    <!-- Detail -->
+    <footer>Ouse &copy; 2026</footer>
+
     <div class="detail-overlay" id="detailOverlay"></div>
     <div class="detail-panel" id="detailPanel">
         <button class="close" id="closeBtn">&times;</button>
         <h3 id="detailTitle"></h3>
         <div class="content" id="detailContent"></div>
         <div class="meta">
-            <span id="detailAuthor"></span>
-            <span id="detailYear"></span>
+            <span id="detailTag"></span>
         </div>
     </div>
 
     <script>
         const projects = [
-            { id: 'betrayal', icon: '🎮', name: '背叛之下', desc: '一款《传说之下》同人游戏' },
-            { id: 'beanWar', icon: '🌱', name: '豆子之战', desc: '跑酷为主，战斗为辅' },
-            { id: 'mouseSlave', icon: '🤖', name: '老鼠奴隶', desc: '轻量 AI agent' },
-            { id: 'xadeusQQ', icon: '💬', name: 'Xadeus-QQ-MCP', desc: 'QQ 机器人 MCP 服务' }
+            {
+                id: 'glassm',
+                icon: '⚡',
+                name: 'GlassM',
+                tag: 'Performance',
+                desc: 'World generation optimization. Patches terrain gen, entity placement, chunk streaming and lighting.',
+                detail: 'Core world-generation optimization mod for Casualties Unknown.\n\nPatches WorldGeneration methods (terrain gen, entity placement, structure gen, update, clear) and GlobalDark to optimize chunk streaming and lighting. Includes a chunk streaming system and diagnostics.\n\ngithub.com/mouse114514'
+            },
+            {
+                id: 'shieldn',
+                icon: '🛡',
+                name: 'ShieldN',
+                tag: 'Anti-Cheat',
+                desc: 'Server-side anti-cheat with physics-sandbox replay, movement validation, and auto-kick escalation.',
+                detail: 'Server-side anti-cheat and anti-exploit system for CU multiplayer.\n\nFeatures movement validation with physics-sandbox replay (checkpoint batching), speed/jump capping, noclip swept-cast, VL violation scoring with auto-kick escalation, interaction distance hardening, flood-rate limiting, and kickback (resending authoritative position to cheaters).\n\nHard-depends on KrokoshaCasualtiesMP.'
+            },
+            {
+                id: 'glassfuck',
+                icon: '🔥',
+                name: 'GlassFUCK',
+                tag: 'Performance',
+                desc: 'Aggressive FPS optimization. Disables particles, shadows, culls audio, force-sleeps distant entities.',
+                detail: 'Aggressive FPS/performance optimization mod. NO COMPATIBILITY GUARANTEED.\n\nDisables particles, culls distant audio, disables shadows, simplifies renderers, aggressively minimizes Physics2D iterations, force-sleeps distant entities, attempts object pooling, and optionally logs performance diagnostics.\n\nSoft-depends on GlassM.'
+            },
+            {
+                id: 'grassk',
+                icon: '🧩',
+                name: 'GrassK',
+                tag: 'Framework',
+                desc: 'Mod framework and manager. Loads external mod packs, provides commands, hot-reload, i18n.',
+                detail: 'Mod framework/manager for Casualties Unknown.\n\nLoads external mod packs from a mods/ folder, provides a command system, hot-reload support, i18n, content registrars for custom items and recipes, and a coroutine/tick runner. Acts as a lightweight modding SDK for CU.'
+            },
+            {
+                id: 'mechenhance',
+                icon: '⚙',
+                name: 'MechEnhance',
+                tag: 'Content',
+                desc: 'Mechanical enhancement. Design tables, custom blueprints, machines, and a full crafting system.',
+                detail: 'Mechanical/crafting enhancement mod for CU.\n\nAdds Design Tables (placeable stations), custom blueprints, written blueprints, machines, a full crafting recipe system with save/load, an in-game design editor UI with language picker (CN/EN), and debug tools.'
+            },
+            {
+                id: 'behavior',
+                icon: '🎬',
+                name: 'BehaviorIsntUnknown',
+                tag: 'Tool',
+                desc: 'Replay system. Record and replay gameplay with free-cam mode and UI overlay.',
+                detail: 'Replay system for Casualties Unknown.\n\nRecord and replay gameplay, free-cam mode, UI overlay. Controls: F5 record, F6 replay, F7 stop, Tab free-cam.'
+            }
         ];
-        const members = [
-            { id: 'mouse', icon: '🐭', name: '鼠标', desc: '程序员' },
-            { id: 'krisid', icon: '🎨', name: '克斯里德', desc: '世界观设定与美术资源' },
-            { id: 'zhousan', icon: '🖌', name: '粥伞', desc: '绘画' },
-            { id: 'chuc', icon: '🎵', name: '出c好吃', desc: '作曲' },
-            { id: 'qinglong', icon: '🎨', name: '青龙狱碧', desc: '美术' },
-            { id: 'bingkuai', icon: '🎨', name: '冰块', desc: '美术' },
-            { id: 'emocez', icon: '🎭', name: 'EmoCez', desc: '美术 · 编曲 · 程序员' },
-            { id: 'dotParen', icon: '👻', name: '.()', desc: '试玩并分享视频' }
-        ];
-        const details = {
-            betrayal: { zh: '一款《传说之下》同人游戏，有着独特的世界观。目前正在制作中\n\n主要讲述了人类与怪物战争的世界，人类打败了怪物，并将怪物封印在了地底。一共掉进了8个人类，但第8个人类最后杀死了怪物国王，带着他的灵魂回到了地上。当第9个人类掉进地底世界的时候，这里完全变了样子......\n\n当这个人类不断的探索，才逐渐发现这个地方的怪物们似乎比传闻中的更可怕，他还见识到了其他未能被救出来的6个人类灵魂，但被怪物们掌控。这个人类的目的到底是什么？怪物们会如何看待这个人？这个人类会救出六魂吗？这一切都在尘埃之中散去，显现出来的是背叛。', author: 'X社团', year: '进行中' },
-            beanWar: { zh: '为 @青冥山岚系统 制作的同人游戏！跑酷为主，战斗为辅，目前正在制作中', author: '青冥山岚 · X社团', year: '进行中' },
-            mouseSlave: { zh: '一个轻量的 AI agent，目前正在小范围测试', author: '鼠标', year: 'Alpha' },
-            xadeusQQ: { zh: 'Xadeus-QQ-MCP 是一个基于 NapCatQQ (OneBot v11) 的 QQ MCP 服务器，让 AI agent 能直接控制 QQ 收发消息、群管理、定时任务等。\n\n基于 Amadeus-QQ-MCP 改造，由 X 社团 13 岁开发者 鼠标 维护。\n\n功能：自动唤醒、去重锁、持久化规则、群管理、文件发送、消息撤回、定时调度、一键配置\n\n架构：QQ ← NapCat ← Xadeus-QQ-MCP ← AI Agent（opencode / Cursor / Claude 等）\n\nGitHub: https://github.com/mouse114514/Xadeus-QQ-MCP', author: '鼠标', year: '进行中' },
-            mouse: { zh: '这是我！程序员', author: '核心组', year: '' },
-            krisid: { zh: '世界观设定与美术资源', author: '美术/设定', year: '' },
-            zhousan: { zh: '绘画', author: '画师', year: '' },
-            chuc: { zh: '作曲', author: '音乐组', year: '' },
-            qinglong: { zh: '美术', author: '画师', year: '' },
-            bingkuai: { zh: '美术', author: '画师', year: '' },
-            emocez: { zh: '美术加轻度编曲加未来程序员', author: '多面手', year: '' },
-            dotParen: { zh: '试玩并分享诡异的视频', author: '未知领域', year: '' }
-        };
 
-        // Background particles
-        const canvas = document.getElementById('bgCanvas');
-        const ctx = canvas.getContext('2d');
-        let particles = [];
-        function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
-        function initParticles() {
-            const count = Math.min(80, Math.floor(window.innerWidth * window.innerHeight / 12000));
-            particles = [];
-            for (let i = 0; i < count; i++) {
-                particles.push({
-                    x: Math.random() * canvas.width,
-                    y: Math.random() * canvas.height,
-                    r: Math.random() * 1.8 + 0.6,
-                    dx: (Math.random() - 0.5) * 0.3,
-                    dy: -(Math.random() * 0.25 + 0.05),
-                    alpha: Math.random() * 0.5 + 0.2
-                });
-            }
-        }
-        function drawParticles() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            for (const p of particles) {
-                p.x += p.dx;
-                p.y += p.dy;
-                if (p.y < -5) { p.y = canvas.height + 5; p.x = Math.random() * canvas.width; }
-                if (p.x < -5) p.x = canvas.width + 5;
-                if (p.x > canvas.width + 5) p.x = -5;
-                ctx.beginPath();
-                ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-                ctx.fillStyle = `rgba(77, 168, 255, ${p.alpha})`;
-                ctx.fill();
-            }
-            requestAnimationFrame(drawParticles);
-        }
-        resizeCanvas();
-        initParticles();
-        drawParticles();
-        window.addEventListener('resize', () => { resizeCanvas(); initParticles(); });
-
-        // 3D effects + idle auto-rotate
-        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-        const heroX = document.getElementById('heroX');
-        const heroStudio = document.getElementById('heroStudio');
-        let idleTimer = null;
-        let angle = 0;
-        let rafId = null;
-
-        function startAutoRotate() {
-            heroX.classList.remove('desktop');
-            heroStudio.classList.remove('desktop');
-            const t = heroX.style.transform;
-            const xm = t.match(/rotateX\(([-\d.]+)deg\)/);
-            const ym = t.match(/rotateY\(([-\d.]+)deg\)/);
-            const fixedX = xm ? parseFloat(xm[1]) : 0;
-            angle = ym ? parseFloat(ym[1]) : 0;
-            cancelAnimationFrame(rafId);
-            function step() {
-                angle = (angle + 1.2);
-                heroX.style.transform = `rotateX(${fixedX}deg) rotateY(${angle}deg)`;
-                heroStudio.style.transform = `rotateY(${angle * 0.6}deg)`;
-                rafId = requestAnimationFrame(step);
-            }
-            rafId = requestAnimationFrame(step);
-        }
-        function stopAutoRotate() {
-            if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
-            heroX.classList.add('desktop');
-        }
-        function resetIdleTimer() {
-            if (isMobile) return;
-            if (idleTimer) { clearTimeout(idleTimer); idleTimer = null; }
-            stopAutoRotate();
-            idleTimer = setTimeout(startAutoRotate, 3000);
-        }
-        if (isMobile) {
-            heroX.style.animation = 'xRotate 6s ease-in-out infinite';
-            heroStudio.style.animation = 'studioRotate 6s ease-in-out infinite';
-        } else {
-            heroX.classList.add('desktop');
-            heroStudio.classList.add('desktop');
-            document.addEventListener('mousemove', (e) => {
-                resetIdleTimer();
-                if (rafId) return;
-                const rx = (window.innerHeight / 2 - e.clientY) / (window.innerHeight / 2) * 25;
-                const ry = (e.clientX - window.innerWidth / 2) / (window.innerWidth / 2) * 35;
-                heroX.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg)`;
-                heroStudio.style.transform = `rotateX(${rx * 0.6}deg) rotateY(${ry * 0.6}deg)`;
-            });
-            resetIdleTimer();
-        }
-
-        // Modal toggle
-        const modal = document.getElementById('modal');
-        const overlay = document.getElementById('overlay');
-        const clickHint = document.getElementById('clickHint');
-        function openModal() { modal.classList.add('active'); overlay.classList.add('active'); clickHint.style.opacity = '0'; }
-        function closeModal() { modal.classList.remove('active'); overlay.classList.remove('active'); clickHint.style.opacity = ''; }
-
-        document.addEventListener('click', (e) => {
-            if (e.target.closest('.modal') || e.target.closest('.detail-panel') || e.target.closest('.detail-overlay')) return;
-            if (modal.classList.contains('active')) closeModal();
-            else openModal();
-        });
-        overlay.addEventListener('click', (e) => { e.stopPropagation(); closeModal(); });
-
-        // Nav tabs inside modal
-        document.querySelectorAll('.modal-nav a[data-page]').forEach(tab => {
-            tab.addEventListener('click', () => {
-                document.querySelectorAll('.modal-nav a').forEach(a => a.classList.remove('active'));
-                tab.classList.add('active');
-                document.querySelectorAll('.modal-content .page').forEach(p => p.classList.remove('active'));
-                document.getElementById('page-' + tab.dataset.page).classList.add('active');
-            });
-        });
-
-        // Render cards
-        function renderCards(containerId, items) {
-            const grid = document.getElementById(containerId);
-            items.forEach(item => {
+        function renderCards() {
+            const grid = document.getElementById('projectsGrid');
+            projects.forEach(item => {
                 const card = document.createElement('div');
                 card.className = 'card';
-                card.innerHTML = `<div class="icon">${item.icon}</div><h3>${item.name}</h3><p>${item.desc}</p>`;
-                card.addEventListener('click', () => showDetail(item.id));
+                card.innerHTML = `
+                    <div class="card-icon">${item.icon}</div>
+                    <h3>${item.name}</h3>
+                    <p>${item.desc}</p>
+                    <span class="card-tag">${item.tag}</span>
+                `;
+                card.addEventListener('click', () => showDetail(item));
                 grid.appendChild(card);
             });
         }
 
-        function showDetail(id) {
-            const d = details[id];
-            if (!d) return;
-            document.getElementById('detailTitle').textContent = d.zh.split('\n')[0] || id;
-            document.getElementById('detailContent').textContent = d.zh;
-            document.getElementById('detailAuthor').textContent = d.author ? `👤 ${d.author}` : '';
-            document.getElementById('detailYear').textContent = d.year ? `📅 ${d.year}` : '';
+        function showDetail(item) {
+            document.getElementById('detailTitle').textContent = item.name;
+            document.getElementById('detailContent').textContent = item.detail;
+            document.getElementById('detailTag').textContent = item.tag;
             document.getElementById('detailPanel').classList.add('active');
             document.getElementById('detailOverlay').classList.add('active');
         }
+
         function closeDetail() {
             document.getElementById('detailPanel').classList.remove('active');
             document.getElementById('detailOverlay').classList.remove('active');
         }
 
-        // News ticker
-        const news = [
-            'X 社团 2026 招新进行中',
-            '背叛之下 制作进度更新',
-            '课程平台已上线六大板块',
-            '鼠标 正在开发 AI agent',
-            'Xadeus-QQ-MCP 已开源',
-            '豆子之战 美术资源制作中',
-            '新成员 EmoCez 加入社团',
-            'Godot 游戏开发课程已开放',
-            '安卓逆向工程课程更新',
-        ];
-        const track = document.getElementById('newsTrack');
-        function buildNews() {
-            const items = news.map(t => `<span class="news-item"><span class="dot"></span>${t}</span>`).join('');
-            track.innerHTML = items + items;
-        }
-        buildNews();
-        // Pause on hover
-        track.addEventListener('mouseenter', () => track.style.animationPlayState = 'paused');
-        track.addEventListener('mouseleave', () => track.style.animationPlayState = 'running');
-
-        renderCards('projectsGrid', projects);
-        renderCards('membersGrid', members);
+        renderCards();
 
         document.getElementById('detailOverlay').addEventListener('click', closeDetail);
         document.getElementById('closeBtn').addEventListener('click', closeDetail);
-        document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeDetail(); closeModal(); } });
+        document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDetail(); });
+
+        // Smooth scroll for nav links
+        document.querySelectorAll('.nav-links a[href^="#"]').forEach(a => {
+            a.addEventListener('click', e => {
+                e.preventDefault();
+                document.querySelector(a.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
+            });
+        });
     </script>
 </body>
 </html>
