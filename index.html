@@ -35,6 +35,11 @@
             color: #1a1a2e;
             text-decoration: none;
         }
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
         .nav-links {
             display: flex;
             gap: 24px;
@@ -46,6 +51,32 @@
             transition: color 0.2s;
         }
         .nav-links a:hover { color: #2563eb; }
+
+        /* Lang switcher */
+        .lang-switch {
+            display: flex;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .lang-btn {
+            padding: 6px 12px;
+            font-size: 13px;
+            border: none;
+            background: transparent;
+            color: #9ca3af;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+        .lang-btn.active {
+            background: #2563eb;
+            color: #ffffff;
+        }
+        .lang-btn:hover:not(.active) {
+            color: #1a1a2e;
+            background: #f3f4f6;
+        }
 
         /* Hero */
         .hero {
@@ -214,20 +245,25 @@
 
     <nav>
         <a class="nav-brand" href="#">Ouse</a>
-        <div class="nav-links">
-            <a href="#projects">Projects</a>
-            <a href="MS/">Resources</a>
+        <div class="nav-right">
+            <div class="nav-links">
+                <a href="#projects" data-i18n="nav_projects">Projects</a>
+            </div>
+            <div class="lang-switch">
+                <button class="lang-btn active" data-lang="zh" onclick="setLang('zh')">中</button>
+                <button class="lang-btn" data-lang="en" onclick="setLang('en')">EN</button>
+            </div>
         </div>
     </nav>
 
     <div class="hero">
         <div class="hero-name">Ouse</div>
-        <div class="hero-sub">Independent Developer</div>
-        <div class="hero-desc">Casualties Unknown mod developer. Building performance tools, anti-cheat systems, and gameplay enhancements.</div>
+        <div class="hero-sub" data-i18n="hero_sub">独立开发者</div>
+        <div class="hero-desc" data-i18n="hero_desc">Casualties Unknown 模组开发者。打造性能优化工具、反作弊系统与游戏玩法增强。</div>
     </div>
 
     <section id="projects">
-        <div class="section-title">Projects</div>
+        <div class="section-title" data-i18n="section_projects">项目</div>
         <div class="card-grid" id="projectsGrid"></div>
     </section>
 
@@ -244,67 +280,116 @@
     </div>
 
     <script>
+        const i18n = {
+            zh: {
+                nav_projects: '项目',
+                hero_sub: '独立开发者',
+                hero_desc: 'Casualties Unknown 模组开发者。打造性能优化工具、反作弊系统与游戏玩法增强。',
+                section_projects: '项目',
+                tag_performance: '性能优化',
+                tag_anticheat: '反作弊',
+                tag_framework: '框架',
+                tag_content: '内容',
+                tag_tool: '工具',
+                glassm_desc: '世界生成优化。修补地形生成、实体放置、区块流式加载与光照。',
+                glassm_detail: 'Casualties Unknown 核心世界生成优化模组。\n\n修补 WorldGeneration 方法（地形生成、实体放置、结构生成、更新、清除）和 GlobalDark，优化区块流式加载与光照。包含区块流式加载系统与诊断工具。\n\ngithub.com/mouse114514',
+                shieldn_desc: '服务端反作弊，含物理沙箱回放、移动验证与自动踢出升级。',
+                shieldn_detail: 'CU 多人游戏服务端反作弊与反利用系统。\n\n功能包括：基于物理沙箱回放的移动验证（检查点批处理）、速度/跳跃上限、穿墙扫描、违规积分自动踢出升级、交互距离加固、泛洪限速，以及回传权威位置给作弊者。\n\n硬依赖 KrokoshaCasualtiesMP。',
+                glassfuck_desc: '极限 FPS 优化。禁用粒子、阴影，裁剪音频，强制休眠远距离实体。',
+                glassfuck_detail: '极限 FPS/性能优化模组。不保证兼容性。\n\n禁用粒子、裁剪远距离音频、禁用阴影、简化渲染器、极力减少 Physics2D 迭代、强制休眠远距离实体、尝试对象池化，并可选输出性能诊断日志。\n\n软依赖 GlassM。',
+                grassk_desc: '模组框架与管理器。加载外部模组包，提供命令系统、热重载与国际化。',
+                grassk_detail: 'Casualties Unknown 模组框架/管理器。\n\n从 mods/ 文件夹加载外部模组包，提供命令系统、热重载支持、国际化、自定义物品与配方的内容注册器，以及协程/tick 运行器。作为 CU 的轻量级模组开发 SDK。',
+                mechenhance_desc: '机械增强。设计台、自定义蓝图、机器与完整制作系统。',
+                mechenhance_detail: 'CU 机械/制作增强模组。\n\n添加设计台（可放置工作站）、自定义蓝图、书面蓝图、机器、完整的制作配方系统（含存档/读档）、游戏内设计编辑器 UI（支持中英文切换）以及调试工具。',
+                behavior_desc: '回放系统。录制与回放游戏过程，含自由视角与 UI 覆盖。',
+                behavior_detail: 'Casualties Unknown 回放系统。\n\n录制与回放游戏过程、自由视角模式、UI 覆盖层。快捷键：F5 录制、F6 回放、F7 停止、Tab 自由视角。'
+            },
+            en: {
+                nav_projects: 'Projects',
+                hero_sub: 'Independent Developer',
+                hero_desc: 'Casualties Unknown mod developer. Building performance tools, anti-cheat systems, and gameplay enhancements.',
+                section_projects: 'Projects',
+                tag_performance: 'Performance',
+                tag_anticheat: 'Anti-Cheat',
+                tag_framework: 'Framework',
+                tag_content: 'Content',
+                tag_tool: 'Tool',
+                glassm_desc: 'World generation optimization. Patches terrain gen, entity placement, chunk streaming and lighting.',
+                glassm_detail: 'Core world-generation optimization mod for Casualties Unknown.\n\nPatches WorldGeneration methods (terrain gen, entity placement, structure gen, update, clear) and GlobalDark to optimize chunk streaming and lighting. Includes a chunk streaming system and diagnostics.\n\ngithub.com/mouse114514',
+                shieldn_desc: 'Server-side anti-cheat with physics-sandbox replay, movement validation, and auto-kick escalation.',
+                shieldn_detail: 'Server-side anti-cheat and anti-exploit system for CU multiplayer.\n\nFeatures movement validation with physics-sandbox replay (checkpoint batching), speed/jump capping, noclip swept-cast, VL violation scoring with auto-kick escalation, interaction distance hardening, flood-rate limiting, and kickback (resending authoritative position to cheaters).\n\nHard-depends on KrokoshaCasualtiesMP.',
+                glassfuck_desc: 'Aggressive FPS optimization. Disables particles, shadows, culls audio, force-sleeps distant entities.',
+                glassfuck_detail: 'Aggressive FPS/performance optimization mod. NO COMPATIBILITY GUARANTEED.\n\nDisables particles, culls distant audio, disables shadows, simplifies renderers, aggressively minimizes Physics2D iterations, force-sleeps distant entities, attempts object pooling, and optionally logs performance diagnostics.\n\nSoft-depends on GlassM.',
+                grassk_desc: 'Mod framework and manager. Loads external mod packs, provides commands, hot-reload, i18n.',
+                grassk_detail: 'Mod framework/manager for Casualties Unknown.\n\nLoads external mod packs from a mods/ folder, provides a command system, hot-reload support, i18n, content registrars for custom items and recipes, and a coroutine/tick runner. Acts as a lightweight modding SDK for CU.',
+                mechenhance_desc: 'Mechanical enhancement. Design tables, custom blueprints, machines, and a full crafting system.',
+                mechenhance_detail: 'Mechanical/crafting enhancement mod for CU.\n\nAdds Design Tables (placeable stations), custom blueprints, written blueprints, machines, a full crafting recipe system with save/load, an in-game design editor UI with language picker (CN/EN), and debug tools.',
+                behavior_desc: 'Replay system. Record and replay gameplay with free-cam mode and UI overlay.',
+                behavior_detail: 'Replay system for Casualties Unknown.\n\nRecord and replay gameplay, free-cam mode, UI overlay. Controls: F5 record, F6 replay, F7 stop, Tab free-cam.'
+            }
+        };
+
         const projects = [
             {
-                id: 'glassm',
-                icon: '⚡',
-                name: 'GlassM',
-                tag: 'Performance',
-                desc: 'World generation optimization. Patches terrain gen, entity placement, chunk streaming and lighting.',
-                detail: 'Core world-generation optimization mod for Casualties Unknown.\n\nPatches WorldGeneration methods (terrain gen, entity placement, structure gen, update, clear) and GlobalDark to optimize chunk streaming and lighting. Includes a chunk streaming system and diagnostics.\n\ngithub.com/mouse114514'
+                id: 'glassm', icon: '⚡',
+                nameKey: 'glassm', tagKey: 'tag_performance'
             },
             {
-                id: 'shieldn',
-                icon: '🛡',
-                name: 'ShieldN',
-                tag: 'Anti-Cheat',
-                desc: 'Server-side anti-cheat with physics-sandbox replay, movement validation, and auto-kick escalation.',
-                detail: 'Server-side anti-cheat and anti-exploit system for CU multiplayer.\n\nFeatures movement validation with physics-sandbox replay (checkpoint batching), speed/jump capping, noclip swept-cast, VL violation scoring with auto-kick escalation, interaction distance hardening, flood-rate limiting, and kickback (resending authoritative position to cheaters).\n\nHard-depends on KrokoshaCasualtiesMP.'
+                id: 'shieldn', icon: '🛡',
+                nameKey: 'shieldn', tagKey: 'tag_anticheat'
             },
             {
-                id: 'glassfuck',
-                icon: '🔥',
-                name: 'GlassFUCK',
-                tag: 'Performance',
-                desc: 'Aggressive FPS optimization. Disables particles, shadows, culls audio, force-sleeps distant entities.',
-                detail: 'Aggressive FPS/performance optimization mod. NO COMPATIBILITY GUARANTEED.\n\nDisables particles, culls distant audio, disables shadows, simplifies renderers, aggressively minimizes Physics2D iterations, force-sleeps distant entities, attempts object pooling, and optionally logs performance diagnostics.\n\nSoft-depends on GlassM.'
+                id: 'glassfuck', icon: '🔥',
+                nameKey: 'glassfuck', tagKey: 'tag_performance'
             },
             {
-                id: 'grassk',
-                icon: '🧩',
-                name: 'GrassK',
-                tag: 'Framework',
-                desc: 'Mod framework and manager. Loads external mod packs, provides commands, hot-reload, i18n.',
-                detail: 'Mod framework/manager for Casualties Unknown.\n\nLoads external mod packs from a mods/ folder, provides a command system, hot-reload support, i18n, content registrars for custom items and recipes, and a coroutine/tick runner. Acts as a lightweight modding SDK for CU.'
+                id: 'grassk', icon: '🧩',
+                nameKey: 'grassk', tagKey: 'tag_framework'
             },
             {
-                id: 'mechenhance',
-                icon: '⚙',
-                name: 'MechEnhance',
-                tag: 'Content',
-                desc: 'Mechanical enhancement. Design tables, custom blueprints, machines, and a full crafting system.',
-                detail: 'Mechanical/crafting enhancement mod for CU.\n\nAdds Design Tables (placeable stations), custom blueprints, written blueprints, machines, a full crafting recipe system with save/load, an in-game design editor UI with language picker (CN/EN), and debug tools.'
+                id: 'mechenhance', icon: '⚙',
+                nameKey: 'mechenhance', tagKey: 'tag_content'
             },
             {
-                id: 'behavior',
-                icon: '🎬',
-                name: 'BehaviorIsntUnknown',
-                tag: 'Tool',
-                desc: 'Replay system. Record and replay gameplay with free-cam mode and UI overlay.',
-                detail: 'Replay system for Casualties Unknown.\n\nRecord and replay gameplay, free-cam mode, UI overlay. Controls: F5 record, F6 replay, F7 stop, Tab free-cam.'
+                id: 'behavior', icon: '🎬',
+                nameKey: 'behavior', tagKey: 'tag_tool'
             }
         ];
 
+        let currentLang = localStorage.getItem('lang') || 'zh';
+
+        function setLang(lang) {
+            currentLang = lang;
+            localStorage.setItem('lang', lang);
+            document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
+
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.lang === lang);
+            });
+
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (i18n[lang][key]) el.textContent = i18n[lang][key];
+            });
+
+            renderCards();
+        }
+
+        function t(key) {
+            return i18n[currentLang][key] || key;
+        }
+
         function renderCards() {
             const grid = document.getElementById('projectsGrid');
+            grid.innerHTML = '';
             projects.forEach(item => {
                 const card = document.createElement('div');
                 card.className = 'card';
                 card.innerHTML = `
                     <div class="card-icon">${item.icon}</div>
-                    <h3>${item.name}</h3>
-                    <p>${item.desc}</p>
-                    <span class="card-tag">${item.tag}</span>
+                    <h3>${item.nameKey.charAt(0).toUpperCase() + item.nameKey.slice(1).replace(/([A-Z])/g, '$1')}</h3>
+                    <p>${t(item.nameKey + '_desc')}</p>
+                    <span class="card-tag">${t(item.tagKey)}</span>
                 `;
                 card.addEventListener('click', () => showDetail(item));
                 grid.appendChild(card);
@@ -312,9 +397,10 @@
         }
 
         function showDetail(item) {
-            document.getElementById('detailTitle').textContent = item.name;
-            document.getElementById('detailContent').textContent = item.detail;
-            document.getElementById('detailTag').textContent = item.tag;
+            document.getElementById('detailTitle').textContent =
+                item.nameKey.charAt(0).toUpperCase() + item.nameKey.slice(1).replace(/([A-Z])/g, '$1');
+            document.getElementById('detailContent').textContent = t(item.nameKey + '_detail');
+            document.getElementById('detailTag').textContent = t(item.tagKey);
             document.getElementById('detailPanel').classList.add('active');
             document.getElementById('detailOverlay').classList.add('active');
         }
@@ -324,13 +410,12 @@
             document.getElementById('detailOverlay').classList.remove('active');
         }
 
-        renderCards();
+        setLang(currentLang);
 
         document.getElementById('detailOverlay').addEventListener('click', closeDetail);
         document.getElementById('closeBtn').addEventListener('click', closeDetail);
         document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDetail(); });
 
-        // Smooth scroll for nav links
         document.querySelectorAll('.nav-links a[href^="#"]').forEach(a => {
             a.addEventListener('click', e => {
                 e.preventDefault();
