@@ -25,7 +25,7 @@
             --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
             --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.07), 0 2px 4px -2px rgba(0,0,0,0.05);
             --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.08), 0 4px 6px -4px rgba(0,0,0,0.04);
-            --radius: 16px;
+            --radius: 18px;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html { scroll-behavior: smooth; }
@@ -41,7 +41,7 @@
         /* NAV */
         nav {
             position: fixed; top: 0; left: 0; right: 0; height: 64px;
-            background: rgba(255,255,255,0.8);
+            background: rgba(255,255,255,0.85);
             backdrop-filter: blur(20px) saturate(180%);
             border-bottom: 1px solid rgba(0,0,0,0.06);
             display: flex; align-items: center; justify-content: space-between;
@@ -77,72 +77,97 @@
 
         /* SECTION */
         .section-divider { width: 100%; height: 1px; background: linear-gradient(90deg, transparent, var(--gray-200), transparent); margin: 64px 0 0; }
-        section { max-width: 1080px; margin: 0 auto; padding: 64px clamp(20px, 4vw, 48px) 80px; }
+        section { max-width: 1100px; margin: 0 auto; padding: 64px clamp(20px, 4vw, 48px) 80px; }
         .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 36px; }
         .section-title { font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 2.5px; color: var(--gray-400); }
         .section-count { font-size: 13px; color: var(--gray-300); font-weight: 500; }
 
         /* FILTER TABS */
-        .filter-bar { display: flex; gap: 6px; margin-bottom: 28px; flex-wrap: wrap; }
-        .filter-btn { padding: 7px 18px; font-size: 13px; font-weight: 600; border: 1px solid var(--gray-200); border-radius: 100px; background: var(--white); color: var(--gray-500); cursor: pointer; transition: all 0.2s; font-family: inherit; }
+        .filter-bar { display: flex; gap: 6px; margin-bottom: 32px; flex-wrap: wrap; }
+        .filter-btn { padding: 8px 20px; font-size: 13px; font-weight: 600; border: 1px solid var(--gray-200); border-radius: 100px; background: var(--white); color: var(--gray-500); cursor: pointer; transition: all 0.2s; font-family: inherit; }
         .filter-btn:hover { border-color: var(--gray-300); color: var(--gray-700); }
         .filter-btn.active { background: var(--gray-900); color: var(--white); border-color: var(--gray-900); }
 
-        /* MOD CARDS — large, detailed */
-        .card-list { display: flex; flex-direction: column; gap: 20px; }
+        /* ========== MOD CARD — FULL WIDTH, LARGE ========== */
+        .card-list { display: flex; flex-direction: column; gap: 24px; }
         .mod-card {
             position: relative;
-            display: grid;
-            grid-template-columns: 80px 1fr;
-            gap: 28px;
             border: 1px solid var(--gray-200);
             border-radius: var(--radius);
-            padding: 32px;
-            text-decoration: none;
-            color: inherit;
             background: var(--white);
             transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
             overflow: hidden;
         }
-        .mod-card::before {
-            content: '';
-            position: absolute; inset: 0; border-radius: var(--radius);
-            background: linear-gradient(135deg, rgba(37,99,235,0.02), rgba(124,58,237,0.02));
-            opacity: 0; transition: opacity 0.35s;
-        }
-        .mod-card:hover { border-color: var(--blue-100); box-shadow: var(--shadow-lg), 0 0 0 1px rgba(37,99,235,0.06); transform: translateY(-3px); }
-        .mod-card:hover::before { opacity: 1; }
+        .mod-card:hover { border-color: var(--blue-100); box-shadow: var(--shadow-lg), 0 0 0 1px rgba(37,99,235,0.06); }
 
+        .mod-header {
+            display: flex;
+            align-items: center;
+            gap: 28px;
+            padding: 40px 44px 0;
+        }
         .mod-icon-wrap {
-            width: 80px; height: 80px; flex-shrink: 0;
-            border-radius: 18px; background: var(--gray-50); border: 1px solid var(--gray-100);
+            width: 100px; height: 100px; flex-shrink: 0;
+            border-radius: 22px; background: var(--gray-50); border: 1px solid var(--gray-100);
             display: flex; align-items: center; justify-content: center; overflow: hidden;
-            transition: all 0.35s; position: relative; z-index: 1;
+            transition: all 0.35s;
         }
         .mod-card:hover .mod-icon-wrap { border-color: var(--blue-100); box-shadow: 0 0 0 4px var(--blue-50); }
-        .mod-icon { width: 48px; height: 48px; object-fit: contain; image-rendering: pixelated; image-rendering: crisp-edges; transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1); }
-        .mod-card:hover .mod-icon { transform: scale(1.1); }
+        .mod-icon { width: 64px; height: 64px; object-fit: contain; image-rendering: pixelated; image-rendering: crisp-edges; transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1); }
+        .mod-card:hover .mod-icon { transform: scale(1.08); }
 
-        .mod-body { flex: 1; min-width: 0; position: relative; z-index: 1; }
-        .mod-head { display: flex; align-items: center; gap: 12px; margin-bottom: 6px; flex-wrap: wrap; }
-        .mod-name { font-size: 22px; font-weight: 800; color: var(--gray-900); letter-spacing: -0.5px; }
-        .mod-tag { font-size: 12px; font-weight: 600; padding: 4px 12px; border-radius: 100px; background: var(--blue-50); color: var(--blue); white-space: nowrap; }
-        .mod-subtitle { font-size: 15px; color: var(--gray-600); font-weight: 500; margin-bottom: 14px; line-height: 1.5; }
-        .mod-desc { font-size: 14px; color: var(--gray-500); line-height: 1.8; margin-bottom: 16px; }
-        .mod-features { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; }
-        .mod-feat { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; font-weight: 500; color: var(--gray-600); background: var(--gray-50); border: 1px solid var(--gray-100); border-radius: 6px; padding: 5px 12px; }
-        .mod-feat svg { width: 12px; height: 12px; color: var(--blue); flex-shrink: 0; }
-        .mod-actions { display: flex; align-items: center; gap: 16px; }
-        .mod-link { display: inline-flex; align-items: center; gap: 6px; font-size: 14px; color: var(--blue); font-weight: 600; transition: gap 0.3s; }
+        .mod-head-text { flex: 1; min-width: 0; }
+        .mod-top-row { display: flex; align-items: center; gap: 14px; margin-bottom: 6px; flex-wrap: wrap; }
+        .mod-name { font-size: 28px; font-weight: 800; color: var(--gray-900); letter-spacing: -0.7px; }
+        .mod-tag { font-size: 12px; font-weight: 600; padding: 4px 14px; border-radius: 100px; background: var(--blue-50); color: var(--blue); white-space: nowrap; }
+        .mod-version { font-size: 13px; color: var(--gray-300); font-weight: 500; }
+        .mod-subtitle { font-size: 17px; color: var(--gray-600); font-weight: 500; line-height: 1.5; }
+
+        .mod-link-row { padding: 0 44px; margin-top: 16px; }
+        .mod-link { display: inline-flex; align-items: center; gap: 6px; font-size: 14px; color: var(--blue); font-weight: 600; text-decoration: none; transition: gap 0.3s; }
         .mod-link svg { width: 16px; height: 16px; transition: transform 0.3s; }
-        .mod-card:hover .mod-link { gap: 10px; }
-        .mod-card:hover .mod-link svg { transform: translateX(3px); }
+        .mod-link:hover { gap: 10px; }
+        .mod-link:hover svg { transform: translateX(3px); }
 
-        .mod-version { font-size: 12px; color: var(--gray-300); font-weight: 500; }
+        /* FEATURE CHIPS */
+        .mod-chips { display: flex; flex-wrap: wrap; gap: 8px; padding: 20px 44px 0; }
+        .mod-chip { display: inline-flex; align-items: center; gap: 5px; font-size: 13px; font-weight: 500; color: var(--gray-600); background: var(--gray-50); border: 1px solid var(--gray-100); border-radius: 8px; padding: 6px 14px; }
+        .mod-chip svg { width: 13px; height: 13px; color: var(--blue); flex-shrink: 0; }
+
+        /* DETAIL BODY */
+        .mod-detail { padding: 28px 44px 40px; }
+        .mod-detail h3 { font-size: 18px; font-weight: 700; color: var(--gray-900); margin: 28px 0 12px; letter-spacing: -0.3px; }
+        .mod-detail h3:first-child { margin-top: 0; }
+        .mod-detail p { font-size: 15px; color: var(--gray-600); line-height: 1.85; margin-bottom: 14px; }
+        .mod-detail ul { padding-left: 22px; margin-bottom: 14px; }
+        .mod-detail li { font-size: 15px; color: var(--gray-600); line-height: 1.85; margin-bottom: 4px; }
+        .mod-detail li strong { color: var(--gray-800); font-weight: 600; }
+        .mod-detail code { font-size: 13px; background: var(--gray-50); border: 1px solid var(--gray-100); border-radius: 5px; padding: 2px 7px; font-family: 'SF Mono', 'Cascadia Code', Consolas, monospace; color: var(--gray-700); }
+
+        /* TABLE */
+        .mod-table { width: 100%; border-collapse: collapse; margin: 12px 0 18px; font-size: 14px; }
+        .mod-table th { text-align: left; font-weight: 600; color: var(--gray-500); font-size: 12px; text-transform: uppercase; letter-spacing: 0.8px; padding: 10px 14px; border-bottom: 2px solid var(--gray-200); background: var(--gray-50); }
+        .mod-table td { padding: 10px 14px; border-bottom: 1px solid var(--gray-100); color: var(--gray-600); }
+        .mod-table tr:last-child td { border-bottom: none; }
+        .mod-table .yes { color: #16a34a; font-weight: 600; }
+        .mod-table .no { color: #dc2626; font-weight: 600; }
+
+        /* EXPAND TOGGLE */
+        .mod-expand-btn {
+            display: flex; align-items: center; justify-content: center; gap: 6px;
+            width: 100%; padding: 12px; border: none; border-top: 1px solid var(--gray-100);
+            background: var(--gray-50); color: var(--gray-400); font-size: 13px; font-weight: 600;
+            cursor: pointer; transition: all 0.2s; font-family: inherit;
+        }
+        .mod-expand-btn:hover { background: var(--gray-100); color: var(--gray-600); }
+        .mod-expand-btn svg { width: 14px; height: 14px; transition: transform 0.3s; }
+        .mod-card.expanded .mod-expand-btn svg { transform: rotate(180deg); }
+        .mod-detail { display: none; }
+        .mod-card.expanded .mod-detail { display: block; }
 
         /* FOOTER */
         footer { border-top: 1px solid var(--gray-100); padding: 48px clamp(20px, 4vw, 48px); }
-        .footer-inner { max-width: 1080px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; }
+        .footer-inner { max-width: 1100px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; }
         .footer-brand { font-size: 16px; font-weight: 700; }
         .footer-brand span { background: linear-gradient(135deg, var(--blue), #7c3aed); -webkit-background-clip: text; background-clip: text; color: transparent; }
         .footer-links { display: flex; gap: 24px; }
@@ -157,9 +182,11 @@
         @media (max-width: 700px) {
             .hero { padding: 120px 16px 40px; }
             .stats { gap: 24px; flex-wrap: wrap; }
-            .mod-card { grid-template-columns: 1fr; padding: 24px; gap: 16px; }
-            .mod-icon-wrap { width: 64px; height: 64px; border-radius: 14px; }
-            .mod-icon { width: 40px; height: 40px; }
+            .mod-header { padding: 28px 24px 0; gap: 18px; }
+            .mod-icon-wrap { width: 72px; height: 72px; }
+            .mod-icon { width: 48px; height: 48px; }
+            .mod-name { font-size: 22px; }
+            .mod-chips, .mod-detail, .mod-link-row { padding-left: 24px; padding-right: 24px; }
             .section-header { flex-direction: column; align-items: flex-start; gap: 4px; }
             .footer-inner { flex-direction: column; gap: 20px; text-align: center; }
         }
@@ -190,16 +217,16 @@
         </div>
         <div class="hero-name">Ouse</div>
         <div class="hero-sub" data-i18n="hero_sub">独立开发者</div>
-        <div class="hero-desc" data-i18n="hero_desc">打造性能优化工具、反作弊系统与游戏玩法增强。<br>专注于 Casualties Unknown 的模组开发。</div>
+        <div class="hero-desc" data-i18n="hero_desc">打造性能优化工具与游戏玩法增强。<br>专注于 Casualties Unknown 的模组开发。</div>
     </div>
 
     <div class="stats">
         <div class="stat">
-            <div class="stat-num" data-count="7">0</div>
+            <div class="stat-num" data-count="6">0</div>
             <div class="stat-label" data-i18n="stat_mods">Mods</div>
         </div>
         <div class="stat">
-            <div class="stat-num" data-count="4">0</div>
+            <div class="stat-num" data-count="3">0</div>
             <div class="stat-label" data-i18n="stat_categories">Categories</div>
         </div>
         <div class="stat">
@@ -213,7 +240,7 @@
     <section id="mods">
         <div class="section-header">
             <div class="section-title" data-i18n="section_mods">Mods</div>
-            <div class="section-count">7 <span data-i18n="section_projects">projects</span></div>
+            <div class="section-count">6 <span data-i18n="section_projects">projects</span></div>
         </div>
         <div class="filter-bar" id="filterBar"></div>
         <div class="card-list" id="modsGrid"></div>
@@ -231,272 +258,740 @@
     </footer>
 
     <script>
-        const i18n = {
-            zh: {
-                nav_mods: '模组',
-                hero_badge: 'Casualties Unknown 模组开发者',
-                hero_sub: '独立开发者',
-                hero_desc: '打造性能优化工具、反作弊系统与游戏玩法增强。<br>专注于 Casualties Unknown 的模组开发。',
-                stat_mods: '个模组',
-                stat_categories: '个类别',
-                stat_since: '年启动',
-                section_mods: '模组',
-                section_projects: '个项目',
-                view_nexus: '在 N网 查看',
-                filter_all: '全部',
-                tag_perf: '性能优化',
-                tag_net: '网络',
-                tag_content: '内容',
-                tag_tool: '基准工具',
-                tag_ai: 'AI 桥接'
-            },
-            en: {
-                nav_mods: 'Mods',
-                hero_badge: 'Casualties Unknown Mod Developer',
-                hero_sub: 'Independent Developer',
-                hero_desc: 'Building performance tools, anti-cheat systems, and gameplay enhancements.<br>Focused on mod development for Casualties Unknown.',
-                stat_mods: 'Mods',
-                stat_categories: 'Categories',
-                stat_since: 'Active Since',
-                section_mods: 'Mods',
-                section_projects: 'projects',
-                view_nexus: 'View on Nexus Mods',
-                filter_all: 'All',
-                tag_perf: 'Performance',
-                tag_net: 'Network',
-                tag_content: 'Content',
-                tag_tool: 'Benchmark',
-                tag_ai: 'AI Bridge'
+    const checkSvg = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5l3.5 3.5L13 4"/></svg>';
+    const arrowSvg = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg>';
+    const chevronSvg = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6l4 4 4-4"/></svg>';
+
+    const i18n = {
+        zh: {
+            nav_mods: '模组',
+            hero_badge: 'Casualties Unknown 模组开发者',
+            hero_sub: '独立开发者',
+            hero_desc: '打造性能优化工具与游戏玩法增强。<br>专注于 Casualties Unknown 的模组开发。',
+            stat_mods: '个模组',
+            stat_categories: '个类别',
+            stat_since: '年启动',
+            section_mods: '模组',
+            section_projects: '个项目',
+            view_nexus: '在 N网 查看',
+            expand: '展开详情',
+            collapse: '收起',
+            filter_all: '全部',
+            tag_perf: '性能优化',
+            tag_net: '网络',
+            tag_content: '内容',
+            tag_tool: '基准工具',
+        },
+        en: {
+            nav_mods: 'Mods',
+            hero_badge: 'Casualties Unknown Mod Developer',
+            hero_sub: 'Independent Developer',
+            hero_desc: 'Building performance tools and gameplay enhancements.<br>Focused on mod development for Casualties Unknown.',
+            stat_mods: 'Mods',
+            stat_categories: 'Categories',
+            stat_since: 'Active Since',
+            section_mods: 'Mods',
+            section_projects: 'projects',
+            view_nexus: 'View on Nexus Mods',
+            expand: 'Show Details',
+            collapse: 'Collapse',
+            filter_all: 'All',
+            tag_perf: 'Performance',
+            tag_net: 'Network',
+            tag_content: 'Content',
+            tag_tool: 'Benchmark',
+        }
+    };
+
+    function t(key) { return i18n[currentLang][key] || key; }
+
+    /* ======================== MOD DATA ======================== */
+    const mods = [
+        {
+            icon: 'icons/GlassM.png',
+            name: 'GlassM',
+            tag: 'tag_perf',
+            version: 'v0.1.3',
+            nexus: 'https://www.nexusmods.com/scavprototype/mods/580',
+            subtitle: { zh: '流式世界生成性能优化', en: 'Streaming World Generation Optimization' },
+            chips: { zh: ['流式渲染','物理区动态开关','矿石走原版管线','出生点精确','无限岩保护','PerfDiag 诊断','联机兼容','结构修复'], en: ['Streaming Render','Dynamic Physics','Vanilla Ores','Precise Spawn','Infinite Rock Guard','PerfDiag Diagnostics','MP Compatible','Structural Fixes'] },
+            detail: {
+                zh: `<h3>概述</h3>
+<p>将原版"全层一次性生成"替换为以玩家为中心的流式区块生成，大幅降低生成开销与物理负载。</p>
+
+<h3>基准测试</h3>
+<table class="mod-table">
+<tr><th>设备</th><th>场景</th><th>原版</th><th>GlassM</th></tr>
+<tr><td>低端 (骁龙 870 #1)</td><td>静止</td><td>21 FPS</td><td>34 FPS</td></tr>
+<tr><td>低端 (骁龙 870 #1)</td><td>移动中</td><td>21 FPS</td><td>28 FPS</td></tr>
+<tr><td>骁龙 870 #2</td><td>静止</td><td>35 FPS</td><td>53 FPS</td></tr>
+<tr><td>骁龙 870 #2</td><td>移动中</td><td>27 FPS</td><td>46 FPS</td></tr>
+<tr><td>中端 (i5)</td><td>静止</td><td>184 FPS</td><td>237 FPS</td></tr>
+<tr><td>中端 (i5)</td><td>移动中</td><td>184 FPS</td><td>227 FPS</td></tr>
+</table>
+<table class="mod-table">
+<tr><th>设备</th><th>原版生成时间</th><th>GlassM 生成时间</th></tr>
+<tr><td>低端 (骁龙 870 #1)</td><td>13 秒</td><td>7 秒</td></tr>
+<tr><td>骁龙 870 #2</td><td>未知</td><td>5.6 秒</td></tr>
+<tr><td>中端 (i5) — 首层</td><td>5 秒</td><td>3 秒</td></tr>
+<tr><td>中端 (i5) — 后续层</td><td>未知</td><td>&lt; 1 秒</td></tr>
+</table>
+
+<h3>核心功能</h3>
+<ul>
+<li><strong>流式世界生成</strong>：区块按玩家（联机时含所有玩家）需求生成/卸载，消除全层加载，进入更快、运行更流畅</li>
+<li><strong>预填地形数据 & 流式渲染</strong>：开局一次性预填全层地形数据（纯数组，开销极低），之后按需生成/卸载区块</li>
+<li><strong>动态物理区</strong>：远离玩家的区块关闭 collider 与刚体模拟，刚体负担从原版 256 块大幅下降</li>
+<li><strong>矿石走原版管线</strong>：通过反射调用原版 GenerateOres，铜/铁/钛分布与原版一致，兼容修改矿类生成的 mod</li>
+<li><strong>出生点精确</strong>：出生空腔同步渲染，PlaceBody 碰撞扫描正常落位（深度 0~15m），仅需生成 2×2 区块</li>
+<li><strong>无限岩保护</strong>：流式生成不会破坏地图边界的无限岩（ID 14）</li>
+<li><strong>实体对齐原版</strong>：棘背、钟乳石、炮塔等生成参数与坐标逐项对照原版反编译源码，生物警戒范围恢复原版水平</li>
+<li><strong>PerfDiag 内置诊断</strong>：每 5 秒输出各系统耗时（WG/Fluid/Rigidbody）、FPS 与场景负载</li>
+<li><strong>联机兼容</strong>：兼容 KrokoshaCasualtiesMP，区块围绕所有玩家生成/卸载，客户端玩家不会因主机卸载区块而掉落</li>
+<li><strong>结构修复</strong>：跨区块大型结构的渲染与碰撞现在正确同步</li>
+</ul>
+
+<h3>兼容性 (v0.1.1)</h3>
+<table class="mod-table">
+<tr><th>Mod</th><th>状态</th></tr>
+<tr><td>Custom Structures</td><td class="yes">✅ 结构直接写入预填数据，不被覆盖</td></tr>
+<tr><td>TitaniumRestored</td><td class="yes">✅ 挂在 GenerateOres 后，数据已预填</td></tr>
+<tr><td>CUCoreLib（自定义矿物/结构/tile）</td><td class="yes">✅</td></tr>
+<tr><td>TrapLib / AdditionalTraps</td><td class="yes">✅</td></tr>
+<tr><td>NoOilMod</td><td class="yes">✅</td></tr>
+<tr><td>QoL Unknown 实体覆盖</td><td class="no">❌ 暂不兼容（实体仍走 GlassM 流式管线）</td></tr>
+<tr><td>CUCoreLib 建筑（PlaceCrystals）</td><td class="no">❌ 暂不兼容（需 Terrain-Ready 事件钩子）</td></tr>
+</table>
+
+<h3>安装</h3>
+<p>关闭游戏 → 将 <code>GlassM.dll</code> 放入 <code>BepInEx\plugins\</code> → 启动游戏，日志出现 <code>GlassM loading</code> 即生效。</p>`,
+                en: `<h3>Overview</h3>
+<p>Replaces vanilla's "full-layer generation" with player-centered streaming chunk generation, drastically reducing generation overhead and physics costs.</p>
+
+<h3>Benchmark Results</h3>
+<table class="mod-table">
+<tr><th>Device</th><th>Scenario</th><th>Vanilla</th><th>GlassM</th></tr>
+<tr><td>Low-End (Snapdragon 870 #1)</td><td>Idle</td><td>21 FPS</td><td>34 FPS</td></tr>
+<tr><td>Low-End (Snapdragon 870 #1)</td><td>Moving</td><td>21 FPS</td><td>28 FPS</td></tr>
+<tr><td>Snapdragon 870 #2</td><td>Idle</td><td>35 FPS</td><td>53 FPS</td></tr>
+<tr><td>Snapdragon 870 #2</td><td>Moving</td><td>27 FPS</td><td>46 FPS</td></tr>
+<tr><td>Mid-Range (i5)</td><td>Idle</td><td>184 FPS</td><td>237 FPS</td></tr>
+<tr><td>Mid-Range (i5)</td><td>Moving</td><td>184 FPS</td><td>227 FPS</td></tr>
+</table>
+<table class="mod-table">
+<tr><th>Device</th><th>Vanilla Gen Time</th><th>GlassM Gen Time</th></tr>
+<tr><td>Low-End (Snapdragon 870 #1)</td><td>13 sec</td><td>7 sec</td></tr>
+<tr><td>Snapdragon 870 #2</td><td>Unknown</td><td>5.6 sec</td></tr>
+<tr><td>Mid-Range (i5) — First Layer</td><td>5 sec</td><td>3 sec</td></tr>
+<tr><td>Mid-Range (i5) — Subsequent Layers</td><td>Unknown</td><td>&lt; 1 sec</td></tr>
+</table>
+
+<h3>Core Features</h3>
+<ul>
+<li><strong>Streaming World Generation</strong> — Chunks generated/unloaded on demand around players (all players in multiplayer). Eliminates full-layer load for faster entry and smoother gameplay</li>
+<li><strong>Prefilled Terrain Data & Streaming Rendering</strong> — Entire layer terrain data pre-filled at load (pure array, extremely low overhead), chunks then generated/unloaded on demand</li>
+<li><strong>Dynamic Physics Zone</strong> — Colliders and rigidbody simulations disabled for distant chunks. Rigidbody load reduced from vanilla's 256 blocks</li>
+<li><strong>Vanilla-Aligned Ore Generation</strong> — Reflection invokes vanilla GenerateOres. Distribution aligns with vanilla; mods patching ore spawners remain compatible</li>
+<li><strong>Precise Spawn-in</strong> — Spawn void synchronized, PlaceBody collision scan lands correctly (Depth 0~15m). Only 2×2 chunk generation needed for initial spawn</li>
+<li><strong>Infinite Rock Protection</strong> — Streaming generation won't break boundary Infinite Rock (ID 14)</li>
+<li><strong>Vanilla-Aligned Entities</strong> — Thornbacks, stalactites, turret placement parameters meticulously checked against vanilla decompiled source. Active creature alert ranges restored</li>
+<li><strong>PerfDiag Built-in Diagnostics</strong> — Outputs system timings (WG/Fluid/Rigidbody), FPS, and scene load metrics every 5 seconds</li>
+<li><strong>Multiplayer Compatible</strong> — Works with KrokoshaCasualtiesMP. Chunks load/unload around all players. Client players won't fall through when host unloads chunks</li>
+<li><strong>Structural Fixes</strong> — Rendering and collision for large structures across chunk boundaries now correctly synchronized</li>
+</ul>
+
+<h3>Compatibility (v0.1.1)</h3>
+<table class="mod-table">
+<tr><th>Mod</th><th>Status</th></tr>
+<tr><td>Custom Structures</td><td class="yes">✅ Structures written into prefilled data, not overwritten</td></tr>
+<tr><td>TitaniumRestored</td><td class="yes">✅ Hooks after GenerateOres (data prefilled)</td></tr>
+<tr><td>CUCoreLib (Custom Ores / Structures / Tiles)</td><td class="yes">✅</td></tr>
+<tr><td>TrapLib / AdditionalTraps</td><td class="yes">✅</td></tr>
+<tr><td>NoOilMod</td><td class="yes">✅</td></tr>
+<tr><td>QoL Unknown Entity Overrides</td><td class="no">❌ Not yet compatible (entities still use GlassM pipeline)</td></tr>
+<tr><td>CUCoreLib Buildings (PlaceCrystals)</td><td class="no">❌ Not yet compatible (requires Terrain-Ready event hook)</td></tr>
+</table>
+
+<h3>Installation</h3>
+<p>Close the game → place <code>GlassM.dll</code> into <code>BepInEx\plugins\</code> → launch the game. Log shows <code>GlassM loading</code> if successful.</p>`
             }
-        };
+        },
+        {
+            icon: 'icons/BlassM.png',
+            name: 'BlassM',
+            tag: 'tag_tool',
+            version: 'v1.0.0',
+            nexus: 'https://www.nexusmods.com/scavprototype/mods/624',
+            subtitle: { zh: '游戏内通用性能基准工具', en: 'In-Game Universal Performance Benchmark' },
+            chips: { zh: ['通用基准','非阻塞','主动扫描模组','模组埋点','双通道输出'], en: ['Universal Bench','Non-Blocking','Auto Scan Mods','Mod Opt-In Probes','Dual Output'] },
+            detail: {
+                zh: `<h3>概述</h3>
+<p>不依赖任何具体模组，主动扫描游戏与所有已加载的 BepInEx 模组，非阻塞地在游戏内对各类系统进行基准测试。</p>
 
-        const checkSvg = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5l3.5 3.5L13 4"/></svg>';
+<h3>核心特性</h3>
+<ul>
+<li><strong>通用基准</strong>：覆盖 Buffers / Reflection / LINQ / Loops / Collections / String / GameSystems / ModSystems 八大类，每个探针独立报告 <code>ms/iter</code> 与 <code>B/iter</code>，无"对比"假设</li>
+<li><strong>非阻塞</strong>：协程分片执行，每帧最多让出，测量全程游戏保持可交互</li>
+<li><strong>主动扫描模组</strong>：通过 <code>Chainloader.PluginInfos</code> 自动枚举所有已加载模组，为每个模组生成元数据反射 / 字段遍历 / 静态方法扫描探针，无需模组对接</li>
+<li><strong>模组埋点（可选）</strong>：模组可在静态方法上标注 <code>[BlassMProbe(name, category)]</code>，BlassM 自动识别并纳入测试</li>
+<li><strong>双通道输出</strong>：结果同时写入游戏内控制台与 <code>BepInEx\LogOutput.log</code></li>
+</ul>
 
-        const mods = [
-            {
-                icon: 'icons/GlassM.png',
-                name: 'GlassM / GlassX',
-                tag: 'tag_perf',
-                version: 'v0.1.3',
-                nexus: 'https://www.nexusmods.com/scavprototype/mods/580',
-                subtitle: { zh: '流式世界生成核心优化', en: 'Streaming World Generation Core Optimization' },
-                desc: {
-                    zh: 'Casualties Unknown 流式生成性能模组。GlassM（标准版）与 GlassX（激进版）是同一模组的两种形态，二选一安装。核心思路：加载画面内一次性预填全图地形数据（纯数组，开销极低），之后以玩家为中心按需构建 tilemap 渲染——取代原版一次性构建全部 256 个区块的 tilemap/碰撞体/刚体。',
-                    en: 'Casualties Unknown streaming generation performance mod. GlassM (standard) and GlassX (aggressive) are two forms of the same mod — pick one. Core idea: pre-fill all terrain data in one shot during the loading screen (pure arrays, extremely low overhead), then build tilemap rendering on-demand around the player — replacing the vanilla approach of building all 256 chunks at once.'
-                },
-                features: {
-                    zh: ['流式渲染', '物理区动态开关', '矿石走原版管线', '出生点精确', '无限岩保护', 'PerfDiag 诊断', '联机兼容'],
-                    en: ['Streaming Render', 'Dynamic Physics', 'Vanilla Ores', 'Precise Spawn', 'Infinite Rock Guard', 'PerfDiag', 'MP Compatible']
-                }
-            },
-            {
-                icon: 'icons/BlassM.png',
-                name: 'BlassM',
-                tag: 'tag_tool',
-                version: 'v1.0.0',
-                nexus: 'https://www.nexusmods.com/scavprototype/mods/624',
-                subtitle: { zh: '游戏内通用性能基准工具', en: 'In-Game Universal Performance Benchmark' },
-                desc: {
-                    zh: '不依赖任何具体模组，主动扫描游戏与所有已加载的 BepInEx 模组，非阻塞地在游戏内对各类系统进行基准测试。覆盖 Buffers / Reflection / LINQ / Loops / Collections / String / GameSystems / ModSystems 八大类，每个探针独立报告 ms/iter 与 B/iter。协程分片执行，每帧最多让出，测量全程游戏保持可交互。',
-                    en: 'Works independently of any specific mod. Actively scans the game and all loaded BepInEx mods, running non-blocking in-game benchmarks across multiple systems. Covers 8 categories: Buffers, Reflection, LINQ, Loops, Collections, String, GameSystems, ModSystems. Each probe independently reports ms/iter and B/iter. Coroutine-based splitting ensures the game stays interactive throughout measurement.'
-                },
-                features: {
-                    zh: ['通用基准', '非阻塞', '主动扫描模组', '模组埋点', '双通道输出'],
-                    en: ['Universal Bench', 'Non-Blocking', 'Auto Scan Mods', 'Mod Probes', 'Dual Output']
-                }
-            },
-            {
-                icon: 'icons/GlassN.png',
-                name: 'GlassN',
-                tag: 'tag_net',
-                version: 'v0.1.0',
-                nexus: 'https://www.nexusmods.com/scavprototype/mods/593',
-                subtitle: { zh: '多人游戏网络优化', en: 'Multiplayer Network Optimization' },
-                desc: {
-                    zh: '针对 Casualties Unknown 多人联机的网络层优化模组。通过哈希缓冲复用减少重复序列化开销，快速压缩算法降低带宽占用，距离裁剪同步减少不必要的数据传输，空闲跳过机制在无变化时暂停同步，大幅降低联机延迟与带宽消耗。',
-                    en: 'Network layer optimization mod for Casualties Unknown multiplayer. Reduces redundant serialization overhead via hash buffer reuse, lowers bandwidth usage with fast compression algorithms, cuts unnecessary data transmission with distance-culled sync, and pauses synchronization when idle with no changes — significantly reducing multiplayer latency and bandwidth consumption.'
-                },
-                features: {
-                    zh: ['哈希缓冲复用', '快速压缩', '距离裁剪同步', '空闲跳过'],
-                    en: ['Hash Buffer Reuse', 'Fast Deflate', 'Distance-Culled Sync', 'Idle Skip']
-                }
-            },
-            {
-                icon: 'icons/CU_Noita.png',
-                name: 'CU Noita',
-                tag: 'tag_content',
-                version: '最新版',
-                nexus: 'https://www.nexusmods.com/scavprototype/mods/625',
-                subtitle: { zh: 'Noita 物理模拟与像素破坏', en: 'Noita-Style Physics & Pixel Destruction' },
-                desc: {
-                    zh: '将 Noita 的物理模拟与像素破坏系统带入 Casualties Unknown。支持实时流体动力学、像素级环境破坏、熔岩/酸液/毒素等流体交互，以及 Noita 风格的法杖与咒语系统。包含丰富的素材资源：法杖图标、咒语图标、药水、moodles 状态效果、炼金系统材质与着色器。',
-                    en: 'Brings Noita-style physics simulation and pixel destruction into Casualties Unknown. Supports real-time fluid dynamics, pixel-level environmental destruction, lava/acid/toxin fluid interactions, and a Noita-style wand & spell system. Includes rich asset resources: wand icons, spell icons, potions, moodle status effects, alchemy system materials, and custom shaders.'
-                },
-                features: {
-                    zh: ['流体动力学', '像素破坏', '法杖咒语', '药水系统', '炼金材质'],
-                    en: ['Fluid Dynamics', 'Pixel Destruction', 'Wands & Spells', 'Potion System', 'Alchemy Assets']
-                }
-            },
-            {
-                icon: 'icons/RedStoneCraft.png',
-                name: 'RedStone Craft',
-                tag: 'tag_content',
-                version: 'v1.0.0',
-                nexus: 'https://www.nexusmods.com/scavprototype/mods/555',
-                subtitle: { zh: '红石电路与机械合成系统', en: 'Redstone Circuitry & Mechanical Crafting' },
-                desc: {
-                    zh: 'Casualties Unknown 的红石电路模组。添加命令方块（顺序/循环/脉冲 + 8 方向可旋转）、红石线路（红石粉、可选信号强度、按钮、压力板、中继器等）、54 种方块含漏斗与合成台（3x3 自动合成）、红石驱动载具（矿车、装甲矿车、探测矿车、TNT 矿车、漏斗矿车，WASD 控制）。支持创意模式、中英双语。',
-                    en: 'Redstone circuitry mod for Casualties Unknown. Adds command blocks (sequence/loop/pulse + 8-directional rotation), redstone wiring (dust, signal strength, buttons, pressure plates, repeaters), 54 blocks including hoppers and crafting tables (3x3 auto-crafting), redstone-driven vehicles (minecarts, armored, detector, TNT, hopper — WASD controlled). Supports creative mode, bilingual CN/EN.'
-                },
-                features: {
-                    zh: ['命令方块', '红石线路', '54 种方块', '合成系统', '载具', '创意模式', '中英双语'],
-                    en: ['Command Blocks', 'Redstone Wire', '54 Blocks', 'Crafting', 'Vehicles', 'Creative Mode', 'Bilingual']
-                }
-            },
-            {
-                icon: 'icons/Cu-BloodBank.png',
-                name: 'Cu-BloodBank',
-                tag: 'tag_content',
-                version: 'v1.2.2',
-                nexus: 'https://www.nexusmods.com/scavprototype/mods/551',
-                subtitle: { zh: '血液资源管理与经济系统', en: 'Blood Resource Management & Economy' },
-                desc: {
-                    zh: '为 Casualties Unknown 添加血液系统：抽血/卖血机制。沙漠 1500ml、草地 500ml，卖血价格随累计卖血量递增（阶梯价格 4~23.5）。低卖血量时自动触发首次卖血选项，卖血价格超过 60 时有人拒绝交易。包含血袋标签、失血惩罚、血库系统兼容（Alexx MedicalBrutalism 联动）、中/繁/英三语。',
-                    en: 'Adds a blood system to Casualties Unknown: blood extraction/selling mechanics. Desert 1500ml, grassland 500ml. Selling price increases with cumulative volume (tiered pricing 4~23.5). Triggers first-time sell option at low volume, NPCs refuse when price exceeds 60. Includes blood bag labels, blood loss penalties, blood bank system compatibility (Alexx MedicalBrutalism crossover), CN/Traditional/EN trilingual.'
-                },
-                features: {
-                    zh: ['抽血/卖血', '阶梯价格', '血袋标签', '失血惩罚', 'Alexx 兼容', '三语'],
-                    en: ['Extract/Sell Blood', 'Tiered Pricing', 'Blood Labels', 'Blood Penalty', 'Alexx Compatible', 'Trilingual']
-                }
-            },
-            {
-                icon: 'icons/CUMCPB.png.png',
-                name: 'CU-MCP-Bridge',
-                tag: 'tag_ai',
-                version: 'v1.0.0',
-                nexus: 'https://www.nexusmods.com/scavprototype/mods/526',
-                subtitle: { zh: 'AI Agent 游戏控制桥接层', en: 'AI Agent Game Control Bridge' },
-                desc: {
-                    zh: 'MCP 协议桥接层，让 AI agent（如 opencode）能直接控制 Casualties Unknown。支持移动与动作（移动到坐标/跟随玩家/跳跃/使用物品/睡觉）、查询状态（游戏地图/位置/周围方块）、应急规则（自动卖血/自动治疗等由 AI 实时编排执行）。通过 F6 内置 GUI 可实时查看 AI 状态与周围信息。',
-                    en: 'MCP protocol bridge enabling AI agents (e.g. opencode) to directly control Casualties Unknown. Supports movement & actions (move to coords / follow player / jump / use item / sleep), status queries (game map / position / surrounding blocks), and contingency rules (auto blood selling / auto healing — orchestrated and executed by AI in real-time). Built-in F6 GUI for live AI status and surroundings.'
-                },
-                features: {
-                    zh: ['移动控制', '状态查询', '应急规则', 'F6 GUI', 'AI 实时编排'],
-                    en: ['Move Control', 'State Query', 'Contingency Rules', 'F6 GUI', 'AI Orchestration']
-                }
+<h3>探针分类</h3>
+<table class="mod-table">
+<tr><th>分类</th><th>测试内容</th></tr>
+<tr><td>Buffers</td><td>List+Add+ToArray vs 预分配数组、Array.Resize、固定大小填充</td></tr>
+<tr><td>Reflection</td><td>继承链字段遍历、字段缓存查找、GetValue/SetValue vs 直接访问</td></tr>
+<tr><td>LINQ</td><td>Where+Sum、Where+Select+ToArray、FirstOrDefault、Any、OrderBy</td></tr>
+<tr><td>Loops</td><td>手动 for/foreach 遍历、for+break 短路、Array.Sort</td></tr>
+<tr><td>Collections</td><td>List.Contains vs HashSet.Contains、Dict ContainsKey vs TryGetValue、容量预分配</td></tr>
+<tr><td>String</td><td>string.Concat、StringBuilder、string.Format、+ 拼接</td></tr>
+<tr><td>GameSystems</td><td>WorldGeneration.GetBlock、BlockToWorldPos</td></tr>
+<tr><td>ModSystems</td><td>逐模组元数据反射、字段遍历、静态方法扫描</td></tr>
+</table>
+
+<h3>使用方法</h3>
+<p>游戏控制台输入：</p>
+<ul>
+<li><code>bench</code> — 运行全部探针</li>
+<li><code>bench &lt;分类&gt;</code> — 只跑指定分类（如 <code>bench LINQ</code>）</li>
+<li><code>bench list</code> — 列出全部已注册探针与分类</li>
+</ul>
+
+<h3>安装</h3>
+<p>关闭游戏 → 将 <code>BlassM.dll</code> 放入 <code>BepInEx\plugins\</code> → 启动游戏，日志出现 <code>BlassM loaded</code> 即生效。</p>`,
+                en: `<h3>Overview</h3>
+<p>Requires no mod-specific integration. Actively scans the game and all loaded BepInEx plugins, running non-blocking in-game benchmarks across multiple systems.</p>
+
+<h3>Core Features</h3>
+<ul>
+<li><strong>Generic benchmarks</strong> — Covers Buffers / Reflection / LINQ / Loops / Collections / String / GameSystems / ModSystems. Each probe independently reports <code>ms/iter</code> and <code>B/iter</code></li>
+<li><strong>Non-blocking</strong> — Coroutine-chunked execution yields every frame, game stays fully interactive during measurement</li>
+<li><strong>Active mod scanning</strong> — Auto-discovers every loaded plugin via <code>Chainloader.PluginInfos</code> and generates probes per mod, no API registration required</li>
+<li><strong>Mod opt-in (optional)</strong> — Mods can annotate static methods with <code>[BlassMProbe(name, category)]</code>, BlassM picks them up automatically</li>
+<li><strong>Dual output</strong> — Results go to both the in-game console and <code>BepInEx/LogOutput.log</code></li>
+</ul>
+
+<h3>Probe Categories</h3>
+<table class="mod-table">
+<tr><th>Category</th><th>What It Tests</th></tr>
+<tr><td>Buffers</td><td>List+Add+ToArray vs preallocated arrays, Array.Resize, fixed-size fill</td></tr>
+<tr><td>Reflection</td><td>Inheritance-chain field walk, field cache lookup, GetValue/SetValue vs direct access</td></tr>
+<tr><td>LINQ</td><td>Where+Sum, Where+Select+ToArray, FirstOrDefault, Any, OrderBy</td></tr>
+<tr><td>Loops</td><td>Manual for/foreach traversal, for+break short-circuit, Array.Sort</td></tr>
+<tr><td>Collections</td><td>List.Contains vs HashSet.Contains, Dict ContainsKey vs TryGetValue, capacity preallocation</td></tr>
+<tr><td>String</td><td>string.Concat, StringBuilder, string.Format, + concatenation</td></tr>
+<tr><td>GameSystems</td><td>WorldGeneration.GetBlock, BlockToWorldPos</td></tr>
+<tr><td>ModSystems</td><td>Per-mod metadata reflection, field walk, static method scan</td></tr>
+</table>
+
+<h3>Usage</h3>
+<p>Type in the game console:</p>
+<ul>
+<li><code>bench</code> — run all probes</li>
+<li><code>bench &lt;category&gt;</code> — run only a specific category (e.g. <code>bench LINQ</code>)</li>
+<li><code>bench list</code> — list all registered probes and categories</li>
+</ul>
+
+<h3>Installation</h3>
+<p>Kill the game process → drop <code>BlassM.dll</code> into <code>BepInEx/plugins/</code> → start the game. <code>BlassM loaded</code> in the log confirms it's active.</p>`
             }
-        ];
+        },
+        {
+            icon: 'icons/GlassN.png',
+            name: 'GlassN',
+            tag: 'tag_net',
+            version: 'v0.1.0',
+            nexus: 'https://www.nexusmods.com/scavprototype/mods/593',
+            subtitle: { zh: '多人游戏网络优化', en: 'Multiplayer Network Optimization' },
+            chips: { zh: ['哈希缓冲复用','快速压缩','距离裁剪同步','频率降低','空闲物理休眠','内存分配减少'], en: ['Hash Buffer Reuse','Fast Deflate','Distance Culling','Frequency Reduction','Idle Physics Sleep','Reduced Alloc'] },
+            detail: {
+                zh: `<h3>概述</h3>
+<p>降低大型多人联机中主机端的 CPU 开销，提升主机与所有连接玩家的帧率。</p>
 
-        let currentLang = localStorage.getItem('lang') || 'zh';
-        let currentFilter = 'all';
+<h3>基准测试</h3>
+<table class="mod-table">
+<tr><th>环境</th><th>原版</th><th>GlassN</th></tr>
+<tr><td>30 人 (i5)</td><td>16 FPS</td><td>35 FPS</td></tr>
+<tr><td>50 人 (i5)</td><td>~8–10 FPS</td><td>20 FPS</td></tr>
+</table>
 
-        function setLang(lang) {
-            currentLang = lang;
-            localStorage.setItem('lang', lang);
-            document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
-            document.querySelectorAll('.lang-btn').forEach(btn => {
-                btn.classList.toggle('active', btn.dataset.lang === lang);
-            });
-            document.querySelectorAll('[data-i18n]').forEach(el => {
-                const key = el.getAttribute('data-i18n');
-                if (i18n[lang][key]) el.innerHTML = i18n[lang][key];
-            });
-            renderFilters();
-            renderMods();
+<h3>核心功能</h3>
+<ul>
+<li><strong>空闲物理休眠</strong>：主机不再处理静止远程玩家的物理——他们进入休眠直到移动</li>
+<li><strong>同步频率降低</strong>：CharSync 30Hz→15Hz，PlrSync 0.1s→0.5s，视觉上无明显延迟</li>
+<li><strong>距离裁剪同步</strong>：50 单位以外的物体不向看不到的玩家同步</li>
+<li><strong>物理求解器迭代降低</strong>：CPU 占用更低，堆叠物体会略微变软</li>
+<li><strong>低速物品自动休眠</strong>：低于速度阈值的物品自动休眠，减少不必要的物理负载</li>
+<li><strong>内存分配减少</strong>：数组复用而非每帧重新分配</li>
+</ul>
+
+<h3>兼容性</h3>
+<table class="mod-table">
+<tr><th>环境</th><th>状态</th></tr>
+<tr><td>Casualties Together</td><td class="yes">✅</td></tr>
+<tr><td>单人 / 离线</td><td class="yes">✅</td></tr>
+<tr><td>已有存档</td><td class="yes">✅</td></tr>
+<tr><td>画面 / 渲染 Mod</td><td class="yes">✅</td></tr>
+</table>
+
+<h3>配置项 (v0.1.0)</h3>
+<table class="mod-table">
+<tr><th>配置</th><th>默认</th><th>说明</th></tr>
+<tr><td>HashBufferReuse</td><td>true</td><td>WorldChunkSync.LateUpdate 复用静态 uint[32,32] 缓冲区，避免每帧 4KB 分配（仅主机）</td></tr>
+<tr><td>FastDeflate</td><td>true</td><td>使用 CompressionLevel.Fastest 代替 Optimal 进行区块/流体打包，线路兼容（仅主机）</td></tr>
+<tr><td>CharSyncDistanceCull</td><td>true</td><td>50 单位外的 NetBody 不打包。已知问题：可能导致远距离玩家永久不同步</td></tr>
+<tr><td>PlrSyncDistanceCull</td><td>true</td><td>50 单位外的玩家元数据不打包。已知问题同上</td></tr>
+<tr><td>PlrSyncFrequency</td><td>0.5s</td><td>PlrSync 发送间隔，原版 0.1s。越高 CPU/带宽越少，元数据略有延迟</td></tr>
+<tr><td>CharSyncFrequency</td><td>0.0667s (15Hz)</td><td>CharSync 发送间隔，原版 30Hz。15Hz 视觉无差别，打包开销减半</td></tr>
+</table>
+
+<h3>安装</h3>
+<p>确保 BepInEx 和 Casualties Together 已安装 → 将 <code>GlassN.dll</code> 放入 <code>BepInEx\plugins\</code> → 启动游戏，日志显示 <code>GlassN 0.1.0 loaded</code> 即生效。</p>`,
+                en: `<h3>Overview</h3>
+<p>Reduces host-side CPU overhead in large multiplayer sessions, improving frame rates for both the host and connected players.</p>
+
+<h3>Benchmark Results</h3>
+<table class="mod-table">
+<tr><th>Environment</th><th>Vanilla</th><th>GlassN</th></tr>
+<tr><td>30 players (i5)</td><td>16 FPS</td><td>35 FPS</td></tr>
+<tr><td>50 players (i5)</td><td>~8–10 FPS</td><td>20 FPS</td></tr>
+</table>
+
+<h3>Core Features</h3>
+<ul>
+<li><strong>Idle physics sleep</strong> — Host no longer processes physics for idle remote players; they fall asleep until they move</li>
+<li><strong>Reduced sync frequencies</strong> — CharSync 30Hz→15Hz, PlrSync 0.1s→0.5s with no noticeable delay</li>
+<li><strong>Distance culling</strong> — Objects beyond 50 units not synced to players who cannot see them</li>
+<li><strong>Lower physics solver iterations</strong> — Less CPU usage; stacked objects feel slightly softer</li>
+<li><strong>Auto-sleep for low-speed items</strong> — Items below speed threshold automatically sleep, reducing unnecessary physics load</li>
+<li><strong>Reduced memory allocations</strong> — Arrays are reused instead of allocating new ones every frame</li>
+</ul>
+
+<h3>Compatibility</h3>
+<table class="mod-table">
+<tr><th>Environment</th><th>Status</th></tr>
+<tr><td>Casualties Together</td><td class="yes">✅</td></tr>
+<tr><td>Single-Player / Offline</td><td class="yes">✅</td></tr>
+<tr><td>Existing Saves</td><td class="yes">✅</td></tr>
+<tr><td>Graphics / Rendering Mods</td><td class="yes">✅</td></tr>
+</table>
+
+<h3>Configuration (v0.1.0)</h3>
+<table class="mod-table">
+<tr><th>Config</th><th>Default</th><th>Description</th></tr>
+<tr><td>HashBufferReuse</td><td>true</td><td>Reuses static uint[32,32] buffer in WorldChunkSync.LateUpdate, avoiding 4KB allocation per frame (host only)</td></tr>
+<tr><td>FastDeflate</td><td>true</td><td>Uses CompressionLevel.Fastest instead of Optimal for chunk/fluid packing, wire-compatible (host only)</td></tr>
+<tr><td>CharSyncDistanceCull</td><td>true</td><td>Skip packing NetBodies beyond 50 units. Known issue: may cause permanent desync for distant players</td></tr>
+<tr><td>PlrSyncDistanceCull</td><td>true</td><td>Skip packing player metadata beyond 50 units. Known issue: same as above</td></tr>
+<tr><td>PlrSyncFrequency</td><td>0.5s</td><td>PlrSync send interval, vanilla 0.1s. Higher = less CPU/bandwidth, slight metadata delay</td></tr>
+<tr><td>CharSyncFrequency</td><td>0.0667s (15Hz)</td><td>CharSync send interval, vanilla 30Hz. 15Hz visually indistinguishable, halves pack cost</td></tr>
+</table>
+
+<h3>Installation</h3>
+<p>Ensure BepInEx and Casualties Together are installed → place <code>GlassN.dll</code> into <code>BepInEx\plugins\</code> → launch the game. Log shows <code>GlassN 0.1.0 loaded</code> if successful.</p>`
+            }
+        },
+        {
+            icon: 'icons/CU_Noita.png',
+            name: 'Cu-NoitaMod',
+            tag: 'tag_content',
+            version: '最新版',
+            nexus: 'https://www.nexusmods.com/scavprototype/mods/625',
+            subtitle: { zh: 'Noita 法杖、咒语与炼金系统', en: 'Noita Wands, Spells & Alchemy' },
+            chips: { zh: ['法杖系统','咒语系统','炼金调药','天赋系统','敌人 & 流体 & 方块'], en: ['Wand System','Spell System','Alchemy & Potions','Perks','Enemies & Fluids & Blocks'] },
+            detail: {
+                zh: `<h3>概述</h3>
+<p>灵感来自 Noita 的核心机制——法杖、咒语和炼金——为 Casualties Unknown 打造的 BepInEx 模组。按 F1 打开模组面板。</p>
+
+<h3>法杖系统</h3>
+<ul>
+<li>可同时携带多根法杖</li>
+<li>每根法杖有独立属性：速度、伤害、施法延迟、法力消耗、冷却时间</li>
+<li>法杖咒语槽位——初始 4 个，可扩展</li>
+<li>分阶稀有度：普通→稀有→精良→卓越→史诗→传说→远古</li>
+</ul>
+
+<h3>咒语</h3>
+<ul>
+<li><strong>投射物</strong>：基础弹、治疗弹、弹跳弹、连锁弹、飞盘、追踪弹、穿刺弹、引力弹、挖掘弹、发光钻、电锯</li>
+<li><strong>爆炸 & 元素</strong>：火球、冰球、闪电、爆炸射击、炸弹、燃烧弹、分裂弹</li>
+<li><strong>状态效果</strong>：火弧、绿毒、紫毒、毒云、酸液、狂暴</li>
+<li><strong>辅助</strong>：传送弹、短距传送弹、冻结场、注入法力</li>
+<li><strong>修饰符</strong>：追踪、穿刺、加速、弹跳、伤害加成、电弧、火焰尾迹、毒尾迹、暴击、重击、轻击、引力、反引力、爆炸投射物、精准、加速射击、减速射击、减少冷却</li>
+<li><strong>多重施法</strong>：双倍、三倍、四倍、N 倍施法</li>
+<li><strong>触发 & 定时器</strong>：触发、定时器、死亡触发</li>
+<li><strong>希腊咒语</strong>：Alpha、Gamma、Tau、Mu、Sigma、Zeta、Phi、Omega</li>
+<li><strong>其他</strong>：除以 2/3/10、法杖刷新</li>
+</ul>
+
+<h3>炼金调药</h3>
+<ul>
+<li>从环境中收集材料，在炼金标签页组合调制药水</li>
+<li><strong>药水</strong>：生命精华（永久增血）、隐身药水、狂暴药水、毒药水、酸液药水、变形药水（危险！）、活性混合物（每局随机配方，巨大爆炸+狂暴）</li>
+<li><strong>材料</strong>：火药、血粉、钻石粉、肉粉、翡翠粉、遗骸粉、血样、肉样、变形样、脑增强样、抹除样</li>
+</ul>
+
+<h3>天赋</h3>
+<ul>
+<li>额外生命——致命伤害时恢复 50 HP</li>
+<li>爆炸免疫——免疫爆炸</li>
+<li>火焰免疫——免疫火焰/热量</li>
+<li>伤害加成——所有伤害 +50%</li>
+<li>还有：神圣祝福（10s 无敌）、变形（8s）、玻璃（15s 无敌）</li>
+</ul>
+
+<h3>敌人 & 流体 & 方块</h3>
+<p>可生成 4 种敌人（原版预制体）、42 种流体、35+ 种方块用于测试。</p>
+
+<h3>操作</h3>
+<ul>
+<li><code>T</code> — 打开法杖编辑器（装备/移除咒语）</li>
+<li><code>E</code> — 打开炼金标签页（调制药水）</li>
+<li><code>Tab</code> — 循环切换法杖</li>
+<li><code>鼠标左键</code> — 发射当前法杖</li>
+<li><code>鼠标右键</code> — 施放最左侧咒语</li>
+<li><code>Q</code> — 冲刺（基于体力）</li>
+</ul>
+
+<h3>安装</h3>
+<p>将 <code>CuNoitaMod.dll</code> 和 <code>assets/</code> 文件夹复制到 <code>BepInEx\plugins\</code> 目录。</p>`,
+                en: `<h3>Overview</h3>
+<p>A BepInEx mod for Casualties Unknown inspired by Noita's core mechanics — wands, spells, and alchemy. Press F1 to open the mod panel.</p>
+
+<h3>Wand System</h3>
+<ul>
+<li>Carry multiple wands at once</li>
+<li>Each wand has its own stats: speed, damage, cast delay, mana cost, recharge time</li>
+<li>Spell slots on each wand — start with 4, expandable</li>
+<li>Tiered rarity: Common → Rare → Elite → Notable → Epic → Legendary → Ancient</li>
+</ul>
+
+<h3>Spells</h3>
+<ul>
+<li><strong>Projectiles</strong>: Basic Bolt, Healing Bolt, Bouncing Burst, Chain Bolt, Disc Projectile, Homing Bolt, Piercing Bolt, Gravity Bolt, Digging Bolt, Luminous Drill, Chainsaw</li>
+<li><strong>Explosives & Elements</strong>: Fireball, Iceball, Lightning, Explosive Shot, Bomb, Firebomb, Split Shot</li>
+<li><strong>Status Effects</strong>: Fire Arc, Green Poison, Purple Poison, Poison Cloud, Acid Blob, Berserk</li>
+<li><strong>Utility</strong>: Teleport Bolt, Small Teleport Bolt, Freeze Field, Inject Mana</li>
+<li><strong>Modifiers</strong>: Homing, Pierce, Speed, Bounce, Damage Plus, Electric Arc, Fire Trail, Toxic Trail, Critical Hit, Heavy Shot, Light Shot, Gravity, Anti-Gravity, Explosive Projectile, Accuracy, Accelerating Shot, Decelerating Shot, Reduce Recharge</li>
+<li><strong>Multicast</strong>: Double, Triple, Quadruple, N Spell</li>
+<li><strong>Triggers & Timers</strong>: Trigger, Timer, Death Trigger</li>
+<li><strong>Greek Spells</strong>: Alpha, Gamma, Tau, Mu, Sigma, Zeta, Phi, Omega</li>
+<li><strong>Other</strong>: Divide by 2/3/10, Wand Refresh</li>
+</ul>
+
+<h3>Alchemy & Potion Brewing</h3>
+<ul>
+<li>Gather materials from the environment and combine them in the Alchemy Tab to brew potions</li>
+<li><strong>Potions</strong>: Life Essence (permanent health boost), Invisibility Potion, Berserk Potion, Poison Potion, Acid Potion, Polymorphine (dangerous!), Active Mixture (random recipe, massive explosion + berserk)</li>
+<li><strong>Materials</strong>: Gunpowder, Blood Powder, Diamond Powder, Flesh Powder, Emerald Powder, Powder of Remnance, Blood Sample, Flesh Sample, Polymorphine Sample, Brain Enhancement Sample, Mind Erasure Sample</li>
+</ul>
+
+<h3>Perks</h3>
+<ul>
+<li>Extra Life — Restore 50 HP on lethal damage</li>
+<li>Explosion Immunity — immune to explosions</li>
+<li>Fire Immunity — immune to fire/heat</li>
+<li>Damage Boost — all damage +50%</li>
+<li>Also: Divine Blessing (10s invincibility), Polymorph (8s), Glass (15s invincibility)</li>
+</ul>
+
+<h3>Enemies & Fluids & Blocks</h3>
+<p>Spawn 4 enemy types (vanilla prefabs), 42 fluid types, and 35+ block types for testing.</p>
+
+<h3>Controls</h3>
+<ul>
+<li><code>T</code> — Open wand editor (equip/remove spells)</li>
+<li><code>E</code> — Open alchemy tab (brew potions)</li>
+<li><code>Tab</code> — Cycle through wands</li>
+<li><code>Left Click</code> — Fire active wand</li>
+<li><code>Right Click</code> — Cast leftmost spell</li>
+<li><code>Q</code> — Dash (stamina-based)</li>
+</ul>
+
+<h3>Installation</h3>
+<p>Copy <code>CuNoitaMod.dll</code> and the <code>assets/</code> folder into <code>BepInEx\plugins\</code>.</p>`
+            }
+        },
+        {
+            icon: 'icons/RedStoneCraft.png',
+            name: 'RedStone Craft',
+            tag: 'tag_content',
+            version: 'v1.0.0',
+            nexus: 'https://www.nexusmods.com/scavprototype/mods/555',
+            subtitle: { zh: '红石系统、命令方块与矿车', en: 'Redstone System, Command Blocks & Trains' },
+            chips: { zh: ['红石元件','命令方块 & 编辑器','铁轨 & 矿车','红石陷阱','合成配方 & 容器','创造模式'], en: ['Redstone Components','Command Blocks & Editor','Rails & Minecarts','Redstone Traps','Crafting & Containers','Creative Mode'] },
+            detail: {
+                zh: `<h3>红石元件</h3>
+<ul>
+<li><strong>红石粉</strong>：传输 0~15 强度信号，每格衰减 1。自动以 16 种形状（直、角、T、十字）连接邻居</li>
+<li><strong>红石火把</strong>：恒定 15 强度电源。附着方块被充能时熄灭</li>
+<li><strong>拉杆 / 按钮 / 压力板</strong>：手动与实体触发。按钮发出 0.5 秒（10 tick）脉冲。压力板检测玩家与生物踩踏</li>
+<li><strong>红石中继器</strong>：刷新信号强度至 15 并单向传输。右键切换 1~4 tick 延迟</li>
+<li><strong>比较器</strong>：读取相邻容器满度（每格 1，最大 15）并输出信号。右键切换比较/减法模式</li>
+<li><strong>红石灯</strong>：充能时亮，失能时灭</li>
+<li><strong>活塞 / 粘性活塞</strong>：充能时推动方块链（最多 12 格），失能时收回。粘性活塞收回时拉回前方方块</li>
+<li><strong>侦测器</strong>：检测正前方方块变化，发出 1-tick 15 强度脉冲</li>
+<li><strong>红石块</strong>：恒定 15 强度电源</li>
+<li><strong>靶标方块</strong>：被投射物击中时，根据命中点距中心的距离输出 1~15 强度信号</li>
+</ul>
+
+<h3>命令方块 & 编辑器</h3>
+<p>包含脉冲、循环、命令方块。右键任意命令方块打开图形编辑器：</p>
+<ul>
+<li><strong>左侧面板</strong>：调整方块类型、执行条件（无条件/有条件）、触发模式（常开/红石控制）、朝向、执行延迟（tick，1 tick = 0.05s）</li>
+<li><strong>右侧面板</strong>：输入单条游戏控制台命令，支持 Tab 自动补全</li>
+<li>保存后脉冲方块自动上膛，下一 tick 触发一次。命令方块可按朝向链接成序列</li>
+</ul>
+
+<h3>铁轨 & 矿车</h3>
+<ul>
+<li>四种铁轨：普通、充能、探测、激活，各有 16 种自动连接形状</li>
+<li><strong>充能铁轨</strong>：红石信号沿铁轨链传输并衰减（最多 15 格）。矿车在充能段加速至 3×，未充能段减速至 0.3×</li>
+<li><strong>探测铁轨</strong>：矿车在上方时输出 15 强度红石信号</li>
+<li><strong>激活铁轨</strong>：信号沿铁轨传输并衰减，影响经过的矿车（弹出乘客、点燃 TNT 矿车、禁用漏斗矿车等）</li>
+<li><strong>矿车</strong>：物理实体，只能放在铁轨上。玩家可骑乘并用 WASD 控制</li>
+</ul>
+
+<h3>红石陷阱</h3>
+<p>左键放置，检测到红石上升沿时激活：地雷、炮塔、捕兽夹、尖刺刺器、间歇泉、跳板、炮弹地雷、线圈、音波炮。</p>
+
+<h3>合成配方 & 容器</h3>
+<ul>
+<li>所有红石元件、铁轨、矿车、陷阱在原版工作台中有合成配方</li>
+<li>箱子（27 格，双箱合并 54 格）</li>
+<li>漏斗（5 格，从上方拉取物品，向输出方向推送，充能时锁定）</li>
+<li>自动合成台（3×3 自动合成，红石上升沿触发，向前或向相邻容器输出）</li>
+</ul>
+
+<h3>创造模式</h3>
+<ul>
+<li><code>rsc gamemode creative</code> — 切换创造飞行与瞬时方块破坏</li>
+<li><code>rsc items</code> — 在玩家周围生成所有 RedStone Craft 物品</li>
+</ul>
+
+<h3>安装</h3>
+<p>需要 BepInEx 5 → 将 <code>CommandBlock.dll</code> 放入 <code>BepInEx\plugins\</code> → 启动游戏。</p>`,
+                en: `<h3>Redstone Components</h3>
+<ul>
+<li><strong>Redstone Dust</strong>: Transmits signals from 0 to 15 strength, decaying by 1 per block. Automatically connects in 16 shapes</li>
+<li><strong>Redstone Torch</strong>: Constant 15-strength power source. Turns off when attached block is powered</li>
+<li><strong>Lever / Button / Pressure Plate</strong>: Manual and entity-triggered. Buttons emit 0.5s (10 tick) pulse. Pressure plates detect players and creatures</li>
+<li><strong>Redstone Repeater</strong>: Refreshes signal to 15 and transmits in one direction. Right-click to switch 1–4 tick delay</li>
+<li><strong>Comparator</strong>: Reads container fullness (1 per slot, max 15) and outputs signal. Right-click to toggle Compare/Subtract mode</li>
+<li><strong>Redstone Lamp</strong>: Lights up when powered, turns off when signal lost</li>
+<li><strong>Piston / Sticky Piston</strong>: Pushes block chains (up to 12 blocks) when powered. Sticky pistons pull the front block back when retracting</li>
+<li><strong>Observer</strong>: Detects changes directly in front, emits 1-tick 15-strength pulse</li>
+<li><strong>Redstone Block</strong>: Constant 15-strength power source</li>
+<li><strong>Target Block</strong>: Hit by projectile → outputs 1–15 strength based on proximity to center</li>
+</ul>
+
+<h3>Command Blocks & Editor</h3>
+<p>Includes Impulse, Repeat, and Chain command blocks. Right-click to open the graphical editor:</p>
+<ul>
+<li><strong>Left Panel</strong>: Block type, execution condition (Unconditional/Conditional), trigger mode (Always On/Redstone Control), facing, execution delay (ticks, 1 tick = 0.05s)</li>
+<li><strong>Right Panel</strong>: Enter a single console command with Tab auto-completion</li>
+<li>After saving, Impulse blocks auto-arm and trigger once next tick. Chain blocks link in sequence by facing</li>
+</ul>
+
+<h3>Rails & Minecarts</h3>
+<ul>
+<li>Four rail types: Normal, Powered, Detector, Activator — each with 16 auto-connecting shapes</li>
+<li><strong>Powered Rails</strong>: Redstone signals travel along rail chains (max 15 blocks). Minecarts accelerate to 3× on powered sections, slow to 0.3× unpowered</li>
+<li><strong>Detector Rails</strong>: Output 15-strength signal when minecart is on top</li>
+<li><strong>Activator Rails</strong>: Affect passing minecarts (eject riders, ignite TNT, disable hoppers, etc.)</li>
+<li><strong>Minecarts</strong>: Physical entities, placed on rails only. Players ride and control with WASD</li>
+</ul>
+
+<h3>Redstone-Activated Traps</h3>
+<p>Left-click to place. Activates on redstone rising edge: Landmines, Turrets, Bear Traps, Spike Stabbers, Geysers, Jump Pads, Gun Mines, Coils, Sound Cannons.</p>
+
+<h3>Crafting Recipes & Containers</h3>
+<ul>
+<li>All components, rails, minecarts, and traps have vanilla workbench recipes</li>
+<li>Chests (27 slots, double chests = 54)</li>
+<li>Hoppers (5 slots, pulls from above, pushes to output direction, locks when powered)</li>
+<li>Crafters (3×3 auto-crafting, triggered by redstone rising edge, outputs forward or into adjacent containers)</li>
+</ul>
+
+<h3>Creative Mode</h3>
+<ul>
+<li><code>rsc gamemode creative</code> — Toggle creative flight and instant block destruction</li>
+<li><code>rsc items</code> — Spawn all RedStone Craft items around the player</li>
+</ul>
+
+<h3>Installation</h3>
+<p>Requires BepInEx 5 → place <code>CommandBlock.dll</code> into <code>BepInEx\plugins\</code> → launch the game.</p>`
+            }
+        },
+        {
+            icon: 'icons/Cu-BloodBank.png',
+            name: 'Cu-BloodBank',
+            tag: 'tag_content',
+            version: 'v1.2.2',
+            nexus: 'https://www.nexusmods.com/scavprototype/mods/551',
+            subtitle: { zh: '血液资源管理与经济系统', en: 'Blood Resource Management & Economy' },
+            chips: { zh: ['抽血/卖血','阶梯定价','血袋标签','失血惩罚','Alexx 兼容','中/繁/英三语'], en: ['Donate/Draw Blood','Tiered Pricing','Blood Labels','Blood Penalty','Alexx Compatible','CN/Trad/EN'] },
+            detail: {
+                zh: `<h3>概述</h3>
+<p>为 Casualties Unknown 的交易系统添加"献血/抽血"机制的 BepInEx 插件。</p>
+
+<h3>核心功能</h3>
+<ul>
+<li><strong>献血</strong>：点击交易菜单中新增的"献血/抽血"按钮，捐献自己的血液（草地 500ml，沙漠 1500ml）换取交易信用</li>
+<li><strong>抽血</strong>：将空血袋拖到按钮上，使用交易信用从商人处抽取血液（每袋最多 750ml）。抽得越多价格越高（每累计 1000ml 翻倍，最高 ×16）；商人血量越少价格越高</li>
+<li><strong>首次免费</strong>：累计抽血 0ml 且声望 ≥200 时，首次抽血免费</li>
+<li><strong>信用上限</strong>：抽血价格超过 60 信用上限时商人拒绝交易（与原版信用规则一致）</li>
+<li><strong>价格标签</strong>：按钮左侧实时显示价格、商人剩余血量与累计抽血量</li>
+<li><strong>商人拒绝回收自己的血</strong>：从某商人抽的血不能卖回给他（EXP 会尴尬 / MIKY 无语）；沙地人（Dune）是简单生物，照收不误</li>
+<li><strong>血型系统（可选）</strong>：若同时安装 Alexx_'s MedicalBrutalism，抽出的血携带商人血型。悬停显示血型与兼容类型。EXP/MIKY 拒绝不兼容血袋（Dune 除外），除非商人自身血量低于 25%</li>
+<li><strong>紧急赠血</strong>：非敌对非 Dune 商人在你血量低于 70% 时赠送你一袋 750ml 血（每位商人一次）</li>
+<li><strong>本地化</strong>：支持简体中文、繁体中文、英文</li>
+</ul>
+
+<h3>定价规则</h3>
+<table class="mod-table">
+<tr><th>条件</th><th>每 750ml 基础价格</th></tr>
+<tr><td>声望 &gt; 100</td><td><code>23.5 - 0.1 × 声望</code></td></tr>
+<tr><td>声望 ≤ 100</td><td><code>28 - 0.14 × 声望</code></td></tr>
+</table>
+<p>声望 50→21，100→14，150→9，200→4。</p>
+<p>商人血量系数：1.0 ~ 2.0（血量越少价格越高；Dune 上限 15000ml，其他 5000ml）。</p>
+<p>累计阶梯：每抽 1000ml 翻倍（×1, ×2, ×4, ×8, ×16）。</p>
+
+<h3>安装</h3>
+<p>将 <code>Cu-BloodBank.dll</code> 复制到 <code>&lt;Steam&gt;\steamapps\common\Casualties Unknown Demo\BepInEx\plugins\</code>。需要 BepInEx 5。启动游戏即可，卸载只需删除 DLL。</p>`,
+                en: `<h3>Overview</h3>
+<p>A BepInEx plugin that adds "Donate / Draw Blood" mechanics to the trader system in Casualties Unknown.</p>
+
+<h3>Core Features</h3>
+<ul>
+<li><strong>Donate blood</strong> — Click the new "Donate / Draw Blood" button in the trade menu to donate your own blood (500ml; 1500ml for Dune) in exchange for trade credit</li>
+<li><strong>Draw blood</strong> — Drag an empty blood bag onto the button to draw blood from the trader using trade credit (up to 750ml per bag). The more you draw, the pricier it gets (doubles every 1000ml, up to ×16); the less blood the trader has, the higher the price</li>
+<li><strong>First draw free</strong> — When 0ml drawn total and reputation ≥200, the first draw is free</li>
+<li><strong>Credit cap</strong> — If the draw price exceeds the 60 credit cap, the trader refuses (consistent with vanilla credit rules)</li>
+<li><strong>Price label</strong> — Left of the button, showing live price, trader's remaining blood, and total drawn</li>
+<li><strong>Trader refuses own blood</strong> — Blood drawn from a trader cannot be sold back to him (EXP gets awkward / MIKY is speechless); Dune accepts it</li>
+<li><strong>Blood type integration (optional)</strong> — If Alexx_'s MedicalBrutalism is installed, drawn blood carries the trader's blood type. Hovering shows type and compatible types. EXP/MIKY refuse incompatible bags (Dune excepted), unless trader's blood is below 25%</li>
+<li><strong>Emergency gift</strong> — A non-hostile, non-Dune trader gives you a free 750ml bag when your blood volume drops below 70% (once per trader)</li>
+<li><strong>Localization</strong> — Supports Simplified Chinese, Traditional Chinese, and English</li>
+</ul>
+
+<h3>Pricing Rules</h3>
+<table class="mod-table">
+<tr><th>Condition</th><th>Base Price per 750ml</th></tr>
+<tr><td>Reputation &gt; 100</td><td><code>23.5 - 0.1 × Reputation</code></td></tr>
+<tr><td>Reputation ≤ 100</td><td><code>28 - 0.14 × Reputation</code></td></tr>
+</table>
+<p>Rep 50→21, 100→14, 150→9, 200→4.</p>
+<p>Trader blood factor: 1.0 ~ 2.0 (lower blood = higher price; Dune cap 15000ml, others 5000ml).</p>
+<p>Cumulative tier: Doubles every 1000ml drawn (×1, ×2, ×4, ×8, ×16).</p>
+
+<h3>Installation</h3>
+<p>Copy <code>Cu-BloodBank.dll</code> to <code>&lt;Steam&gt;\steamapps\common\Casualties Unknown Demo\BepInEx\plugins\</code>. Requires BepInEx 5. To uninstall, delete the DLL.</p>`
+            }
         }
+    ];
 
-        function t(key) { return i18n[currentLang][key] || key; }
+    /* ======================== RENDER ======================== */
+    let currentLang = localStorage.getItem('lang') || 'zh';
+    let currentFilter = 'all';
 
-        function renderFilters() {
-            const bar = document.getElementById('filterBar');
-            const tags = ['all', ...new Set(mods.map(m => m.tag))];
-            bar.innerHTML = tags.map(tag =>
-                `<button class="filter-btn ${tag === currentFilter ? 'active' : ''}" onclick="setFilter('${tag}')">${tag === 'all' ? t('filter_all') : t(tag)}</button>`
-            ).join('');
-        }
+    function setLang(lang) {
+        currentLang = lang;
+        localStorage.setItem('lang', lang);
+        document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
+        document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.lang === lang));
+        document.querySelectorAll('[data-i18n]').forEach(el => {
+            const key = el.getAttribute('data-i18n');
+            if (i18n[lang][key]) el.innerHTML = i18n[lang][key];
+        });
+        renderFilters();
+        renderMods();
+    }
 
-        function setFilter(tag) {
-            currentFilter = tag;
-            renderFilters();
-            renderMods();
-        }
+    function renderFilters() {
+        const bar = document.getElementById('filterBar');
+        const tags = ['all', ...new Set(mods.map(m => m.tag))];
+        bar.innerHTML = tags.map(tag =>
+            `<button class="filter-btn ${tag === currentFilter ? 'active' : ''}" onclick="setFilter('${tag}')">${tag === 'all' ? t('filter_all') : t(tag)}</button>`
+        ).join('');
+    }
 
-        function renderMods() {
-            const grid = document.getElementById('modsGrid');
-            grid.innerHTML = '';
-            const filtered = currentFilter === 'all' ? mods : mods.filter(m => m.tag === currentFilter);
-            filtered.forEach((mod, i) => {
-                const card = document.createElement('div');
-                card.className = 'mod-card reveal';
-                card.style.transitionDelay = `${i * 0.06}s`;
-                const feats = mod.features[currentLang].map(f => `<span class="mod-feat">${checkSvg}${f}</span>`).join('');
-                card.innerHTML = `
+    function setFilter(tag) { currentFilter = tag; renderFilters(); renderMods(); }
+
+    function renderMods() {
+        const grid = document.getElementById('modsGrid');
+        grid.innerHTML = '';
+        const filtered = currentFilter === 'all' ? mods : mods.filter(m => m.tag === currentFilter);
+        filtered.forEach((mod, i) => {
+            const card = document.createElement('div');
+            card.className = 'mod-card reveal';
+            card.style.transitionDelay = `${i * 0.06}s`;
+
+            const chips = mod.chips[currentLang].map(c => `<span class="mod-chip">${checkSvg}${c}</span>`).join('');
+
+            card.innerHTML = `
+                <div class="mod-header">
                     <div class="mod-icon-wrap">
                         <img class="mod-icon" src="${mod.icon}" alt="${mod.name}" loading="lazy">
                     </div>
-                    <div class="mod-body">
-                        <div class="mod-head">
+                    <div class="mod-head-text">
+                        <div class="mod-top-row">
                             <div class="mod-name">${mod.name}</div>
                             <span class="mod-tag">${t(mod.tag)}</span>
                             <span class="mod-version">${mod.version}</span>
                         </div>
                         <div class="mod-subtitle">${mod.subtitle[currentLang]}</div>
-                        <div class="mod-desc">${mod.desc[currentLang]}</div>
-                        <div class="mod-features">${feats}</div>
-                        <div class="mod-actions">
-                            <a class="mod-link" href="${mod.nexus}" target="_blank" rel="noopener">
-                                ${t('view_nexus')}
-                                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
-                            </a>
-                        </div>
                     </div>
-                `;
-                grid.appendChild(card);
-            });
-            observeCards();
-        }
-
-        function observeCards() {
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
-                        observer.unobserve(entry.target);
-                    }
-                });
-            }, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
-            document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-        }
-
-        function animateCounters() {
-            document.querySelectorAll('.stat-num[data-count]').forEach(el => {
-                const target = parseInt(el.dataset.count);
-                const duration = 1200;
-                const start = performance.now();
-                function step(now) {
-                    const progress = Math.min((now - start) / duration, 1);
-                    const ease = 1 - Math.pow(1 - progress, 3);
-                    el.textContent = Math.round(target * ease);
-                    if (progress < 1) requestAnimationFrame(step);
-                }
-                requestAnimationFrame(step);
-            });
-        }
-
-        window.addEventListener('scroll', () => {
-            const nav = document.getElementById('nav');
-            nav.style.boxShadow = window.scrollY > 20 ? '0 1px 3px rgba(0,0,0,0.06)' : 'none';
+                </div>
+                <div class="mod-link-row">
+                    <a class="mod-link" href="${mod.nexus}" target="_blank" rel="noopener">
+                        ${t('view_nexus')} ${arrowSvg}
+                    </a>
+                </div>
+                <div class="mod-chips">${chips}</div>
+                <div class="mod-detail">${mod.detail[currentLang]}</div>
+                <button class="mod-expand-btn" onclick="this.parentElement.classList.toggle('expanded'); this.previousElementSibling.previousElementSibling.previousElementSibling.previousElementSibling.classList.toggle('expanded')">
+                    ${t('expand')} ${chevronSvg}
+                </button>
+            `;
+            grid.appendChild(card);
         });
+        observeCards();
+    }
 
-        setLang(currentLang);
-        animateCounters();
-
-        document.querySelectorAll('.nav-links a[href^="#"]').forEach(a => {
-            a.addEventListener('click', e => {
-                e.preventDefault();
-                document.querySelector(a.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
+    function observeCards() {
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) { entry.target.classList.add('visible'); observer.unobserve(entry.target); }
             });
+        }, { threshold: 0.05, rootMargin: '0px 0px -20px 0px' });
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    }
+
+    function animateCounters() {
+        document.querySelectorAll('.stat-num[data-count]').forEach(el => {
+            const target = parseInt(el.dataset.count);
+            const start = performance.now();
+            function step(now) {
+                const p = Math.min((now - start) / 1200, 1);
+                el.textContent = Math.round(target * (1 - Math.pow(1 - p, 3)));
+                if (p < 1) requestAnimationFrame(step);
+            }
+            requestAnimationFrame(step);
         });
+    }
+
+    window.addEventListener('scroll', () => {
+        document.getElementById('nav').style.boxShadow = window.scrollY > 20 ? '0 1px 3px rgba(0,0,0,0.06)' : 'none';
+    });
+
+    setLang(currentLang);
+    animateCounters();
+    document.querySelectorAll('.nav-links a[href^="#"]').forEach(a => {
+        a.addEventListener('click', e => { e.preventDefault(); document.querySelector(a.getAttribute('href')).scrollIntoView({ behavior: 'smooth' }); });
+    });
     </script>
 </body>
 </html>
