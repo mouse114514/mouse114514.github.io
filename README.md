@@ -1,8 +1,8 @@
 # Ouse
 
-Personal website for Ouse — independent developer.
-
-Primarily develops mods for [Casualties Unknown](https://store.steampowered.com/app/CasualtiesUnknown) using BepInEx and Harmony.
+Online Edit CuBlocky!
+[NEXUS](https://www.nexusmods.com/scavprototype/mods/652)
+[GH](https://github.com/mouse114514/CuBlocky)
 
 ## Site
 
